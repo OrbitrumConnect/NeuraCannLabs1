@@ -1,0 +1,64 @@
+# Cannabis Clinical Hub - Medical Platform
+
+## Overview
+
+Cannabis Clinical Hub is a full-stack web application designed as an advanced medical platform for analyzing scientific research, clinical cases, and discoveries in cannabis medicinal applications. The platform features an innovative 3D avatar interface, real-time data visualization, and a cyberpunk-inspired design aesthetic.
+
+The application serves as a comprehensive hub for medical professionals to access scientific studies, review clinical cases, receive important alerts, and manage their profiles in an interactive and visually engaging environment.
+
+## User Preferences
+
+Preferred communication style: Simple, everyday language.
+
+## System Architecture
+
+### Frontend Architecture
+
+**Framework & Build Tool**: React 18 with TypeScript and Vite for fast development and optimized builds. The frontend uses modern React patterns with functional components and hooks.
+
+**UI Framework**: shadcn/ui components built on Radix UI primitives, providing accessible and customizable components. Tailwind CSS handles styling with a custom dark theme featuring cyberpunk-inspired colors and effects.
+
+**3D Graphics**: Three.js integration via @react-three/fiber and @react-three/drei for rendering interactive 3D avatars and holographic effects, creating an immersive user experience.
+
+**State Management**: TanStack Query (React Query) for server state management, caching, and synchronization. Local state handled through React hooks.
+
+**Routing**: Wouter for lightweight client-side routing with support for nested routes and dynamic sections.
+
+### Backend Architecture
+
+**Runtime & Framework**: Node.js with Express.js providing RESTful API endpoints. Uses ES modules throughout for modern JavaScript syntax.
+
+**Development Setup**: Custom Vite integration for hot module replacement in development, with middleware mode for seamless frontend-backend integration.
+
+**API Design**: RESTful endpoints following conventional patterns:
+- Scientific studies: `/api/scientific`
+- Clinical cases: `/api/clinical` 
+- Alerts: `/api/alerts`
+- User profiles: `/api/profile`
+
+**Data Storage**: Currently uses in-memory storage (MemStorage class) with interfaces designed to easily swap to database implementations. Schema definitions use Drizzle ORM with Zod validation.
+
+### Database Schema Design
+
+**ORM & Validation**: Drizzle ORM with PostgreSQL dialect configured, though currently using in-memory storage. Zod schemas provide runtime validation and type safety.
+
+**Data Models**:
+- Users: Medical professionals with specialties and credentials
+- Scientific Studies: Research papers with compounds, indications, and phases
+- Clinical Cases: Patient cases with outcomes and doctor associations
+- Alerts: Notifications with priority levels and read status
+
+### External Dependencies
+
+**Database**: Neon serverless PostgreSQL configured via Drizzle ORM (DATABASE_URL environment variable required)
+
+**UI Components**: Extensive use of Radix UI primitives for accessibility and Lucide React for icons
+
+**Development Tools**: 
+- Replit-specific plugins for runtime error overlay and cartographer
+- ESBuild for production builds
+- PostCSS with Autoprefixer for CSS processing
+
+**3D Libraries**: Three.js ecosystem including @react-three/fiber for React integration and @react-three/drei for additional 3D utilities
+
+The architecture prioritizes modularity, type safety, and developer experience while maintaining the flexibility to scale into a production medical platform with real database integration and authentication systems.
