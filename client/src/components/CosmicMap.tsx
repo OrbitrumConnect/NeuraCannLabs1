@@ -571,29 +571,21 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                   transition: isDragging ? 'none' : 'transform 0.2s ease'
                 }}
               >
-                {/* Connection point indicator */}
-                <div className="flex justify-center pt-8 mb-8">
-                  <div className="w-6 h-6 bg-neon-cyan rounded-full animate-pulse shadow-xl shadow-neon-cyan/60" />
-                </div>
+                {/* Header spacing */}
+                <div className="pt-8 mb-8"></div>
                 
                 {/* Neural Network Flow - Dr. Cannabis → Pesquisas → Sub-pesquisas */}
                 <div className="px-6 pb-6">
                   <div className="max-w-7xl mx-auto">
                     
-                    {/* Level 1: Central Hub - Dr. Cannabis */}
-                    <div className="flex justify-center mb-12">
-                      <div className="relative">
-                        <div className="w-64 h-64 bg-gradient-to-br from-neon-cyan/20 to-purple-600/20 rounded-full border-2 border-neon-cyan/60 flex items-center justify-center shadow-2xl shadow-neon-cyan/30">
-                          <div className="text-center">
-                            <div className="text-2xl font-bold text-neon-cyan mb-2">Dr. Cannabis IA</div>
-                            <div className="text-sm text-gray-300">Conexão Neural Ativa</div>
-                            <div className="text-xs text-green-400 mt-1">
-                              {searchTabs.filter(tab => tab.type === 'main').length} pesquisas ativas
-                            </div>
-                          </div>
-                        </div>
-                        {/* Neural pulse animation */}
-                        <div className="absolute inset-0 rounded-full border-2 border-neon-cyan/30 animate-ping" />
+                    {/* Level 1: Header - Simple and clean */}
+                    <div className="text-center mb-8">
+                      <div className="inline-flex items-center space-x-3 px-6 py-3 bg-black/80 border border-neon-cyan/40 rounded-xl backdrop-blur-md">
+                        <div className="w-3 h-3 bg-neon-cyan rounded-full animate-pulse"></div>
+                        <span className="text-lg font-medium text-neon-cyan">Dr. Cannabis IA - Sistema Neural Ativo</span>
+                        <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded text-xs">
+                          {searchTabs.filter(tab => tab.type === 'main').length} pesquisas
+                        </span>
                       </div>
                     </div>
                     
@@ -601,10 +593,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                     <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mb-8">
                       {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
                         <div key={mainTab.id} className="relative">
-                          {/* Neural connection line from Dr. Cannabis */}
-                          <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
-                            <div className="w-0.5 h-16 bg-gradient-to-b from-neon-cyan/80 to-neon-cyan/40" />
-                            <div className="absolute top-0 left-1/2 w-2 h-2 bg-neon-cyan rounded-full transform -translate-x-1/2 animate-pulse" />
+                          {/* Simple connection indicator */}
+                          <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                            <div className="w-1 h-4 bg-neon-cyan/60 rounded-full" />
                           </div>
                     
                     {/* Main Research Node - Fixed position, no drag */}
