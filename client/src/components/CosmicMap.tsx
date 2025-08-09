@@ -233,12 +233,15 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    // Only enable drag on background, not on research nodes
+    if ((e.target as HTMLElement).closest('.research-node')) return;
     setIsDragging(true);
     setDragStart({ x: e.clientX - panX, y: e.clientY - panY });
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return;
+    e.preventDefault();
     setPanX(e.clientX - dragStart.x);
     setPanY(e.clientY - dragStart.y);
   };
@@ -455,41 +458,44 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             <div className="absolute top-4 right-4 z-30 flex flex-col gap-2">
               <button
                 onClick={handleZoomIn}
-                className="w-10 h-10 bg-black/80 border border-neon-cyan/50 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all"
+                className="research-node w-12 h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all font-bold text-lg"
               >
                 +
               </button>
               <button
                 onClick={handleZoomOut}
-                className="w-10 h-10 bg-black/80 border border-neon-cyan/50 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all"
+                className="research-node w-12 h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all font-bold text-lg"
               >
                 −
               </button>
               <button
                 onClick={resetView}
-                className="w-10 h-10 bg-black/80 border border-neon-cyan/50 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all text-xs"
+                className="research-node w-12 h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all text-sm"
               >
                 ⌂
               </button>
-              <div className="text-xs text-center text-gray-400 mt-1">
+              <div className="text-xs text-center text-gray-400 mt-1 bg-black/60 px-2 py-1 rounded">
                 {Math.round(zoomLevel * 100)}%
+              </div>
+              <div className="text-xs text-center text-gray-500 mt-2 bg-black/60 px-2 py-1 rounded">
+                🖱️ Arrastar fundo
               </div>
             </div>
 
             {/* Zoomable Research Web */}
             <div 
-              className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing"
+              className="w-full h-full overflow-hidden"
               onMouseDown={handleMouseDown}
               onMouseMove={handleMouseMove}
               onMouseUp={handleMouseUp}
               onMouseLeave={handleMouseUp}
             >
               <div 
-                className="w-full h-full relative"
+                className={`w-full h-full relative ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
                 style={{
                   transform: `scale(${zoomLevel}) translate(${panX}px, ${panY}px)`,
                   transformOrigin: 'center center',
-                  transition: isDragging ? 'none' : 'transform 0.3s ease'
+                  transition: isDragging ? 'none' : 'transform 0.2s ease'
                 }}
               >
                 {/* Connection point indicator */}
@@ -508,7 +514,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                     
                     {/* Main Research Node */}
                     <div 
-                      className={`relative bg-black/90 backdrop-blur-md rounded-xl border p-6 cursor-pointer transition-all min-h-[220px] ${
+                      className={`research-node relative bg-black/90 backdrop-blur-md rounded-xl border p-6 cursor-pointer transition-all min-h-[220px] ${
                         activeTabId === mainTab.id 
                           ? 'border-neon-cyan shadow-xl shadow-neon-cyan/30' 
                           : 'border-gray-600/50 hover:border-neon-cyan/60'
@@ -598,7 +604,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                           
                           {/* Sub Research Node */}
                           <div 
-                            className={`bg-black/80 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[140px] ${
+                            className={`research-node bg-black/80 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[140px] ${
                               activeTabId === subTab.id 
                                 ? 'border-purple-400 shadow-lg shadow-purple-400/30' 
                                 : 'border-purple-600/50 hover:border-purple-400/70'
