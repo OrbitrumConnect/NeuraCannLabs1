@@ -168,24 +168,24 @@ export default function MedicalAvatar3D({
     const lights = scene.children.filter(child => child instanceof THREE.Light);
     
     if (isListening) {
-      // Bright cyan glow when listening
+      // Green-yellow glow when listening (30% ciano, 40% verde, 30% amarelo)
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setHex(0x00ffff);
+          light.color.setHex(0x7cff5a); // Verde-amarelado vibrante
         }
       });
     } else if (isActive) {
-      // Soft medical blue when active
+      // Green-yellow when active
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setHex(0x87CEEB);
+          light.color.setHex(0x7cff5a); // Verde-amarelado
         }
       });
     } else {
-      // Normal white light when idle
+      // Gray when idle
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setHex(0xffffff);
+          light.color.setHex(0x888888); // Cinza neutro
         }
       });
     }
@@ -203,8 +203,8 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: isActive 
-            ? 'drop-shadow(0 0 16px rgba(0,255,255,0.4)) drop-shadow(0 0 32px rgba(0,255,255,0.2))' 
-            : 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
+            ? 'drop-shadow(0 0 16px rgba(124,255,90,0.4)) drop-shadow(0 0 32px rgba(124,255,90,0.2))' 
+            : 'drop-shadow(0 4px 8px rgba(128,128,128,0.3))'
         }}
       />
 

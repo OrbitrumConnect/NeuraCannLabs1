@@ -97,6 +97,14 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 ---
 
+**2025-08-09**: Branding e cores finalizadas - NeuroCann Lab v2.0 BETA
+- ✅ Nome oficial alterado para "NeuroCann Lab" em toda plataforma
+- ✅ Logo com gradient verde-amarelado (green-500 to lime-400) 
+- ✅ Glow neon verde-amarelado (rgba 124,255,90) substituindo ciano
+- ✅ Avatar Dr. Cannabis IA: cinza quando inativo, verde-amarelado quando ativo
+- ✅ Todas animações e efeitos com nova paleta verde vibrante
+- ✅ Sistema 100% funcional com dados científicos reais e verificados
+
 **2025-08-09**: Interface home limpa - dados científicos movidos para dashboard
 - ⚠️ CRÍTICO: Apenas dados reais com PMID/NCT verificados (ex: PMID 28538134)
 - Home principal limpa focada no Dr. Cannabis IA e consultas médicas
