@@ -73,13 +73,13 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **SISTEMA FINALIZADO - READY FOR INVESTMENT PRESENTATION** 🚀
 
-**FUNCIONAMENTO CONFIRMADO v3.2 FINAL - DR. IA DIRETO**:
-✅ Uma única div clicável - MedicalAvatar3D diretamente
-✅ Zero wrapper/tooltip/elementos extras
-✅ Avatar 20% maior com efeitos na div principal
-✅ Glow dinâmico e scale aplicados diretamente
-✅ Interface totalmente limpa: Dr. IA = trigger único
-✅ Sistema profissional sem distrações visuais
+**FUNCIONAMENTO CONFIRMADO v3.4 - AVATAR APROXIMADO**:
+✅ Container reduzido: 320x320px (era 384x384px)
+✅ Avatar ampliado: 256x256px e posição mt-8 (90% mais próximo)
+✅ Área clicável precisa apenas no avatar Three.js
+✅ Zero espaço extra - avatar ocupa área otimizada
+✅ Efeitos visuais mantidos na área correta
+✅ Sistema com clique direto no Dr. Cannabis IA
 
 **EVOLUÇÃO v3.0 - DR. CANNABIS IA INTERATIVO RESTAURADO**:
 ✅ Dr. Cannabis IA clicável - ativa todo o sistema ao clicar

@@ -216,12 +216,14 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Direct click - NO wrapper divs */}
-      <div 
-        className={`absolute top-8 left-8 w-96 h-96 z-20 cursor-pointer transition-all duration-500 ${isDrAIActive ? 'scale-105 drop-shadow-2xl drop-shadow-cyan-400/30' : 'hover:scale-102 drop-shadow-lg drop-shadow-cyan-400/20'}`}
-        onClick={() => setIsDrAIActive(!isDrAIActive)}
-      >
-        <MedicalAvatar3D />
+      {/* Dr. Cannabis IA - Avatar close and precise clickable area */}
+      <div className="absolute top-8 left-8 w-80 h-80 z-20">
+        <div 
+          className={`w-64 h-64 mx-auto mt-8 cursor-pointer transition-all duration-500 ${isDrAIActive ? 'scale-105 drop-shadow-2xl drop-shadow-cyan-400/30' : 'hover:scale-102 drop-shadow-lg drop-shadow-cyan-400/20'} rounded-full`}
+          onClick={() => setIsDrAIActive(!isDrAIActive)}
+        >
+          <MedicalAvatar3D />
+        </div>
       </div>
 
       {/* Search Interface - Top Center - Only show when Dr AI is active */}
