@@ -102,13 +102,8 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
     <section className="container mx-auto px-4 py-8">
       {/* Hero Section with 3D Avatar */}
       <div className="flex flex-col lg:flex-row items-center justify-between mb-12">
-        {/* 3D Avatar */}
-        <div className="relative mb-8 lg:mb-0">
-          <Avatar3D className="w-32 h-32" size={150} />
-        </div>
-        
-        {/* Welcome Message */}
-        <div className="text-center lg:text-left lg:ml-8">
+        {/* Welcome Message - Moved to left */}
+        <div className="text-center lg:text-left lg:mr-8 mb-8 lg:mb-0">
           <h1 className="text-4xl lg:text-6xl font-bold mb-4">
             <span className="text-white">Bem-vindo ao</span>
             <span className="neon-text block">Futuro da Medicina</span>
@@ -123,6 +118,11 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
             <i className="fas fa-rocket mr-2" />
             Explorar Plataforma
           </button>
+        </div>
+        
+        {/* 3D Avatar - Moved to right */}
+        <div className="relative">
+          <Avatar3D className="w-32 h-32" size={150} />
         </div>
       </div>
 
