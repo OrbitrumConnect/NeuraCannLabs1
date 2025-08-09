@@ -215,10 +215,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
       
-      {/* Dr. Cannabis IA - Avatar responsivo para mobile */}
-      <div className="absolute top-4 left-4 sm:top-8 sm:-left-4 w-48 h-48 sm:w-72 sm:h-72 z-20">
+      {/* Dr. Cannabis IA - Avatar fixo */}
+      <div className="absolute top-8 left-8 w-64 h-64 z-20">
         <div 
           className={`w-full h-full cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
@@ -239,20 +239,20 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-32 sm:w-40" />
+            <MedicalAvatar3D className="w-40" />
           </div>
         </div>
       </div>
 
-      {/* Search Interface - Responsivo mobile */}
+      {/* Search Interface */}
       {isDrAIActive && (
-        <div className="absolute top-4 right-4 sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-80 sm:w-full sm:max-w-2xl">
-          <div className="bg-gray-900/95 backdrop-blur-lg rounded-2xl border border-cyan-500/30 p-4 sm:p-6">
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl px-4">
+          <div className="bg-gray-900/90 backdrop-blur-lg rounded-2xl border border-cyan-500/30 p-6">
             
             <h3 className="text-white text-lg font-semibold mb-4 text-center">🧠 Dr. Cannabis IA</h3>
             
             {/* Search Bar */}
-            <form onSubmit={handleChatSubmit} className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
+            <form onSubmit={handleChatSubmit} className="flex space-x-2 mb-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
@@ -267,7 +267,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               <button
                 type="submit"
                 disabled={isTyping}
-                className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50 min-h-12"
+                className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
               >
                 {isTyping ? <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-5 h-5" />}
               </button>
@@ -279,7 +279,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 <button
                   key={filter.id}
                   onClick={() => setSelectedFilter(filter.id)}
-                  className={`px-3 py-2 rounded-full text-xs transition-all flex items-center space-x-1 min-h-8 ${
+                  className={`px-3 py-1 rounded-full text-xs transition-all flex items-center space-x-1 ${
                     selectedFilter === filter.id
                       ? "bg-blue-600/80 text-white"
                       : "bg-white/10 text-gray-300 hover:bg-white/20"
@@ -294,9 +294,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Main Result Card - Responsivo mobile */}
+      {/* Main Result Card */}
       {isDrAIActive && currentResult && (
-        <div className="absolute top-80 left-4 right-4 sm:top-64 sm:left-1/2 sm:right-auto sm:transform sm:-translate-x-1/2 z-20 sm:w-auto">
+        <div className="absolute top-64 left-1/2 transform -translate-x-1/2 z-20">
           <MainCard result={currentResult} />
           {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
           

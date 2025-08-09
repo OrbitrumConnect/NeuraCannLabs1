@@ -42,16 +42,15 @@ export default function MainCard({ result }: MainCardProps) {
   if (!result) {
     return (
       <div style={{ 
-        height: window.innerWidth < 640 ? 360 : 480, 
+        height: 480, 
+        width: 400,
         borderRadius: 8, 
-        padding: window.innerWidth < 640 ? 12 : 16, 
+        padding: 16, 
         background: "#0f172a", 
         color: "#fff", 
         display: "flex", 
         alignItems: "center", 
-        justifyContent: "center",
-        width: "100%",
-        maxWidth: window.innerWidth < 640 ? "calc(100vw - 2rem)" : "400px"
+        justifyContent: "center"
       }}>
         <div className="text-center text-gray-400">
           <div className="text-2xl mb-2">🧠</div>
@@ -73,14 +72,13 @@ export default function MainCard({ result }: MainCardProps) {
   return (
     <div style={{ 
       borderRadius: 8, 
-      padding: window.innerWidth < 640 ? 12 : 16, 
-      height: window.innerWidth < 640 ? 360 : 480, 
+      padding: 16, 
+      height: 480, 
+      width: 400,
       background: "#0f172a", 
       color: "#fff",
       border: "1px solid rgba(59, 130, 246, 0.3)",
-      overflow: "auto",
-      width: "100%",
-      maxWidth: window.innerWidth < 640 ? "calc(100vw - 2rem)" : "400px"
+      overflow: "auto"
     }}>
       
       {/* Header */}
@@ -101,10 +99,9 @@ export default function MainCard({ result }: MainCardProps) {
         />
       </div>
 
-      {/* Data Categories Grid - Responsivo */}
+      {/* Data Categories Grid */}
       <div style={{ 
         display: "flex", 
-        flexDirection: window.innerWidth < 640 ? "column" : "row",
         gap: 8, 
         marginTop: 12 
       }}>
