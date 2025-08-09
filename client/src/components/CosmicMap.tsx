@@ -241,6 +241,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
     }
   };
 
+  // Add alias for createSubSearch
+  const createSubSearch = handleSubSearch;
+
   const handleZoomIn = () => {
     setZoomLevel(prev => Math.min(prev + 0.2, 2));
   };
@@ -354,9 +357,14 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   };
 
   return (
-    <div className="relative h-96 overflow-hidden">
-      {/* Medical Avatar - Large, Left Side */}
-      <div className="absolute left-8 top-1/2 transform -translate-y-1/2 z-20">
+    <>
+    <div className="relative min-h-screen overflow-auto w-full"
+         style={{ 
+           background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%)',
+           minHeight: '100vh'
+         }}>
+      {/* Medical Avatar - Responsive Position */}
+      <div className="absolute left-4 md:left-8 top-1/2 transform -translate-y-1/2 z-20">
         <button
           onClick={() => setChatMode(!chatMode)}
           className="group transition-all duration-500 hover:scale-105"
@@ -365,7 +373,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             isActive={chatMode}
             isListening={isTyping}
             message={isTyping ? "Processando..." : chatMode ? "Modo Ativo" : ""}
-            className="w-40 h-40"
+            className="w-32 h-32 md:w-40 md:h-40"
           />
           {/* Doctor Info */}
           <div className={`mt-3 text-center transition-all duration-300 ${
@@ -383,7 +391,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
 
       {/* Neural Connection Line - When chat is active */}
       {chatMode && (
-        <div className="absolute left-44 top-1/2 transform -translate-y-1/2 z-10">
+        <div className="absolute left-36 md:left-44 top-1/2 transform -translate-y-1/2 z-10 hidden md:block">
           <div 
             className="h-0.5 bg-gradient-to-r from-neon-cyan via-blue-400 to-transparent animate-pulse"
             style={{
@@ -523,25 +531,25 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                  }} />
           </div>
 
-          {/* Neural Web Viewport - Expanded and Zoomable */}
+          {/* Neural Web Viewport - Responsive and Zoomable */}
           <div className="fixed bottom-0 left-0 right-0 z-20" style={{top: '40vh'}}>
-            {/* Zoom Controls */}
-            <div className="absolute top-4 right-4 z-30 flex flex-col gap-2">
+            {/* Zoom Controls - Responsive */}
+            <div className="absolute top-2 md:top-4 right-2 md:right-4 z-30 flex flex-col gap-1 md:gap-2">
               <button
                 onClick={handleZoomIn}
-                className="research-node w-12 h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all font-bold text-lg"
+                className="research-node w-8 h-8 md:w-12 md:h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all font-bold text-sm md:text-lg"
               >
                 +
               </button>
               <button
                 onClick={handleZoomOut}
-                className="research-node w-12 h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all font-bold text-lg"
+                className="research-node w-8 h-8 md:w-12 md:h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all font-bold text-sm md:text-lg"
               >
                 −
               </button>
               <button
                 onClick={resetView}
-                className="research-node w-12 h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all text-sm"
+                className="research-node w-8 h-8 md:w-12 md:h-12 bg-black/90 border border-neon-cyan/60 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all text-xs md:text-sm"
               >
                 ⌂
               </button>
@@ -581,8 +589,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                 {/* Header spacing */}
                 <div className="pt-8 mb-8"></div>
                 
-                {/* Neural Network Flow - Dr. Cannabis → Pesquisas → Sub-pesquisas */}
-                <div className="px-6 pb-6">
+                {/* Neural Network Flow - Responsive */}
+                <div className="px-2 md:px-6 pb-6">
                   <div className="max-w-7xl mx-auto">
                     
                     {/* Compact Study Input Area */}
@@ -613,8 +621,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                       </div>
                     </div>
                     
-                    {/* Level 2: Main Research Network - Compact Grid */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 mb-6">
+                    {/* Level 2: Main Research Network - Wider Cards */}
+                    <div className="grid grid-cols-1 lg:grid-cols-1 2xl:grid-cols-2 gap-6 mb-6">
                       {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
                         <div key={mainTab.id} className="relative">
                           {/* Simple connection indicator */}
@@ -778,47 +786,26 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         </>
       )}
 
-      {/* Sub-research Cards - Positioned next to main cards */}
-      {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => {
-        const parentTab = searchTabs.find(tab => tab.id === subTab.parentId);
-        const parentIndex = searchTabs.filter(tab => tab.type === 'main').findIndex(tab => tab.id === subTab.parentId);
-        
-        // Position below main cards area for better organization
-        const basePosition = {
-          x: 100 + index * 300, // Horizontal spread
-          y: window.innerHeight - 300 + (Math.floor(index / 4) * 150) // Bottom area with rows
-        };
-        
-        const position = cardPositions[subTab.id] || basePosition;
-        
-        return (
-          <div
-            key={`sub-card-${subTab.id}`}
-            className="absolute z-50"
-            style={{
-              left: `${position.x}px`,
-              top: `${position.y}px`,
-              transform: draggingCard === subTab.id ? 'scale(1.05)' : 'scale(1)',
-              transition: draggingCard === subTab.id ? 'none' : 'transform 0.2s ease'
-            }}
-          >
-            {/* Neural connection line to parent - Shorter and more elegant */}
-            <div 
-              className="absolute -left-8 top-20 w-8 h-0.5 bg-purple-400/60 animate-pulse"
-              style={{
-                background: 'linear-gradient(90deg, rgba(168,85,247,0.6) 0%, rgba(168,85,247,0.2) 100%)'
-              }}
-            />
-            <div className="absolute -left-8 top-20 w-0.5 h-2 bg-purple-400/60" />
-            
-            {/* Sub Research Card - Fully functional and larger */}
-            <div 
-              className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all w-96 shadow-lg cursor-pointer ${
-                activeTabId === subTab.id 
-                  ? 'border-purple-400 shadow-purple-400/30 h-80' 
-                  : 'border-purple-600/40 hover:border-purple-400/60 h-64'
-              } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
-            >
+      {/* Sub-research Cards - Responsive bottom dock */}
+      {searchTabs.filter(tab => tab.type === 'sub').length > 0 && (
+        <div className="fixed bottom-4 md:bottom-8 left-0 right-0 z-40">
+          <div className="flex gap-2 md:gap-4 px-2 md:px-8 overflow-x-auto">
+            {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => {
+              const parentTab = searchTabs.find(tab => tab.id === subTab.parentId);
+              
+              return (
+                <div
+                  key={`sub-card-${subTab.id}`}
+                  className="flex-shrink-0 z-50"
+                >
+                  {/* Sub Research Card - Compact but functional */}
+                  <div 
+                    className={`bg-purple-950/90 backdrop-blur-md rounded-lg border transition-all w-64 md:w-80 shadow-lg ${
+                      activeTabId === subTab.id 
+                        ? 'border-purple-400 shadow-purple-400/30 h-56 md:h-64' 
+                        : 'border-purple-600/40 hover:border-purple-400/60 h-40 md:h-48'
+                    }`}
+                  >
               {/* Header - Clickable for expansion */}
               <div 
                 className="px-4 py-3 border-b border-purple-600/30 flex justify-between items-center cursor-pointer hover:bg-purple-900/10"
@@ -902,52 +889,52 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                   </div>
                 )}
                 
-                {/* Parent indicator - Enhanced */}
-                {parentTab && (
-                  <div className="text-sm text-purple-500 mt-3 pt-2 border-t border-purple-800/30 opacity-80">
-                    ↖ Relacionado a: <span className="font-medium">{parentTab.query.substring(0, 30)}...</span>
+                    {/* Parent indicator - Enhanced */}
+                    {parentTab && (
+                      <div className="text-sm text-purple-500 mt-3 pt-2 border-t border-purple-800/30 opacity-80">
+                        ↖ Relacionado a: <span className="font-medium">{parentTab.query.substring(0, 30)}...</span>
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            </div>
+                </div>
+              );
+            })}
           </div>
-        );
-      })}
+        </div>
+      )}
 
-      {/* Detailed Data Cards - Show when search is performed */}
+      {/* Detailed Data Cards - Responsive positioning */}
       {searchTabs.filter(tab => tab.type === 'main').length > 0 && (
-        <>
-          {/* Scientific Studies Card */}
-          <div className="absolute z-50" style={{ left: '50px', top: window.innerHeight - 420 }}>
-            <div className="w-96 bg-blue-950/95 backdrop-blur-md rounded-lg border border-blue-400/60 p-5 shadow-lg shadow-blue-500/20">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base font-bold text-blue-300 flex items-center">
-                  <Microscope className="w-5 h-5 mr-2" />
-                  Estudos Científicos ({scientificData?.length || 0})
+        <div className="fixed bottom-4 md:bottom-16 left-0 right-0 z-30 px-2 md:px-4">
+          <div className="flex flex-col md:flex-row gap-2 md:gap-4 max-w-7xl mx-auto">
+            {/* Scientific Studies Card */}
+            <div className="flex-1 bg-blue-950/95 backdrop-blur-md rounded-lg border border-blue-400/60 p-3 md:p-5 shadow-lg shadow-blue-500/20">
+              <div className="flex items-center justify-between mb-2 md:mb-4">
+                <h3 className="text-sm md:text-base font-bold text-blue-300 flex items-center">
+                  <Microscope className="w-4 h-4 md:w-5 md:h-5 mr-1 md:mr-2" />
+                  Estudos ({scientificData?.length || 0})
                 </h3>
                 <TextToSpeech 
                   text={`Temos ${scientificData?.length || 0} estudos científicos sobre cannabis medicinal`}
                   className="text-xs"
                 />
               </div>
-              <div className="space-y-3 max-h-48 overflow-y-auto">
-                {scientificData?.map((study, idx) => (
-                  <div key={idx} className="text-sm text-blue-200 p-3 bg-blue-900/50 rounded-lg border-l-4 border-blue-400/80 hover:bg-blue-800/60 transition-all">
-                    <div className="font-semibold text-blue-100 mb-1">{study.title}</div>
-                    <div className="text-blue-300 mb-2">{study.description}</div>
+              <div className="space-y-2 md:space-y-3 max-h-32 md:max-h-48 overflow-y-auto">
+                {scientificData?.slice(0, 3).map((study, idx) => (
+                  <div key={idx} className="text-xs md:text-sm text-blue-200 p-2 md:p-3 bg-blue-900/50 rounded-lg border-l-2 md:border-l-4 border-blue-400/80 hover:bg-blue-800/60 transition-all">
+                    <div className="font-semibold text-blue-100 mb-1 text-xs md:text-sm">{study.title}</div>
+                    <div className="text-blue-300 mb-1 md:mb-2 text-xs">{study.description.substring(0, 80)}...</div>
                     <div className="text-blue-400 text-xs flex items-center justify-between">
-                      <span>📍 {study.compound} • {study.indication}</span>
-                      <span className="bg-blue-800/50 px-2 py-1 rounded">{study.status}</span>
+                      <span>📍 {study.compound}</span>
+                      <span className="bg-blue-800/50 px-1 md:px-2 py-1 rounded text-xs">{study.status}</span>
                     </div>
                   </div>
-                )) || <div className="text-blue-400">Carregando estudos...</div>}
+                )) || <div className="text-blue-400 text-xs">Carregando...</div>}
               </div>
             </div>
-          </div>
 
-          {/* Clinical Cases Card */}
-          <div className="absolute z-50" style={{ left: '470px', top: window.innerHeight - 420 }}>
-            <div className="w-96 bg-green-950/95 backdrop-blur-md rounded-lg border border-green-400/60 p-5 shadow-lg shadow-green-500/20">
+            {/* Clinical Cases Card */}
+            <div className="flex-1 bg-green-950/95 backdrop-blur-md rounded-lg border border-green-400/60 p-3 md:p-5 shadow-lg shadow-green-500/20">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-base font-bold text-green-300 flex items-center">
                   <Pill className="w-5 h-5 mr-2" />
@@ -973,9 +960,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             </div>
           </div>
 
-          {/* Regulatory Alerts Card */}
-          <div className="absolute z-50" style={{ left: '890px', top: window.innerHeight - 420 }}>
-            <div className="w-96 bg-red-950/95 backdrop-blur-md rounded-lg border border-red-400/60 p-5 shadow-lg shadow-red-500/20">
+            {/* Regulatory Alerts Card */}
+            <div className="flex-1 bg-red-950/95 backdrop-blur-md rounded-lg border border-red-400/60 p-3 md:p-5 shadow-lg shadow-red-500/20">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-base font-bold text-red-300 flex items-center">
                   <AlertTriangle className="w-5 h-5 mr-2" />
@@ -1002,9 +988,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
 
     </div>
+    </>
   );
 }
