@@ -12,13 +12,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Moved AI response to fixed footer position and removed stats cards
-- VerdiData AI responses now appear in fixed position at page bottom
-- Removed traditional stats cards (2,547 studies, 1,234 cases, etc.) for cleaner layout
-- Card floats gently with smooth animations when AI response is active
-- Fixed search accumulation - previous results are cleared on new searches
-- Improved related topics display with better styling and compact layout
-- All clickable elements in AI responses navigate to appropriate dashboard sections
+**2025-08-09**: Implemented fully draggable AI response card system
+- VerdiData AI card now fully draggable when minimized with smooth movement
+- Card opens below search area instead of top of screen
+- Maintains single card instance - new searches update existing card content
+- Position limits prevent card from moving outside screen boundaries
+- Cursor changes to "move" when dragging minimized card
+- Fixed positioning with proper header clearance (64px minimum top)
+- Card remembers position when minimized and being moved around screen
 
 **2025-08-08**: Added intelligent AI chat system integrated to search bar
 - VerdiData AI responds to questions about scientific studies and clinical cases

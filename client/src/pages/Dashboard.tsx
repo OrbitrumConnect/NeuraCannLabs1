@@ -38,13 +38,14 @@ export default function Dashboard() {
         const newX = e.clientX - dragStart.x;
         const newY = e.clientY - dragStart.y;
         
-        // Limitar movimento dentro da tela
+        // Limitar movimento dentro da tela - deixar espaço para header
         const maxX = window.innerWidth - 370;
         const maxY = window.innerHeight - 100;
+        const minY = 64; // Altura mínima para não sobrepor header
         
         setCardPosition({
           x: Math.max(0, Math.min(newX, maxX)),
-          y: Math.max(0, Math.min(newY, maxY))
+          y: Math.max(minY, Math.min(newY, maxY))
         });
       }
     };
@@ -91,9 +92,17 @@ export default function Dashboard() {
     setAiSuggestions(suggestions);
     setAiResults(results);
     if (query) setAiSearchQuery(query);
+    
+    // Se o card já existe e está minimizado, mantém a posição atual
+    if (aiResponse && aiCardMinimized) {
+      // Mantém minimizado e posição atual
+      return;
+    }
+    
+    // Se é nova pesquisa ou card não existe, mostra expandido
     setAiCardMinimized(false);
-    // Reset position when new response comes
-    setCardPosition({ x: 300, y: 100 });
+    // Reset position when new response comes - position below search bar
+    setCardPosition({ x: 300, y: 200 });
   };
 
   const toggleAiCard = () => {
@@ -106,7 +115,7 @@ export default function Dashboard() {
     setAiResults([]);
     setAiSearchQuery("");
     setAiCardMinimized(false);
-    setCardPosition({ x: 0, y: 0 });
+    setCardPosition({ x: 300, y: 200 });
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -115,7 +124,7 @@ export default function Dashboard() {
       setIsDragging(true);
       setDragStart({
         x: e.clientX - (cardPosition.x || 300),
-        y: e.clientY - (cardPosition.y || 100)
+        y: e.clientY - (cardPosition.y || 200)
       });
     }
   };
@@ -241,14 +250,14 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
       {/* Floating Movable AI Card */}
       {aiResponse && (
         <div 
-          className={`absolute z-50 transition-all duration-300 ease-in-out ${
+          className={`fixed z-50 transition-all duration-300 ease-in-out ${
             aiCardMinimized ? 'cursor-move' : ''
           }`}
           style={{
             bottom: aiCardMinimized ? 'auto' : '24px',
             right: aiCardMinimized ? 'auto' : '24px',
             left: aiCardMinimized ? `${Math.max(0, Math.min(cardPosition?.x || 300, window.innerWidth - 370))}px` : 'auto',
-            top: aiCardMinimized ? `${Math.max(0, Math.min(cardPosition?.y || 100, window.innerHeight - 100))}px` : 'auto'
+            top: aiCardMinimized ? `${Math.max(64, Math.min(cardPosition?.y || 200, window.innerHeight - 100))}px` : 'auto'
           }}
           onMouseDown={onMouseDown}
         >
