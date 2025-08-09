@@ -54,14 +54,14 @@ Cannabis Clinical Hub é uma plataforma médica avançada que combina inteligên
 **PRÓXIMA EVOLUÇÃO SUGERIDA**: 
 Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas baseado no histórico e cria conexões neurais visuais dinâmicas.
 
-**EVOLUÇÃO v2.2 - SISTEMA HIERÁRQUICO INTELIGENTE**:
-✅ Área de inserção de estudo (nó raiz)
-✅ Processamento NLP para extrair conceitos
-✅ Busca cruzada automática em APIs científicas
-✅ Estrutura hierárquica: Raiz → Filhos → Sub-filhos
-✅ Ações específicas: Resumo, Aprimorar, Publicar, Comparar
-✅ Navegação tipo árvore com zoom/pan
-✅ Interface limpa sem círculos pulsantes desnecessários
+**EVOLUÇÃO v2.3 - INTERFACE OTIMIZADA E RESULTADOS EXPANDIDOS**:
+✅ Cards principais expandidos 30% para melhor visualização
+✅ Exibição de resultados dos estudos em português
+✅ Sub-pesquisas clicáveis e expansíveis
+✅ Resultados detalhados visíveis tanto colapsados quanto expandidos
+✅ Sub-cards maiores (w-80) com conteúdo mais rico
+✅ Sistema de abertura/fechamento funcional para sub-pesquisas
+✅ Layout otimizado com melhor espaçamento e legibilidade
 
 **STATUS PARA INVESTIDORES**: 
 ✅ Plataforma funcional v2.2 Hierárquica

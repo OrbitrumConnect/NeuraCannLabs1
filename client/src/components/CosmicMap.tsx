@@ -615,9 +615,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                             <div className="w-1 h-4 bg-neon-cyan/60 rounded-full" />
                           </div>
                     
-                          {/* Compact Main Research Node */}
+                          {/* Expanded Main Research Node - 30% larger */}
                           <div 
-                            className={`research-node relative bg-black/80 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[180px] ${
+                            className={`research-node relative bg-black/80 backdrop-blur-md rounded-lg border p-5 cursor-pointer transition-all min-h-[240px] ${
                               activeTabId === mainTab.id 
                                 ? 'border-neon-cyan shadow-lg shadow-neon-cyan/20' 
                                 : 'border-gray-600/50 hover:border-neon-cyan/60'
@@ -643,21 +643,49 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                               </button>
                             </div>
                   
-                            {/* Collapsed preview */}
+                            {/* Collapsed preview - More content visible */}
                             {activeTabId !== mainTab.id && (
-                              <div className="text-xs text-gray-400 leading-relaxed mb-2">
-                                {mainTab.response.substring(0, 100)}...
+                              <div className="text-sm text-gray-400 leading-relaxed mb-3">
+                                {mainTab.response.substring(0, 200)}...
+                              </div>
+                            )}
+                            
+                            {/* Study Results Display */}
+                            {mainTab.results && mainTab.results.length > 0 && activeTabId !== mainTab.id && (
+                              <div className="mt-2 p-2 bg-gray-800/30 rounded border-l-2 border-neon-cyan/40">
+                                <div className="text-xs text-neon-cyan font-medium mb-1">Resultados Encontrados:</div>
+                                <div className="text-xs text-gray-300">
+                                  {mainTab.results.slice(0, 2).map((result, idx) => (
+                                    <div key={idx} className="mb-1">• {result.title || result.substring(0, 60)}...</div>
+                                  ))}
+                                  {mainTab.results.length > 2 && <div className="text-gray-500">+{mainTab.results.length - 2} mais...</div>}
+                                </div>
                               </div>
                             )}
                       
-                      {/* Expanded content */}
-                      {activeTabId === mainTab.id && (
-                        <div className="space-y-4">
-                          <div className="text-sm text-gray-300 max-h-48 overflow-y-auto border-l-2 border-neon-cyan/30 pl-3 leading-relaxed">
-                            <div dangerouslySetInnerHTML={{ 
-                              __html: mainTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                            }} />
-                          </div>
+                            {/* Expanded content */}
+                            {activeTabId === mainTab.id && (
+                              <div className="space-y-3">
+                                <div className="text-sm text-gray-300 max-h-32 overflow-y-auto border-l-2 border-neon-cyan/30 pl-3 leading-relaxed">
+                                  <div dangerouslySetInnerHTML={{ 
+                                    __html: mainTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                                  }} />
+                                </div>
+                                
+                                {/* Detailed Results when expanded */}
+                                {mainTab.results && mainTab.results.length > 0 && (
+                                  <div className="mt-3 p-3 bg-gray-800/40 rounded border border-neon-cyan/20">
+                                    <h4 className="text-xs font-medium text-neon-cyan mb-2">📊 Estudos Relacionados ({mainTab.results.length}):</h4>
+                                    <div className="space-y-2 max-h-24 overflow-y-auto">
+                                      {mainTab.results.map((result, idx) => (
+                                        <div key={idx} className="text-xs text-gray-300 p-2 bg-black/40 rounded border-l-2 border-purple-400/40">
+                                          <div className="font-medium text-purple-300">{result.title || `Estudo ${idx + 1}`}</div>
+                                          <div className="text-gray-400">{result.summary || result.substring(0, 100)}...</div>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
                           
                             {/* Compact Action Grid */}
                             <div className="grid grid-cols-2 gap-1 mb-2">
@@ -761,13 +789,17 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             />
             <div className="absolute -left-8 top-20 w-0.5 h-2 bg-purple-400/60" />
             
-            {/* Sub Research Card - Smaller and more harmonic */}
+            {/* Sub Research Card - Larger and interactive */}
             <div 
-              className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all w-72 shadow-lg ${
+              className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all w-80 shadow-lg ${
                 activeTabId === subTab.id 
-                  ? 'border-purple-400 shadow-purple-400/30 h-48' 
-                  : 'border-purple-600/40 hover:border-purple-400/60 h-40'
+                  ? 'border-purple-400 shadow-purple-400/30 h-60' 
+                  : 'border-purple-600/40 hover:border-purple-400/60 h-48'
               } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
+              }}
             >
               {/* Header */}
               <div className="flex justify-between items-start p-3 pb-2">
@@ -807,22 +839,26 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                 </button>
               </div>
               
-              {/* Content */}
-              <div 
-                className="px-3 pb-3 cursor-pointer flex-1"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
-                }}
-              >
+              {/* Content - Now clickable and expandable */}
+              <div className="px-3 pb-3 flex-1">
                 <div className="text-xs text-gray-300 leading-relaxed">
                   <div dangerouslySetInnerHTML={{ 
-                    __html: subTab.response.substring(0, activeTabId === subTab.id ? 400 : 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                    __html: subTab.response.substring(0, activeTabId === subTab.id ? 500 : 200).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
                   }} />
-                  {subTab.response.length > (activeTabId === subTab.id ? 400 : 150) && (
+                  {subTab.response.length > (activeTabId === subTab.id ? 500 : 200) && (
                     <span className="text-purple-400 cursor-pointer">... {activeTabId === subTab.id ? '' : '[clique para expandir]'}</span>
                   )}
                 </div>
+                
+                {/* Sub-search results */}
+                {activeTabId === subTab.id && subTab.results && subTab.results.length > 0 && (
+                  <div className="mt-3 p-2 bg-purple-900/20 rounded border border-purple-500/30">
+                    <div className="text-xs font-medium text-purple-300 mb-1">Sub-resultados:</div>
+                    {subTab.results.slice(0, 2).map((result, idx) => (
+                      <div key={idx} className="text-xs text-gray-400 mb-1">• {result.title || result.substring(0, 50)}...</div>
+                    ))}
+                  </div>
+                )}
                 
                 {/* Parent indicator */}
                 {parentTab && (
