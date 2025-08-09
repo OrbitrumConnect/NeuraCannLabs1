@@ -578,14 +578,34 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                 <div className="px-6 pb-6">
                   <div className="max-w-7xl mx-auto">
                     
-                    {/* Level 1: Header - Simple and clean */}
+                    {/* Study Input Area - Root Node Creation */}
                     <div className="text-center mb-8">
-                      <div className="inline-flex items-center space-x-3 px-6 py-3 bg-black/80 border border-neon-cyan/40 rounded-xl backdrop-blur-md">
-                        <div className="w-3 h-3 bg-neon-cyan rounded-full animate-pulse"></div>
-                        <span className="text-lg font-medium text-neon-cyan">Dr. Cannabis IA - Sistema Neural Ativo</span>
-                        <span className="px-2 py-1 bg-green-500/20 text-green-300 rounded text-xs">
-                          {searchTabs.filter(tab => tab.type === 'main').length} pesquisas
-                        </span>
+                      <div className="max-w-2xl mx-auto">
+                        <div className="bg-black/80 border border-neon-cyan/40 rounded-xl backdrop-blur-md p-6">
+                          <div className="flex items-center justify-center space-x-3 mb-4">
+                            <div className="w-3 h-3 bg-neon-cyan rounded-full animate-pulse"></div>
+                            <span className="text-lg font-medium text-neon-cyan">Inserir Novo Estudo</span>
+                          </div>
+                          
+                          <textarea 
+                            placeholder="Digite ou fale seu estudo, hipótese ou resumo aqui..."
+                            className="w-full h-24 bg-black/60 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 resize-none focus:border-neon-cyan/60 focus:outline-none"
+                          />
+                          
+                          <div className="flex justify-between items-center mt-4">
+                            <div className="flex space-x-2">
+                              <button className="px-3 py-2 bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30 rounded-lg text-sm hover:bg-neon-cyan/30 transition-all">
+                                🧠 Processar com IA
+                              </button>
+                              <button className="px-3 py-2 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded-lg text-sm hover:bg-purple-600/30 transition-all">
+                                🎤 Falar
+                              </button>
+                            </div>
+                            <span className="text-xs text-gray-500">
+                              {searchTabs.filter(tab => tab.type === 'main').length} estudos na árvore
+                            </span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                     
@@ -608,9 +628,15 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                       onClick={() => setActiveTabId(activeTabId === mainTab.id ? null : mainTab.id)}
                     >
                       <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-semibold text-neon-cyan">
-                          🧠 {mainTab.query}
-                        </h3>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></div>
+                          <h3 className="text-lg font-semibold text-neon-cyan">
+                            📄 {mainTab.query}
+                          </h3>
+                          <span className="px-2 py-1 bg-neon-cyan/20 text-neon-cyan rounded text-xs">
+                            Nó Raiz
+                          </span>
+                        </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-gray-400 bg-gray-800/60 px-2 py-1 rounded">
                             {new Date(mainTab.timestamp).toLocaleTimeString()}
@@ -644,27 +670,52 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                             }} />
                           </div>
                           
-                          {/* Action buttons */}
-                          <div className="grid grid-cols-2 gap-2 mt-4">
-                            <button className="px-3 py-2 bg-blue-600/20 text-blue-300 border border-blue-500/30 rounded-lg text-xs hover:bg-blue-600/30 transition-all">
+                          {/* Action Flow - Hierarchical Tree System */}
+                          <div className="grid grid-cols-3 gap-2 mt-4">
+                            <button 
+                              className="px-3 py-2 bg-blue-600/20 text-blue-300 border border-blue-500/30 rounded-lg text-xs hover:bg-blue-600/30 transition-all"
+                              title="Gerar resumo expandido do estudo"
+                            >
                               📄 Resumo
                             </button>
-                            <button className="px-3 py-2 bg-green-600/20 text-green-300 border border-green-500/30 rounded-lg text-xs hover:bg-green-600/30 transition-all">
-                              🆕 Novo Estudo
+                            <button 
+                              className="px-3 py-2 bg-green-600/20 text-green-300 border border-green-500/30 rounded-lg text-xs hover:bg-green-600/30 transition-all"
+                              title="Criar versão aprimorada com IA"
+                            >
+                              ✨ Aprimorar
                             </button>
-                            <button className="px-3 py-2 bg-orange-600/20 text-orange-300 border border-orange-500/30 rounded-lg text-xs hover:bg-orange-600/30 transition-all">
-                              🔄 Comparar
-                            </button>
-                            <button className="px-3 py-2 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded-lg text-xs hover:bg-purple-600/30 transition-all">
-                              🔍 Aprofundar
+                            <button 
+                              className="px-3 py-2 bg-orange-600/20 text-orange-300 border border-orange-500/30 rounded-lg text-xs hover:bg-orange-600/30 transition-all"
+                              title="Publicar no banco de estudos"
+                            >
+                              🚀 Publicar
                             </button>
                           </div>
                           
-                          {/* Sub-search suggestions */}
+                          {/* Hierarchical Navigation */}
+                          <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-700/50">
+                            <button 
+                              className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all"
+                              title="Buscar estudos relacionados automaticamente"
+                            >
+                              🔍 Busca Cruzada
+                            </button>
+                            <button 
+                              className="px-2 py-1 bg-cyan-600/20 text-cyan-300 border border-cyan-500/30 rounded text-xs hover:bg-cyan-600/30 transition-all"
+                              title="Comparar com outros estudos"
+                            >
+                              ⚖️ Comparar
+                            </button>
+                          </div>
+                          
+                          {/* Tree Expansion - Child Nodes */}
                           {mainTab.suggestions.length > 0 && (
                             <div className="mt-3">
-                              <h4 className="text-xs font-medium text-gray-500 mb-2">Sub-pesquisas sugeridas:</h4>
-                              <div className="flex flex-wrap gap-1">
+                              <h4 className="text-xs font-medium text-gray-500 mb-2 flex items-center">
+                                <span className="w-4 h-0.5 bg-purple-400/60 mr-2"></span>
+                                Nós Filhos Disponíveis:
+                              </h4>
+                              <div className="space-y-1">
                                 {mainTab.suggestions.slice(0, 3).map((suggestion, index) => (
                                   <button
                                     key={index}
@@ -672,9 +723,11 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                                       e.stopPropagation();
                                       handleSubSearch(suggestion, mainTab.id);
                                     }}
-                                    className="px-2 py-1 bg-purple-600/10 text-purple-400 border border-purple-500/20 rounded text-xs hover:bg-purple-600/20 transition-all cursor-pointer"
+                                    className="w-full text-left px-3 py-2 bg-purple-600/10 text-purple-400 border border-purple-500/20 rounded text-xs hover:bg-purple-600/20 transition-all cursor-pointer flex items-center space-x-2"
                                   >
-                                    {suggestion.substring(0, 20)}...
+                                    <span className="w-1 h-1 bg-purple-400 rounded-full"></span>
+                                    <span>{suggestion.substring(0, 35)}...</span>
+                                    <span className="ml-auto text-xs opacity-60">→</span>
                                   </button>
                                 ))}
                               </div>
