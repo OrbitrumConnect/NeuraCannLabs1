@@ -159,11 +159,14 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 - Input field with Enter key support and dedicated search button
 - Smooth animations and transitions between card states
 
-**2025-08-09**: Improved AI response integration approach
-- VerdiData AI now displays as integrated content section when expanded
-- Only becomes draggable floating card when minimized
-- Better space utilization and natural content flow
-- Maintains all interactive features and smooth animations
+**2025-08-09**: Dashboard do Perfil Profissional Atualizado
+- ✅ **Glow neon completamente removido** - substituído por design cinza neutro profissional
+- ✅ **Campos médicos específicos**: Especialidade médica com opções (Neurologia, Epileptologia, etc.)
+- ✅ **Campos institucionais**: CRM/Registro, Instituição, Experiência com cannabis medicinal
+- ✅ **Preferências da plataforma atualizadas**: Dr. Cannabis IA, alertas ANVISA, correção automática
+- ✅ **Estatísticas médicas**: Estudos, discussões, aprovações e pendências
+- ✅ **Interface profissional**: Cards cinza sem bordas holográficas ou efeitos neon
+- ✅ **Atividade recente**: Foco em submissões, fórum e alertas regulatórios
 
 **2025-08-09**: Implemented fully draggable AI response card system
 - VerdiData AI card now fully draggable when minimized with smooth movement  
