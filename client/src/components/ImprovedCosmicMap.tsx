@@ -351,6 +351,11 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 __html: subTab.response.substring(0, 300).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
               }} />
             </div>
+            
+            {/* TextToSpeech para sub-pesquisas */}
+            <div className="mt-2 flex justify-center">
+              <TextToSpeech text={subTab.response} />
+            </div>
           </div>
         </div>
       ))}

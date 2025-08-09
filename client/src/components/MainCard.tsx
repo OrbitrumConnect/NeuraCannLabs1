@@ -101,8 +101,45 @@ export default function MainCard({ result }: MainCardProps) {
             {result.categories.scientific?.slice(0, 4).map((study, idx) => (
               <div key={study.id} style={{ padding: 6, borderBottom: "1px solid #1e293b", marginBottom: 4 }}>
                 <div style={{ fontWeight: 600, fontSize: "12px", color: "#bfdbfe" }}>{study.title}</div>
-                <div style={{ fontSize: 10, color: "#cbd5e1", marginTop: 2 }}>{study.description}</div>
+                <div style={{ fontSize: 10, color: "#cbd5e1", marginTop: 2 }}>{study.description.substring(0, 80)}...</div>
                 <div style={{ fontSize: 10, color: "#60a5fa", marginTop: 2 }}>📍 {study.compound} • {study.indication}</div>
+                <div style={{ marginTop: 4, display: "flex", gap: 4 }}>
+                  <button 
+                    onClick={() => window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(study.title)}`, '_blank')}
+                    style={{ 
+                      padding: "2px 6px", 
+                      fontSize: "9px", 
+                      background: "rgba(59, 130, 246, 0.5)", 
+                      color: "#bfdbfe", 
+                      border: "none", 
+                      borderRadius: 3,
+                      cursor: "pointer"
+                    }}
+                  >
+                    📄 PubMed
+                  </button>
+                  {study.description.includes('NCT') && (
+                    <button 
+                      onClick={() => {
+                        const nctMatch = study.description.match(/NCT\d+/);
+                        if (nctMatch) {
+                          window.open(`https://clinicaltrials.gov/study/${nctMatch[0]}`, '_blank');
+                        }
+                      }}
+                      style={{ 
+                        padding: "2px 6px", 
+                        fontSize: "9px", 
+                        background: "rgba(34, 197, 94, 0.5)", 
+                        color: "#a7f3d0", 
+                        border: "none", 
+                        borderRadius: 3,
+                        cursor: "pointer"
+                      }}
+                    >
+                      🏥 NCT
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
