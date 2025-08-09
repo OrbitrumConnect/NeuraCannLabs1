@@ -73,13 +73,13 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **SISTEMA FINALIZADO - READY FOR INVESTMENT PRESENTATION** 🚀
 
-**FUNCIONAMENTO CONFIRMADO v3.8 - AVATAR CENTRALIZADO**:
-✅ Avatar Dr. Cannabis IA centralizado no container - flex center
-✅ Container compacto: 224x224px mantido
-✅ Área clicável precisa: 208x208px com flexbox center
-✅ Renderização Three.js perfeita no centro do botão
-✅ Dr. Cannabis IA clicável e visualmente equilibrado
-✅ Sistema com avatar centralizado e funcional
+**FUNCIONAMENTO CONFIRMADO v3.9 - AVATAR AMPLIADO COM EFEITO NEON**:
+✅ Avatar Dr. Cannabis IA 25% maior - 260x260px (era 208px)
+✅ Efeito visual ativo: fundo cinza + borda neon cyan quando clicado
+✅ Borda neon sutil: border-cyan-400/40 + shadow glow 10% verde-ciano
+✅ Container ajustado para comportar avatar maior
+✅ Transições suaves entre estados ativo/inativo
+✅ Sistema com avatar destacado e feedback visual neon
 
 **EVOLUÇÃO v3.0 - DR. CANNABIS IA INTERATIVO RESTAURADO**:
 ✅ Dr. Cannabis IA clicável - ativa todo o sistema ao clicar
