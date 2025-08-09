@@ -10,14 +10,14 @@ import { useToast } from '@/hooks/use-toast';
 import { 
   FileText, Clock, CheckCircle, XCircle, Calendar, BarChart3, 
   Globe, TrendingUp, AlertTriangle, Database, Users, 
-  Brain, Activity, Zap, Eye
+  Brain, Activity, Zap, Eye, FileEdit
 } from 'lucide-react';
 import type { StudySubmission } from '@shared/schema';
 
 export default function GlobalAdminDashboard() {
   const [selectedSubmission, setSelectedSubmission] = useState<StudySubmission | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'pending' | 'approved' | 'rejected' | 'global-data' | 'ai-analysis'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'pending' | 'approved' | 'rejected' | 'revision' | 'global-data' | 'ai-analysis'>('overview');
   
   // Real-time global statistics
   const [globalStats, setGlobalStats] = useState({
@@ -74,13 +74,28 @@ export default function GlobalAdminDashboard() {
       return response.json();
     },
     onSuccess: (_, { status }) => {
-      toast({
-        title: status === 'approved' ? "✅ Estudo Integrado à Base Científica Global" : "❌ Estudo Rejeitado",
-        description: status === 'approved' 
-          ? "Estudo aprovado e disponível para consultas do Dr. Cannabis IA em todo o mundo."
-          : "Estudo rejeitado. Autor será notificado para correções.",
-        variant: status === 'approved' ? "default" : "destructive",
-      });
+      const toastConfig = {
+        'approved': {
+          title: "✅ Estudo Integrado à Base Científica Global",
+          description: "Estudo aprovado e disponível para consultas do Dr. Cannabis IA em todo o mundo.",
+          variant: "default" as const
+        },
+        'rejected': {
+          title: "❌ Estudo Rejeitado",
+          description: "Estudo rejeitado permanentemente.",
+          variant: "destructive" as const
+        },
+        'needs_revision': {
+          title: "📝 Revisão Solicitada",
+          description: "Notas de revisão enviadas para o usuário. Aguardando correções.",
+          variant: "default" as const
+        }
+      };
+      
+      const config = toastConfig[status as keyof typeof toastConfig];
+      if (config) {
+        toast(config);
+      }
       queryClient.invalidateQueries({ queryKey: ['/api/admin/study-submissions'] });
       setSelectedSubmission(null);
       setReviewNotes('');
@@ -93,6 +108,7 @@ export default function GlobalAdminDashboard() {
       if (activeTab === 'pending') return sub.status === 'submitted' || sub.status === 'under_review';
       if (activeTab === 'approved') return sub.status === 'approved';
       if (activeTab === 'rejected') return sub.status === 'rejected';
+      if (activeTab === 'revision') return sub.status === 'needs_revision';
       return true; // Para overview e outras abas
     });
   };
@@ -103,6 +119,7 @@ export default function GlobalAdminDashboard() {
       under_review: "default",
       approved: "default",
       rejected: "destructive",
+      needs_revision: "secondary",
     };
 
     const labels: { [key: string]: string } = {
@@ -110,6 +127,7 @@ export default function GlobalAdminDashboard() {
       under_review: "🔍 Em Análise",
       approved: "✅ Aprovado",
       rejected: "❌ Rejeitado",
+      needs_revision: "📝 Revisão",
     };
 
     return (
@@ -264,29 +282,33 @@ export default function GlobalAdminDashboard() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
-          <TabsList className="grid w-full grid-cols-6 bg-white/5">
+          <TabsList className="grid w-full grid-cols-7 bg-white/5">
             <TabsTrigger value="overview" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400">
-              <BarChart3 className="w-4 h-4 mr-2" />
+              <BarChart3 className="w-4 h-4 mr-1" />
               Visão Geral
             </TabsTrigger>
             <TabsTrigger value="pending" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-400">
-              <Clock className="w-4 h-4 mr-2" />
+              <Clock className="w-4 h-4 mr-1" />
               Em Análise ({globalStats.pendingCount})
             </TabsTrigger>
             <TabsTrigger value="approved" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400">
-              <CheckCircle className="w-4 h-4 mr-2" />
+              <CheckCircle className="w-4 h-4 mr-1" />
               Base Científica ({globalStats.approvedCount})
             </TabsTrigger>
             <TabsTrigger value="rejected" className="data-[state=active]:bg-red-500/20 data-[state=active]:text-red-400">
-              <XCircle className="w-4 h-4 mr-2" />
-              Revisões ({globalStats.rejectedCount})
+              <XCircle className="w-4 h-4 mr-1" />
+              Rejeitados ({globalStats.rejectedCount})
+            </TabsTrigger>
+            <TabsTrigger value="revision" className="data-[state=active]:bg-orange-500/20 data-[state=active]:text-orange-400">
+              <FileEdit className="w-4 h-4 mr-1" />
+              Revisão (2)
             </TabsTrigger>
             <TabsTrigger value="global-data" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400">
-              <Globe className="w-4 h-4 mr-2" />
+              <Globe className="w-4 h-4 mr-1" />
               Dados Globais
             </TabsTrigger>
             <TabsTrigger value="ai-analysis" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400">
-              <Brain className="w-4 h-4 mr-2" />
+              <Brain className="w-4 h-4 mr-1" />
               IA Analysis
             </TabsTrigger>
           </TabsList>
@@ -433,7 +455,7 @@ export default function GlobalAdminDashboard() {
           </TabsContent>
 
           {/* Submissions Management Tabs */}
-          {['pending', 'approved', 'rejected'].map(tabValue => (
+          {['pending', 'approved', 'rejected', 'revision'].map(tabValue => (
             <TabsContent key={tabValue} value={tabValue} className="mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Submissions List */}
@@ -443,7 +465,8 @@ export default function GlobalAdminDashboard() {
                       <CardTitle className="text-white">
                         {tabValue === 'pending' && '🔄 Estudos em Análise'}
                         {tabValue === 'approved' && '✅ Base Científica Aprovada'}
-                        {tabValue === 'rejected' && '❌ Estudos para Revisão'}
+                        {tabValue === 'rejected' && '❌ Estudos Rejeitados'}
+                        {tabValue === 'revision' && '📝 Aguardando Revisão do Usuário'}
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
@@ -522,8 +545,9 @@ export default function GlobalAdminDashboard() {
                               />
                             </div>
 
-                            <div className="flex gap-2">
-                              <Button
+                            <div className="flex flex-col gap-2">
+                              <div className="flex gap-2">
+                                <Button
                                 onClick={() => reviewMutation.mutate({
                                   submissionId: selectedSubmission.id,
                                   status: 'approved',
@@ -534,18 +558,35 @@ export default function GlobalAdminDashboard() {
                               >
                                 ✅ Aprovar & Integrar
                               </Button>
+                                <Button
+                                  onClick={() => reviewMutation.mutate({
+                                    submissionId: selectedSubmission.id,
+                                    status: 'rejected',
+                                    notes: reviewNotes
+                                  })}
+                                  disabled={reviewMutation.isPending}
+                                  variant="destructive"
+                                  className="flex-1"
+                                >
+                                  ❌ Rejeitar
+                                </Button>
+                              </div>
+                              
                               <Button
                                 onClick={() => reviewMutation.mutate({
                                   submissionId: selectedSubmission.id,
-                                  status: 'rejected',
+                                  status: 'needs_revision',
                                   notes: reviewNotes
                                 })}
-                                disabled={reviewMutation.isPending}
-                                variant="destructive"
-                                className="flex-1"
+                                disabled={reviewMutation.isPending || !reviewNotes.trim()}
+                                className="w-full bg-orange-600 hover:bg-orange-700"
                               >
-                                ❌ Rejeitar
+                                📝 Solicitar Revisão (Enviar para Usuário)
                               </Button>
+                              
+                              <div className="text-xs text-slate-400 mt-2 p-2 bg-slate-800/30 rounded">
+                                💡 <strong>Solicitar Revisão:</strong> Envia suas notas para o usuário corrigir e reenviar com ajuda da IA
+                              </div>
                             </div>
                           </>
                         )}

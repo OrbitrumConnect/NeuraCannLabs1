@@ -55,7 +55,7 @@ export class MemStorage implements IStorage {
     // Inicializar com base de dados abrangente
     this.initializeSampleData();
     this.loadComprehensiveData();
-    this.createSampleStudySubmission();
+    this.createSampleStudySubmissions();
   }
 
   private initializeSampleData() {
@@ -522,25 +522,81 @@ export class MemStorage implements IStorage {
     return 'Uso medicinal';
   }
 
-  // Create sample study submission for testing
-  private createSampleStudySubmission() {
-    const sampleSubmission: StudySubmission = {
-      id: "submission-1",
-      userId: "user-1",
-      title: "CBD para síndrome de Down com epilepsia",
-      originalContent: "Estudo sobre uso de CBD 25mg/kg em crianças com síndrome de Down que desenvolvem epilepsia. Protocolo de 12 semanas com avaliação neurológica completa.",
-      submissionType: "text",
-      status: "submitted",
-      editedContent: null,
-      aiAnalysis: "ALERTA: Detectado possível erro médico. Síndrome de Down não é uma forma de epilepsia. Possivelmente você quis se referir à Síndrome de Dravet, que é uma forma rara de epilepsia refratária tratável com CBD. Dosagem de 25mg/kg é excessiva - protocolo padrão é 10-20mg/kg/dia dividido em 2 doses. Necessária correção antes da submissão.",
-      correctedAnalysis: null,
-      reviewerNotes: null,
-      submittedAt: new Date(),
-      reviewedAt: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.studySubmissions.set(sampleSubmission.id, sampleSubmission);
+  // Create sample study submissions for testing collaborative review system
+  private createSampleStudySubmissions() {
+    const sampleSubmissions: StudySubmission[] = [
+      {
+        id: "submission-1",
+        userId: "user-1",
+        title: "CBD para síndrome de Down com epilepsia",
+        originalContent: "Estudo sobre uso de CBD 25mg/kg em crianças com síndrome de Down que desenvolvem epilepsia. Protocolo de 12 semanas com avaliação neurológica completa.",
+        submissionType: "text",
+        status: "submitted",
+        editedContent: null,
+        aiAnalysis: "ALERTA: Detectado possível erro médico. Síndrome de Down não é uma forma de epilepsia. Possivelmente você quis se referir à Síndrome de Dravet, que é uma forma rara de epilepsia refratária tratável com CBD. Dosagem de 25mg/kg é excessiva - protocolo padrão é 10-20mg/kg/dia dividido em 2 doses. Necessária correção antes da submissão.",
+        correctedAnalysis: null,
+        reviewerNotes: null,
+        submittedAt: new Date(),
+        reviewedAt: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: "submission-2",
+        userId: "user-2",
+        title: "Protocolo de CBD para dor neuropática diabética",
+        originalContent: "Estudo piloto com 30 pacientes diabéticos tipo 2 usando CBD 150mg/dia. Resultados: redução de 60% na dor neuropática medida pela escala VAS após 8 semanas.",
+        editedContent: null,
+        aiAnalysis: "Estudo bem estruturado. Dosagem apropriada para dor neuropática. Sugere-se incluir dados sobre hemoglobina glicada e função renal para completar análise de segurança.",
+        correctedAnalysis: null,
+        submissionType: "text",
+        status: "approved",
+        reviewerNotes: "Excelente estudo. Protocolo claro e resultados consistentes com literatura internacional. Aprovado para integração na base científica.",
+        reviewerId: "admin-1",
+        submittedAt: new Date("2024-12-26T14:00:00Z"),
+        reviewedAt: new Date("2024-12-27T09:15:00Z"),
+        createdAt: new Date("2024-12-25T11:20:00Z"),
+        updatedAt: new Date("2024-12-27T09:15:00Z"),
+      },
+      {
+        id: "submission-3",
+        userId: "user-3",
+        title: "Análise de interações CBD-anticoagulantes",
+        originalContent: "Revisão de 45 pacientes usando CBD concomitante com varfarina. Observamos aumento do INR em 80% dos casos, necessitando ajuste de dose do anticoagulante.",
+        editedContent: null,
+        aiAnalysis: "Estudo relevante para segurança. Dados sobre interação CBD-varfarina são fundamentais. Recomenda-se incluir protocolos específicos de monitoramento e ajuste de dose.",
+        correctedAnalysis: null,
+        submissionType: "text",
+        status: "needs_revision",
+        reviewerNotes: "Excelente trabalho sobre segurança! Por favor, adicione: 1) Protocolo detalhado de monitoramento do INR, 2) Tempo médio para estabilização após ajuste, 3) Casos de eventos hemorrágicos se houver. Com essas adições, o estudo estará pronto para aprovação.",
+        reviewerId: "admin-2",
+        submittedAt: new Date("2024-12-27T16:30:00Z"),
+        reviewedAt: new Date("2024-12-28T08:45:00Z"),
+        createdAt: new Date("2024-12-26T13:15:00Z"),
+        updatedAt: new Date("2024-12-28T08:45:00Z"),
+      },
+      {
+        id: "submission-4",
+        userId: "user-4",
+        title: "THC:CBD para esclerose múltipla - espasticidade",
+        originalContent: "50 pacientes com esclerose múltipla usando proporção 1:1 THC:CBD. Dosagem inicial 2.5mg cada, titulação até máximo 15mg cada. Melhora na escala Ashworth modificada.",
+        editedContent: null,
+        aiAnalysis: "Protocolo adequado para espasticidade. Proporção 1:1 é padrão internacional. Sugestão: incluir dados sobre qualidade de vida e função motora.",
+        correctedAnalysis: null,
+        submissionType: "text",
+        status: "needs_revision",
+        reviewerNotes: "Estudo promissor! Para completar a análise, inclua: 1) Escores específicos da escala Ashworth (antes/depois), 2) Questionário MSQOL-54 ou similar, 3) Efeitos adversos psicoativos observados. Aguardo suas correções para aprovação final.",
+        reviewerId: "admin-1",
+        submittedAt: new Date("2024-12-28T09:20:00Z"),
+        reviewedAt: new Date("2024-12-28T11:30:00Z"),
+        createdAt: new Date("2024-12-27T14:45:00Z"),
+        updatedAt: new Date("2024-12-28T11:30:00Z"),
+      },
+    ];
+
+    sampleSubmissions.forEach(submission => {
+      this.studySubmissions.set(submission.id, submission);
+    });
   }
 }
 

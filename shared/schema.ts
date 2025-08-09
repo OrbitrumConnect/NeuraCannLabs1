@@ -82,7 +82,7 @@ export const studySubmissions = pgTable("study_submissions", {
   aiAnalysis: text("ai_analysis"), // Original AI analysis
   correctedAnalysis: text("corrected_analysis"), // User corrections to AI
   submissionType: text("submission_type").notNull(), // text, voice, file
-  status: text("status").default("draft"), // draft, submitted, under_review, approved, rejected
+  status: text("status").default("draft"), // draft, submitted, under_review, approved, rejected, needs_revision
   reviewerNotes: text("reviewer_notes"),
   reviewerId: varchar("reviewer_id"),
   submittedAt: timestamp("submitted_at"),

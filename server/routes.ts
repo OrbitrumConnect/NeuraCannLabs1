@@ -278,6 +278,45 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin review endpoints
+  app.get("/api/admin/study-submissions", async (req, res) => {
+    try {
+      const submissions = await storage.getAllStudySubmissions();
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching submissions:", error);
+      res.status(500).json({ error: "Failed to fetch submissions" });
+    }
+  });
+
+  app.post("/api/admin/study-submissions/:id/review", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, reviewerNotes } = req.body;
+      
+      // Validate status
+      const validStatuses = ['approved', 'rejected', 'needs_revision'];
+      if (!validStatuses.includes(status)) {
+        return res.status(400).json({ error: "Invalid status" });
+      }
+
+      const updated = await storage.updateStudySubmission(id, {
+        status,
+        reviewerNotes,
+        reviewedAt: new Date().toISOString()
+      });
+
+      if (!updated) {
+        return res.status(404).json({ error: "Study submission not found" });
+      }
+
+      res.json(updated);
+    } catch (error) {
+      console.error("Error reviewing submission:", error);
+      res.status(500).json({ error: "Failed to review submission" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
