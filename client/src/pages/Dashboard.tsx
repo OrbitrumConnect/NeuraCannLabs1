@@ -19,6 +19,9 @@ export default function Dashboard() {
   const [aiResults, setAiResults] = useState<any[]>([]);
   const [aiCardMinimized, setAiCardMinimized] = useState(false);
   const [aiSearchQuery, setAiSearchQuery] = useState("");
+  const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
 
   useEffect(() => {
@@ -26,6 +29,44 @@ export default function Dashboard() {
       setActiveDashboard(section);
     }
   }, [section]);
+
+  // Global mouse events for dragging
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (isDragging && aiCardMinimized) {
+        e.preventDefault();
+        const newX = e.clientX - dragStart.x;
+        const newY = e.clientY - dragStart.y;
+        
+        // Limitar movimento dentro da tela
+        const maxX = window.innerWidth - 370;
+        const maxY = window.innerHeight - 100;
+        
+        setCardPosition({
+          x: Math.max(0, Math.min(newX, maxX)),
+          y: Math.max(0, Math.min(newY, maxY))
+        });
+      }
+    };
+
+    const handleGlobalMouseUp = () => {
+      setIsDragging(false);
+    };
+
+    if (isDragging) {
+      document.addEventListener('mousemove', handleGlobalMouseMove);
+      document.addEventListener('mouseup', handleGlobalMouseUp);
+      document.body.style.cursor = 'move';
+      document.body.style.userSelect = 'none';
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleGlobalMouseMove);
+      document.removeEventListener('mouseup', handleGlobalMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isDragging, aiCardMinimized, dragStart]);
 
   const handleMenuClick = () => {
     setSideNavOpen(!sideNavOpen);
@@ -51,6 +92,8 @@ export default function Dashboard() {
     setAiResults(results);
     if (query) setAiSearchQuery(query);
     setAiCardMinimized(false);
+    // Reset position when new response comes
+    setCardPosition({ x: 300, y: 100 });
   };
 
   const toggleAiCard = () => {
@@ -63,7 +106,21 @@ export default function Dashboard() {
     setAiResults([]);
     setAiSearchQuery("");
     setAiCardMinimized(false);
+    setCardPosition({ x: 0, y: 0 });
   };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (aiCardMinimized) {
+      e.preventDefault();
+      setIsDragging(true);
+      setDragStart({
+        x: e.clientX - (cardPosition.x || 300),
+        y: e.clientY - (cardPosition.y || 100)
+      });
+    }
+  };
+
+
 
   // Close side nav when clicking outside
   useEffect(() => {
@@ -105,6 +162,9 @@ export default function Dashboard() {
           aiCardMinimized={aiCardMinimized}
           onToggleAI={toggleAiCard}
           aiSearchQuery={aiSearchQuery}
+          cardPosition={cardPosition}
+          onMouseDown={handleMouseDown}
+          isDragging={isDragging}
         />;
     }
   };
@@ -137,11 +197,14 @@ interface OverviewDashboardProps {
   aiCardMinimized?: boolean;
   onToggleAI?: () => void;
   aiSearchQuery?: string;
+  cardPosition?: { x: number; y: number };
+  onMouseDown?: (e: React.MouseEvent) => void;
+  isDragging?: boolean;
 }
 
-function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery }: OverviewDashboardProps) {
+function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery, cardPosition, onMouseDown, isDragging }: OverviewDashboardProps) {
   return (
-    <section className="container mx-auto px-4 py-8">
+    <section className="relative container mx-auto px-4 py-8">
       {/* Hero Section with 3D Avatar */}
       <div className="flex flex-col lg:flex-row items-center justify-between mb-12">
         {/* Welcome Message - Moved to left */}
@@ -177,12 +240,18 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
 
       {/* Floating Movable AI Card */}
       {aiResponse && (
-        <div className={`fixed bottom-6 right-6 z-50 transition-all duration-500 ease-in-out transform ${
-          aiCardMinimized ? 'translate-y-[calc(100%-4rem)]' : 'translate-y-0'
-        }`}
-        style={{
-          cursor: aiCardMinimized ? 'move' : 'default'
-        }}>
+        <div 
+          className={`absolute z-50 transition-all duration-300 ease-in-out ${
+            aiCardMinimized ? 'cursor-move' : ''
+          }`}
+          style={{
+            bottom: aiCardMinimized ? 'auto' : '24px',
+            right: aiCardMinimized ? 'auto' : '24px',
+            left: aiCardMinimized ? `${Math.max(0, Math.min(cardPosition?.x || 300, window.innerWidth - 370))}px` : 'auto',
+            top: aiCardMinimized ? `${Math.max(0, Math.min(cardPosition?.y || 100, window.innerHeight - 100))}px` : 'auto'
+          }}
+          onMouseDown={onMouseDown}
+        >
           <div className="bg-black/90 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/20 animate-pulse-glow animate-float-gentle" style={{
             width: aiCardMinimized ? '350px' : '650px',
             maxHeight: aiCardMinimized ? '64px' : '70vh',
