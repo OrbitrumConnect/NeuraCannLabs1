@@ -235,8 +235,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    // Only enable drag on background, not on research nodes
-    if ((e.target as HTMLElement).closest('.research-node')) return;
+    // Only enable drag on background, not on research nodes or draggable cards
+    if ((e.target as HTMLElement).closest('.research-node') || 
+        (e.target as HTMLElement).closest('.draggable-card')) return;
     setIsDragging(true);
     setDragStart({ x: e.clientX - panX, y: e.clientY - panY });
   };
@@ -652,24 +653,29 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             
             {/* Draggable Sub Research Card */}
             <div 
-              className={`bg-black/95 backdrop-blur-md rounded-lg border p-4 transition-all min-h-[140px] w-80 shadow-2xl ${
+              className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all min-h-[140px] w-80 shadow-2xl ${
                 activeTabId === subTab.id 
                   ? 'border-purple-400 shadow-lg shadow-purple-400/30' 
                   : 'border-purple-600/50 hover:border-purple-400/70'
-              } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50 cursor-grabbing' : 'cursor-grab'}`}
-              onMouseDown={(e) => handleCardMouseDown(e, subTab.id)}
-              onClick={(e) => {
-                e.stopPropagation();
-                setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
-              }}
+              } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
             >
-              {/* Header with drag area */}
+              {/* Header with restricted drag area */}
               <div className="flex justify-between items-start mb-3">
                 <div className="flex items-center flex-1">
-                  <div className="w-6 h-6 mr-2 flex items-center justify-center text-purple-400 cursor-grab">
+                  <div 
+                    className="w-8 h-8 mr-2 flex items-center justify-center text-purple-400 cursor-grab bg-purple-900/20 rounded border border-purple-600/30 hover:bg-purple-800/30"
+                    onMouseDown={(e) => handleCardMouseDown(e, subTab.id)}
+                    title="Arrastar card"
+                  >
                     ⋮⋮
                   </div>
-                  <h4 className="text-sm font-medium text-purple-300 flex items-center cursor-grab">
+                  <h4 
+                    className="text-sm font-medium text-purple-300 flex items-center cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
+                    }}
+                  >
                     <span className="mr-2 text-purple-400">🔍</span>
                     {subTab.query}
                   </h4>
@@ -692,7 +698,13 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
               </div>
               
               {/* Sub-card content */}
-              <div className="text-sm text-gray-300 leading-relaxed">
+              <div 
+                className="text-sm text-gray-300 leading-relaxed cursor-pointer p-2 rounded hover:bg-gray-800/20"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
+                }}
+              >
                 <div dangerouslySetInnerHTML={{ 
                   __html: subTab.response.substring(0, activeTabId === subTab.id ? 400 : 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
                 }} />
@@ -701,7 +713,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
               
               {/* Parent indicator */}
               {parentTab && (
-                <div className="text-xs text-purple-500 mt-3 pt-2 border-t border-purple-800/30 opacity-80 cursor-grab">
+                <div className="text-xs text-purple-500 mt-3 pt-2 border-t border-purple-800/30 opacity-80">
                   ↖ De: {parentTab.query.substring(0, 35)}...
                 </div>
               )}
