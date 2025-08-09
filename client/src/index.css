@@ -224,3 +224,51 @@
 .animate-float-gentle {
   animation: float-gentle 3s ease-in-out infinite;
 }
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .cyber-grid {
+    background-size: 15px 15px;
+  }
+  
+  /* Touch targets */
+  button, a, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better spacing for mobile cards */
+  .data-card {
+    padding: 1rem !important;
+    margin-bottom: 0.75rem;
+  }
+  
+  /* Mobile text sizing */
+  .mobile-text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  
+  .mobile-spacing {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  /* Container adjustments */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Card content spacing */
+  .space-y-6 > * + * {
+    margin-top: 1.5rem;
+  }
+  
+  /* Button sizing */
+  .btn-mobile {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    min-height: 3rem;
+  }
+}

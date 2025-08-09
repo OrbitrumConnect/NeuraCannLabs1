@@ -32,38 +32,38 @@ export default function ProfileDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-      <div className="flex items-center mb-6 sm:mb-8">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
-          <i className="fas fa-user-circle text-white text-lg sm:text-2xl" />
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex items-center mb-8">
+        <div className="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-4">
+          <i className="fas fa-user-circle text-white text-2xl" />
         </div>
         <div>
-          <h1 className="text-xl sm:text-3xl font-bold text-white">Perfil do Usuário</h1>
-          <p className="text-sm sm:text-base text-gray-400">Configurações e preferências profissionais</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Perfil do Usuário</h1>
+          <p className="text-base text-gray-400">Configurações e preferências profissionais</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Info */}
-        <div className="lg:col-span-2 space-y-4 sm:space-y-6">
+        <div className="lg:col-span-2 space-y-6">
           <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
-            <CardContent className="p-4 sm:p-6">
-              <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">Informações Pessoais</h2>
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
-                <div className="col-span-1">
-                  <Label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">Nome Completo</Label>
+            <CardContent className="p-6">
+              <h2 className="text-xl font-semibold text-white mb-6">Informações Pessoais</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label className="block text-sm font-medium text-gray-300 mb-2">Nome Completo</Label>
                   <Input 
                     type="text" 
                     defaultValue={profile?.name || ""} 
-                    className="w-full bg-gray-700 border-gray-500 text-white text-sm sm:text-base"
+                    className="w-full bg-gray-700 border-gray-500 text-white h-12"
                     data-testid="profile-name-input"
                   />
                 </div>
-                <div className="col-span-1">
-                  <Label className="block text-xs sm:text-sm font-medium text-gray-300 mb-2">Especialidade Médica</Label>
+                <div>
+                  <Label className="block text-sm font-medium text-gray-300 mb-2">Especialidade Médica</Label>
                   <select 
                     defaultValue={profile?.specialty || "cannabis_medicine"} 
-                    className="w-full bg-gray-700 border-gray-500 text-white rounded px-3 py-2 text-sm sm:text-base"
+                    className="w-full bg-gray-700 border-gray-500 text-white rounded px-3 py-3 h-12"
                     data-testid="profile-specialty-select"
                   >
                     <option value="cannabis_medicine">Medicina Cannabis</option>

@@ -210,22 +210,22 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
   };
 
   return (
-    <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
-      <div className="flex items-center mb-6 sm:mb-8">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
-          <i className="fas fa-brain text-white text-lg sm:text-2xl" />
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex items-center mb-8">
+        <div className="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-4">
+          <i className="fas fa-brain text-white text-2xl" />
         </div>
         <div>
-          <h1 className="text-xl sm:text-3xl font-bold text-white">Sistema de Submissão de Estudos</h1>
-          <p className="text-sm sm:text-base text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Sistema de Submissão de Estudos</h1>
+          <p className="text-base text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-6 sm:mb-8">
+      <div className="flex flex-col sm:flex-row gap-3 mb-8">
         <Button
           onClick={() => setActiveTab('create')}
-          className={`px-4 sm:px-6 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+          className={`px-6 py-3 rounded-lg transition-colors h-12 ${
             activeTab === 'create' 
               ? 'bg-green-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -237,7 +237,7 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
         </Button>
         <Button
           onClick={() => setActiveTab('edit')}
-          className={`px-4 sm:px-6 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+          className={`px-6 py-3 rounded-lg transition-colors h-12 ${
             activeTab === 'edit' 
               ? 'bg-green-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -249,7 +249,7 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
         </Button>
         <Button
           onClick={() => setActiveTab('submissions')}
-          className={`px-4 sm:px-6 py-2 rounded-lg transition-colors text-sm sm:text-base ${
+          className={`px-6 py-3 rounded-lg transition-colors h-12 ${
             activeTab === 'submissions' 
               ? 'bg-green-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -257,7 +257,7 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
           data-testid="button-my-submissions"
         >
           <i className="fas fa-list mr-2" />
-          Estudos ({submissions?.length || 0})
+          Meus Estudos ({submissions?.length || 0})
         </Button>
       </div>
 

@@ -150,26 +150,26 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-3 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 sm:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
               <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                 🧠 Central de Inteligência Cannabis Global
-                <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm bg-green-500/20 text-green-400 border border-green-500/30 w-fit">
-                  <Activity className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30 w-fit">
+                  <Activity className="w-4 h-4 mr-1" />
                   TEMPO REAL
                 </span>
               </h1>
-              <p className="text-sm sm:text-base text-slate-300">
+              <p className="text-base text-slate-300">
                 Monitoramento científico mundial • Dados da ANVISA, PubMed, ClinicalTrials.gov • Alimentando Dr. Cannabis IA
               </p>
             </div>
             <Button
               onClick={() => window.location.href = '/'}
-              className="bg-gray-600 hover:bg-gray-700 text-white flex items-center gap-2 w-full sm:w-auto text-sm sm:text-base"
+              className="bg-gray-600 hover:bg-gray-700 text-white flex items-center gap-2 w-full sm:w-auto h-12 px-6"
               data-testid="button-back-home"
             >
               <i className="fas fa-arrow-left" />
@@ -179,16 +179,16 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
         </div>
 
         {/* Global Real-Time Statistics */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
-            <CardContent className="p-3 sm:p-4">
-              <div className="flex items-center gap-2 sm:gap-3">
-                <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-lg">
-                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-500/20 rounded-lg">
+                  <Globe className="w-5 h-5 text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-blue-400 text-xs font-medium">Estudos Globais PubMed</p>
-                  <p className="text-lg sm:text-2xl font-bold text-white">{globalStats.globalStudies.toLocaleString()}</p>
+                  <p className="text-blue-400 text-sm font-medium">Estudos Globais PubMed</p>
+                  <p className="text-xl sm:text-2xl font-bold text-white">{globalStats.globalStudies.toLocaleString()}</p>
                 </div>
               </div>
             </CardContent>
