@@ -215,12 +215,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full min-h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar positioned much closer to planets */}
-      <div className="absolute top-8 -left-4 w-72 h-72 z-20">
+      {/* Dr. Cannabis IA - Avatar responsivo para mobile */}
+      <div className="absolute top-4 left-4 sm:top-8 sm:-left-4 w-48 h-48 sm:w-72 sm:h-72 z-20">
         <div 
-          className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
+          className={`w-full h-full cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
               ? 'scale-105 drop-shadow-2xl filter brightness-75 saturate-50 grayscale-[30%]' 
               : 'hover:scale-102 drop-shadow-lg'
@@ -239,18 +239,20 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-40" />
+            <MedicalAvatar3D className="w-32 sm:w-40" />
           </div>
         </div>
       </div>
 
-      {/* Search Interface - Top Center - Only show when Dr AI is active */}
+      {/* Search Interface - Responsivo mobile */}
       {isDrAIActive && (
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl">
-          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6">
+        <div className="absolute top-4 right-4 sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-80 sm:w-full sm:max-w-2xl">
+          <div className="bg-gray-900/95 backdrop-blur-lg rounded-2xl border border-cyan-500/30 p-4 sm:p-6">
+            
+            <h3 className="text-white text-lg font-semibold mb-4 text-center">🧠 Dr. Cannabis IA</h3>
             
             {/* Search Bar */}
-            <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-4">
+            <form onSubmit={handleChatSubmit} className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
@@ -265,7 +267,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               <button
                 type="submit"
                 disabled={isTyping}
-                className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
+                className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50 min-h-12"
               >
                 {isTyping ? <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-5 h-5" />}
               </button>
@@ -277,7 +279,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 <button
                   key={filter.id}
                   onClick={() => setSelectedFilter(filter.id)}
-                  className={`px-3 py-1 rounded-full text-xs transition-all flex items-center space-x-1 ${
+                  className={`px-3 py-2 rounded-full text-xs transition-all flex items-center space-x-1 min-h-8 ${
                     selectedFilter === filter.id
                       ? "bg-blue-600/80 text-white"
                       : "bg-white/10 text-gray-300 hover:bg-white/20"
@@ -292,15 +294,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Main Result Card - Only show when Dr AI is active */}
+      {/* Main Result Card - Responsivo mobile */}
       {isDrAIActive && currentResult && (
-        <div className="absolute top-64 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="absolute top-80 left-4 right-4 sm:top-64 sm:left-1/2 sm:right-auto sm:transform sm:-translate-x-1/2 z-20 sm:w-auto">
           <MainCard result={currentResult} />
           {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
           
           {/* Suggestions for Sub-search */}
           {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
-            <div className="mt-4 p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
+            <div className="mt-4 p-3 bg-gray-900/90 backdrop-blur-lg rounded-lg border border-cyan-500/30">
               <h4 className="text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
               <div className="flex flex-wrap gap-2">
                 {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
@@ -320,15 +322,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Tela principal limpa - sem cards de dados que devem ficar no dashboard */}
 
-      {/* Sub-search Results - Left Side positioned lower - Only show when Dr AI is active */}
+      {/* Sub-search Results - Responsivo mobile */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="fixed left-8 z-30"
+          className="fixed left-4 right-4 sm:left-8 sm:right-auto z-30"
           style={{ 
-            top: `${280 + (index * 200)}px`, 
-            width: '300px',
-            maxHeight: '180px'
+            top: `${350 + (index * 180)}px`, 
+            width: window.innerWidth < 640 ? 'calc(100vw - 2rem)' : '300px',
+            maxHeight: '160px'
           }}
         >
           <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-4">

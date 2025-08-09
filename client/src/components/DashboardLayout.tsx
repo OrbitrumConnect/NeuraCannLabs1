@@ -159,10 +159,10 @@ export default function DashboardLayout({
         </div>
       </nav>
 
-      {/* Overlay for mobile */}
+      {/* Overlay for mobile - Transparent to show avatar */}
       {sideNavOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-gray-900/30 backdrop-blur-sm z-40 lg:hidden"
           onClick={() => setSideNavOpen(false)}
           data-testid="nav-overlay"
         />
