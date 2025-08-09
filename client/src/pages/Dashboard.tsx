@@ -8,6 +8,7 @@ import AlertsDashboard from "./AlertsDashboard";
 import MyStudyDashboard from "./MyStudyDashboard";
 import ProfileDashboard from "./ProfileDashboard";
 import { AdminNavigation } from '@/components/AdminNavigation';
+import GlobalAdminDashboard from "./GlobalAdminDashboard";
 
 export default function Dashboard() {
   const { section } = useParams();
@@ -27,6 +28,11 @@ export default function Dashboard() {
   };
 
   const handleDashboardChange = (dashboard: string) => {
+    if (dashboard === "admin") {
+      // Redireciona para a rota admin dedicada
+      window.location.href = "/admin";
+      return;
+    }
     setActiveDashboard(dashboard);
     window.history.pushState({}, '', `/dashboard/${dashboard}`);
   };
@@ -68,6 +74,9 @@ export default function Dashboard() {
       )}
       {activeDashboard === "my-study" && (
         <MyStudyDashboard />
+      )}
+      {activeDashboard === "admin" && (
+        <GlobalAdminDashboard />
       )}
       {activeDashboard === "profile" && (
         <ProfileDashboard />

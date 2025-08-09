@@ -16,6 +16,7 @@ const dashboardOptions = [
   { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
+  { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
 ];
 
@@ -67,6 +68,9 @@ export default function DashboardLayout({
                 {option.id === "my-study" && (
                   <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1">NEW</span>
                 )}
+                {option.id === "admin" && (
+                  <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1">🌍</span>
+                )}
               </button>
             ))}
           </nav>
@@ -108,6 +112,7 @@ export default function DashboardLayout({
                   option.id === "scientific" ? "text-emerald-400" :
                   option.id === "clinical" ? "text-blue-400" :
                   option.id === "alerts" ? "text-amber-400" :
+                  option.id === "admin" ? "text-green-400" :
                   option.id === "profile" ? "text-purple-400" : ""
                 }`} />
                 <span className="font-semibold">{option.name}</span>
@@ -119,6 +124,7 @@ export default function DashboardLayout({
                   {option.id === "scientific" && "Estudos e pesquisas"}
                   {option.id === "clinical" && "Registros médicos"}
                   {option.id === "alerts" && "Notificações importantes"}
+                  {option.id === "admin" && "Central científica mundial"}
                   {option.id === "profile" && "Configurações pessoais"}
                 </div>
               </button>
