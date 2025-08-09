@@ -296,10 +296,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {isDrAIActive && currentResult && (
         <div className="absolute top-64 left-1/2 transform -translate-x-1/2 z-20">
           <MainCard result={currentResult} />
-          {/* Avatar reads the result content */}
-          <div className="mt-2 flex justify-center">
-            <TextToSpeech text={currentResult.answer} />
-          </div>
+          {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
           
           {/* Suggestions for Sub-search */}
           {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
