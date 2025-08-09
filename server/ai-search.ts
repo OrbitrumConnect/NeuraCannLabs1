@@ -153,14 +153,151 @@ export class MedicalAISearch {
   
   // Resposta específica para dosagens
   private static generateSpecificDosageAnswer(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
-    let answer = `💊 **PROTOCOLO DE DOSAGENS POR CONDIÇÃO MÉDICA**\n\nConsulta: "${query}"\n\n`;
+    const lowerQuery = query.toLowerCase();
     
-    // Extrair dosagens dos estudos
+    // Detectar tipo específico de consulta
+    if (lowerQuery.includes('thc:cbd') || lowerQuery.includes('oncologia') || lowerQuery.includes('cancer')) {
+      return this.generateOncologyProtocols(query, studies, cases);
+    }
+    
+    if (lowerQuery.includes('geriátrico') || lowerQuery.includes('idoso') || lowerQuery.includes('ajuste')) {
+      return this.generateGeriatricProtocols(query, studies, cases);
+    }
+    
+    if (lowerQuery.includes('epilepsia') || lowerQuery.includes('cbd')) {
+      return this.generateEpilepsyProtocols(query, studies, cases);
+    }
+    
+    // Resposta geral de dosagens
+    return this.generateGeneralDosageProtocols(query, studies, cases);
+  }
+
+  // Protocolos específicos para oncologia
+  private static generateOncologyProtocols(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
+    let answer = `🎯 **PROTOCOLOS THC:CBD PARA ONCOLOGIA**\n\nConsulta: "${query}"\n\n`;
+    
+    answer += `💊 **SATIVEX (THC:CBD 1:1) - PROTOCOLO PADRÃO ONCOLÓGICO:**\n\n`;
+    answer += `📋 **Dosagem inicial:** 1 borrifada (2,7mg THC + 2,5mg CBD)\n`;
+    answer += `📋 **Titulação:** Aumentar 1 borrifada a cada 2-3 dias\n`;
+    answer += `📋 **Dose máxima:** 12 borrifadas/24h (32,4mg THC + 30mg CBD)\n`;
+    answer += `📋 **Via de administração:** Oromucosal (alternando lados da boca)\n\n`;
+    
+    answer += `🏥 **PROTOCOLOS POR TIPO DE DOR ONCOLÓGICA:**\n\n`;
+    answer += `🔸 **Dor óssea metastática:**\n`;
+    answer += `• Início: 2-4 borrifadas/dia\n`;
+    answer += `• Alvo: 8-12 borrifadas/dia\n`;
+    answer += `• Combinação com opioides reduzida em 30-60%\n\n`;
+    
+    answer += `🔸 **Dor neuropática pós-quimioterapia:**\n`;
+    answer += `• Início: 1-2 borrifadas à noite\n`;
+    answer += `• Titulação mais lenta (a cada 3-4 dias)\n`;
+    answer += `• Dose alvo: 4-8 borrifadas/dia\n\n`;
+    
+    answer += `👨‍⚕️ **CASOS CLÍNICOS ONCOLÓGICOS REAIS:**\n\n`;
+    const oncologyCases = cases.filter(c => c.indication.includes('oncológica') || c.indication.includes('câncer'));
+    oncologyCases.slice(0, 2).forEach(case_ => {
+      answer += `📋 **${case_.caseNumber}:** ${case_.description.substring(0, 100)}...\n`;
+      answer += `• **Protocolo usado:** ${case_.dosage}\n`;
+      answer += `• **Resultado:** ${case_.outcome}\n\n`;
+    });
+    
+    answer += `⚕️ **MONITORAMENTO ESPECÍFICO ONCOLOGIA:**\n`;
+    answer += `1. **Avaliação da dor:** EVA diária, qualidade do sono\n`;
+    answer += `2. **Redução de opioides:** Gradual, monitorar síndrome de abstinência\n`;
+    answer += `3. **Efeitos adversos:** Tontura, sedação, boca seca\n`;
+    answer += `4. **Interações:** Verificar com quimioterápicos\n\n`;
+    
+    return answer;
+  }
+
+  // Protocolos específicos para geriátricos
+  private static generateGeriatricProtocols(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
+    let answer = `👴 **AJUSTES POSOLÓGICOS PARA POPULAÇÃO GERIÁTRICA**\n\nConsulta: "${query}"\n\n`;
+    
+    answer += `⚠️ **PRINCÍPIOS GERAIS EM IDOSOS (>65 anos):**\n\n`;
+    answer += `📋 **"Start Low, Go Slow"** - Redução de 25-50% da dose inicial\n`;
+    answer += `📋 **Metabolismo reduzido:** Clearance hepático diminuído\n`;
+    answer += `📋 **Sensibilidade aumentada:** Maior risco de efeitos adversos\n`;
+    answer += `📋 **Comorbidades:** Considerar múltiplas condições\n\n`;
+    
+    answer += `💊 **AJUSTES ESPECÍFICOS POR COMPOSTO:**\n\n`;
+    answer += `🔸 **CBD em idosos:**\n`;
+    answer += `• Dose inicial: 2,5mg 2x/dia (vs 5mg em adultos)\n`;
+    answer += `• Titulação: A cada 5-7 dias (vs 3 dias)\n`;
+    answer += `• Dose máxima: 10mg/kg/dia (vs 20mg/kg)\n`;
+    answer += `• Monitoramento hepático obrigatório\n\n`;
+    
+    answer += `🔸 **THC:CBD em idosos:**\n`;
+    answer += `• Início: 0,5-1 borrifada/dia à noite\n`;
+    answer += `• Evitar uso diurno inicial (risco de quedas)\n`;
+    answer += `• Dose máxima: 6 borrifadas/dia (vs 12)\n`;
+    answer += `• Atenção especial: cognição e equilíbrio\n\n`;
+    
+    answer += `🏥 **CONDIÇÕES GERIÁTRICAS ESPECÍFICAS:**\n\n`;
+    answer += `🔸 **Dor osteoarticular:**\n`;
+    answer += `• CBD: 10-20mg/dia inicial\n`;
+    answer += `• Aplicação tópica preferível quando possível\n\n`;
+    
+    answer += `🔸 **Distúrbios do sono:**\n`;
+    answer += `• CBD: 5-15mg 1h antes de dormir\n`;
+    answer += `• Evitar THC >2,5mg (risco de confusão)\n\n`;
+    
+    answer += `⚕️ **CONTRAINDICAÇÕES RELATIVAS EM IDOSOS:**\n`;
+    answer += `1. **Demência moderada-grave:** Risco de piora cognitiva\n`;
+    answer += `2. **Histórico de quedas:** THC contraindicado\n`;
+    answer += `3. **Insuficiência hepática:** Redução adicional 50%\n`;
+    answer += `4. **Polifarmácia:** Risco de interações aumentado\n\n`;
+    
+    return answer;
+  }
+
+  // Protocolos específicos para epilepsia
+  private static generateEpilepsyProtocols(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
+    let answer = `🧠 **PROTOCOLOS CBD PARA EPILEPSIA PEDIÁTRICA**\n\nConsulta: "${query}"\n\n`;
+    
+    answer += `💊 **EPIDIOLEX (CBD) - PROTOCOLO FDA/ANVISA:**\n\n`;
+    answer += `📋 **Síndrome de Dravet e Lennox-Gastaut:**\n`;
+    answer += `• Dose inicial: 2,5mg/kg 2x/dia (5mg/kg/dia)\n`;
+    answer += `• Semana 2: 5mg/kg 2x/dia (10mg/kg/dia)\n`;
+    answer += `• Dose alvo: 10mg/kg 2x/dia (20mg/kg/dia)\n`;
+    answer += `• Dose máxima: 25mg/kg 2x/dia se necessário\n\n`;
+    
+    answer += `📊 **EFICÁCIA ESPERADA (Dados NEJM 2017):**\n\n`;
+    answer += `🔸 **Síndrome de Dravet:**\n`;
+    answer += `• Redução média: 38,9% das crises vs 13,3% placebo\n`;
+    answer += `• Resposta ≥50%: 43% pacientes vs 27% placebo\n`;
+    answer += `• Livre de crises: 5% vs 0% placebo\n\n`;
+    
+    answer += `🔸 **Lennox-Gastaut:**\n`;
+    answer += `• Redução crises drop: 41,9% vs 14,1% placebo\n`;
+    answer += `• Redução crises totais: 36,8% vs 13,9% placebo\n\n`;
+    
+    answer += `👨‍⚕️ **CASO CLÍNICO REAL - DRAVET:**\n\n`;
+    const epilepsyCase = cases.find(c => c.indication.includes('Dravet'));
+    if (epilepsyCase) {
+      answer += `📋 **${epilepsyCase.caseNumber}:** ${epilepsyCase.description}\n`;
+      answer += `• **Protocolo:** ${epilepsyCase.dosage}\n`;
+      answer += `• **Evolução:** ${epilepsyCase.outcome}\n\n`;
+    }
+    
+    answer += `⚠️ **MONITORAMENTO OBRIGATÓRIO:**\n`;
+    answer += `1. **Função hepática:** Baseline, 1, 3 e 6 meses\n`;
+    answer += `2. **Diário de crises:** Frequência, tipo, duração\n`;
+    answer += `3. **EEG:** Baseline e 6 meses\n`;
+    answer += `4. **Efeitos adversos:** Sonolência, irritabilidade, diarreia\n\n`;
+    
+    return answer;
+  }
+
+  // Protocolos gerais de dosagem
+  private static generateGeneralDosageProtocols(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
+    let answer = `💊 **DOSAGENS POR CONDIÇÃO MÉDICA**\n\nConsulta: "${query}"\n\n`;
+    
+    // Código original aqui para consultas gerais
     const dosageInfo = studies.map(study => {
       const description = study.description.toLowerCase();
-      let dosage = 'Não especificado';
+      let dosage = 'Ver protocolo específico';
       
-      // Extrair informações de dosagem do texto
       const dosageMatch = description.match(/(\d+(?:,\d+)?)\s*(?:-\s*(\d+(?:,\d+)?))?\s*mg/);
       if (dosageMatch) {
         dosage = dosageMatch[2] ? `${dosageMatch[1]}-${dosageMatch[2]}mg` : `${dosageMatch[1]}mg`;
@@ -170,36 +307,18 @@ export class MedicalAISearch {
         condition: study.indication,
         compound: study.compound,
         dosage: dosage,
-        details: description.includes('kg') ? 'Por kg de peso' : 'Dose fixa',
         phase: study.phase
       };
     });
 
-    answer += `📋 **DOSAGENS ESPECÍFICAS POR CONDIÇÃO:**\n\n`;
+    answer += `📋 **RESUMO DOSAGENS POR CONDIÇÃO:**\n\n`;
     
-    dosageInfo.forEach(info => {
+    dosageInfo.slice(0, 4).forEach(info => {
       answer += `🎯 **${info.condition}**\n`;
       answer += `• **Composto:** ${info.compound}\n`;
-      answer += `• **Dosagem:** ${info.dosage} ${info.details}\n`;
-      answer += `• **Nível evidência:** ${info.phase}\n\n`;
+      answer += `• **Dosagem:** ${info.dosage}\n`;
+      answer += `• **Evidência:** ${info.phase}\n\n`;
     });
-
-    // Adicionar casos clínicos com dosagens práticas
-    answer += `👨‍⚕️ **DOSAGENS EM CASOS CLÍNICOS REAIS:**\n\n`;
-    cases.slice(0, 3).forEach(case_ => {
-      answer += `📋 **Caso ${case_.caseNumber}** - ${case_.indication}\n`;
-      answer += `• **Dosagem utilizada:** ${case_.dosage}\n`;
-      answer += `• **Resultado:** ${case_.outcome}\n`;
-      answer += `• **Médico:** ${case_.doctorName}\n\n`;
-    });
-
-    answer += `⚕️ **RECOMENDAÇÕES POSOLÓGICAS GERAIS:**\n`;
-    answer += `1. **Início gradual:** Sempre iniciar com doses baixas e titular conforme tolerabilidade\n`;
-    answer += `2. **Individualização:** Ajustar dose baseado em peso, idade e resposta clínica\n`;
-    answer += `3. **Monitoramento:** Avaliação regular de eficácia e eventos adversos\n`;
-    answer += `4. **Titulação:** Aumentos graduais a cada 1-2 semanas conforme necessário\n\n`;
-
-    answer += `*Dosagens baseadas em evidências científicas publicadas*`;
     
     return answer;
   }
