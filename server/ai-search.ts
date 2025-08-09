@@ -68,41 +68,41 @@ export class MedicalAISearch {
       relatedResults = relatedResults.slice(0, 6);
     }
     
-    // Gerar resposta baseada no tipo de pergunta
+    // Gerar resposta baseada no cruzamento de dados
     if (doseKeywords.some(keyword => lowerQuery.includes(keyword)) || lowerQuery.includes('temos')) {
-      answer = this.generateDosageAnswer(lowerQuery, relatedResults);
+      answer = this.generateCrossDataAnswer('dosage', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
       suggestions = [
-        'Qual a dosagem padrão de CBD para epilepsia?',
+        'Dosagens por condição médica',
         'Protocolos de administração THC:CBD',
         'Ajustes de dose para idosos'
       ];
     } else if (efficacyKeywords.some(keyword => lowerQuery.includes(keyword))) {
-      answer = this.generateEfficacyAnswer(lowerQuery, relatedResults);
+      answer = this.generateCrossDataAnswer('efficacy', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
       suggestions = [
-        'Taxa de sucesso em estudos clínicos',
-        'Tempo para observar resultados',
-        'Comparação com tratamentos convencionais'
+        'Eficácia por condição',
+        'Comparação de compostos',
+        'Taxa de sucesso clínico'
       ];
     } else if (sideEffectsKeywords.some(keyword => lowerQuery.includes(keyword))) {
-      answer = this.generateSafetyAnswer(lowerQuery, relatedResults);
+      answer = this.generateCrossDataAnswer('safety', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
       suggestions = [
-        'Perfil de segurança do CBD',
+        'Perfil de segurança',
         'Interações medicamentosas',
-        'Monitoramento de pacientes'
+        'Monitoramento necessário'
       ];
     } else if (conditionKeywords.some(keyword => lowerQuery.includes(keyword))) {
-      answer = this.generateConditionAnswer(lowerQuery, relatedResults);
+      answer = this.generateCrossDataAnswer('condition', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
       suggestions = [
-        'Indicações aprovadas pela ANVISA',
-        'Evidências científicas mais recentes',
-        'Protocolos clínicos específicos'
+        'Indicações aprovadas',
+        'Evidências científicas',
+        'Protocolos clínicos'
       ];
     } else {
-      answer = this.generateGeneralAnswer(lowerQuery, relatedResults);
+      answer = this.generateCrossDataAnswer('general', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
       suggestions = [
-        'Últimos estudos publicados',
-        'Casos clínicos de sucesso',
-        'Atualizações regulatórias'
+        'Estudos por área',
+        'Casos clínicos relevantes',
+        'Alertas regulatórios'
       ];
     }
     
@@ -147,6 +147,44 @@ export class MedicalAISearch {
     return totalWeight > 0 ? Math.min(matches / totalWeight, 1) : 0;
   }
   
+  private static generateCrossDataAnswer(type: string, query: string, results: SearchResult[], totalStudies: number, totalCases: number, totalAlerts: number): string {
+    let answer = `🔬 **ANÁLISE CRUZADA DE DADOS - ${type.toUpperCase()}**\n\nConsulta: "${query}"\n\n`;
+    answer += `📊 **Base consultada:** ${totalStudies} estudos, ${totalCases} casos clínicos, ${totalAlerts} alertas\n`;
+    answer += `🎯 **Resultados encontrados:** ${results.length} itens relevantes\n\n`;
+    
+    const studyResults = results.filter(r => r.type === 'study').slice(0, 3);
+    const caseResults = results.filter(r => r.type === 'case').slice(0, 2);
+    const alertResults = results.filter(r => r.type === 'alert').slice(0, 2);
+
+    if (studyResults.length > 0) {
+      answer += "📚 **ESTUDOS CIENTÍFICOS:**\n";
+      studyResults.forEach((result) => {
+        const study = result.data as ScientificStudy;
+        answer += `• ${study.title} - ${study.compound} (${study.participants} participantes)\n`;
+      });
+      answer += "\n";
+    }
+
+    if (caseResults.length > 0) {
+      answer += "👨‍⚕️ **CASOS CLÍNICOS:**\n";
+      caseResults.forEach((result) => {
+        const clinicalCase = result.data as ClinicalCase;
+        answer += `• ${clinicalCase.caseNumber}: ${clinicalCase.indication} - ${clinicalCase.outcome}\n`;
+      });
+      answer += "\n";
+    }
+
+    if (alertResults.length > 0) {
+      answer += "⚠️ **ALERTAS REGULATÓRIOS:**\n";
+      alertResults.forEach((result) => {
+        const alert = result.data as Alert;
+        answer += `• ${alert.type}: ${alert.message}\n`;
+      });
+    }
+
+    return answer || `🔍 Nenhum resultado específico encontrado para "${query}". Refine sua busca com termos mais específicos.`;
+  }
+
   private static generateDosageAnswer(query: string, results: SearchResult[]): string {
     const studyResults = results.filter(r => r.type === 'study').slice(0, 3);
     const caseResults = results.filter(r => r.type === 'case').slice(0, 2);

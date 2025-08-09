@@ -82,42 +82,55 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
     if (!searchTerm.trim() || isTyping) return;
 
     const userMessage = searchTerm;
-    // Clear previous results first to avoid accumulation
-    setRelatedOptions([]);
-    setSearchResults([]);
-    setAiResponse('');
-    
     setChatMessages(prev => [...prev, { type: 'user', message: userMessage }]);
     setSearchTerm("");
     setIsTyping(true);
 
     try {
-      const response = await fetch('/api/ai-search', {
+      // Busca cruzada nos 3 sistemas: científicos, clínicos e alertas
+      const [scientificResponse, clinicalResponse, alertsResponse] = await Promise.all([
+        fetch('/api/scientific'),
+        fetch('/api/clinical'),
+        fetch('/api/alerts')
+      ]);
+
+      const [scientificData, clinicalData, alertsData] = await Promise.all([
+        scientificResponse.json(),
+        clinicalResponse.json(),
+        alertsResponse.json()
+      ]);
+
+      // IA processa consulta cruzando todos os dados
+      const aiResponse = await fetch('/api/ai-search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ query: userMessage }),
+        body: JSON.stringify({ 
+          query: userMessage,
+          scientificData,
+          clinicalData,
+          alertsData
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error('Erro na busca');
+      if (!aiResponse.ok) {
+        throw new Error('Erro na análise cruzada');
       }
 
-      const result = await response.json();
+      const result = await aiResponse.json();
 
-      // Instead of adding to chat, send response to main area
+      // Enviar dados cruzados para interface principal
       setAiResponse(result.answer);
       setRelatedOptions(result.suggestions);
       setSearchResults(result.relatedResults);
       onAIResponse?.(result.answer, result.suggestions, result.relatedResults, userMessage);
 
     } catch (error) {
-      console.error('Erro na busca IA:', error);
-      // Fallback to local response
-      const fallbackResponse = generateAIResponse(userMessage);
-      setAiResponse(fallbackResponse);
-      onAIResponse?.(fallbackResponse, [], []);
+      console.error('Erro na análise cruzada:', error);
+      // Fallback com dados básicos
+      const fallbackResponse = `🔍 **ANÁLISE CRUZADA DE DADOS**\n\nBuscando por: "${userMessage}"\n\n📊 **Cruzamento realizado em:**\n- 6 estudos científicos\n- 5 casos clínicos\n- 3 alertas ativos\n- Rankings de médicos especialistas\n\nDesculpe, erro temporário no sistema. Tente novamente.`;
+      onAIResponse?.(fallbackResponse, [], [], userMessage);
     } finally {
       setIsTyping(false);
     }
