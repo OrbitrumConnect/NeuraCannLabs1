@@ -68,11 +68,11 @@ export default function ClinicalDashboard() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-xl flex items-center justify-center mr-4 animate-pulse-glow">
+        <div className="w-16 h-16 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
           <i className="fas fa-user-md text-white text-2xl" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold neon-text">Casos Clínicos</h1>
+          <h1 className="text-3xl font-bold text-white">Casos Clínicos</h1>
           <p className="text-gray-400">Registros médicos e experiências clínicas</p>
         </div>
       </div>
@@ -80,7 +80,7 @@ export default function ClinicalDashboard() {
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
         <Button 
-          className="data-card rounded-xl p-4 h-auto holographic-border hover:border-blue-400/50 transition-all text-left flex flex-col items-start"
+          className="data-card rounded-xl p-4 h-auto hover:border-blue-400/50 transition-all text-left flex flex-col items-start"
           data-testid="new-case-button"
         >
           <i className="fas fa-plus-circle text-blue-400 text-2xl mb-2" />
@@ -88,7 +88,7 @@ export default function ClinicalDashboard() {
           <p className="text-sm text-gray-400">Registrar novo caso clínico</p>
         </Button>
         <Button 
-          className="data-card rounded-xl p-4 h-auto holographic-border hover:border-emerald-400/50 transition-all text-left flex flex-col items-start"
+          className="data-card rounded-xl p-4 h-auto hover:border-emerald-400/50 transition-all text-left flex flex-col items-start"
           data-testid="search-cases-button"
         >
           <i className="fas fa-search text-emerald-400 text-2xl mb-2" />
@@ -96,7 +96,7 @@ export default function ClinicalDashboard() {
           <p className="text-sm text-gray-400">Encontrar casos similares</p>
         </Button>
         <Button 
-          className="data-card rounded-xl p-4 h-auto holographic-border hover:border-purple-400/50 transition-all text-left flex flex-col items-start"
+          className="data-card rounded-xl p-4 h-auto hover:border-purple-400/50 transition-all text-left flex flex-col items-start"
           data-testid="ai-analysis-button"
         >
           <i className="fas fa-chart-bar text-purple-400 text-2xl mb-2" />
@@ -120,7 +120,7 @@ export default function ClinicalDashboard() {
             {cases.map((clinicalCase) => (
               <Card 
                 key={clinicalCase.id} 
-                className="data-card rounded-xl holographic-border hover:border-blue-400/50 transition-all"
+                className="data-card rounded-xl hover:border-blue-400/50 transition-all"
                 data-testid={`case-card-${clinicalCase.id}`}
               >
                 <CardContent className="p-6">

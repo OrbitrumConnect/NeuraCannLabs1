@@ -70,17 +70,17 @@ export default function ScientificDashboard() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-xl flex items-center justify-center mr-4 animate-pulse-glow">
+        <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-xl flex items-center justify-center mr-4">
           <i className="fas fa-microscope text-white text-2xl" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold neon-text">Dados Científicos</h1>
+          <h1 className="text-3xl font-bold text-white">Dados Científicos</h1>
           <p className="text-gray-400">Estudos e pesquisas sobre cannabis medicinal</p>
         </div>
       </div>
       
       {/* Search and Filters */}
-      <Card className="data-card rounded-xl mb-8 holographic-border">
+      <Card className="data-card rounded-xl mb-8">
         <CardContent className="p-6">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1">
@@ -90,10 +90,10 @@ export default function ScientificDashboard() {
                   placeholder="Buscar estudos, compostos, indicações..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-cyber-light border-neon-cyan/30 pl-12 text-white placeholder-gray-400 focus:border-neon-cyan"
+                  className="w-full bg-cyber-light border-gray-600 pl-12 text-white placeholder-gray-400 focus:border-emerald-500"
                   data-testid="search-studies-input"
                 />
-                <i className="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-neon-cyan" />
+                <i className="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400" />
               </div>
             </div>
             <Button 
@@ -122,7 +122,7 @@ export default function ScientificDashboard() {
             {filteredStudies.map((study) => (
               <Card 
                 key={study.id} 
-                className="data-card rounded-xl holographic-border hover:border-emerald-400/50 transition-all cursor-pointer"
+                className="data-card rounded-xl hover:border-emerald-400/50 transition-all cursor-pointer"
                 data-testid={`study-card-${study.id}`}
               >
                 <CardContent className="p-6">
@@ -138,9 +138,9 @@ export default function ScientificDashboard() {
                   </div>
                   <h3 className="text-lg font-semibold text-white mb-2">{study.title}</h3>
                   {study.description && (
-                    <p className="text-gray-400 text-sm mb-4">{study.description}</p>
+                    <p className="text-gray-400 text-sm mb-4">{study.description.substring(0, 150)}...</p>
                   )}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mb-4">
                     <span className="text-xs text-gray-500">{study.date}</span>
                     <div className="flex space-x-2">
                       {study.indication && (
@@ -155,18 +155,47 @@ export default function ScientificDashboard() {
                       )}
                     </div>
                   </div>
+                  
+                  <div className="flex space-x-2">
+                    <button 
+                      onClick={() => {
+                        const pmidMatch = study.description?.match(/PMID:?\s*(\d+)/i);
+                        if (pmidMatch) {
+                          window.open(`https://pubmed.ncbi.nlm.nih.gov/${pmidMatch[1]}/`, '_blank');
+                        } else {
+                          window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(study.title)}`, '_blank');
+                        }
+                      }}
+                      className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors"
+                    >
+                      📄 PubMed
+                    </button>
+                    {study.description?.includes('NCT') && (
+                      <button 
+                        onClick={() => {
+                          const nctMatch = study.description?.match(/NCT\d+/);
+                          if (nctMatch) {
+                            window.open(`https://clinicaltrials.gov/study/${nctMatch[0]}`, '_blank');
+                          }
+                        }}
+                        className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors"
+                      >
+                        🏥 ClinicalTrials
+                      </button>
+                    )}
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
 
           {/* Research Insights */}
-          <Card className="data-card rounded-xl holographic-border">
+          <Card className="data-card rounded-xl">
             <CardContent className="p-6">
               <h2 className="text-xl font-semibold text-white mb-6">Insights da IA</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan to-neon-blue rounded-full mx-auto mb-4 flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <i className="fas fa-trending-up text-white text-xl" />
                   </div>
                   <h3 className="font-semibold text-white mb-2">Tendência Emergente</h3>
