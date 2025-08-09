@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
 import MedicalAvatar3D from "./MedicalAvatar3D";
 import MainCard from "./MainCard";
+import TextToSpeech from "./TextToSpeech";
 
 // Import the missing interface for proper typing
 interface ScientificStudy {
@@ -295,6 +296,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {isDrAIActive && currentResult && (
         <div className="absolute top-64 left-1/2 transform -translate-x-1/2 z-20">
           <MainCard result={currentResult} />
+          {/* Avatar reads the result content */}
+          <div className="mt-2 flex justify-center">
+            <TextToSpeech text={currentResult.answer} />
+          </div>
           
           {/* Suggestions for Sub-search */}
           {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
@@ -379,13 +384,13 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Sub-search Results - Left Side with better spacing - Only show when Dr AI is active */}
+      {/* Sub-search Results - Left Side positioned lower - Only show when Dr AI is active */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
           className="fixed left-8 z-30"
           style={{ 
-            top: `${150 + (index * 200)}px`, 
+            top: `${280 + (index * 200)}px`, 
             width: '300px',
             maxHeight: '180px'
           }}
@@ -411,33 +416,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       ))}
 
-      {/* Floating Planets - Now on the left */}
-      {planets.map((planet, index) => (
-        <div
-          key={planet.id}
-          className={`absolute ${planet.size} rounded-full bg-gradient-to-br ${planet.color} 
-            cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/30
-            flex items-center justify-center text-white font-bold text-xs z-10
-            ${hoveredPlanet === planet.id ? 'animate-pulse shadow-lg shadow-cyan-400/40' : 'animate-float shadow-sm shadow-cyan-400/20'}
-            ${activeDashboard === planet.id ? 'ring-1 ring-cyan-400/60 shadow-cyan-400/40' : ''}
-          `}
-          style={{
-            left: "20px",
-            top: `${400 + (index * 80)}px`,
-            animationDelay: planet.delay,
-          }}
-          onMouseEnter={() => setHoveredPlanet(planet.id)}
-          onMouseLeave={() => setHoveredPlanet(null)}
-          onClick={() => onPlanetClick(planet.id)}
-        >
-          <i className={planet.icon}></i>
-          {hoveredPlanet === planet.id && (
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-2 py-1 rounded text-xs whitespace-nowrap">
-              {planet.name}
-            </div>
-          )}
-        </div>
-      ))}
+{/* Planets removed - clean area above search bar */}
     </div>
   );
 }
