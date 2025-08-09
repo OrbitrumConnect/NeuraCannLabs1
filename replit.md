@@ -73,13 +73,13 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **SISTEMA FINALIZADO - READY FOR INVESTMENT PRESENTATION** 🚀
 
-**FUNCIONAMENTO CONFIRMADO v4.0 - AVATAR RAIO AJUSTADO**:
-✅ Avatar Dr. Cannabis IA 260x260px com raio menor - rounded-2xl
-✅ Efeito visual ativo: fundo cinza + borda neon cyan quando clicado
-✅ Borda neon sutil: border-cyan-400/40 + shadow glow verde-ciano
-✅ Raio do círculo diminuído para aparência mais equilibrada
+**FUNCIONAMENTO CONFIRMADO v4.1 - AVATAR PURO COM GLOW**:
+✅ Avatar Dr. Cannabis IA 288x288px sem círculo de fundo
+✅ Glow neon aplicado diretamente no avatar Three.js
+✅ Efeito ativo: brightness + saturate + double drop-shadow cyan
+✅ Zero elementos desnecessários - apenas avatar com glow
 ✅ Transições suaves entre estados ativo/inativo
-✅ Sistema com avatar destacado e raio visual otimizado
+✅ Sistema limpo com avatar destacado e glow natural
 
 **EVOLUÇÃO v3.0 - DR. CANNABIS IA INTERATIVO RESTAURADO**:
 ✅ Dr. Cannabis IA clicável - ativa todo o sistema ao clicar

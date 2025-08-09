@@ -216,18 +216,19 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar 25% bigger with neon border when active */}
-      <div className="absolute top-8 left-8 w-56 h-56 z-20">
+      {/* Dr. Cannabis IA - Avatar with direct neon glow, no circle background */}
+      <div className="absolute top-8 left-8 w-72 h-72 z-20">
         <div 
-          className={`w-65 h-65 mx-auto mt-1 cursor-pointer transition-all duration-500 rounded-2xl flex items-center justify-center ${
+          className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
-              ? 'scale-105 bg-gray-800/80 border-4 border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.3)] drop-shadow-2xl' 
-              : 'hover:scale-102 drop-shadow-lg drop-shadow-cyan-400/20'
+              ? 'scale-105 drop-shadow-2xl filter brightness-110 saturate-125' 
+              : 'hover:scale-102 drop-shadow-lg'
           }`}
           onClick={() => setIsDrAIActive(!isDrAIActive)}
           style={{
-            width: '260px',
-            height: '260px'
+            filter: isDrAIActive 
+              ? 'drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(34, 211, 238, 0.2))' 
+              : 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.1))'
           }}
         >
           <MedicalAvatar3D />
