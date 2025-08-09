@@ -132,42 +132,46 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
         <CosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} onSearch={onSearch} />
       </div>
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-        <div className="data-card rounded-xl p-6 holographic-border">
-          <div className="flex items-center justify-between mb-4">
-            <i className="fas fa-flask text-2xl text-emerald-400" />
-            <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded-full">+12% hoje</span>
+      {/* Compact Side Stats */}
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-20 space-y-3">
+        <div className="data-card rounded-lg p-3 holographic-border w-20 transition-all hover:w-32 group">
+          <div className="text-center">
+            <div className="bg-emerald-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-2">
+              <i className="fas fa-flask text-emerald-400 text-sm"></i>
+            </div>
+            <p className="text-white text-sm font-bold">2,547</p>
+            <p className="text-emerald-400 text-xs opacity-0 group-hover:opacity-100 transition-opacity">Estudos</p>
           </div>
-          <h3 className="text-2xl font-bold text-white">2,547</h3>
-          <p className="text-gray-400">Estudos Analisados</p>
         </div>
-        
-        <div className="data-card rounded-xl p-6 holographic-border">
-          <div className="flex items-center justify-between mb-4">
-            <i className="fas fa-heartbeat text-2xl text-blue-400" />
-            <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-1 rounded-full">+5% hoje</span>
+
+        <div className="data-card rounded-lg p-3 holographic-border w-20 transition-all hover:w-32 group">
+          <div className="text-center">
+            <div className="bg-blue-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-2">
+              <i className="fas fa-heartbeat text-blue-400 text-sm"></i>
+            </div>
+            <p className="text-white text-sm font-bold">1,234</p>
+            <p className="text-blue-400 text-xs opacity-0 group-hover:opacity-100 transition-opacity">Casos</p>
           </div>
-          <h3 className="text-2xl font-bold text-white">1,234</h3>
-          <p className="text-gray-400">Casos Registrados</p>
         </div>
-        
-        <div className="data-card rounded-xl p-6 holographic-border">
-          <div className="flex items-center justify-between mb-4">
-            <i className="fas fa-users text-2xl text-purple-400" />
-            <span className="text-xs bg-purple-500/20 text-purple-400 px-2 py-1 rounded-full">+89 hoje</span>
+
+        <div className="data-card rounded-lg p-3 holographic-border w-20 transition-all hover:w-32 group">
+          <div className="text-center">
+            <div className="bg-purple-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-2">
+              <i className="fas fa-users text-purple-400 text-sm"></i>
+            </div>
+            <p className="text-white text-sm font-bold">15.6K</p>
+            <p className="text-purple-400 text-xs opacity-0 group-hover:opacity-100 transition-opacity">Médicos</p>
           </div>
-          <h3 className="text-2xl font-bold text-white">15,678</h3>
-          <p className="text-gray-400">Médicos Ativos</p>
         </div>
-        
-        <div className="data-card rounded-xl p-6 holographic-border">
-          <div className="flex items-center justify-between mb-4">
-            <i className="fas fa-brain text-2xl text-amber-400" />
-            <span className="text-xs bg-amber-500/20 text-amber-400 px-2 py-1 rounded-full">24/7</span>
+
+        <div className="data-card rounded-lg p-3 holographic-border w-20 transition-all hover:w-32 group">
+          <div className="text-center">
+            <div className="bg-amber-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-2">
+              <i className="fas fa-brain text-amber-400 text-sm"></i>
+            </div>
+            <p className="text-white text-sm font-bold">99.2%</p>
+            <p className="text-amber-400 text-xs opacity-0 group-hover:opacity-100 transition-opacity">IA</p>
           </div>
-          <h3 className="text-2xl font-bold text-white">99.2%</h3>
-          <p className="text-gray-400">Precisão IA</p>
         </div>
       </div>
     </section>
