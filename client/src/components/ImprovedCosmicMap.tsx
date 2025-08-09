@@ -216,18 +216,18 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar with direct neon glow, no circle background */}
-      <div className="absolute top-8 left-8 w-72 h-72 z-20">
+      {/* Dr. Cannabis IA - Avatar 18% bigger with gray effect when active */}
+      <div className="absolute top-8 left-8 w-80 h-80 z-20">
         <div 
-          className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
+          className={`w-80 h-80 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
-              ? 'scale-105 drop-shadow-2xl filter brightness-110 saturate-125' 
+              ? 'scale-105 drop-shadow-2xl filter brightness-75 saturate-50 grayscale-[30%]' 
               : 'hover:scale-102 drop-shadow-lg'
           }`}
           onClick={() => setIsDrAIActive(!isDrAIActive)}
           style={{
             filter: isDrAIActive 
-              ? 'drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(34, 211, 238, 0.2))' 
+              ? 'drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(34, 211, 238, 0.2)) brightness(0.75) saturate(0.5) grayscale(30%)' 
               : 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.1))'
           }}
         >
