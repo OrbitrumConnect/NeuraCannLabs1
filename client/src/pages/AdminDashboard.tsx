@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,12 +10,19 @@ import type { StudySubmission } from '@shared/schema';
 export default function AdminDashboard() {
   const [selectedSubmission, setSelectedSubmission] = useState<StudySubmission | null>(null);
   const [reviewNotes, setReviewNotes] = useState('');
-  const [activeTab, setActiveTab] = useState<'pending' | 'approved' | 'rejected'>('pending');
+  const [activeTab, setActiveTab] = useState<'pending' | 'approved' | 'rejected' | 'analytics'>('pending');
+  const [realTimeStats, setRealTimeStats] = useState({
+    totalSubmissions: 0,
+    pendingCount: 0,
+    approvedCount: 0,
+    rejectedCount: 0,
+    todaySubmissions: 0
+  });
   
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch all submissions for admin review
+  // Fetch all submissions for admin review with real-time updates
   const { data: submissions, isLoading } = useQuery<StudySubmission[]>({
     queryKey: ['/api/admin/study-submissions'],
     queryFn: async () => {
@@ -23,7 +30,25 @@ export default function AdminDashboard() {
       if (!response.ok) throw new Error('Failed to fetch submissions');
       return response.json();
     },
+    refetchInterval: 5000, // Atualiza a cada 5 segundos
   });
+
+  // Update real-time stats whenever submissions change
+  useEffect(() => {
+    if (submissions) {
+      const today = new Date().toDateString();
+      const stats = {
+        totalSubmissions: submissions.length,
+        pendingCount: submissions.filter(s => s.status === 'submitted' || s.status === 'under_review').length,
+        approvedCount: submissions.filter(s => s.status === 'approved').length,
+        rejectedCount: submissions.filter(s => s.status === 'rejected').length,
+        todaySubmissions: submissions.filter(s => 
+          new Date(s.createdAt!).toDateString() === today
+        ).length
+      };
+      setRealTimeStats(stats);
+    }
+  }, [submissions]);
 
   // Review submission mutation
   const reviewSubmissionMutation = useMutation({
@@ -64,6 +89,7 @@ export default function AdminDashboard() {
       if (activeTab === 'pending') return sub.status === 'submitted' || sub.status === 'under_review';
       if (activeTab === 'approved') return sub.status === 'approved';
       if (activeTab === 'rejected') return sub.status === 'rejected';
+      if (activeTab === 'analytics') return true; // Mostra todos para analytics
       return false;
     });
   };
