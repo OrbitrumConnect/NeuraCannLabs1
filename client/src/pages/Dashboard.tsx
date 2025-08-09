@@ -28,7 +28,7 @@ export default function Dashboard() {
   const [subSearchQuery, setSubSearchQuery] = useState<string>('');
   const [showSubSearch, setShowSubSearch] = useState(false);
   const [subCardMinimized, setSubCardMinimized] = useState(false);
-  const [subCardPosition, setSubCardPosition] = useState({ x: window.innerWidth - 350, y: 120 });
+  const [subCardPosition, setSubCardPosition] = useState({ x: window.innerWidth - 350, y: 400 });
   const [isDraggingSubCard, setIsDraggingSubCard] = useState(false);
   const [subDragStart, setSubDragStart] = useState({ x: 0, y: 0 });
 
@@ -50,7 +50,7 @@ export default function Dashboard() {
         // Limitar movimento dentro da área de conteúdo
         const maxX = window.innerWidth - 370;
         const maxY = window.innerHeight - 100;
-        const minY = 180; // Mais espaço para header, search e cosmic map
+        const minY = 350; // Abaixo da área de pesquisa IA Cannabis
         
         setCardPosition({
           x: Math.max(0, Math.min(newX, maxX)),
@@ -66,7 +66,7 @@ export default function Dashboard() {
         // Limitar movimento dentro da área de conteúdo
         const maxX = window.innerWidth - 350;
         const maxY = window.innerHeight - 100;
-        const minY = 80;
+        const minY = 350;
         
         setSubCardPosition({
           x: Math.max(20, Math.min(newX, maxX)),
@@ -128,7 +128,7 @@ export default function Dashboard() {
     // Se é nova pesquisa ou card não existe, mostra expandido
     setAiCardMinimized(false);
     // Reset position when new response comes - position for minimized state
-    setCardPosition({ x: 50, y: 250 });
+    setCardPosition({ x: 50, y: 400 });
   };
 
   const toggleAiCard = () => {
@@ -141,7 +141,7 @@ export default function Dashboard() {
     setAiResults([]);
     setAiSearchQuery("");
     setAiCardMinimized(false);
-    setCardPosition({ x: 50, y: 250 });
+    setCardPosition({ x: 50, y: 400 });
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -165,7 +165,7 @@ export default function Dashboard() {
     if (!aiCardMinimized) {
       setAiCardMinimized(true);
       // Posicionar o card principal no lado esquerdo para criar a "teia"
-      setCardPosition({ x: 50, y: 250 });
+      setCardPosition({ x: 50, y: 400 });
     }
     
     try {
@@ -351,9 +351,9 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
 
 
 
-      {/* AI Response Section - Integrated in content when expanded - Above search */}
+      {/* AI Response Section - Integrated in content when expanded - Below search */}
       {aiResponse && !aiCardMinimized && (
-        <div className={`mb-6 transition-all duration-300 ${showSubSearch ? 'mr-[340px]' : ''}`}>
+        <div className={`mt-6 mb-12 transition-all duration-300 ${showSubSearch ? 'mr-[340px]' : ''}`}>
           <div className="bg-gradient-to-r from-gray-900/80 via-black/90 to-gray-900/80 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/10">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
@@ -513,7 +513,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
       {/* Sub-search lateral card - Full size when expanded */}
       {showSubSearch && subSearchResponse && !subCardMinimized && (
         <div 
-          className="fixed right-6 top-24 w-80 h-[65vh] z-50 transition-all duration-300 ease-in-out"
+          className="fixed right-6 bottom-8 w-80 h-[60vh] z-50 transition-all duration-300 ease-in-out"
           style={{ 
             transform: showSubSearch ? 'translateX(0)' : 'translateX(100%)',
           }}
@@ -625,7 +625,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
           className="fixed z-50 cursor-move transition-all duration-300 ease-in-out"
           style={{
             left: `${Math.max(20, Math.min(subCardPosition?.x || window.innerWidth - 350, window.innerWidth - 350))}px`,
-            top: `${Math.max(80, Math.min(subCardPosition?.y || 120, window.innerHeight - 100))}px`,
+            top: `${Math.max(350, Math.min(subCardPosition?.y || 400, window.innerHeight - 100))}px`,
             width: '320px'
           }}
           onMouseDown={onSubCardMouseDown}
