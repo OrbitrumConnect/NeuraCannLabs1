@@ -622,9 +622,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                             <div className="w-1 h-4 bg-neon-cyan/60 rounded-full" />
                           </div>
                     
-                          {/* Expanded Main Research Node - 50% larger */}
+                          {/* Main Research Node - Extra Large for Better Content Display */}
                           <div 
-                            className={`research-node relative bg-black/80 backdrop-blur-md rounded-lg border p-6 cursor-pointer transition-all min-h-[320px] ${
+                            className={`research-node relative bg-black/80 backdrop-blur-md rounded-lg border p-8 cursor-pointer transition-all min-h-[480px] ${
                               activeTabId === mainTab.id 
                                 ? 'border-neon-cyan shadow-lg shadow-neon-cyan/20' 
                                 : 'border-gray-600/50 hover:border-neon-cyan/60'
@@ -650,10 +650,13 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                               </button>
                             </div>
                   
-                            {/* Collapsed preview - More content visible */}
+                            {/* Collapsed preview - Much more content visible */}
                             {activeTabId !== mainTab.id && (
-                              <div className="text-sm text-gray-400 leading-relaxed mb-4">
-                                {mainTab.response.substring(0, 300)}...
+                              <div className="text-base text-gray-300 leading-relaxed mb-6">
+                                <div dangerouslySetInnerHTML={{ 
+                                  __html: mainTab.response.substring(0, 500).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-neon-cyan">$1</strong>') 
+                                }} />
+                                <span className="text-neon-cyan cursor-pointer font-medium">... [clique para ver análise completa]</span>
                               </div>
                             )}
                             
@@ -670,24 +673,38 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                               </div>
                             )}
                       
-                            {/* Expanded content */}
+                            {/* Expanded content - Much larger and more detailed */}
                             {activeTabId === mainTab.id && (
-                              <div className="space-y-4">
-                                <div className="text-sm text-gray-300 max-h-40 overflow-y-auto border-l-2 border-neon-cyan/30 pl-3 leading-relaxed">
+                              <div className="space-y-6">
+                                <div className="text-base text-gray-300 max-h-64 overflow-y-auto border-l-4 border-neon-cyan/50 pl-4 leading-relaxed">
                                   <div dangerouslySetInnerHTML={{ 
-                                    __html: mainTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                                    __html: mainTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-neon-cyan font-semibold">$1</strong>') 
                                   }} />
                                 </div>
-                                
-                                {/* Data Sources Available */}
-                                <div className="mt-4 text-xs text-gray-400 bg-gray-800/30 p-2 rounded">
-                                  📊 Base de dados: {scientificData?.length || 0} estudos • {clinicalData?.length || 0} casos clínicos • {alertsData?.length || 0} alertas
+
+                                {/* Explicit Data Display */}
+                                <div className="bg-gray-800/50 p-4 rounded-lg border border-gray-600/30">
+                                  <h4 className="text-lg font-semibold text-neon-cyan mb-4">📊 Dados da Plataforma</h4>
+                                  <div className="grid grid-cols-3 gap-4 text-center">
+                                    <div className="bg-blue-900/30 p-3 rounded border border-blue-500/30">
+                                      <div className="text-2xl font-bold text-blue-300">{scientificData?.length || 0}</div>
+                                      <div className="text-sm text-blue-400">Estudos Científicos</div>
+                                    </div>
+                                    <div className="bg-green-900/30 p-3 rounded border border-green-500/30">
+                                      <div className="text-2xl font-bold text-green-300">{clinicalData?.length || 0}</div>
+                                      <div className="text-sm text-green-400">Casos Clínicos</div>
+                                    </div>
+                                    <div className="bg-red-900/30 p-3 rounded border border-red-500/30">
+                                      <div className="text-2xl font-bold text-red-300">{alertsData?.length || 0}</div>
+                                      <div className="text-sm text-red-400">Alertas Ativos</div>
+                                    </div>
+                                  </div>
                                 </div>
                           
-                            {/* Text-to-Speech Integration */}
-                            <div className="mb-3">
+                            {/* Simplified Text-to-Speech */}
+                            <div className="mb-4">
                               <TextToSpeech 
-                                text={mainTab.response}
+                                text={`Análise sobre ${mainTab.query}: ${mainTab.response.substring(0, 200).replace(/[🔬📊🏥⚠️]/g, '').replace(/\*\*/g, '')}`}
                                 className="mb-2"
                               />
                             </div>
@@ -897,89 +914,94 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         );
       })}
 
-      {/* Neural Tree Structure - Separate cards for each data type */}
-      {searchTabs.length > 0 && (
+      {/* Detailed Data Cards - Show when search is performed */}
+      {searchTabs.filter(tab => tab.type === 'main').length > 0 && (
         <>
-          {/* Scientific Studies Cards */}
-          {scientificData && scientificData.length > 0 && (
-            <div className="absolute z-50" style={{ left: '50px', top: window.innerHeight - 450 }}>
-              <div className="w-80 bg-blue-950/90 backdrop-blur-md rounded-lg border border-blue-500/40 p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-blue-300 flex items-center">
-                    <Microscope className="w-4 h-4 mr-2" />
-                    Estudos Científicos ({scientificData.length})
-                  </h3>
-                  <TextToSpeech 
-                    text={`${scientificData.length} estudos científicos disponíveis: ${scientificData.map(s => s.title).join(', ')}`}
-                    className="text-xs"
-                  />
-                </div>
-                <div className="space-y-2 max-h-32 overflow-y-auto">
-                  {scientificData.map((study, idx) => (
-                    <div key={idx} className="text-xs text-blue-200 p-2 bg-blue-900/40 rounded border-l-2 border-blue-400/60 cursor-pointer hover:bg-blue-800/40">
-                      <div className="font-medium">{study.title}</div>
-                      <div className="text-blue-300 mt-1">{study.description}</div>
-                      <div className="text-blue-400 mt-1 text-xs">📍 {study.compound} • {study.indication}</div>
+          {/* Scientific Studies Card */}
+          <div className="absolute z-50" style={{ left: '50px', top: window.innerHeight - 420 }}>
+            <div className="w-96 bg-blue-950/95 backdrop-blur-md rounded-lg border border-blue-400/60 p-5 shadow-lg shadow-blue-500/20">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-blue-300 flex items-center">
+                  <Microscope className="w-5 h-5 mr-2" />
+                  Estudos Científicos ({scientificData?.length || 0})
+                </h3>
+                <TextToSpeech 
+                  text={`Temos ${scientificData?.length || 0} estudos científicos sobre cannabis medicinal`}
+                  className="text-xs"
+                />
+              </div>
+              <div className="space-y-3 max-h-48 overflow-y-auto">
+                {scientificData?.map((study, idx) => (
+                  <div key={idx} className="text-sm text-blue-200 p-3 bg-blue-900/50 rounded-lg border-l-4 border-blue-400/80 hover:bg-blue-800/60 transition-all">
+                    <div className="font-semibold text-blue-100 mb-1">{study.title}</div>
+                    <div className="text-blue-300 mb-2">{study.description}</div>
+                    <div className="text-blue-400 text-xs flex items-center justify-between">
+                      <span>📍 {study.compound} • {study.indication}</span>
+                      <span className="bg-blue-800/50 px-2 py-1 rounded">{study.status}</span>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )) || <div className="text-blue-400">Carregando estudos...</div>}
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Clinical Cases Cards */}
-          {clinicalData && clinicalData.length > 0 && (
-            <div className="absolute z-50" style={{ left: '450px', top: window.innerHeight - 450 }}>
-              <div className="w-80 bg-green-950/90 backdrop-blur-md rounded-lg border border-green-500/40 p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-green-300 flex items-center">
-                    <Pill className="w-4 h-4 mr-2" />
-                    Casos Clínicos ({clinicalData.length})
-                  </h3>
-                  <TextToSpeech 
-                    text={`${clinicalData.length} casos clínicos documentados: ${clinicalData.map(c => c.caseNumber).join(', ')}`}
-                    className="text-xs"
-                  />
-                </div>
-                <div className="space-y-2 max-h-32 overflow-y-auto">
-                  {clinicalData.map((case_, idx) => (
-                    <div key={idx} className="text-xs text-green-200 p-2 bg-green-900/40 rounded border-l-2 border-green-400/60 cursor-pointer hover:bg-green-800/40">
-                      <div className="font-medium">{case_.caseNumber}</div>
-                      <div className="text-green-300 mt-1">{case_.description}</div>
-                      <div className="text-green-400 mt-1 text-xs">👨‍⚕️ {case_.indication} • Resultado: {case_.outcome}</div>
+          {/* Clinical Cases Card */}
+          <div className="absolute z-50" style={{ left: '470px', top: window.innerHeight - 420 }}>
+            <div className="w-96 bg-green-950/95 backdrop-blur-md rounded-lg border border-green-400/60 p-5 shadow-lg shadow-green-500/20">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-green-300 flex items-center">
+                  <Pill className="w-5 h-5 mr-2" />
+                  Casos Clínicos ({clinicalData?.length || 0})
+                </h3>
+                <TextToSpeech 
+                  text={`Temos ${clinicalData?.length || 0} casos clínicos documentados`}
+                  className="text-xs"
+                />
+              </div>
+              <div className="space-y-3 max-h-48 overflow-y-auto">
+                {clinicalData?.map((case_, idx) => (
+                  <div key={idx} className="text-sm text-green-200 p-3 bg-green-900/50 rounded-lg border-l-4 border-green-400/80 hover:bg-green-800/60 transition-all">
+                    <div className="font-semibold text-green-100 mb-1">{case_.caseNumber}</div>
+                    <div className="text-green-300 mb-2">{case_.description}</div>
+                    <div className="text-green-400 text-xs">
+                      <div>👨‍⚕️ {case_.indication}</div>
+                      <div className="mt-1">✓ Resultado: {case_.outcome}</div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )) || <div className="text-green-400">Carregando casos...</div>}
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Regulatory Alerts Cards */}
-          {alertsData && alertsData.length > 0 && (
-            <div className="absolute z-50" style={{ left: '850px', top: window.innerHeight - 450 }}>
-              <div className="w-80 bg-red-950/90 backdrop-blur-md rounded-lg border border-red-500/40 p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-semibold text-red-300 flex items-center">
-                    <AlertTriangle className="w-4 h-4 mr-2" />
-                    Alertas Regulatórios ({alertsData.length})
-                  </h3>
-                  <TextToSpeech 
-                    text={`${alertsData.length} alertas regulatórios ativos: ${alertsData.map(a => a.message).join(', ')}`}
-                    className="text-xs"
-                  />
-                </div>
-                <div className="space-y-2 max-h-32 overflow-y-auto">
-                  {alertsData.map((alert, idx) => (
-                    <div key={idx} className="text-xs text-red-200 p-2 bg-red-900/40 rounded border-l-2 border-red-400/60 cursor-pointer hover:bg-red-800/40">
-                      <div className="font-medium">{alert.type}</div>
-                      <div className="text-red-300 mt-1">{alert.message}</div>
-                      <div className="text-red-400 mt-1 text-xs">🚨 Prioridade: {alert.priority} • Status: {alert.readStatus ? 'Lido' : 'Novo'}</div>
+          {/* Regulatory Alerts Card */}
+          <div className="absolute z-50" style={{ left: '890px', top: window.innerHeight - 420 }}>
+            <div className="w-96 bg-red-950/95 backdrop-blur-md rounded-lg border border-red-400/60 p-5 shadow-lg shadow-red-500/20">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-red-300 flex items-center">
+                  <AlertTriangle className="w-5 h-5 mr-2" />
+                  Alertas Regulatórios ({alertsData?.length || 0})
+                </h3>
+                <TextToSpeech 
+                  text={`Há ${alertsData?.length || 0} alertas regulatórios importantes`}
+                  className="text-xs"
+                />
+              </div>
+              <div className="space-y-3 max-h-48 overflow-y-auto">
+                {alertsData?.map((alert, idx) => (
+                  <div key={idx} className="text-sm text-red-200 p-3 bg-red-900/50 rounded-lg border-l-4 border-red-400/80 hover:bg-red-800/60 transition-all">
+                    <div className="font-semibold text-red-100 mb-1">{alert.type}</div>
+                    <div className="text-red-300 mb-2">{alert.message}</div>
+                    <div className="text-red-400 text-xs flex items-center justify-between">
+                      <span>🚨 Prioridade: {alert.priority}</span>
+                      <span className={`px-2 py-1 rounded ${alert.readStatus ? 'bg-green-800/50' : 'bg-red-800/50'}`}>
+                        {alert.readStatus ? 'Lido' : 'Novo'}
+                      </span>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )) || <div className="text-red-400">Carregando alertas...</div>}
               </div>
             </div>
-          )}
+          </div>
         </>
       )}
 
