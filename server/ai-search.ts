@@ -57,8 +57,19 @@ export class MedicalAISearch {
     // Ordenar por relevância
     relatedResults = relatedResults.sort((a, b) => b.relevance - a.relevance).slice(0, 6);
     
+    // Se não encontrou resultados relevantes, forçar inclusão de todos os dados para consultas exploratórias
+    if (relatedResults.length === 0 && (lowerQuery.includes('temos') || lowerQuery.includes('quais') || lowerQuery.includes('estudos'))) {
+      studies.forEach(study => {
+        relatedResults.push({ type: 'study', relevance: 0.5, data: study });
+      });
+      cases.forEach(caseItem => {
+        relatedResults.push({ type: 'case', relevance: 0.5, data: caseItem });
+      });
+      relatedResults = relatedResults.slice(0, 6);
+    }
+    
     // Gerar resposta baseada no tipo de pergunta
-    if (doseKeywords.some(keyword => lowerQuery.includes(keyword))) {
+    if (doseKeywords.some(keyword => lowerQuery.includes(keyword)) || lowerQuery.includes('temos')) {
       answer = this.generateDosageAnswer(lowerQuery, relatedResults);
       suggestions = [
         'Qual a dosagem padrão de CBD para epilepsia?',
@@ -99,14 +110,28 @@ export class MedicalAISearch {
   }
   
   private static calculateRelevance(query: string, text: string): number {
-    const queryWords = query.split(' ').filter(w => w.length > 2);
+    const queryWords = query.toLowerCase().split(' ').filter(w => w.length > 1);
     const textLower = text.toLowerCase();
+    
+    // Palavras-chave importantes têm peso maior
+    const importantKeywords: Record<string, number> = {
+      'dosagem': 3, 'dose': 3, 'mg': 2, 'cbd': 3, 'thc': 3,
+      'epilepsia': 3, 'dor': 2, 'cancer': 3, 'parkinson': 3,
+      'eficacia': 2, 'resultado': 2, 'estudo': 2, 'caso': 2,
+      'efeito': 2, 'adverso': 2, 'seguranca': 2, 'anvisa': 3,
+      'temos': 1, 'quais': 1, 'como': 1, 'qual': 1
+    };
     
     let matches = 0;
     let totalWeight = 0;
     
+    // Se a consulta é muito simples, dar relevância alta para ter dados
+    if (queryWords.length <= 2 && (queryWords.includes('temos') || queryWords.includes('quais'))) {
+      return 0.8; // Alta relevância para consultas exploratórias
+    }
+    
     queryWords.forEach(word => {
-      const weight = word.length / 10; // Palavras maiores têm mais peso
+      const weight = importantKeywords[word] || 1;
       totalWeight += weight;
       
       if (textLower.includes(word)) {
@@ -114,7 +139,12 @@ export class MedicalAISearch {
       }
     });
     
-    return totalWeight > 0 ? matches / totalWeight : 0;
+    // Se não encontrou nada específico mas tem palavras relevantes, dar chance mínima
+    if (matches === 0 && queryWords.some(w => importantKeywords[w])) {
+      return 0.4;
+    }
+    
+    return totalWeight > 0 ? Math.min(matches / totalWeight, 1) : 0;
   }
   
   private static generateDosageAnswer(query: string, results: SearchResult[]): string {
