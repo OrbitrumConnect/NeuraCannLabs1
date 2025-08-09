@@ -195,7 +195,32 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
                         <span className="text-neon-cyan font-semibold">VerdiData IA</span>
                       </div>
                     )}
-                    <p>{msg.message}</p>
+                    <div className="whitespace-pre-line">
+                      {msg.message.split('\n').map((line, i) => {
+                        if (line.startsWith('🔬 **') || line.startsWith('📊 **')) {
+                          return <div key={i} className="font-semibold text-emerald-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                        }
+                        if (line.startsWith('📈 **') || line.startsWith('📚 **')) {
+                          return <div key={i} className="font-semibold text-blue-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                        }
+                        if (line.startsWith('👨‍⚕️ **') || line.startsWith('🏥 **')) {
+                          return <div key={i} className="font-semibold text-purple-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                        }
+                        if (line.startsWith('⚠️ **')) {
+                          return <div key={i} className="font-semibold text-amber-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                        }
+                        if (line.startsWith('🎯 **')) {
+                          return <div key={i} className="font-semibold text-neon-cyan mt-2">{line.replace(/\*\*/g, '')}</div>
+                        }
+                        if (line.startsWith('•')) {
+                          return <div key={i} className="ml-2 text-gray-200">{line}</div>
+                        }
+                        if (line.startsWith('❌') || line.startsWith('🔍')) {
+                          return <div key={i} className="text-gray-300">{line}</div>
+                        }
+                        return <div key={i}>{line}</div>
+                      })}
+                    </div>
                   </div>
                 </div>
               ))}
