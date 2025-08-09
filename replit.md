@@ -12,15 +12,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Implemented neural research tree expanding from Dr. Cannabis IA
-- Research tree expands vertically from avatar with neural connection lines
-- Main searches appear as expandable nodes connected to avatar via cyan neural lines
-- Sub-searches branch from main nodes with purple neural connections  
-- Each node expandable/collapsible to avoid interface overlap
-- Visual hierarchy: main nodes (cyan) → sub-nodes (purple) with proper spacing
-- Node management: close individual research threads, expand/collapse content
-- Tree structure prevents interface overlap while maintaining research context
-- Neural aesthetic matches avatar's "mind expansion" concept
+**2025-08-09**: Expanded neural research web with optimal screen utilization
+- Teia neural agora usa metade inferior da tela (50vh) para máximo aproveitamento
+- Nós de pesquisa ampliados com altura mínima de 200px para melhor legibilidade
+- Sub-pesquisas expandidas com 120px mínimo e conteúdo até 300 caracteres
+- Grid responsivo: 1 coluna (mobile), 2 colunas (tablet), 3 colunas (desktop)
+- Área scrollável permite múltiplas pesquisas sem limitação de espaço
+- Conexão neural ajustada para nova proporção da interface
+- Interface otimizada para pesquisa médica profunda e detalhada
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
