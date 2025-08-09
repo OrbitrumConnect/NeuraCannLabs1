@@ -88,11 +88,10 @@ export default function DashboardLayout({
         </div>
       </header>
 
-      {/* Side Navigation - positioned at bottom of screen */}
-      <nav
-        className={`fixed bottom-0 left-0 h-3/4 w-full sm:w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-10 lg:hidden holographic-border rounded-t-2xl ${
-          sideNavOpen ? "translate-y-0" : "translate-y-full"
-        }`}
+      {/* Side Navigation - positioned below avatar */}
+      {sideNavOpen && (
+        <div className="fixed top-72 left-0 right-0 bottom-0 z-5 lg:hidden">
+          <nav className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md h-full overflow-y-auto holographic-border rounded-t-2xl"
         data-testid="side-navigation"
       >
         <div className="p-6 pt-8">
@@ -156,17 +155,12 @@ export default function DashboardLayout({
               </button>
             ))}
           </div>
+          </div>
+          </nav>
         </div>
-      </nav>
-
-      {/* Overlay for mobile */}
-      {sideNavOpen && (
-        <div
-          className="fixed inset-0 bg-black/60 z-5 lg:hidden"
-          onClick={() => setSideNavOpen(false)}
-          data-testid="nav-overlay"
-        />
       )}
+
+
 
       {/* Main Content */}
       <main className="pt-14 sm:pt-20 min-h-screen cyber-grid">
