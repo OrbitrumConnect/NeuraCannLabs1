@@ -306,7 +306,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
 
       {/* AI Response Section - Integrated in content when expanded */}
       {aiResponse && !aiCardMinimized && (
-        <div className={`mt-8 mb-12 transition-all duration-300 ${showSubSearch ? 'mr-[410px]' : ''}`}>
+        <div className={`mt-8 mb-12 transition-all duration-300 ${showSubSearch ? 'mr-[340px]' : ''}`}>
           <div className="bg-gradient-to-r from-gray-900/80 via-black/90 to-gray-900/80 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/10">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
@@ -454,7 +454,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
           style={{
             left: `${(cardPosition?.x || 50) + 350}px`,
             top: `${(cardPosition?.y || 250) + 32}px`,
-            width: `${window.innerWidth - (cardPosition?.x || 50) - 350 - 420}px`,
+            width: `${window.innerWidth - (cardPosition?.x || 50) - 350 - 340}px`,
             height: '2px',
             background: 'linear-gradient(to right, rgba(6, 182, 212, 0.5), rgba(147, 51, 234, 0.5))',
             borderRadius: '1px',
@@ -466,7 +466,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
       {/* Sub-search lateral card */}
       {showSubSearch && subSearchResponse && (
         <div 
-          className="fixed right-4 top-20 bottom-4 w-96 z-50 transition-all duration-300 ease-in-out"
+          className="fixed right-6 top-32 w-80 h-[60vh] z-50 transition-all duration-300 ease-in-out"
           style={{ 
             transform: showSubSearch ? 'translateX(0)' : 'translateX(100%)',
           }}
