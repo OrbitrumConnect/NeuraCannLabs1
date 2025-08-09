@@ -85,6 +85,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   const [panY, setPanY] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [cardPositions, setCardPositions] = useState<Record<string, {x: number, y: number}>>({});
+  const [draggingCard, setDraggingCard] = useState<string | null>(null);
 
   const filters = [
     { id: "todos", label: "Todos", icon: Brain },
@@ -254,6 +256,28 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
     setZoomLevel(1);
     setPanX(0);
     setPanY(0);
+  };
+
+  const handleCardMouseDown = (e: React.MouseEvent, cardId: string) => {
+    e.stopPropagation();
+    setDraggingCard(cardId);
+    const currentPos = cardPositions[cardId] || { x: 0, y: 0 };
+    setDragStart({ x: e.clientX - currentPos.x, y: e.clientY - currentPos.y });
+  };
+
+  const handleCardMouseMove = (e: React.MouseEvent) => {
+    if (!draggingCard) return;
+    e.preventDefault();
+    const newX = e.clientX - dragStart.x;
+    const newY = e.clientY - dragStart.y;
+    setCardPositions(prev => ({
+      ...prev,
+      [draggingCard]: { x: newX, y: newY }
+    }));
+  };
+
+  const handleCardMouseUp = () => {
+    setDraggingCard(null);
   };
 
   const generateAIResponse = (question: string): string => {
@@ -486,9 +510,18 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             <div 
               className="w-full h-full overflow-hidden"
               onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
+              onMouseMove={(e) => {
+                handleMouseMove(e);
+                handleCardMouseMove(e);
+              }}
+              onMouseUp={() => {
+                handleMouseUp();
+                handleCardMouseUp();
+              }}
+              onMouseLeave={() => {
+                handleMouseUp();
+                handleCardMouseUp();
+              }}
             >
               <div 
                 className={`w-full h-full relative ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
@@ -589,67 +622,110 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                   </div>
                 </div>
 
-                {/* Individual Sub-research nodes - positioned relative to their parent */}
-                {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => {
-                  const subTabs = searchTabs.filter(tab => tab.parentId === mainTab.id);
-                  return subTabs.map((subTab, subIndex) => (
-                    <div key={`sub-${subTab.id}`} 
-                         className="absolute z-30" 
-                         style={{
-                           left: `${20 + (mainIndex % 3) * 400 + 320}px`, // Position to the right of main node
-                           top: `${120 + mainIndex * 280 + subIndex * 160}px`, // Stagger vertically per sub-search
-                         }}>
-                      {/* Neural connection line to parent */}
-                      <div className="absolute -left-8 top-16 w-8 h-0.5 bg-purple-400/60 animate-pulse" />
-                      <div className="absolute -left-8 top-16 w-0.5 h-4 bg-purple-400/60" />
-                      
-                      {/* Sub Research Node */}
-                      <div 
-                        className={`research-node bg-black/85 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[120px] w-72 ${
-                          activeTabId === subTab.id 
-                            ? 'border-purple-400 shadow-lg shadow-purple-400/30 scale-105' 
-                            : 'border-purple-600/50 hover:border-purple-400/70 hover:scale-102'
-                        }`}
-                        onClick={() => setActiveTabId(activeTabId === subTab.id ? null : subTab.id)}
-                      >
-                        <div className="flex justify-between items-start mb-3">
-                          <h4 className="text-sm font-medium text-purple-300 flex items-center">
-                            <span className="mr-2 text-purple-400">↳</span>
-                            {subTab.query}
-                          </h4>
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
-                              if (activeTabId === subTab.id) setActiveTabId(null);
-                            }}
-                            className="text-red-400 hover:text-red-300 w-5 h-5 flex items-center justify-center rounded hover:bg-red-500/20"
-                          >
-                            ×
-                          </button>
-                        </div>
-                        
-                        {/* Sub-node content */}
-                        <div className="text-xs text-gray-300 leading-relaxed">
-                          <div dangerouslySetInnerHTML={{ 
-                            __html: subTab.response.substring(0, activeTabId === subTab.id ? 300 : 120).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                          }} />
-                          {subTab.response.length > (activeTabId === subTab.id ? 300 : 120) && '...'}
-                        </div>
-                        
-                        {/* Parent indicator */}
-                        <div className="text-xs text-purple-500 mt-2 opacity-60">
-                          ↖ De: {mainTab.query.substring(0, 25)}...
-                        </div>
-                      </div>
-                    </div>
-                  ));
-                })}
+
               </div>
             </div>
           </div>
         </>
       )}
+
+      {/* Individual Draggable Sub-research Cards - Fixed to viewport */}
+      {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => {
+        const parentTab = searchTabs.find(tab => tab.id === subTab.parentId);
+        const position = cardPositions[subTab.id] || { 
+          x: window.innerWidth - 350, // Start from right side of screen
+          y: 100 + index * 180 // Stagger vertically
+        };
+        
+        return (
+          <div
+            key={`floating-sub-${subTab.id}`}
+            className="fixed z-50"
+            style={{
+              left: `${position.x}px`,
+              top: `${position.y}px`,
+              transform: draggingCard === subTab.id ? 'scale(1.05)' : 'scale(1)',
+              transition: draggingCard === subTab.id ? 'none' : 'transform 0.2s ease'
+            }}
+          >
+            {/* Neural connection line - Dynamic line to parent */}
+            <svg className="absolute -z-10 pointer-events-none" style={{ 
+              width: '100vw', 
+              height: '100vh',
+              left: `-${position.x}px`,
+              top: `-${position.y}px`
+            }}>
+              <line
+                x1={position.x + 140} // Center of sub-card
+                y1={position.y + 80}
+                x2={200} // Approximate center of main research area
+                y2={400}
+                stroke="rgb(168, 85, 247, 0.6)"
+                strokeWidth="2"
+                strokeDasharray="5,5"
+                className="animate-pulse"
+              />
+            </svg>
+            
+            {/* Draggable Sub Research Card */}
+            <div 
+              className={`bg-black/90 backdrop-blur-md rounded-lg border p-4 cursor-move transition-all min-h-[140px] w-80 shadow-2xl ${
+                activeTabId === subTab.id 
+                  ? 'border-purple-400 shadow-lg shadow-purple-400/30' 
+                  : 'border-purple-600/50 hover:border-purple-400/70'
+              } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
+              onMouseDown={(e) => handleCardMouseDown(e, subTab.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
+              }}
+            >
+              {/* Drag handle */}
+              <div className="flex justify-between items-start mb-3">
+                <div className="flex items-center">
+                  <div className="w-6 h-6 mr-2 flex items-center justify-center text-purple-400 cursor-move">
+                    ⋮⋮
+                  </div>
+                  <h4 className="text-sm font-medium text-purple-300 flex items-center">
+                    <span className="mr-2 text-purple-400">↳</span>
+                    {subTab.query}
+                  </h4>
+                </div>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
+                    setCardPositions(prev => {
+                      const newPos = { ...prev };
+                      delete newPos[subTab.id];
+                      return newPos;
+                    });
+                    if (activeTabId === subTab.id) setActiveTabId(null);
+                  }}
+                  className="text-red-400 hover:text-red-300 w-6 h-6 flex items-center justify-center rounded hover:bg-red-500/20"
+                >
+                  ×
+                </button>
+              </div>
+              
+              {/* Sub-card content */}
+              <div className="text-sm text-gray-300 leading-relaxed">
+                <div dangerouslySetInnerHTML={{ 
+                  __html: subTab.response.substring(0, activeTabId === subTab.id ? 400 : 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                }} />
+                {subTab.response.length > (activeTabId === subTab.id ? 400 : 150) && '...'}
+              </div>
+              
+              {/* Parent indicator */}
+              {parentTab && (
+                <div className="text-xs text-purple-500 mt-3 pt-2 border-t border-purple-800/30 opacity-80">
+                  ↖ Originada de: {parentTab.query.substring(0, 30)}...
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      })}
 
     </div>
   );
