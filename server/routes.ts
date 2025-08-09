@@ -166,6 +166,40 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Study Submissions routes
+  // Admin endpoints for study review
+  app.get("/api/admin/study-submissions", async (req, res) => {
+    try {
+      const submissions = await storage.getAllStudySubmissions();
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching all study submissions:", error);
+      res.status(500).json({ error: "Failed to fetch study submissions" });
+    }
+  });
+
+  app.post("/api/admin/study-submissions/:id/review", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, reviewerNotes } = req.body;
+      
+      const updatedSubmission = await storage.updateStudySubmission(id, {
+        status,
+        reviewerNotes,
+        reviewedAt: new Date(),
+      });
+
+      // If approved, integrate into scientific database
+      if (status === 'approved' && updatedSubmission) {
+        await storage.addApprovedStudyToDatabase(updatedSubmission);
+      }
+      
+      res.json(updatedSubmission);
+    } catch (error) {
+      console.error("Error reviewing study submission:", error);
+      res.status(500).json({ error: "Failed to review study submission" });
+    }
+  });
+
   app.get("/api/study-submissions", async (req, res) => {
     try {
       const userId = req.query.userId as string | undefined;

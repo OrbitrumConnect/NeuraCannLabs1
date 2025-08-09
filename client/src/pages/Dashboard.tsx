@@ -7,6 +7,7 @@ import ClinicalDashboard from "./ClinicalDashboard";
 import AlertsDashboard from "./AlertsDashboard";
 import MyStudyDashboard from "./MyStudyDashboard";
 import ProfileDashboard from "./ProfileDashboard";
+import { AdminNavigation } from '@/components/AdminNavigation';
 
 export default function Dashboard() {
   const { section } = useParams();
@@ -40,13 +41,15 @@ export default function Dashboard() {
   };
 
   return (
-    <DashboardLayout
-      activeDashboard={activeDashboard}
-      onDashboardChange={handleDashboardChange}
-      onMenuClick={handleMenuClick}
-      sideNavOpen={sideNavOpen}
-      setSideNavOpen={setSideNavOpen}
-    >
+    <div className="relative">
+      <AdminNavigation />
+      <DashboardLayout
+        activeDashboard={activeDashboard}
+        onDashboardChange={handleDashboardChange}
+        onMenuClick={handleMenuClick}
+        sideNavOpen={sideNavOpen}
+        setSideNavOpen={setSideNavOpen}
+      >
       {activeDashboard === "overview" && (
         <OverviewDashboard 
           onPlanetClick={handleCosmicPlanetClick}
@@ -69,7 +72,8 @@ export default function Dashboard() {
       {activeDashboard === "profile" && (
         <ProfileDashboard />
       )}
-    </DashboardLayout>
+      </DashboardLayout>
+    </div>
   );
 }
 

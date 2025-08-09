@@ -30,10 +30,12 @@ export interface IStorage {
   
   // Study Submissions
   getStudySubmissions(userId?: string): Promise<StudySubmission[]>;
+  getAllStudySubmissions(): Promise<StudySubmission[]>;
   getStudySubmission(id: string): Promise<StudySubmission | undefined>;
   createStudySubmission(submission: InsertStudySubmission): Promise<StudySubmission>;
   updateStudySubmission(id: string, updates: Partial<StudySubmission>): Promise<StudySubmission | undefined>;
   submitStudyForReview(id: string): Promise<StudySubmission | undefined>;
+  addApprovedStudyToDatabase(submission: StudySubmission): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
@@ -53,6 +55,7 @@ export class MemStorage implements IStorage {
     // Inicializar com base de dados abrangente
     this.initializeSampleData();
     this.loadComprehensiveData();
+    this.createSampleStudySubmission();
   }
 
   private initializeSampleData() {
@@ -422,7 +425,7 @@ export class MemStorage implements IStorage {
     if (userId) {
       submissions = submissions.filter(s => s.userId === userId);
     }
-    return submissions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return submissions.sort((a, b) => (b.createdAt ? new Date(b.createdAt).getTime() : 0) - (a.createdAt ? new Date(a.createdAt).getTime() : 0));
   }
 
   async getStudySubmission(id: string): Promise<StudySubmission | undefined> {
@@ -435,6 +438,13 @@ export class MemStorage implements IStorage {
     const newSubmission: StudySubmission = {
       id,
       ...submission,
+      status: submission.status || 'draft',
+      editedContent: submission.editedContent || null,
+      aiAnalysis: submission.aiAnalysis || null,
+      correctedAnalysis: submission.correctedAnalysis || null,
+      reviewerNotes: submission.reviewerNotes || null,
+      submittedAt: submission.submittedAt || null,
+      reviewedAt: submission.reviewedAt || null,
       createdAt: now,
       updatedAt: now,
     };
@@ -455,6 +465,11 @@ export class MemStorage implements IStorage {
     return updated;
   }
 
+  async getAllStudySubmissions(): Promise<StudySubmission[]> {
+    const submissions = Array.from(this.studySubmissions.values());
+    return submissions.sort((a, b) => (b.createdAt ? new Date(b.createdAt).getTime() : 0) - (a.createdAt ? new Date(a.createdAt).getTime() : 0));
+  }
+
   async submitStudyForReview(id: string): Promise<StudySubmission | undefined> {
     const submission = this.studySubmissions.get(id);
     if (!submission) return undefined;
@@ -467,6 +482,65 @@ export class MemStorage implements IStorage {
     };
     this.studySubmissions.set(id, updated);
     return updated;
+  }
+
+  async addApprovedStudyToDatabase(submission: StudySubmission): Promise<void> {
+    // Integrate approved study into scientific database
+    const studyId = randomUUID();
+    const newStudy: ScientificStudy = {
+      id: studyId,
+      title: submission.title,
+      description: `${submission.editedContent || submission.originalContent}\n\nEstudo aprovado pela equipe NeuroCann Lab. Análise da IA: ${submission.aiAnalysis}`,
+      compound: this.extractCompound(submission),
+      indication: this.extractIndication(submission),
+      phase: "Community Approved",
+      status: "Integrado na base científica",
+      date: new Date().toISOString().split('T')[0],
+      createdAt: new Date(),
+    };
+    
+    this.scientificStudies.set(studyId, newStudy);
+    console.log(`Estudo aprovado integrado à base científica: ${newStudy.title}`);
+  }
+
+  private extractCompound(submission: StudySubmission): string {
+    const content = submission.editedContent || submission.originalContent;
+    if (content.toLowerCase().includes('cbd')) return 'CBD';
+    if (content.toLowerCase().includes('thc')) return 'THC';
+    if (content.toLowerCase().includes('cbg')) return 'CBG';
+    if (content.toLowerCase().includes('cannabis')) return 'Cannabis';
+    return 'Cannabis medicinal';
+  }
+
+  private extractIndication(submission: StudySubmission): string {
+    const content = submission.editedContent || submission.originalContent;
+    if (content.toLowerCase().includes('epilepsia') || content.toLowerCase().includes('dravet')) return 'Epilepsia';
+    if (content.toLowerCase().includes('dor')) return 'Controle da dor';
+    if (content.toLowerCase().includes('ansiedade')) return 'Ansiedade';
+    if (content.toLowerCase().includes('parkinson')) return 'Doença de Parkinson';
+    if (content.toLowerCase().includes('alzheimer')) return 'Doença de Alzheimer';
+    return 'Uso medicinal';
+  }
+
+  // Create sample study submission for testing
+  private createSampleStudySubmission() {
+    const sampleSubmission: StudySubmission = {
+      id: "submission-1",
+      userId: "user-1",
+      title: "CBD para síndrome de Down com epilepsia",
+      originalContent: "Estudo sobre uso de CBD 25mg/kg em crianças com síndrome de Down que desenvolvem epilepsia. Protocolo de 12 semanas com avaliação neurológica completa.",
+      submissionType: "text",
+      status: "submitted",
+      editedContent: null,
+      aiAnalysis: "ALERTA: Detectado possível erro médico. Síndrome de Down não é uma forma de epilepsia. Possivelmente você quis se referir à Síndrome de Dravet, que é uma forma rara de epilepsia refratária tratável com CBD. Dosagem de 25mg/kg é excessiva - protocolo padrão é 10-20mg/kg/dia dividido em 2 doses. Necessária correção antes da submissão.",
+      correctedAnalysis: null,
+      reviewerNotes: null,
+      submittedAt: new Date(),
+      reviewedAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.studySubmissions.set(sampleSubmission.id, sampleSubmission);
   }
 }
 
