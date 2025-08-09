@@ -168,27 +168,27 @@ export default function MedicalAvatar3D({
     const lights = scene.children.filter(child => child instanceof THREE.Light);
     
     if (isListening) {
-      // Green glow when listening (nova paleta verde-amarelado)
+      // Super green glow when listening - muito mais intenso
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.133, 0.773, 0.369); // Verde #22c55e (green-500)
-          light.intensity = 1.8;
+          light.color.setRGB(0.0, 1.0, 0.4); // Verde neon super vibrante
+          light.intensity = 2.5;
         }
       });
     } else if (isActive) {
-      // Green when active (nova paleta verde-amarelado)
+      // Bright green when active - bem chamativo
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.196, 0.804, 0.196); // Verde-lima #32cd32
-          light.intensity = 1.3;
+          light.color.setRGB(0.133, 0.973, 0.569); // Verde-lima brilhante #22f591
+          light.intensity = 2.0;
         }
       });
     } else {
-      // Gray when idle
+      // Soft green when idle - não cinza, mas verde suave
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.4, 0.4, 0.4); // Cinza mais suave
-          light.intensity = 1.0;
+          light.color.setRGB(0.2, 0.7, 0.4); // Verde suave
+          light.intensity = 1.2;
         }
       });
     }
@@ -206,8 +206,8 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: isActive 
-            ? 'drop-shadow(0 0 15px rgba(34,197,94,0.5)) brightness(1.1)' 
-            : 'drop-shadow(0 4px 8px rgba(100,100,100,0.3)) brightness(0.8)'
+            ? 'drop-shadow(0 0 30px rgba(34,197,94,0.9)) drop-shadow(0 0 60px rgba(16,185,129,0.6)) brightness(1.3) saturate(1.2)' 
+            : 'drop-shadow(0 0 20px rgba(34,197,94,0.4)) drop-shadow(0 0 40px rgba(16,185,129,0.2)) brightness(1.0) saturate(1.1)'
         }}
       />
 
@@ -219,9 +219,13 @@ export default function MedicalAvatar3D({
       )}
       
       {isActive && !isListening && (
-        <div className={`absolute top-3 right-3 bg-green-400 rounded-full animate-pulse ${
+        <div className={`absolute top-3 right-3 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/70 ${
           className?.includes('w-40') ? 'w-4 h-4' : className?.includes('w-24') ? 'w-3 h-3' : 'w-2 h-2'
-        }`} />
+        }`} 
+        style={{
+          boxShadow: '0 0 15px rgba(74, 222, 128, 0.8), 0 0 30px rgba(34, 197, 94, 0.6)'
+        }}
+        />
       )}
 
       {/* Medical Badge */}
