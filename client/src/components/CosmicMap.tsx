@@ -243,9 +243,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    // Only enable drag on background, not on research nodes or draggable cards
-    if ((e.target as HTMLElement).closest('.research-node') || 
-        (e.target as HTMLElement).closest('.draggable-card')) return;
+    // Only enable drag on background, not on research nodes
+    if ((e.target as HTMLElement).closest('.research-node')) return;
     setIsDragging(true);
     setDragStart({ x: e.clientX - panX, y: e.clientY - panY });
   };
@@ -318,7 +317,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
       }
     });
     
-    return [...new Set(correlations)].slice(0, 3);
+    return Array.from(new Set(correlations)).slice(0, 3);
   };
 
   const generateAIResponse = (question: string): string => {
@@ -586,7 +585,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                     {/* Neural connection line to this node */}
                     <div className="absolute -top-4 left-1/2 w-0.5 h-4 bg-neon-cyan/60 transform -translate-x-1/2" />
                     
-                    {/* Main Research Node */}
+                    {/* Main Research Node - Fixed position, no drag */}
                     <div 
                       className={`research-node relative bg-black/90 backdrop-blur-md rounded-xl border p-6 cursor-pointer transition-all min-h-[220px] ${
                         activeTabId === mainTab.id 
@@ -675,10 +674,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         const parentTab = searchTabs.find(tab => tab.id === subTab.parentId);
         const parentIndex = searchTabs.filter(tab => tab.type === 'main').findIndex(tab => tab.id === subTab.parentId);
         
-        // Position next to the parent main card with 8% distance
+        // Position harmoniously next to parent card (n8n style)
         const basePosition = {
-          x: 220 + (parentIndex % 3) * 400 + 320 + (window.innerWidth * 0.08), // 8% distance from parent
-          y: 120 + parentIndex * 280 + index * 180
+          x: 600 + (parentIndex % 3) * 450 + 40, // Closer to parent, more organized
+          y: 150 + Math.floor(parentIndex / 3) * 320 + index * 90 // Better grid alignment
         };
         
         const position = cardPositions[subTab.id] || basePosition;
@@ -694,21 +693,21 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
               transition: draggingCard === subTab.id ? 'none' : 'transform 0.2s ease'
             }}
           >
-            {/* Neural connection line to parent */}
+            {/* Neural connection line to parent - Shorter and more elegant */}
             <div 
-              className="absolute -left-16 top-20 w-16 h-0.5 bg-purple-400/60 animate-pulse"
+              className="absolute -left-8 top-20 w-8 h-0.5 bg-purple-400/60 animate-pulse"
               style={{
                 background: 'linear-gradient(90deg, rgba(168,85,247,0.6) 0%, rgba(168,85,247,0.2) 100%)'
               }}
             />
-            <div className="absolute -left-16 top-20 w-0.5 h-4 bg-purple-400/60" />
+            <div className="absolute -left-8 top-20 w-0.5 h-2 bg-purple-400/60" />
             
-            {/* Sub Research Card */}
+            {/* Sub Research Card - Smaller and more harmonic */}
             <div 
-              className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all w-80 shadow-lg ${
+              className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all w-72 shadow-lg ${
                 activeTabId === subTab.id 
-                  ? 'border-purple-400 shadow-purple-400/30 h-52' 
-                  : 'border-purple-600/40 hover:border-purple-400/60 h-44'
+                  ? 'border-purple-400 shadow-purple-400/30 h-48' 
+                  : 'border-purple-600/40 hover:border-purple-400/60 h-40'
               } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
             >
               {/* Header */}
@@ -729,7 +728,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                     }}
                     title={subTab.query}
                   >
-                    ↳ {subTab.query.substring(0, 25)}{subTab.query.length > 25 ? '...' : ''}
+                    🔎 {subTab.query.substring(0, 22)}{subTab.query.length > 22 ? '...' : ''}
                   </h4>
                 </div>
                 <button 
