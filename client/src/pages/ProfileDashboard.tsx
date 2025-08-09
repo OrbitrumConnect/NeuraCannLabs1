@@ -35,7 +35,7 @@ export default function ProfileDashboard() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-600 rounded-xl flex items-center justify-center mr-4 animate-pulse-glow">
+        <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-600 rounded-xl flex items-center justify-center mr-4 profile-avatar">
           <i className="fas fa-user-circle text-white text-2xl" />
         </div>
         <div>

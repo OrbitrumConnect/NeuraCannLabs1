@@ -562,6 +562,16 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
                           </Button>
                         </>
                       )}
+                      {submission.status === 'approved' && (
+                        <Button
+                          onClick={() => window.location.href = '/dashboard?tab=forum'}
+                          className="bg-blue-600 hover:bg-blue-700 text-white text-sm"
+                          data-testid={`button-send-to-forum-${submission.id}`}
+                        >
+                          <i className="fas fa-comments mr-1" />
+                          Enviar para Fórum
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </CardHeader>

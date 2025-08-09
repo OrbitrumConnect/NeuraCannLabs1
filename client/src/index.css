@@ -151,6 +151,12 @@
   .avatar-glow {
     filter: drop-shadow(0 0 20px rgba(124, 255, 90, 0.6));
   }
+
+  .profile-avatar {
+    /* Remove glow for profile avatar */
+    filter: none;
+    box-shadow: none;
+  }
 }
 
 @keyframes scan {

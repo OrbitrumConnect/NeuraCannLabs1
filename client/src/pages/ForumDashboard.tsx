@@ -212,7 +212,7 @@ export default function ForumDashboard() {
                       <SelectValue placeholder="Selecionar estudo aprovado..." />
                     </SelectTrigger>
                     <SelectContent className="bg-cyber-dark border-gray-600">
-                      <SelectItem value="">Discussão geral</SelectItem>
+                      <SelectItem value="general">Discussão geral</SelectItem>
                       {userStudies?.map((study: any) => (
                         <SelectItem key={study.id} value={study.id}>
                           {study.title}
