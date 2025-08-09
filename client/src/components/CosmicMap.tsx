@@ -15,6 +15,7 @@ interface CosmicMapProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
+  onAIResponse?: (response: string, suggestions: string[], results: any[]) => void;
 }
 
 const planets: CosmicPlanet[] = [
@@ -56,7 +57,7 @@ const planets: CosmicPlanet[] = [
   },
 ];
 
-export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: CosmicMapProps) {
+export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, onAIResponse }: CosmicMapProps) {
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("todos");
@@ -65,6 +66,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
   const [isTyping, setIsTyping] = useState(false);
   const [relatedOptions, setRelatedOptions] = useState<string[]>([]);
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [aiResponse, setAiResponse] = useState<string>('');
 
   const filters = [
     { id: "todos", label: "Todos", icon: Brain },
@@ -100,15 +102,18 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
 
       const result = await response.json();
 
-      setChatMessages(prev => [...prev, { type: 'ai', message: result.answer }]);
+      // Instead of adding to chat, send response to main area
+      setAiResponse(result.answer);
       setRelatedOptions(result.suggestions);
       setSearchResults(result.relatedResults);
+      onAIResponse?.(result.answer, result.suggestions, result.relatedResults);
 
     } catch (error) {
       console.error('Erro na busca IA:', error);
       // Fallback to local response
-      const aiResponse = generateAIResponse(userMessage);
-      setChatMessages(prev => [...prev, { type: 'ai', message: aiResponse }]);
+      const fallbackResponse = generateAIResponse(userMessage);
+      setAiResponse(fallbackResponse);
+      onAIResponse?.(fallbackResponse, [], []);
     } finally {
       setIsTyping(false);
     }
@@ -174,94 +179,13 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
             </div>
           </div>
 
-          {/* Chat Messages */}
+          {/* Chat Messages - Only show user messages */}
           {chatMode && chatMessages.length > 0 && (
-            <div className="mb-4 max-h-96 overflow-y-auto space-y-3 bg-black/20 rounded-lg p-4">
-              {chatMessages.map((msg, index) => (
-                <div
-                  key={index}
-                  className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[85%] px-4 py-3 rounded-lg text-sm ${
-                      msg.type === 'user'
-                        ? 'bg-neon-cyan/20 text-white'
-                        : 'bg-gray-700/60 text-gray-200'
-                    }`}
-                  >
-                    {msg.type === 'ai' && (
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Bot className="w-4 h-4 text-neon-cyan" />
-                        <span className="text-neon-cyan font-semibold text-sm">VerdiData IA</span>
-                      </div>
-                    )}
-                    <div className="whitespace-pre-line leading-relaxed">
-                      {msg.message.split('\n').map((line, i) => {
-                        // Títulos de estudos clicáveis
-                        if (line.startsWith('🔬 **') || line.startsWith('📊 **')) {
-                          const title = line.replace(/\*\*/g, '').replace('🔬 ', '').replace('📊 ', '');
-                          return (
-                            <button 
-                              key={i} 
-                              onClick={() => onPlanetClick('scientific')}
-                              className="font-semibold text-emerald-400 hover:text-emerald-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-emerald-500/10 px-2 py-1 rounded transition-all text-left w-full"
-                            >
-                              🔬 {title}
-                            </button>
-                          )
-                        }
-                        if (line.startsWith('📈 **') || line.startsWith('📚 **')) {
-                          return <div key={i} className="font-semibold text-blue-400 mt-3 text-base">{line.replace(/\*\*/g, '')}</div>
-                        }
-                        // Casos clínicos clicáveis
-                        if (line.startsWith('👨‍⚕️ **') || line.startsWith('🏥 **')) {
-                          return (
-                            <button 
-                              key={i}
-                              onClick={() => onPlanetClick('clinical')} 
-                              className="font-semibold text-purple-400 hover:text-purple-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-purple-500/10 px-2 py-1 rounded transition-all text-left w-full"
-                            >
-                              {line.replace(/\*\*/g, '')}
-                            </button>
-                          )
-                        }
-                        // Alertas clicáveis
-                        if (line.startsWith('⚠️ **')) {
-                          return (
-                            <button 
-                              key={i}
-                              onClick={() => onPlanetClick('alerts')} 
-                              className="font-semibold text-amber-400 hover:text-amber-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-amber-500/10 px-2 py-1 rounded transition-all text-left w-full"
-                            >
-                              {line.replace(/\*\*/g, '')}
-                            </button>
-                          )
-                        }
-                        if (line.startsWith('🎯 **')) {
-                          return <div key={i} className="font-semibold text-neon-cyan mt-3 text-base">{line.replace(/\*\*/g, '')}</div>
-                        }
-                        // Itens com bullet points
-                        if (line.startsWith('•')) {
-                          // Se contém número de caso clínico, tornar clicável
-                          if (line.includes('HC-') || line.includes('caso')) {
-                            return (
-                              <button 
-                                key={i} 
-                                onClick={() => onPlanetClick('clinical')}
-                                className="ml-4 text-gray-200 hover:text-white cursor-pointer hover:bg-gray-600/20 px-2 py-1 rounded transition-all text-left w-full"
-                              >
-                                {line}
-                              </button>
-                            )
-                          }
-                          return <div key={i} className="ml-4 text-gray-200 py-1">{line}</div>
-                        }
-                        if (line.startsWith('❌') || line.startsWith('🔍')) {
-                          return <div key={i} className="text-gray-300">{line}</div>
-                        }
-                        return <div key={i} className="py-0.5">{line}</div>
-                      })}
-                    </div>
+            <div className="mb-4 max-h-32 overflow-y-auto space-y-2 bg-black/20 rounded-lg p-3">
+              {chatMessages.filter(msg => msg.type === 'user').map((msg, index) => (
+                <div key={index} className="flex justify-end">
+                  <div className="max-w-[85%] px-3 py-2 rounded-lg text-sm bg-neon-cyan/20 text-white">
+                    {msg.message}
                   </div>
                 </div>
               ))}
@@ -270,7 +194,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
                   <div className="bg-gray-700/60 px-3 py-2 rounded-lg text-xs text-gray-200">
                     <div className="flex items-center space-x-2">
                       <Bot className="w-3 h-3 text-neon-cyan" />
-                      <span>IA está digitando...</span>
+                      <span>IA está analisando...</span>
                       <div className="flex space-x-1">
                         <div className="w-1 h-1 bg-neon-cyan rounded-full animate-bounce"></div>
                         <div className="w-1 h-1 bg-neon-cyan rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
