@@ -27,6 +27,10 @@ export default function Dashboard() {
   const [subSearchResponse, setSubSearchResponse] = useState<string>('');
   const [subSearchQuery, setSubSearchQuery] = useState<string>('');
   const [showSubSearch, setShowSubSearch] = useState(false);
+  const [subCardMinimized, setSubCardMinimized] = useState(false);
+  const [subCardPosition, setSubCardPosition] = useState({ x: window.innerWidth - 350, y: 120 });
+  const [isDraggingSubCard, setIsDraggingSubCard] = useState(false);
+  const [subDragStart, setSubDragStart] = useState({ x: 0, y: 0 });
 
 
   useEffect(() => {
@@ -53,13 +57,30 @@ export default function Dashboard() {
           y: Math.max(minY, Math.min(newY, maxY))
         });
       }
+      
+      if (isDraggingSubCard && subCardMinimized) {
+        e.preventDefault();
+        const newX = e.clientX - subDragStart.x;
+        const newY = e.clientY - subDragStart.y;
+        
+        // Limitar movimento dentro da área de conteúdo
+        const maxX = window.innerWidth - 350;
+        const maxY = window.innerHeight - 100;
+        const minY = 80;
+        
+        setSubCardPosition({
+          x: Math.max(20, Math.min(newX, maxX)),
+          y: Math.max(minY, Math.min(newY, maxY))
+        });
+      }
     };
 
     const handleGlobalMouseUp = () => {
       setIsDragging(false);
+      setIsDraggingSubCard(false);
     };
 
-    if (isDragging) {
+    if (isDragging || isDraggingSubCard) {
       document.addEventListener('mousemove', handleGlobalMouseMove);
       document.addEventListener('mouseup', handleGlobalMouseUp);
       document.body.style.cursor = 'move';
@@ -72,7 +93,7 @@ export default function Dashboard() {
       document.body.style.cursor = '';
       document.body.style.userSelect = '';
     };
-  }, [isDragging, aiCardMinimized, dragStart]);
+  }, [isDragging, isDraggingSubCard, aiCardMinimized, subCardMinimized, dragStart, subDragStart]);
 
   const handleMenuClick = () => {
     setSideNavOpen(!sideNavOpen);
@@ -170,8 +191,26 @@ export default function Dashboard() {
     setSubSearchResponse('');
     setSubSearchQuery('');
     setShowSubSearch(false);
+    setSubCardMinimized(false);
     // Expandir o card principal novamente quando sub-pesquisa é fechada
     setAiCardMinimized(false);
+  };
+
+  const toggleSubCard = () => {
+    setSubCardMinimized(!subCardMinimized);
+  };
+
+  const handleSubCardMouseDown = (e: React.MouseEvent) => {
+    if (subCardMinimized) {
+      setIsDraggingSubCard(true);
+      const rect = (e.target as Element).closest('.fixed')?.getBoundingClientRect();
+      if (rect) {
+        setSubDragStart({
+          x: e.clientX - rect.left,
+          y: e.clientY - rect.top
+        });
+      }
+    }
   };
 
 
@@ -225,6 +264,10 @@ export default function Dashboard() {
           subSearchQuery={subSearchQuery}
           showSubSearch={showSubSearch}
           onCloseSubSearch={closeSubSearch}
+          subCardMinimized={subCardMinimized}
+          onToggleSubCard={toggleSubCard}
+          subCardPosition={subCardPosition}
+          onSubCardMouseDown={handleSubCardMouseDown}
         />;
     }
   };
@@ -266,9 +309,13 @@ interface OverviewDashboardProps {
   subSearchQuery?: string;
   showSubSearch?: boolean;
   onCloseSubSearch?: () => void;
+  subCardMinimized?: boolean;
+  onToggleSubCard?: () => void;
+  subCardPosition?: { x: number; y: number };
+  onSubCardMouseDown?: (e: React.MouseEvent) => void;
 }
 
-function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery, cardPosition, onMouseDown, isDragging, onSubSearch, subSearchResponse, subSearchQuery, showSubSearch, onCloseSubSearch }: OverviewDashboardProps) {
+function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery, cardPosition, onMouseDown, isDragging, onSubSearch, subSearchResponse, subSearchQuery, showSubSearch, onCloseSubSearch, subCardMinimized, onToggleSubCard, subCardPosition, onSubCardMouseDown }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-4 py-8">
       {/* Hero Section with 3D Avatar - Reduced by 30% */}
@@ -463,8 +510,8 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
         />
       )}
 
-      {/* Sub-search lateral card */}
-      {showSubSearch && subSearchResponse && (
+      {/* Sub-search lateral card - Full size when expanded */}
+      {showSubSearch && subSearchResponse && !subCardMinimized && (
         <div 
           className="fixed right-6 top-24 w-80 h-[65vh] z-50 transition-all duration-300 ease-in-out"
           style={{ 
@@ -481,13 +528,22 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
                 <h3 className="text-purple-400 font-medium text-sm">Sub-pesquisa: {subSearchQuery}</h3>
                 <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse" title="Conectado à análise principal"></div>
               </div>
-              <button 
-                onClick={onCloseSubSearch}
-                className="text-gray-400 hover:text-red-400 transition-colors p-1"
-                title="Fechar"
-              >
-                <i className="fas fa-times text-xs"></i>
-              </button>
+              <div className="flex items-center space-x-1">
+                <button 
+                  onClick={onToggleSubCard}
+                  className="text-gray-400 hover:text-purple-400 transition-colors p-1"
+                  title="Minimizar"
+                >
+                  <i className="fas fa-chevron-down text-xs"></i>
+                </button>
+                <button 
+                  onClick={onCloseSubSearch}
+                  className="text-gray-400 hover:text-red-400 transition-colors p-1"
+                  title="Fechar"
+                >
+                  <i className="fas fa-times text-xs"></i>
+                </button>
+              </div>
             </div>
             
             {/* Content */}
@@ -557,6 +613,49 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
                   }
                   return <div key={i} className="py-0.5 text-xs">{line}</div>
                 })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sub-search card - Minimized and draggable */}
+      {showSubSearch && subSearchResponse && subCardMinimized && (
+        <div 
+          className="fixed z-50 cursor-move transition-all duration-300 ease-in-out"
+          style={{
+            left: `${Math.max(20, Math.min(subCardPosition?.x || window.innerWidth - 350, window.innerWidth - 350))}px`,
+            top: `${Math.max(80, Math.min(subCardPosition?.y || 120, window.innerHeight - 100))}px`,
+            width: '320px'
+          }}
+          onMouseDown={onSubCardMouseDown}
+        >
+          <div className="bg-black/95 backdrop-blur-sm rounded-xl border border-purple-500/60 shadow-xl shadow-purple-500/30 animate-pulse-glow opacity-95">
+            <div className="flex items-center justify-between p-3">
+              <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 bg-purple-500/30 rounded-full flex items-center justify-center animate-pulse">
+                  <i className="fas fa-search-plus text-purple-400 text-xs"></i>
+                </div>
+                <h3 className="text-purple-400 font-medium text-sm">
+                  Sub-pesquisa: {subSearchQuery}
+                </h3>
+                <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse" title="Conectado à análise principal"></div>
+              </div>
+              <div className="flex items-center space-x-1">
+                <button 
+                  onClick={onToggleSubCard}
+                  className="text-gray-400 hover:text-purple-400 transition-colors p-1"
+                  title="Expandir"
+                >
+                  <i className="fas fa-chevron-up text-xs"></i>
+                </button>
+                <button 
+                  onClick={onCloseSubSearch}
+                  className="text-gray-400 hover:text-red-400 transition-colors p-1"
+                  title="Fechar"
+                >
+                  <i className="fas fa-times text-xs"></i>
+                </button>
               </div>
             </div>
           </div>
