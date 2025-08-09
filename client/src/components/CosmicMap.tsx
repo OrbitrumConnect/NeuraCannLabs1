@@ -21,38 +21,38 @@ const planets: CosmicPlanet[] = [
   {
     id: "scientific",
     name: "Dados Científicos",
-    position: { top: "5%", left: "25%" },
+    position: { top: "2%", left: "30%" },
     size: "w-14 h-14",
     color: "from-emerald-400 to-green-600",
     icon: "fas fa-microscope",
-    delay: "0.5s",
+    delay: "0s",
   },
   {
     id: "clinical",
     name: "Casos Clínicos",
-    position: { top: "5%", right: "25%" },
+    position: { top: "2%", right: "30%" },
     size: "w-14 h-14",
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
-    delay: "1s",
+    delay: "0s",
   },
   {
     id: "alerts",
     name: "Alertas",
-    position: { top: "5%", left: "45%" },
+    position: { top: "2%", left: "47%" },
     size: "w-11 h-11",
     color: "from-amber-400 to-orange-600",
     icon: "fas fa-bell",
-    delay: "1.5s",
+    delay: "0s",
   },
   {
     id: "profile",
     name: "Perfil",
-    position: { top: "5%", right: "45%" },
+    position: { top: "2%", right: "47%" },
     size: "w-11 h-11",
     color: "from-purple-400 to-pink-600",
     icon: "fas fa-user-circle",
-    delay: "2s",
+    delay: "0s",
   },
 ];
 
@@ -256,13 +256,12 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
       {planets.map((planet) => (
         <div
           key={planet.id}
-          className={`absolute ${planet.size} bg-gradient-to-br ${planet.color} rounded-full animate-float cursor-pointer hover:scale-110 transition-transform opacity-80 ${
+          className={`absolute ${planet.size} bg-gradient-to-br ${planet.color} rounded-full cursor-pointer transition-transform opacity-80 ${
             activeDashboard === planet.id ? "ring-2 ring-neon-cyan/30 ring-opacity-50" : ""
           }`}
           style={{
             ...planet.position,
-            animationDelay: planet.delay,
-            transform: hoveredPlanet === planet.id ? "scale(1.15)" : "scale(1)",
+            transform: hoveredPlanet === planet.id ? "scale(1.05)" : "scale(1)",
           }}
           onClick={() => onPlanetClick(planet.id)}
           onMouseEnter={() => setHoveredPlanet(planet.id)}
@@ -286,10 +285,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
             <stop offset="100%" style={{ stopColor: "rgba(0,255,255,0.03)", stopOpacity: 1 }} />
           </linearGradient>
         </defs>
-        <line x1="50%" y1="30%" x2="25%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="30%" x2="75%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="30%" x2="45%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="30%" x2="55%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="30%" x2="30%" y2="2%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.2"/>
+        <line x1="50%" y1="30%" x2="70%" y2="2%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.2"/>
+        <line x1="50%" y1="30%" x2="47%" y2="2%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.2"/>
+        <line x1="50%" y1="30%" x2="53%" y2="2%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.2"/>
       </svg>
     </div>
   );
