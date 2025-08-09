@@ -12,6 +12,8 @@ export default function Dashboard() {
   const { section } = useParams();
   const [activeDashboard, setActiveDashboard] = useState(section || "overview");
   const [sideNavOpen, setSideNavOpen] = useState(false);
+  const [globalSearchTerm, setGlobalSearchTerm] = useState("");
+  const [globalFilter, setGlobalFilter] = useState("todos");
 
   useEffect(() => {
     if (section) {
@@ -30,6 +32,11 @@ export default function Dashboard() {
 
   const handleCosmicPlanetClick = (dashboardId: string) => {
     handleDashboardChange(dashboardId);
+  };
+
+  const handleGlobalSearch = (term: string, filter: string) => {
+    setGlobalSearchTerm(term);
+    setGlobalFilter(filter);
   };
 
   // Close side nav when clicking outside
@@ -59,7 +66,13 @@ export default function Dashboard() {
       case "profile":
         return <ProfileDashboard />;
       default:
-        return <OverviewDashboard onPlanetClick={handleCosmicPlanetClick} activeDashboard={activeDashboard} />;
+        return <OverviewDashboard 
+          onPlanetClick={handleCosmicPlanetClick} 
+          activeDashboard={activeDashboard}
+          onSearch={handleGlobalSearch}
+          searchTerm={globalSearchTerm}
+          searchFilter={globalFilter}
+        />;
     }
   };
 
@@ -79,9 +92,12 @@ export default function Dashboard() {
 interface OverviewDashboardProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
+  onSearch?: (term: string, filter: string) => void;
+  searchTerm?: string;
+  searchFilter?: string;
 }
 
-function OverviewDashboard({ onPlanetClick, activeDashboard }: OverviewDashboardProps) {
+function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
   return (
     <section className="container mx-auto px-4 py-8">
       {/* Hero Section with 3D Avatar */}
@@ -113,7 +129,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard }: OverviewDashboard
       {/* Cosmic Knowledge Map */}
       <div className="mb-12">
         <h2 className="text-3xl font-bold text-center mb-8 neon-text">Mapa do Conhecimento</h2>
-        <CosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} />
+        <CosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} onSearch={onSearch} />
       </div>
 
       {/* Quick Stats */}
