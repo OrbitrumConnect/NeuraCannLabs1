@@ -149,9 +149,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   };
 
   return (
-    <div className="relative h-80 overflow-hidden">
+    <div className="relative h-96 overflow-hidden">
       {/* Central Search Bar with AI Chat - Moved to bottom */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10">
         <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-[600px] max-w-4xl">
           {/* Mode Toggle */}
           <div className="flex items-center justify-between mb-3">
