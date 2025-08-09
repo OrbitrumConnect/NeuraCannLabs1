@@ -161,16 +161,16 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             isActive={chatMode}
             isListening={isTyping}
             message={isTyping ? "Processando..." : chatMode ? "Modo Ativo" : ""}
-            className="w-24 h-24"
+            className="w-40 h-40"
           />
           {/* Doctor Info */}
-          <div className={`mt-2 text-center transition-all duration-300 ${
+          <div className={`mt-3 text-center transition-all duration-300 ${
             chatMode 
               ? "text-neon-cyan" 
               : "text-gray-300 group-hover:text-white"
           }`}>
-            <div className="text-sm font-bold">Dr. Cannabis IA</div>
-            <div className="text-xs opacity-70">
+            <div className="text-lg font-bold">Dr. Cannabis IA</div>
+            <div className="text-sm opacity-70">
               {chatMode ? "Mente Ativa" : "Clique para ativar"}
             </div>
           </div>
@@ -179,11 +179,11 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
 
       {/* Neural Connection Line - When chat is active */}
       {chatMode && (
-        <div className="absolute left-32 top-1/2 transform -translate-y-1/2 z-10">
+        <div className="absolute left-44 top-1/2 transform -translate-y-1/2 z-10">
           <div 
             className="h-0.5 bg-gradient-to-r from-neon-cyan via-blue-400 to-transparent animate-pulse"
             style={{
-              width: 'calc(50vw - 420px)',
+              width: 'calc(50vw - 450px)',
               boxShadow: '0 0 10px rgba(0,255,255,0.5)'
             }}
           />

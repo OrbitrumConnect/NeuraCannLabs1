@@ -48,7 +48,7 @@ export default function MedicalAvatar3D({
       powerPreference: "high-performance"
     });
     // Dynamic size based on className
-    const size = className?.includes('w-24') ? 96 : 48;
+    const size = className?.includes('w-40') ? 160 : className?.includes('w-24') ? 96 : 48;
     renderer.setSize(size, size);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0); // Transparent background
@@ -210,26 +210,26 @@ export default function MedicalAvatar3D({
 
       {/* Status Indicators */}
       {isListening && (
-        <div className={`absolute top-2 right-2 bg-neon-cyan rounded-full animate-pulse ${
-          className?.includes('w-24') ? 'w-3 h-3' : 'w-2 h-2'
+        <div className={`absolute top-3 right-3 bg-neon-cyan rounded-full animate-pulse ${
+          className?.includes('w-40') ? 'w-4 h-4' : className?.includes('w-24') ? 'w-3 h-3' : 'w-2 h-2'
         }`} />
       )}
       
       {isActive && !isListening && (
-        <div className={`absolute top-2 right-2 bg-green-400 rounded-full animate-pulse ${
-          className?.includes('w-24') ? 'w-3 h-3' : 'w-2 h-2'
+        <div className={`absolute top-3 right-3 bg-green-400 rounded-full animate-pulse ${
+          className?.includes('w-40') ? 'w-4 h-4' : className?.includes('w-24') ? 'w-3 h-3' : 'w-2 h-2'
         }`} />
       )}
 
       {/* Medical Badge */}
-      <div className={`absolute -bottom-1 -right-1 bg-white rounded-full shadow-lg border border-gray-200 ${
-        className?.includes('w-24') ? 'p-1.5' : 'p-1'
+      <div className={`absolute -bottom-2 -right-2 bg-white rounded-full shadow-lg border border-gray-200 ${
+        className?.includes('w-40') ? 'p-2' : className?.includes('w-24') ? 'p-1.5' : 'p-1'
       }`}>
         <div className={`flex items-center justify-center ${
-          className?.includes('w-24') ? 'w-4 h-4' : 'w-2.5 h-2.5'
+          className?.includes('w-40') ? 'w-5 h-5' : className?.includes('w-24') ? 'w-4 h-4' : 'w-2.5 h-2.5'
         }`}>
           <i className={`fas fa-user-md text-blue-600 ${
-            className?.includes('w-24') ? 'text-xs' : 'text-[7px]'
+            className?.includes('w-40') ? 'text-sm' : className?.includes('w-24') ? 'text-xs' : 'text-[7px]'
           }`} />
         </div>
       </div>
@@ -237,9 +237,11 @@ export default function MedicalAvatar3D({
       {/* Speech Indicator */}
       {message && (
         <div className={`absolute left-1/2 transform -translate-x-1/2 bg-gray-900/90 text-white rounded whitespace-nowrap ${
-          className?.includes('w-24') 
-            ? '-top-8 text-xs px-2 py-1 max-w-32' 
-            : '-top-6 text-[10px] px-1.5 py-0.5 max-w-24'
+          className?.includes('w-40') 
+            ? '-top-10 text-sm px-3 py-1.5 max-w-40' 
+            : className?.includes('w-24') 
+              ? '-top-8 text-xs px-2 py-1 max-w-32' 
+              : '-top-6 text-[10px] px-1.5 py-0.5 max-w-24'
         } truncate`}>
           {message}
         </div>
