@@ -12,14 +12,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Individual neural sub-search nodes with proper parent connections
-- Sub-pesquisas agora são nós individuais conectados aos seus pais específicos
-- Cada sub-pesquisa posicionada relativamente ao nó principal que a originou
-- Conexões neurais visuais claras entre nó pai e sub-nós (linhas roxas)
-- Indicador visual mostra qual pesquisa principal originou cada sub-pesquisa
-- Sistema de navegação aprimorado: drag apenas no fundo, controles maiores
-- Layout não-agrupado permite exploração independente de cada sub-pesquisa
-- Teia neural verdadeiramente hierárquica com conexões parent-child
+**2025-08-09**: Fixed main cards with harmonious sub-cards dock system
+- Cards principais fixos na teia neural para estabilidade e foco na leitura
+- Sub-cards organizados em dock inferior harmônico e expansível
+- Sistema de abertura/fechamento individual para cada sub-pesquisa
+- Cards móveis horizontalmente no dock com handles específicos para arraste
+- Área de arraste restrita apenas ao ícone ⋮⋮ para controle preciso
+- Layout em dock permite visualizar múltiplas sub-pesquisas simultaneamente
+- Interface organizada: teia neural fixa + dock de sub-pesquisas móvel
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
