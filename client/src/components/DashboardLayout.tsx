@@ -67,7 +67,7 @@ export default function DashboardLayout({
                   <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1">NEW</span>
                 )}
                 {option.id === "forum" && (
-                  <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1">24</span>
+                  <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1">29</span>
                 )}
                 {option.id === "admin" && (
                   <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1">🌍</span>

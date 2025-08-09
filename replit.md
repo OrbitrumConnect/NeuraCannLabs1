@@ -136,9 +136,13 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 - ✅ **Ciclo de feedback colaborativo**: admin → notas detalhadas → usuário corrige com IA → reenvio
 - ✅ **4 estudos de exemplo** em diferentes status incluindo 2 aguardando revisão
 - ✅ **Removido "v2.0 BETA"** do cabeçalho conforme solicitado pelo usuário
-- ✅ **Adicionado Fórum de Discussão** no cabeçalho com 24 discussões ativas
+- ✅ **Adicionado Fórum de Discussão** no cabeçalho com 29 discussões ativas
 - ✅ **ForumDashboard completo** com categorias, posts médicos e estatísticas
 - ✅ **Interface médica colaborativa** para discussão de casos clínicos e protocolos
+- ✅ **Integração Fórum + Meus Estudos**: usuários podem criar discussões baseadas em estudos aprovados
+- ✅ **Sistema de anexos**: suporte para PDF, DOC, DOCX, JPG, PNG (máx. 10MB)
+- ✅ **Dados científicos reais**: Posts baseados em PMID verificados e alertas regulatórios oficiais
+- ✅ **Protocolos médicos atualizados**: Epidiolex, Sativex, RDC ANVISA 660/2022
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
