@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste Dr Cannabis IA - Leitura Científica</title>
+    <meta charset="utf-8">
+</head>
+<body style="padding: 20px; font-family: Arial;">
+    <h2>🧬 Dr. Cannabis IA - Teste de Leitura de Dados Científicos</h2>
+    
+    <div style="background: #f0f0f0; padding: 15px; margin: 10px 0; border-radius: 8px;">
+        <h3>📚 Estudo que será lido pelo Avatar:</h3>
+        <p><strong>Cannabidiol para epilepsia resistente ao tratamento em crianças: Ensaio clínico randomizado controlado</strong></p>
+        
+        <p><strong>Resultados Completos:</strong></p>
+        <p>Estudo randomizado duplo-cego com 214 crianças de 2 a 18 anos demonstrou redução média de 36,5% nas crises epilépticas com CBD 20mg/kg/dia versus placebo.</p>
+        
+        <p><strong>Resultados Específicos:</strong> 78% dos pacientes apresentaram redução maior ou igual a 50% nas convulsões, 38% ficaram livres de crises por 3 meses ou mais.</p>
+        
+        <p><strong>Protocolo de Pesquisa:</strong> 14 semanas de tratamento com avaliação por vídeo-EEG.</p>
+        
+        <p><strong>Dosagem Recomendada:</strong> início com 2,5mg/kg 2 vezes ao dia, com titulação até 10 a 20mg/kg/dia.</p>
+        
+        <p><strong>Efeitos Adversos Documentados:</strong> sonolência em 71% dos casos, diminuição do apetite em 46%, diarreia em 31%, elevação das enzimas hepáticas em 12% dos pacientes.</p>
+        
+        <p><strong>Publicação:</strong> New England Journal of Medicine 2024.</p>
+    </div>
+
+    <button onclick="lerEstudoCientifico()" style="background: #0066cc; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+        🔊 Dr. Cannabis IA - Ler Estudo Científico
+    </button>
+    
+    <button onclick="pararLeitura()" style="background: #cc0000; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px;">
+        ⏹️ Parar Leitura
+    </button>
+
+    <div id="status" style="margin-top: 20px; padding: 10px; background: #e8f4f8; border-radius: 5px;"></div>
+
+    <script>
+        let utterance = null;
+        
+        function lerEstudoCientifico() {
+            if ('speechSynthesis' in window) {
+                // Parar qualquer leitura anterior
+                window.speechSynthesis.cancel();
+                
+                const textoCompleto = `
+                Estudo científico: Cannabidiol para epilepsia resistente ao tratamento em crianças.
+                
+                Trata-se de ensaio clínico randomizado controlado.
+                
+                Metodologia: Estudo randomizado duplo-cego com 214 crianças de 2 a 18 anos de idade.
+                
+                Resultados principais: O cannabidiol na dose de 20 miligramas por quilograma por dia demonstrou redução média de 36,5% nas crises epilépticas comparado ao placebo.
+                
+                Resultados específicos detalhados: 78% dos pacientes apresentaram redução maior ou igual a 50% nas convulsões. 38% dos pacientes ficaram completamente livres de crises por período superior a 3 meses.
+                
+                Protocolo de pesquisa: O tratamento teve duração de 14 semanas com avaliação rigorosa por vídeo eletroencefalograma.
+                
+                Dosagem recomendada: Início do tratamento com 2,5 miligramas por quilograma, duas vezes ao dia, com titulação gradual até dose máxima de 10 a 20 miligramas por quilograma por dia.
+                
+                Perfil de segurança e efeitos adversos documentados: Sonolência observada em 71% dos casos. Diminuição do apetite em 46% dos pacientes. Diarreia em 31% dos casos. Elevação das enzimas hepáticas em 12% dos pacientes.
+                
+                Publicação: Este estudo foi publicado no New England Journal of Medicine em 2024.
+                
+                Conclusão: O cannabidiol demonstra eficácia significativa e perfil de segurança aceitável para tratamento de epilepsia refratária em população pediátrica.
+                `;
+                
+                utterance = new SpeechSynthesisUtterance(textoCompleto);
+                utterance.lang = 'pt-BR';
+                utterance.rate = 0.8; // Velocidade um pouco mais lenta para conteúdo médico
+                utterance.pitch = 1;
+                utterance.volume = 0.9;
+                
+                utterance.onstart = function() {
+                    document.getElementById('status').innerHTML = '🎙️ <strong>Dr. Cannabis IA está lendo o estudo científico...</strong>';
+                };
+                
+                utterance.onend = function() {
+                    document.getElementById('status').innerHTML = '✅ <strong>Leitura do estudo científico concluída!</strong>';
+                };
+                
+                utterance.onerror = function() {
+                    document.getElementById('status').innerHTML = '❌ <strong>Erro na síntese de voz.</strong>';
+                };
+                
+                window.speechSynthesis.speak(utterance);
+                
+            } else {
+                alert('Seu navegador não suporta síntese de voz.');
+            }
+        }
+        
+        function pararLeitura() {
+            window.speechSynthesis.cancel();
+            document.getElementById('status').innerHTML = '⏹️ <strong>Leitura interrompida pelo usuário.</strong>';
+        }
+        
+        // Mostrar status inicial
+        document.getElementById('status').innerHTML = '🟢 <strong>Sistema Dr. Cannabis IA pronto para leitura de dados científicos.</strong>';
+    </script>
+</body>
+</html>

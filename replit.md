@@ -97,15 +97,15 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 ---
 
-**2025-08-09**: Sistema de dados científicos completos em português implementado
-- Dados científicos traduzidos para português com resultados detalhados
-- Estudos científicos incluem protocolos, dosagens, efeitos adversos e resultados específicos
-- Casos clínicos reais brasileiros com evolução completa documentada
-- APIs externas integradas (PubMed, ClinicalTrials.gov) para atualizações automáticas
-- Sistema de sincronização de dados científicos globais em tempo real
-- TextToSpeech otimizado para leitura de conteúdo médico científico
-- Base preparada para integração Supabase e armazenamento persistente
-- Avatar Dr. Cannabis IA lê completamente estudos científicos e resultados clínicos
+**2025-08-09**: Sistema de IA especializada com respostas diferenciadas implementado
+- Algoritmo de busca melhorado - respostas específicas para cada tipo de consulta
+- Consultas sobre dosagens: protocolos detalhados por condição médica com casos clínicos
+- Consultas sobre eficácia: análise de resultados científicos com percentuais específicos  
+- Consultas sobre segurança: perfil completo de efeitos adversos e recomendações
+- Dr. Cannabis IA lê conteúdo científico diferenciado para cada pergunta
+- TextToSpeech limpa emojis e caracteres especiais para leitura médica profissional
+- Base de dados científicos em português com evidências detalhadas
+- Sistema pronto para apresentação a investidores com análises especializadas
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion

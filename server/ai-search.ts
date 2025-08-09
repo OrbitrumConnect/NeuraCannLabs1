@@ -68,26 +68,30 @@ export class MedicalAISearch {
       relatedResults = relatedResults.slice(0, 6);
     }
     
-    // Gerar resposta baseada no cruzamento de dados
-    if (doseKeywords.some(keyword => lowerQuery.includes(keyword)) || lowerQuery.includes('temos')) {
-      answer = this.generateCrossDataAnswer('dosage', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
+    // Gerar resposta específica baseada no tipo de consulta
+    if (doseKeywords.some(keyword => lowerQuery.includes(keyword)) || 
+        lowerQuery.includes('dosagens') || 
+        lowerQuery.includes('protocolos') || 
+        lowerQuery.includes('administração') ||
+        lowerQuery.includes('posológicos')) {
+      answer = this.generateSpecificDosageAnswer(lowerQuery, studies, cases);
       suggestions = [
-        'Dosagens por condição médica',
-        'Protocolos de administração THC:CBD',
-        'Ajustes de dose para idosos'
+        'Dosagens CBD para epilepsia',
+        'Protocolos THC:CBD oncologia', 
+        'Ajustes posológicos geriátricos'
       ];
     } else if (efficacyKeywords.some(keyword => lowerQuery.includes(keyword))) {
-      answer = this.generateCrossDataAnswer('efficacy', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
+      answer = this.generateEfficacyAnswer(lowerQuery, studies, cases);
       suggestions = [
-        'Eficácia por condição',
-        'Comparação de compostos',
-        'Taxa de sucesso clínico'
+        'Eficácia por condição específica',
+        'Comparação CBD vs THC:CBD',
+        'Taxa de resposta terapêutica'
       ];
     } else if (sideEffectsKeywords.some(keyword => lowerQuery.includes(keyword))) {
-      answer = this.generateCrossDataAnswer('safety', lowerQuery, relatedResults, studies.length, cases.length, alerts.length);
+      answer = this.generateSafetyAnswer(lowerQuery, studies, cases);
       suggestions = [
-        'Perfil de segurança',
-        'Interações medicamentosas',
+        'Perfil de segurança detalhado',
+        'Interações medicamentosas conhecidas',
         'Monitoramento necessário'
       ];
     } else if (conditionKeywords.some(keyword => lowerQuery.includes(keyword))) {
@@ -147,6 +151,125 @@ export class MedicalAISearch {
     return totalWeight > 0 ? Math.min(matches / totalWeight, 1) : 0;
   }
   
+  // Resposta específica para dosagens
+  private static generateSpecificDosageAnswer(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
+    let answer = `💊 **PROTOCOLO DE DOSAGENS POR CONDIÇÃO MÉDICA**\n\nConsulta: "${query}"\n\n`;
+    
+    // Extrair dosagens dos estudos
+    const dosageInfo = studies.map(study => {
+      const description = study.description.toLowerCase();
+      let dosage = 'Não especificado';
+      
+      // Extrair informações de dosagem do texto
+      const dosageMatch = description.match(/(\d+(?:,\d+)?)\s*(?:-\s*(\d+(?:,\d+)?))?\s*mg/);
+      if (dosageMatch) {
+        dosage = dosageMatch[2] ? `${dosageMatch[1]}-${dosageMatch[2]}mg` : `${dosageMatch[1]}mg`;
+      }
+      
+      return {
+        condition: study.indication,
+        compound: study.compound,
+        dosage: dosage,
+        details: description.includes('kg') ? 'Por kg de peso' : 'Dose fixa',
+        phase: study.phase
+      };
+    });
+
+    answer += `📋 **DOSAGENS ESPECÍFICAS POR CONDIÇÃO:**\n\n`;
+    
+    dosageInfo.forEach(info => {
+      answer += `🎯 **${info.condition}**\n`;
+      answer += `• **Composto:** ${info.compound}\n`;
+      answer += `• **Dosagem:** ${info.dosage} ${info.details}\n`;
+      answer += `• **Nível evidência:** ${info.phase}\n\n`;
+    });
+
+    // Adicionar casos clínicos com dosagens práticas
+    answer += `👨‍⚕️ **DOSAGENS EM CASOS CLÍNICOS REAIS:**\n\n`;
+    cases.slice(0, 3).forEach(case_ => {
+      answer += `📋 **Caso ${case_.caseNumber}** - ${case_.indication}\n`;
+      answer += `• **Dosagem utilizada:** ${case_.dosage}\n`;
+      answer += `• **Resultado:** ${case_.outcome}\n`;
+      answer += `• **Médico:** ${case_.doctorName}\n\n`;
+    });
+
+    answer += `⚕️ **RECOMENDAÇÕES POSOLÓGICAS GERAIS:**\n`;
+    answer += `1. **Início gradual:** Sempre iniciar com doses baixas e titular conforme tolerabilidade\n`;
+    answer += `2. **Individualização:** Ajustar dose baseado em peso, idade e resposta clínica\n`;
+    answer += `3. **Monitoramento:** Avaliação regular de eficácia e eventos adversos\n`;
+    answer += `4. **Titulação:** Aumentos graduais a cada 1-2 semanas conforme necessário\n\n`;
+
+    answer += `*Dosagens baseadas em evidências científicas publicadas*`;
+    
+    return answer;
+  }
+
+  // Resposta específica para eficácia
+  private static generateEfficacyAnswer(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
+    let answer = `📈 **ANÁLISE DE EFICÁCIA TERAPÊUTICA**\n\nConsulta: "${query}"\n\n`;
+    
+    answer += `🎯 **RESULTADOS DE EFICÁCIA POR ESTUDO:**\n\n`;
+    
+    studies.slice(0, 3).forEach(study => {
+      // Extrair percentuais de eficácia
+      const description = study.description;
+      const efficacyMatch = description.match(/(\d+)%/g);
+      
+      answer += `📊 **${study.title.substring(0, 60)}...**\n`;
+      answer += `• **Composto:** ${study.compound}\n`;
+      answer += `• **Indicação:** ${study.indication}\n`;
+      if (efficacyMatch) {
+        answer += `• **Taxa de eficácia:** ${efficacyMatch.join(', ')}\n`;
+      }
+      answer += `• **Fase do estudo:** ${study.phase}\n`;
+      answer += `• **Status:** ${study.status}\n\n`;
+    });
+
+    answer += `👨‍⚕️ **EFICÁCIA EM CASOS CLÍNICOS:**\n\n`;
+    cases.slice(0, 3).forEach(case_ => {
+      answer += `✅ **${case_.caseNumber}** - ${case_.indication}\n`;
+      answer += `• **Resultado:** ${case_.outcome}\n`;
+      answer += `• **Evolução:** ${case_.severity}\n\n`;
+    });
+
+    return answer;
+  }
+
+  // Resposta específica para segurança
+  private static generateSafetyAnswer(query: string, studies: ScientificStudy[], cases: ClinicalCase[]): string {
+    let answer = `⚠️ **PERFIL DE SEGURANÇA E EFEITOS ADVERSOS**\n\nConsulta: "${query}"\n\n`;
+    
+    answer += `🔍 **EFEITOS ADVERSOS DOCUMENTADOS EM ESTUDOS:**\n\n`;
+    
+    studies.slice(0, 3).forEach(study => {
+      answer += `📋 **${study.compound}** - ${study.indication}\n`;
+      
+      // Extrair efeitos adversos da descrição
+      const description = study.description.toLowerCase();
+      if (description.includes('sonolência') || description.includes('fadiga')) {
+        answer += `• **Sonolência/Fadiga:** Efeito mais comum\n`;
+      }
+      if (description.includes('apetite') || description.includes('peso')) {
+        answer += `• **Alterações de apetite:** Documentado\n`;
+      }
+      if (description.includes('diarreia') || description.includes('gastro')) {
+        answer += `• **Efeitos gastrointestinais:** Possíveis\n`;
+      }
+      if (description.includes('enzimas') || description.includes('hepática')) {
+        answer += `• **Monitoramento hepático:** Necessário\n`;
+      }
+      answer += '\n';
+    });
+
+    answer += `⚕️ **RECOMENDAÇÕES DE SEGURANÇA:**\n`;
+    answer += `1. **Monitoramento inicial:** Avaliar tolerabilidade primeiras 2-4 semanas\n`;
+    answer += `2. **Exames laboratoriais:** Função hepática se doses elevadas\n`;
+    answer += `3. **Interações medicamentosas:** Revisar medicações concomitantes\n`;
+    answer += `4. **Populações especiais:** Cuidado em idosos e crianças\n\n`;
+
+    return answer;
+  }
+
   private static generateCrossDataAnswer(type: string, query: string, results: SearchResult[], totalStudies: number, totalCases: number, totalAlerts: number): string {
     let answer = `🔬 **ANÁLISE CRUZADA DE DADOS - ${type.toUpperCase()}**\n\nConsulta: "${query}"\n\n`;
     answer += `📊 **Base consultada:** ${totalStudies} estudos, ${totalCases} casos clínicos, ${totalAlerts} alertas\n`;
