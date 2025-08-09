@@ -90,7 +90,7 @@ export default function DashboardLayout({
 
       {/* Side Navigation - positioned below complete overview */}
       {sideNavOpen && (
-        <div className="fixed bottom-0 left-0 right-0 h-2/3 z-5 lg:hidden">
+        <div className="fixed bottom-0 left-0 right-0 h-1/2 z-5 lg:hidden">
           <nav className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md h-full overflow-y-auto holographic-border rounded-t-2xl"
         data-testid="side-navigation"
       >
@@ -106,7 +106,7 @@ export default function DashboardLayout({
             </button>
           </div>
           
-          <div className="space-y-3 max-h-[calc(75vh-120px)] overflow-y-auto">
+          <div className="space-y-3 max-h-[calc(50vh-120px)] overflow-y-auto">
             {dashboardOptions.map((option) => (
               <button
                 key={option.id}
