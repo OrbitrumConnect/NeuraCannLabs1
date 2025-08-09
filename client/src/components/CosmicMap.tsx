@@ -80,6 +80,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
   const [subSearchActive, setSubSearchActive] = useState(false);
   const [subSearchTerm, setSubSearchTerm] = useState("");
+  const [searchHistory, setSearchHistory] = useState<string[]>([]);
+  const [correlatedSuggestions, setCorrelatedSuggestions] = useState<string[]>([]);
   const [zoomLevel, setZoomLevel] = useState(1);
   const [panX, setPanX] = useState(0);
   const [panY, setPanY] = useState(0);
@@ -104,6 +106,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
     setChatMessages(prev => [...prev, { type: 'user', message: userMessage }]);
     setSearchTerm("");
     setIsTyping(true);
+
+    // Adicionar à memória de pesquisa
+    setSearchHistory(prev => [userMessage, ...prev.slice(0, 9)]);
 
     try {
       // Busca cruzada nos 3 sistemas: científicos, clínicos e alertas
@@ -139,12 +144,15 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
 
       const result = await aiResponse.json();
 
-      // Criar nova aba de pesquisa
+      // Gerar correlações inteligentes baseadas no histórico
+      const correlations = generateIntelligentCorrelations(userMessage, searchHistory);
+      
+      // Criar nova aba de pesquisa com IA avançada
       const newTab: SearchTab = {
         id: `tab-${Date.now()}`,
         query: userMessage,
         response: result.answer,
-        suggestions: result.suggestions || [],
+        suggestions: [...(result.suggestions || []), ...correlations],
         results: result.relatedResults || [],
         timestamp: Date.now(),
         type: 'main'
@@ -279,6 +287,38 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
 
   const handleCardMouseUp = () => {
     setDraggingCard(null);
+  };
+
+  // Sistema de correlações inteligentes baseado no histórico
+  const generateIntelligentCorrelations = (currentQuery: string, history: string[]): string[] => {
+    const correlations: string[] = [];
+    const queryLower = currentQuery.toLowerCase();
+    
+    // Correlações baseadas em padrões médicos
+    if (queryLower.includes('dosagem') || queryLower.includes('dose')) {
+      correlations.push('Efeitos adversos relacionados', 'Interações medicamentosas');
+    }
+    if (queryLower.includes('cbd')) {
+      correlations.push('Estudos comparativos CBD vs THC', 'Biodisponibilidade do CBD');
+    }
+    if (queryLower.includes('epilepsia')) {
+      correlations.push('Protocolos pediátricos', 'Síndrome de Dravet estudos recentes');
+    }
+    if (queryLower.includes('dor')) {
+      correlations.push('Cannabis vs opioides', 'Dor neuropática tratamentos');
+    }
+    
+    // Correlações baseadas no histórico de pesquisas
+    history.forEach(pastQuery => {
+      if (pastQuery.toLowerCase().includes('thc') && queryLower.includes('cbd')) {
+        correlations.push('Efeito entourage CBD+THC');
+      }
+      if (pastQuery.toLowerCase().includes('criança') && queryLower.includes('epilepsia')) {
+        correlations.push('Epidiolex em pediatria');
+      }
+    });
+    
+    return [...new Set(correlations)].slice(0, 3);
   };
 
   const generateAIResponse = (question: string): string => {
