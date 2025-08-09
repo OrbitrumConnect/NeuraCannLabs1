@@ -244,9 +244,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       </div>
 
-      {/* Search Interface - Same position on all devices - Only show when Dr AI is active */}
+      {/* Search Interface - Responsive positioning - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl px-4 sm:px-0">
+        <div className="relative mt-4 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl px-4 sm:px-0">
           <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 sm:p-6">
             
             {/* Search Bar */}
@@ -292,9 +292,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Main Result Card - Only show when Dr AI is active */}
+      {/* Main Result Card - Responsive positioning - Only show when Dr AI is active */}
       {isDrAIActive && currentResult && (
-        <div className="absolute top-64 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="relative mt-4 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 px-4 sm:px-0">
           <MainCard result={currentResult} />
           {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
           
