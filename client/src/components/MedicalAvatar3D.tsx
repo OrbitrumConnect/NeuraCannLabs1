@@ -27,7 +27,7 @@ export default function MedicalAvatar3D({
 
     // Scene setup
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
+    // No background - transparent
     sceneRef.current = scene;
 
     // Camera
@@ -44,10 +44,12 @@ export default function MedicalAvatar3D({
     const renderer = new THREE.WebGLRenderer({ 
       antialias: true, 
       alpha: true,
+      premultipliedAlpha: false,
       powerPreference: "high-performance"
     });
     renderer.setSize(48, 48);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0); // Transparent background
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -189,18 +191,18 @@ export default function MedicalAvatar3D({
 
   return (
     <div className={`relative ${className}`}>
-      {/* 3D Avatar Container */}
+      {/* 3D Avatar Container - Free floating */}
       <div 
         ref={mountRef} 
-        className={`relative w-12 h-12 rounded-lg overflow-hidden transition-all duration-300 ${
+        className={`relative w-12 h-12 transition-all duration-300 ${
           isActive 
-            ? 'shadow-lg shadow-neon-cyan/30 bg-gradient-to-br from-neon-cyan/10 to-blue-600/10' 
-            : 'bg-gradient-to-br from-gray-800/50 to-gray-900/80 hover:from-gray-700/60 hover:to-gray-800/90'
+            ? 'drop-shadow-lg' 
+            : 'drop-shadow-md'
         }`}
         style={{
-          background: isActive 
-            ? 'radial-gradient(circle, rgba(0,255,255,0.1) 0%, rgba(0,20,40,0.8) 100%)'
-            : 'radial-gradient(circle, rgba(40,40,40,0.8) 0%, rgba(0,0,0,0.9) 100%)'
+          filter: isActive 
+            ? 'drop-shadow(0 0 8px rgba(0,255,255,0.3))' 
+            : 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
         }}
       />
 
@@ -214,9 +216,9 @@ export default function MedicalAvatar3D({
       )}
 
       {/* Medical Badge */}
-      <div className="absolute -bottom-0.5 -right-0.5 bg-white rounded-full p-0.5 shadow-sm">
-        <div className="w-3 h-3 flex items-center justify-center">
-          <i className="fas fa-user-md text-blue-600 text-[8px]" />
+      <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow-lg border border-gray-200">
+        <div className="w-2.5 h-2.5 flex items-center justify-center">
+          <i className="fas fa-user-md text-blue-600 text-[7px]" />
         </div>
       </div>
 
