@@ -72,6 +72,31 @@ export const insertAlertSchema = createInsertSchema(alerts).omit({
   createdAt: true,
 });
 
+// Study submission and review system
+export const studySubmissions = pgTable("study_submissions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  title: text("title").notNull(),
+  originalContent: text("original_content").notNull(),
+  editedContent: text("edited_content"), // User corrections
+  aiAnalysis: text("ai_analysis"), // Original AI analysis
+  correctedAnalysis: text("corrected_analysis"), // User corrections to AI
+  submissionType: text("submission_type").notNull(), // text, voice, file
+  status: text("status").default("draft"), // draft, submitted, under_review, approved, rejected
+  reviewerNotes: text("reviewer_notes"),
+  reviewerId: varchar("reviewer_id"),
+  submittedAt: timestamp("submitted_at"),
+  reviewedAt: timestamp("reviewed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const insertStudySubmissionSchema = createInsertSchema(studySubmissions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -81,3 +106,5 @@ export type ClinicalCase = typeof clinicalCases.$inferSelect;
 export type InsertClinicalCase = z.infer<typeof insertClinicalCaseSchema>;
 export type Alert = typeof alerts.$inferSelect;
 export type InsertAlert = z.infer<typeof insertAlertSchema>;
+export type StudySubmission = typeof studySubmissions.$inferSelect;
+export type InsertStudySubmission = z.infer<typeof insertStudySubmissionSchema>;

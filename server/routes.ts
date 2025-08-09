@@ -165,6 +165,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Study Submissions routes
+  app.get("/api/study-submissions", async (req, res) => {
+    try {
+      const userId = req.query.userId as string | undefined;
+      const submissions = await storage.getStudySubmissions(userId);
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching study submissions:", error);
+      res.status(500).json({ error: "Failed to fetch study submissions" });
+    }
+  });
+
+  app.get("/api/study-submissions/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const submission = await storage.getStudySubmission(id);
+      if (!submission) {
+        return res.status(404).json({ error: "Study submission not found" });
+      }
+      res.json(submission);
+    } catch (error) {
+      console.error("Error fetching study submission:", error);
+      res.status(500).json({ error: "Failed to fetch study submission" });
+    }
+  });
+
+  app.post("/api/study-submissions", async (req, res) => {
+    try {
+      const submission = await storage.createStudySubmission(req.body);
+      
+      // Auto-analyze the submission for potential errors
+      const { StudyAnalyzer } = await import('./study-analysis.js');
+      const [studies, cases] = await Promise.all([
+        storage.getScientificStudies(),
+        storage.getClinicalCases()
+      ]);
+      
+      const analysisResult = await StudyAnalyzer.analyzeStudy(submission, studies, cases);
+      
+      // Update submission with AI analysis
+      const updatedSubmission = await storage.updateStudySubmission(submission.id, {
+        aiAnalysis: analysisResult.analysis
+      });
+      
+      res.status(201).json(updatedSubmission || submission);
+    } catch (error) {
+      console.error("Error creating study submission:", error);
+      res.status(500).json({ error: "Failed to create study submission" });
+    }
+  });
+
+  app.patch("/api/study-submissions/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updated = await storage.updateStudySubmission(id, req.body);
+      if (!updated) {
+        return res.status(404).json({ error: "Study submission not found" });
+      }
+      res.json(updated);
+    } catch (error) {
+      console.error("Error updating study submission:", error);
+      res.status(500).json({ error: "Failed to update study submission" });
+    }
+  });
+
+  app.post("/api/study-submissions/:id/submit", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const submitted = await storage.submitStudyForReview(id);
+      if (!submitted) {
+        return res.status(404).json({ error: "Study submission not found" });
+      }
+      res.json(submitted);
+    } catch (error) {
+      console.error("Error submitting study for review:", error);
+      res.status(500).json({ error: "Failed to submit study for review" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

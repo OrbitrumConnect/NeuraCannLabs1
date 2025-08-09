@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert } from "@shared/schema";
+import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission } from "@shared/schema";
 import { comprehensiveStudies, comprehensiveClinicalCases, comprehensiveAlerts } from './comprehensive-medical-database';
 import { randomUUID } from "crypto";
 
@@ -27,6 +27,13 @@ export interface IStorage {
   getAlert(id: string): Promise<Alert | undefined>;
   createAlert(alert: InsertAlert): Promise<Alert>;
   markAlertAsRead(id: string): Promise<void>;
+  
+  // Study Submissions
+  getStudySubmissions(userId?: string): Promise<StudySubmission[]>;
+  getStudySubmission(id: string): Promise<StudySubmission | undefined>;
+  createStudySubmission(submission: InsertStudySubmission): Promise<StudySubmission>;
+  updateStudySubmission(id: string, updates: Partial<StudySubmission>): Promise<StudySubmission | undefined>;
+  submitStudyForReview(id: string): Promise<StudySubmission | undefined>;
 }
 
 export class MemStorage implements IStorage {
@@ -34,12 +41,14 @@ export class MemStorage implements IStorage {
   private scientificStudies: Map<string, ScientificStudy>;
   private clinicalCases: Map<string, ClinicalCase>;
   private alerts: Map<string, Alert>;
+  private studySubmissions: Map<string, StudySubmission>;
 
   constructor() {
     this.users = new Map();
     this.scientificStudies = new Map();
     this.clinicalCases = new Map();
     this.alerts = new Map();
+    this.studySubmissions = new Map();
     
     // Inicializar com base de dados abrangente
     this.initializeSampleData();
@@ -405,6 +414,59 @@ export class MemStorage implements IStorage {
     if (alert) {
       this.alerts.set(id, { ...alert, isRead: 1 });
     }
+  }
+
+  // Study Submissions methods
+  async getStudySubmissions(userId?: string): Promise<StudySubmission[]> {
+    let submissions = Array.from(this.studySubmissions.values());
+    if (userId) {
+      submissions = submissions.filter(s => s.userId === userId);
+    }
+    return submissions.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
+  async getStudySubmission(id: string): Promise<StudySubmission | undefined> {
+    return this.studySubmissions.get(id);
+  }
+
+  async createStudySubmission(submission: InsertStudySubmission): Promise<StudySubmission> {
+    const id = randomUUID();
+    const now = new Date();
+    const newSubmission: StudySubmission = {
+      id,
+      ...submission,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.studySubmissions.set(id, newSubmission);
+    return newSubmission;
+  }
+
+  async updateStudySubmission(id: string, updates: Partial<StudySubmission>): Promise<StudySubmission | undefined> {
+    const existing = this.studySubmissions.get(id);
+    if (!existing) return undefined;
+    
+    const updated: StudySubmission = {
+      ...existing,
+      ...updates,
+      updatedAt: new Date(),
+    };
+    this.studySubmissions.set(id, updated);
+    return updated;
+  }
+
+  async submitStudyForReview(id: string): Promise<StudySubmission | undefined> {
+    const submission = this.studySubmissions.get(id);
+    if (!submission) return undefined;
+    
+    const updated: StudySubmission = {
+      ...submission,
+      status: "submitted",
+      submittedAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.studySubmissions.set(id, updated);
+    return updated;
   }
 }
 
