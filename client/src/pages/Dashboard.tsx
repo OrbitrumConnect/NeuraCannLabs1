@@ -131,9 +131,9 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
         <CosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} onSearch={onSearch} />
       </div>
 
-      {/* Compact Side Stats - 20% larger width, 15% shorter height */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-20 space-y-2">
-        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-36 group">
+      {/* Footer Stats */}
+      <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20 flex space-x-4">
+        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-32 group">
           <div className="text-center">
             <div className="bg-emerald-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-1.5">
               <i className="fas fa-flask text-emerald-400 text-sm"></i>
@@ -143,7 +143,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
           </div>
         </div>
 
-        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-36 group">
+        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-32 group">
           <div className="text-center">
             <div className="bg-blue-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-1.5">
               <i className="fas fa-heartbeat text-blue-400 text-sm"></i>
@@ -153,7 +153,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
           </div>
         </div>
 
-        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-36 group">
+        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-32 group">
           <div className="text-center">
             <div className="bg-purple-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-1.5">
               <i className="fas fa-users text-purple-400 text-sm"></i>
@@ -163,7 +163,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
           </div>
         </div>
 
-        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-36 group">
+        <div className="data-card rounded-lg p-2.5 holographic-border w-24 transition-all hover:w-32 group">
           <div className="text-center">
             <div className="bg-amber-500/20 p-2 rounded-full mx-auto w-8 h-8 flex items-center justify-center mb-1.5">
               <i className="fas fa-brain text-amber-400 text-sm"></i>
