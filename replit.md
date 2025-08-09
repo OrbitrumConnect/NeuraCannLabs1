@@ -12,14 +12,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Enhanced neural web with improved readability and side-panel sub-searches
-- Teia neural expandida para 60% da tela (40vh) com zoom/pan interativo
-- Nós principais ampliados para 220px mínimo com texto legível (200 chars preview)
-- Sub-pesquisas relocadas para painel lateral direito com conexões neurais
-- Controles de zoom (+/-/reset) com indicador de porcentagem
-- Conteúdo expandido: 48 linhas max para análises principais
-- Layout otimizado: estudos principais centralizados, sub-pesquisas laterais
-- Interface de navegação estilo mapa para exploração científica profunda
+**2025-08-09**: Individual neural sub-search nodes with proper parent connections
+- Sub-pesquisas agora são nós individuais conectados aos seus pais específicos
+- Cada sub-pesquisa posicionada relativamente ao nó principal que a originou
+- Conexões neurais visuais claras entre nó pai e sub-nós (linhas roxas)
+- Indicador visual mostra qual pesquisa principal originou cada sub-pesquisa
+- Sistema de navegação aprimorado: drag apenas no fundo, controles maiores
+- Layout não-agrupado permite exploração independente de cada sub-pesquisa
+- Teia neural verdadeiramente hierárquica com conexões parent-child
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion

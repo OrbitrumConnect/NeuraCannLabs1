@@ -589,58 +589,62 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                   </div>
                 </div>
 
-                {/* Sub-research nodes - positioned to the right side */}
-                {searchTabs.filter(tab => tab.type === 'sub').length > 0 && (
-                  <div className="absolute right-6 top-16 w-80">
-                    <div className="space-y-4">
-                      <h3 className="text-lg font-semibold text-purple-300 mb-4 flex items-center">
-                        <span className="mr-2">🔍</span>
-                        Sub-pesquisas
-                      </h3>
-                      {searchTabs.filter(tab => tab.type === 'sub').map((subTab, subIndex) => (
-                        <div key={subTab.id} className="relative">
-                          {/* Neural line connecting to parent */}
-                          <div className="absolute -left-6 top-6 w-6 h-0.5 bg-purple-400/60" />
-                          
-                          {/* Sub Research Node */}
-                          <div 
-                            className={`research-node bg-black/80 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[140px] ${
-                              activeTabId === subTab.id 
-                                ? 'border-purple-400 shadow-lg shadow-purple-400/30' 
-                                : 'border-purple-600/50 hover:border-purple-400/70'
-                            }`}
-                            onClick={() => setActiveTabId(activeTabId === subTab.id ? null : subTab.id)}
+                {/* Individual Sub-research nodes - positioned relative to their parent */}
+                {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => {
+                  const subTabs = searchTabs.filter(tab => tab.parentId === mainTab.id);
+                  return subTabs.map((subTab, subIndex) => (
+                    <div key={`sub-${subTab.id}`} 
+                         className="absolute z-30" 
+                         style={{
+                           left: `${20 + (mainIndex % 3) * 400 + 320}px`, // Position to the right of main node
+                           top: `${120 + mainIndex * 280 + subIndex * 160}px`, // Stagger vertically per sub-search
+                         }}>
+                      {/* Neural connection line to parent */}
+                      <div className="absolute -left-8 top-16 w-8 h-0.5 bg-purple-400/60 animate-pulse" />
+                      <div className="absolute -left-8 top-16 w-0.5 h-4 bg-purple-400/60" />
+                      
+                      {/* Sub Research Node */}
+                      <div 
+                        className={`research-node bg-black/85 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[120px] w-72 ${
+                          activeTabId === subTab.id 
+                            ? 'border-purple-400 shadow-lg shadow-purple-400/30 scale-105' 
+                            : 'border-purple-600/50 hover:border-purple-400/70 hover:scale-102'
+                        }`}
+                        onClick={() => setActiveTabId(activeTabId === subTab.id ? null : subTab.id)}
+                      >
+                        <div className="flex justify-between items-start mb-3">
+                          <h4 className="text-sm font-medium text-purple-300 flex items-center">
+                            <span className="mr-2 text-purple-400">↳</span>
+                            {subTab.query}
+                          </h4>
+                          <button 
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
+                              if (activeTabId === subTab.id) setActiveTabId(null);
+                            }}
+                            className="text-red-400 hover:text-red-300 w-5 h-5 flex items-center justify-center rounded hover:bg-red-500/20"
                           >
-                            <div className="flex justify-between items-start mb-3">
-                              <h4 className="text-sm font-medium text-purple-300 flex items-center">
-                                <span className="mr-2 text-purple-400">↳</span>
-                                {subTab.query}
-                              </h4>
-                              <button 
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
-                                  if (activeTabId === subTab.id) setActiveTabId(null);
-                                }}
-                                className="text-red-400 hover:text-red-300 w-5 h-5 flex items-center justify-center rounded hover:bg-red-500/20"
-                              >
-                                ×
-                              </button>
-                            </div>
-                            
-                            {/* Sub-node content */}
-                            <div className="text-sm text-gray-300 leading-relaxed">
-                              <div dangerouslySetInnerHTML={{ 
-                                __html: subTab.response.substring(0, activeTabId === subTab.id ? 400 : 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                              }} />
-                              {subTab.response.length > (activeTabId === subTab.id ? 400 : 150) && '...'}
-                            </div>
-                          </div>
+                            ×
+                          </button>
                         </div>
-                      ))}
+                        
+                        {/* Sub-node content */}
+                        <div className="text-xs text-gray-300 leading-relaxed">
+                          <div dangerouslySetInnerHTML={{ 
+                            __html: subTab.response.substring(0, activeTabId === subTab.id ? 300 : 120).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                          }} />
+                          {subTab.response.length > (activeTabId === subTab.id ? 300 : 120) && '...'}
+                        </div>
+                        
+                        {/* Parent indicator */}
+                        <div className="text-xs text-purple-500 mt-2 opacity-60">
+                          ↖ De: {mainTab.query.substring(0, 25)}...
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  ));
+                })}
               </div>
             </div>
           </div>
