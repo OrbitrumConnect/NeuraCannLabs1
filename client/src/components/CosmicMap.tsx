@@ -648,46 +648,29 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
               transition: draggingCard === subTab.id ? 'none' : 'transform 0.2s ease'
             }}
           >
-            {/* Neural connection line - Dynamic line to parent */}
-            <svg className="absolute -z-10 pointer-events-none" style={{ 
-              width: '100vw', 
-              height: '100vh',
-              left: `-${position.x}px`,
-              top: `-${position.y}px`
-            }}>
-              <line
-                x1={position.x + 140} // Center of sub-card
-                y1={position.y + 80}
-                x2={200} // Approximate center of main research area
-                y2={400}
-                stroke="rgb(168, 85, 247, 0.6)"
-                strokeWidth="2"
-                strokeDasharray="5,5"
-                className="animate-pulse"
-              />
-            </svg>
+
             
             {/* Draggable Sub Research Card */}
             <div 
-              className={`bg-black/90 backdrop-blur-md rounded-lg border p-4 cursor-move transition-all min-h-[140px] w-80 shadow-2xl ${
+              className={`bg-black/95 backdrop-blur-md rounded-lg border p-4 transition-all min-h-[140px] w-80 shadow-2xl ${
                 activeTabId === subTab.id 
                   ? 'border-purple-400 shadow-lg shadow-purple-400/30' 
                   : 'border-purple-600/50 hover:border-purple-400/70'
-              } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
+              } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50 cursor-grabbing' : 'cursor-grab'}`}
               onMouseDown={(e) => handleCardMouseDown(e, subTab.id)}
               onClick={(e) => {
                 e.stopPropagation();
                 setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
               }}
             >
-              {/* Drag handle */}
+              {/* Header with drag area */}
               <div className="flex justify-between items-start mb-3">
-                <div className="flex items-center">
-                  <div className="w-6 h-6 mr-2 flex items-center justify-center text-purple-400 cursor-move">
+                <div className="flex items-center flex-1">
+                  <div className="w-6 h-6 mr-2 flex items-center justify-center text-purple-400 cursor-grab">
                     ⋮⋮
                   </div>
-                  <h4 className="text-sm font-medium text-purple-300 flex items-center">
-                    <span className="mr-2 text-purple-400">↳</span>
+                  <h4 className="text-sm font-medium text-purple-300 flex items-center cursor-grab">
+                    <span className="mr-2 text-purple-400">🔍</span>
                     {subTab.query}
                   </h4>
                 </div>
@@ -718,8 +701,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
               
               {/* Parent indicator */}
               {parentTab && (
-                <div className="text-xs text-purple-500 mt-3 pt-2 border-t border-purple-800/30 opacity-80">
-                  ↖ Originada de: {parentTab.query.substring(0, 30)}...
+                <div className="text-xs text-purple-500 mt-3 pt-2 border-t border-purple-800/30 opacity-80 cursor-grab">
+                  ↖ De: {parentTab.query.substring(0, 35)}...
                 </div>
               )}
             </div>
