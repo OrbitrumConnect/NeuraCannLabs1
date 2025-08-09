@@ -21,8 +21,8 @@ const planets: CosmicPlanet[] = [
   {
     id: "scientific",
     name: "Dados Científicos",
-    position: { bottom: "33%", left: "18%" },
-    size: "w-16 h-16",
+    position: { top: "5%", left: "25%" },
+    size: "w-14 h-14",
     color: "from-emerald-400 to-green-600",
     icon: "fas fa-microscope",
     delay: "0.5s",
@@ -30,8 +30,8 @@ const planets: CosmicPlanet[] = [
   {
     id: "clinical",
     name: "Casos Clínicos",
-    position: { bottom: "33%", right: "18%" },
-    size: "w-16 h-16",
+    position: { top: "5%", right: "25%" },
+    size: "w-14 h-14",
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
     delay: "1s",
@@ -39,8 +39,8 @@ const planets: CosmicPlanet[] = [
   {
     id: "alerts",
     name: "Alertas",
-    position: { bottom: "13%", left: "22%" },
-    size: "w-12 h-12",
+    position: { top: "5%", left: "45%" },
+    size: "w-11 h-11",
     color: "from-amber-400 to-orange-600",
     icon: "fas fa-bell",
     delay: "1.5s",
@@ -48,8 +48,8 @@ const planets: CosmicPlanet[] = [
   {
     id: "profile",
     name: "Perfil",
-    position: { bottom: "13%", right: "22%" },
-    size: "w-12 h-12",
+    position: { top: "5%", right: "45%" },
+    size: "w-11 h-11",
     color: "from-purple-400 to-pink-600",
     icon: "fas fa-user-circle",
     delay: "2s",
@@ -118,7 +118,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
   return (
     <div className="relative h-96 overflow-hidden">
       {/* Central Search Bar with AI Chat */}
-      <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10">
+      <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-10">
         <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-96">
           {/* Mode Toggle */}
           <div className="flex items-center justify-between mb-3">
@@ -286,10 +286,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
             <stop offset="100%" style={{ stopColor: "rgba(0,255,255,0.03)", stopOpacity: 1 }} />
           </linearGradient>
         </defs>
-        <line x1="50%" y1="25%" x2="18%" y2="67%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="25%" x2="82%" y2="67%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="25%" x2="22%" y2="87%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="25%" x2="78%" y2="87%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="30%" x2="25%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="30%" x2="75%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="30%" x2="45%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="30%" x2="55%" y2="5%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
       </svg>
     </div>
   );
