@@ -160,7 +160,7 @@ export class MedicalAISearch {
       answer += "📚 **ESTUDOS CIENTÍFICOS:**\n";
       studyResults.forEach((result) => {
         const study = result.data as ScientificStudy;
-        answer += `• ${study.title} - ${study.compound} (${study.participants} participantes)\n`;
+        answer += `• ${study.title} - ${study.compound} (${study.phase || 'Fase não especificada'})\n`;
       });
       answer += "\n";
     }

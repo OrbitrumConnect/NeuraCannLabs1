@@ -1,16 +1,60 @@
-# Cannabis Clinical Hub - Medical Platform
+# Cannabis Clinical Hub - Plataforma Médica Inteligente
 
-## Overview
+## Overview - Visão Evolutiva do Sistema
 
-Cannabis Clinical Hub is a full-stack web application designed as an advanced medical platform for analyzing scientific research, clinical cases, and discoveries in cannabis medicinal applications. The platform features an innovative 3D avatar interface, real-time data visualization, and a cyberpunk-inspired design aesthetic.
+Cannabis Clinical Hub é uma plataforma médica avançada que combina inteligência artificial, visualização de dados em tempo real e interface imersiva para análise científica de cannabis medicinal. O sistema evoluiu para ser uma ferramenta de pesquisa neural hierárquica onde:
 
-The application serves as a comprehensive hub for medical professionals to access scientific studies, review clinical cases, receive important alerts, and manage their profiles in an interactive and visually engaging environment.
+**CONCEITO CENTRAL**: Teia neural de conhecimento que conecta estudos científicos, casos clínicos e alertas regulatórios através de IA especializada, permitindo exploração profunda e descoberta de correlações médicas.
 
-## User Preferences
+**ARQUITETURA DE PESQUISA EVOLUTIVA**:
+- **Layer 1**: Pesquisa principal fixa na teia neural (cards estáticos)
+- **Layer 2**: Sub-pesquisas organizadas em dock inferior expansível
+- **Layer 3**: Sistema de zoom/pan profissional (50%-200%)
+- **Layer 4**: IA cruzada analisando 3 bancos simultaneamente
 
-Preferred communication style: Simple, everyday language.
+**FUNCIONALIDADE CORE**: Sistema de pesquisa cruzada inteligente que permite ao usuário fazer perguntas em linguagem natural e receber análises integradas de todos os dados científicos, com sugestões de aprofundamento que geram sub-pesquisas organizadas harmonicamente na interface.
+
+## User Preferences & Evolution Goals
+
+**Communication Style**: Simple, everyday language.
+
+**Platform Evolution Vision**:
+- Sistema deve evoluir e aprender continuamente
+- Análise automática do app a cada 10 minutos durante desenvolvimento
+- Foco na coerência total do sistema e experiência harmônica
+- Cada funcionalidade deve se integrar naturalmente com as existentes
+- Interface deve ser intuitiva: cards principais fixos, sub-pesquisas móveis
+- Prioridade: organização visual harmônica que permite leitura simultânea
 
 ## Recent Changes
+
+## ANÁLISE EVOLUTIVA DO SISTEMA (Análise 1 - 16:30)
+
+**STATUS ATUAL**: Sistema funcionando com arquitetura híbrida otimizada
+
+**PONTOS FORTES IDENTIFICADOS**:
+✓ Teia neural fixa proporcionando estabilidade visual
+✓ Dock inferior expansível criando harmonia organizacional  
+✓ Sistema de pesquisa cruzada IA analisando 3 bancos simultaneamente
+✓ Navegação zoom/pan profissional (50%-200%)
+✓ Sub-pesquisas com handles precisos (6x6px) apenas no ícone ⋮⋮
+
+**OPORTUNIDADES DE EVOLUÇÃO DETECTADAS**:
+🔄 Sistema poderia "aprender" padrões de pesquisa do usuário
+🔄 Conectividade entre cards poderia ser mais inteligente
+🔄 Análise de correlações científicas em tempo real
+🔄 Cache inteligente de sub-pesquisas relacionadas
+
+**COERÊNCIA ARQUITETURAL**: 
+- Frontend: React + Three.js + Interface imersiva ✓
+- Backend: Express + IA cruzada + 3 bancos dados ✓ 
+- UX: Teia fixa + Dock móvel + Zoom/pan ✓
+- IA: Análise semântica + Sugestões contextuais ✓
+
+**PRÓXIMA EVOLUÇÃO SUGERIDA**: 
+Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas baseado no histórico e cria conexões neurais visuais dinâmicas.
+
+---
 
 **2025-08-09**: Fixed main cards with harmonious sub-cards dock system
 - Cards principais fixos na teia neural para estabilidade e foco na leitura
