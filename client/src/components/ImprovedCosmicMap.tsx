@@ -325,59 +325,75 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {isDrAIActive && currentResult && (
         <div className="fixed right-8 top-1/2 transform translate-y-8 z-20 space-y-3" style={{ width: '380px' }}>
           
-          {/* Scientific Studies */}
+          {/* Scientific Studies - Compacto */}
           {scientificData.length > 0 && (
-            <div className="bg-blue-950/90 backdrop-blur-md rounded-lg border border-blue-500/40 p-4">
-              <h3 className="text-sm font-semibold text-blue-300 flex items-center mb-3">
+            <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg border border-slate-600/30 p-3">
+              <h3 className="text-sm font-medium text-slate-200 flex items-center mb-2">
                 <Microscope className="w-4 h-4 mr-2" />
-                Estudos Científicos ({scientificData.length})
+                Estudos ({scientificData.length})
               </h3>
-              <div className="space-y-2 max-h-32 overflow-y-auto">
-                {scientificData.slice(0, 3).map((study, idx) => (
-                  <div key={study.id} className="text-xs text-blue-200 p-2 bg-blue-900/40 rounded border-l-2 border-blue-400/60">
-                    <div className="font-medium">{study.title}</div>
-                    <div className="text-blue-300 mt-1">{study.description}</div>
-                    <div className="text-blue-400 mt-1 text-xs">📍 {study.compound} • {study.indication}</div>
+              <div className="space-y-1.5 max-h-28 overflow-y-auto">
+                {scientificData.slice(0, 2).map((study, idx) => (
+                  <div key={study.id} 
+                       className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded border-l-2 border-blue-500/40 hover:bg-slate-700/60 cursor-pointer transition-colors"
+                       onClick={() => window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(study.title)}`, '_blank')}>
+                    <div className="font-medium text-slate-200">{study.title.substring(0, 35)}...</div>
+                    <div className="text-slate-400 mt-0.5 text-xs">{study.compound} • {study.phase}</div>
                   </div>
                 ))}
+              </div>
+              <div className="mt-2 text-center">
+                <button className="text-blue-400 hover:text-blue-300 text-xs underline">
+                  Ver todos →
+                </button>
               </div>
             </div>
           )}
 
-          {/* Clinical Cases */}
+          {/* Clinical Cases - Compacto */}
           {clinicalData.length > 0 && (
-            <div className="bg-green-950/90 backdrop-blur-md rounded-lg border border-green-500/40 p-4">
-              <h3 className="text-sm font-semibold text-green-300 flex items-center mb-3">
+            <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg border border-slate-600/30 p-3">
+              <h3 className="text-sm font-medium text-slate-200 flex items-center mb-2">
                 <Pill className="w-4 h-4 mr-2" />
-                Casos Clínicos ({clinicalData.length})
+                Casos ({clinicalData.length})
               </h3>
-              <div className="space-y-2 max-h-32 overflow-y-auto">
-                {clinicalData.slice(0, 3).map((case_, idx) => (
-                  <div key={case_.id} className="text-xs text-green-200 p-2 bg-green-900/40 rounded border-l-2 border-green-400/60">
-                    <div className="font-medium">{case_.caseNumber}</div>
-                    <div className="text-green-300 mt-1">{case_.description}</div>
-                    <div className="text-green-400 mt-1 text-xs">👨‍⚕️ {case_.indication} • Resultado: {case_.outcome}</div>
+              <div className="space-y-1.5 max-h-28 overflow-y-auto">
+                {clinicalData.slice(0, 2).map((case_, idx) => (
+                  <div key={case_.id} className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded border-l-2 border-green-500/40 hover:bg-slate-700/60 cursor-pointer transition-colors">
+                    <div className="font-medium text-slate-200">{case_.caseNumber}</div>
+                    <div className="text-slate-400 mt-0.5 text-xs">{case_.indication} • {case_.outcome}</div>
                   </div>
                 ))}
+              </div>
+              <div className="mt-2 text-center">
+                <button className="text-green-400 hover:text-green-300 text-xs underline">
+                  Ver todos →
+                </button>
               </div>
             </div>
           )}
 
-          {/* Regulatory Alerts */}
+          {/* Regulatory Alerts - Compacto */}
           {alertsData.length > 0 && (
-            <div className="bg-red-950/90 backdrop-blur-md rounded-lg border border-red-500/40 p-4">
-              <h3 className="text-sm font-semibold text-red-300 flex items-center mb-3">
+            <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg border border-slate-600/30 p-3">
+              <h3 className="text-sm font-medium text-slate-200 flex items-center mb-2">
                 <AlertTriangle className="w-4 h-4 mr-2" />
-                Alertas Regulatórios ({alertsData.length})
+                Alertas ({alertsData.length})
               </h3>
-              <div className="space-y-2 max-h-32 overflow-y-auto">
-                {alertsData.slice(0, 3).map((alert, idx) => (
-                  <div key={alert.id} className="text-xs text-red-200 p-2 bg-red-900/40 rounded border-l-2 border-red-400/60">
-                    <div className="font-medium">{alert.type}</div>
-                    <div className="text-red-300 mt-1">{alert.message}</div>
-                    <div className="text-red-400 mt-1 text-xs">🚨 Prioridade: {alert.priority}</div>
+              <div className="space-y-1.5 max-h-28 overflow-y-auto">
+                {alertsData.slice(0, 2).map((alert, idx) => (
+                  <div key={alert.id} 
+                       className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded border-l-2 border-orange-500/40 hover:bg-slate-700/60 cursor-pointer transition-colors"
+                       onClick={() => window.open('https://www.gov.br/anvisa/pt-br', '_blank')}>
+                    <div className="font-medium text-slate-200">{alert.type}</div>
+                    <div className="text-slate-400 mt-0.5 text-xs">{alert.message.substring(0, 40)}...</div>
                   </div>
                 ))}
+              </div>
+              <div className="mt-2 text-center">
+                <button className="text-orange-400 hover:text-orange-300 text-xs underline">
+                  Ver ANVISA →
+                </button>
               </div>
             </div>
           )}
