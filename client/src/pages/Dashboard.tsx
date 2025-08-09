@@ -140,6 +140,13 @@ export default function Dashboard() {
     
     setSubSearchQuery(query);
     
+    // Automaticamente minimizar o card principal quando sub-pesquisa é feita
+    if (!aiCardMinimized) {
+      setAiCardMinimized(true);
+      // Posicionar o card principal no lado esquerdo para criar a "teia"
+      setCardPosition({ x: 50, y: 250 });
+    }
+    
     try {
       const response = await fetch('/api/ai-search', {
         method: 'POST',
@@ -163,6 +170,8 @@ export default function Dashboard() {
     setSubSearchResponse('');
     setSubSearchQuery('');
     setShowSubSearch(false);
+    // Expandir o card principal novamente quando sub-pesquisa é fechada
+    setAiCardMinimized(false);
   };
 
 
@@ -438,6 +447,22 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
         </div>
       )}
 
+      {/* Connection line between cards - Web effect */}
+      {showSubSearch && aiCardMinimized && (
+        <div 
+          className="fixed z-40 pointer-events-none"
+          style={{
+            left: `${(cardPosition?.x || 50) + 350}px`,
+            top: `${(cardPosition?.y || 250) + 32}px`,
+            width: `${window.innerWidth - (cardPosition?.x || 50) - 350 - 420}px`,
+            height: '2px',
+            background: 'linear-gradient(to right, rgba(6, 182, 212, 0.5), rgba(147, 51, 234, 0.5))',
+            borderRadius: '1px',
+            animation: 'pulse 2s infinite'
+          }}
+        />
+      )}
+
       {/* Sub-search lateral card */}
       {showSubSearch && subSearchResponse && (
         <div 
@@ -450,10 +475,11 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-700/50 flex-shrink-0">
               <div className="flex items-center space-x-3">
-                <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center">
+                <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center animate-pulse">
                   <i className="fas fa-search-plus text-purple-400 text-xs"></i>
                 </div>
                 <h3 className="text-purple-400 font-medium text-sm">Sub-pesquisa: {subSearchQuery}</h3>
+                <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse" title="Conectado à análise principal"></div>
               </div>
               <button 
                 onClick={onCloseSubSearch}
@@ -548,15 +574,26 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
           }}
           onMouseDown={onMouseDown}
         >
-          <div className="bg-black/95 backdrop-blur-sm rounded-xl border border-neon-cyan/40 shadow-xl shadow-neon-cyan/20 animate-pulse-glow opacity-95">
+          <div className={`bg-black/95 backdrop-blur-sm rounded-xl border shadow-xl animate-pulse-glow opacity-95 ${
+            showSubSearch 
+              ? 'border-neon-cyan/60 shadow-neon-cyan/30' 
+              : 'border-neon-cyan/40 shadow-neon-cyan/20'
+          }`}>
             <div className="flex items-center justify-between p-3">
               <div className="flex items-center space-x-2">
-                <div className="w-6 h-6 bg-neon-cyan/20 rounded-full flex items-center justify-center">
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                  showSubSearch 
+                    ? 'bg-neon-cyan/30 animate-pulse' 
+                    : 'bg-neon-cyan/20'
+                }`}>
                   <i className="fas fa-robot text-neon-cyan text-xs animate-pulse"></i>
                 </div>
                 <h3 className="text-neon-cyan font-medium text-sm">
                   VerdiData IA: {aiSearchQuery || 'Análise'}
                 </h3>
+                {showSubSearch && (
+                  <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" title="Conectado à sub-pesquisa"></div>
+                )}
               </div>
               <div className="flex items-center space-x-1">
                 <button 
