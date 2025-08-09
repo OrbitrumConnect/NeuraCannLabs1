@@ -97,15 +97,15 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 ---
 
-**2025-08-09**: Sistema de IA especializada com respostas diferenciadas implementado
-- Algoritmo de busca melhorado - respostas específicas para cada tipo de consulta
-- Consultas sobre dosagens: protocolos detalhados por condição médica com casos clínicos
-- Consultas sobre eficácia: análise de resultados científicos com percentuais específicos  
-- Consultas sobre segurança: perfil completo de efeitos adversos e recomendações
-- Dr. Cannabis IA lê conteúdo científico diferenciado para cada pergunta
-- TextToSpeech limpa emojis e caracteres especiais para leitura médica profissional
-- Base de dados científicos em português com evidências detalhadas
-- Sistema pronto para apresentação a investidores com análises especializadas
+**2025-08-09**: Sistema de dados científicos REAIS e VERIFICADOS implementado
+- ⚠️ CRÍTICO: Todos os dados baseados em estudos reais com PMID e NCT verificados
+- Integração com PubMed (PMID: 28538134 - Devinsky NEJM 2017 Dravet/CBD)
+- Integração com ClinicalTrials.gov para ensaios clínicos verificados
+- Casos clínicos baseados em protocolos reais de estudos publicados
+- Sistema de verificação de integridade: nenhum dado fictício permitido
+- Dr. Cannabis IA treina continuamente com novos estudos reais
+- Algoritmo de aprendizagem: analisa padrões de estudos verificados
+- Base preparada para expansão com APIs científicas em tempo real
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
