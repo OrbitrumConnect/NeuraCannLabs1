@@ -21,7 +21,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "scientific",
     name: "Dados Científicos",
-    position: { bottom: "25%", left: "25%" },
+    position: { bottom: "33%", left: "18%" },
     size: "w-16 h-16",
     color: "from-emerald-400 to-green-600",
     icon: "fas fa-microscope",
@@ -30,7 +30,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "clinical",
     name: "Casos Clínicos",
-    position: { bottom: "25%", right: "25%" },
+    position: { bottom: "33%", right: "18%" },
     size: "w-16 h-16",
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
@@ -39,7 +39,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "alerts",
     name: "Alertas",
-    position: { bottom: "5%", left: "30%" },
+    position: { bottom: "13%", left: "22%" },
     size: "w-12 h-12",
     color: "from-amber-400 to-orange-600",
     icon: "fas fa-bell",
@@ -48,7 +48,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "profile",
     name: "Perfil",
-    position: { bottom: "5%", right: "30%" },
+    position: { bottom: "13%", right: "22%" },
     size: "w-12 h-12",
     color: "from-purple-400 to-pink-600",
     icon: "fas fa-user-circle",
@@ -286,10 +286,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
             <stop offset="100%" style={{ stopColor: "rgba(0,255,255,0.03)", stopOpacity: 1 }} />
           </linearGradient>
         </defs>
-        <line x1="50%" y1="25%" x2="25%" y2="75%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="25%" x2="75%" y2="75%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="25%" x2="30%" y2="95%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
-        <line x1="50%" y1="25%" x2="70%" y2="95%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="25%" x2="18%" y2="67%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="25%" x2="82%" y2="67%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="25%" x2="22%" y2="87%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="25%" x2="78%" y2="87%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
       </svg>
     </div>
   );
