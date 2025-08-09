@@ -15,6 +15,7 @@ const dashboardOptions = [
   { id: "scientific", name: "Dados Científicos", icon: "fas fa-microscope" },
   { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
+  { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
 ];
 
@@ -62,6 +63,9 @@ export default function DashboardLayout({
                 {option.name}
                 {option.id === "alerts" && (
                   <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                )}
+                {option.id === "my-study" && (
+                  <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1">NEW</span>
                 )}
               </button>
             ))}

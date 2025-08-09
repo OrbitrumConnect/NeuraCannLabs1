@@ -5,6 +5,7 @@ import ImprovedCosmicMap from "@/components/ImprovedCosmicMap";
 import ScientificDashboard from "./ScientificDashboard";
 import ClinicalDashboard from "./ClinicalDashboard";
 import AlertsDashboard from "./AlertsDashboard";
+import MyStudyDashboard from "./MyStudyDashboard";
 import ProfileDashboard from "./ProfileDashboard";
 
 export default function Dashboard() {
@@ -61,6 +62,9 @@ export default function Dashboard() {
       )}
       {activeDashboard === "alerts" && (
         <AlertsDashboard />
+      )}
+      {activeDashboard === "my-study" && (
+        <MyStudyDashboard />
       )}
       {activeDashboard === "profile" && (
         <ProfileDashboard />
