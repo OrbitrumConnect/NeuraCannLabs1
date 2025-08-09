@@ -12,6 +12,17 @@ interface CosmicPlanet {
   delay: string;
 }
 
+interface SearchTab {
+  id: string;
+  query: string;
+  response: string;
+  suggestions: string[];
+  results: any[];
+  timestamp: number;
+  type: 'main' | 'sub';
+  parentId?: string;
+}
+
 interface CosmicMapProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
@@ -65,9 +76,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   const [chatMode, setChatMode] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{type: 'user' | 'ai', message: string}>>([]);
   const [isTyping, setIsTyping] = useState(false);
-  const [relatedOptions, setRelatedOptions] = useState<string[]>([]);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
-  const [aiResponse, setAiResponse] = useState<string>('');
+  const [searchTabs, setSearchTabs] = useState<SearchTab[]>([]);
+  const [activeTabId, setActiveTabId] = useState<string | null>(null);
+  const [subSearchActive, setSubSearchActive] = useState(false);
+  const [subSearchTerm, setSubSearchTerm] = useState("");
 
   const filters = [
     { id: "todos", label: "Todos", icon: Brain },
@@ -120,19 +132,90 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
 
       const result = await aiResponse.json();
 
-      // Enviar dados cruzados para interface principal
-      setAiResponse(result.answer);
-      setRelatedOptions(result.suggestions);
-      setSearchResults(result.relatedResults);
+      // Criar nova aba de pesquisa
+      const newTab: SearchTab = {
+        id: `tab-${Date.now()}`,
+        query: userMessage,
+        response: result.answer,
+        suggestions: result.suggestions || [],
+        results: result.relatedResults || [],
+        timestamp: Date.now(),
+        type: 'main'
+      };
+
+      setSearchTabs(prev => [...prev, newTab]);
+      setActiveTabId(newTab.id);
       onAIResponse?.(result.answer, result.suggestions, result.relatedResults, userMessage);
 
     } catch (error) {
       console.error('Erro na análise cruzada:', error);
-      // Fallback com dados básicos
-      const fallbackResponse = `🔍 **ANÁLISE CRUZADA DE DADOS**\n\nBuscando por: "${userMessage}"\n\n📊 **Cruzamento realizado em:**\n- 6 estudos científicos\n- 5 casos clínicos\n- 3 alertas ativos\n- Rankings de médicos especialistas\n\nDesculpe, erro temporário no sistema. Tente novamente.`;
-      onAIResponse?.(fallbackResponse, [], [], userMessage);
+      const fallbackTab: SearchTab = {
+        id: `tab-${Date.now()}`,
+        query: userMessage,
+        response: `🔍 **ANÁLISE CRUZADA DE DADOS**\n\nBuscando por: "${userMessage}"\n\n📊 **Cruzamento realizado em:**\n- 6 estudos científicos\n- 5 casos clínicos\n- 3 alertas ativos\n\nDesculpe, erro temporário no sistema. Tente novamente.`,
+        suggestions: [],
+        results: [],
+        timestamp: Date.now(),
+        type: 'main'
+      };
+      setSearchTabs(prev => [...prev, fallbackTab]);
+      setActiveTabId(fallbackTab.id);
     } finally {
       setIsTyping(false);
+    }
+  };
+
+  const handleSubSearch = async (suggestion: string, parentTabId: string) => {
+    setSubSearchActive(true);
+    setSubSearchTerm(suggestion);
+    
+    try {
+      const [scientificResponse, clinicalResponse, alertsResponse] = await Promise.all([
+        fetch('/api/scientific'),
+        fetch('/api/clinical'),
+        fetch('/api/alerts')
+      ]);
+
+      const [scientificData, clinicalData, alertsData] = await Promise.all([
+        scientificResponse.json(),
+        clinicalResponse.json(),
+        alertsResponse.json()
+      ]);
+
+      const aiResponse = await fetch('/api/ai-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          query: suggestion,
+          scientificData,
+          clinicalData,
+          alertsData
+        }),
+      });
+
+      const result = await aiResponse.json();
+      
+      const subTab: SearchTab = {
+        id: `subtab-${Date.now()}`,
+        query: suggestion,
+        response: result.answer,
+        suggestions: result.suggestions || [],
+        results: result.relatedResults || [],
+        timestamp: Date.now(),
+        type: 'sub',
+        parentId: parentTabId
+      };
+
+      setSearchTabs(prev => [...prev, subTab]);
+      setActiveTabId(subTab.id);
+      
+    } catch (error) {
+      console.error('Erro na sub-pesquisa:', error);
+    } finally {
+      setSubSearchActive(false);
+      setSubSearchTerm("");
     }
   };
 
@@ -317,6 +400,112 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
             </div>
           )}
           </div>
+        </div>
+      )}
+
+      {/* Research Tabs Area - Below chat when active */}
+      {searchTabs.length > 0 && (
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20 w-[90vw] max-w-6xl">
+          {/* Tab Headers */}
+          <div className="flex gap-2 mb-2 overflow-x-auto">
+            {searchTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTabId(tab.id)}
+                className={`px-4 py-2 rounded-t-lg text-sm whitespace-nowrap transition-all ${
+                  activeTabId === tab.id
+                    ? "bg-neon-cyan/20 text-neon-cyan border-t border-l border-r border-neon-cyan/40"
+                    : "bg-gray-800/60 text-gray-300 hover:bg-gray-700/60"
+                } ${tab.type === 'sub' ? 'ml-4 border-l-4 border-purple-500' : ''}`}
+              >
+                {tab.type === 'sub' && <span className="text-purple-400 mr-1">↳</span>}
+                {tab.query.substring(0, 30)}...
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchTabs(prev => prev.filter(t => t.id !== tab.id));
+                    if (activeTabId === tab.id) {
+                      const remaining = searchTabs.filter(t => t.id !== tab.id);
+                      setActiveTabId(remaining.length > 0 ? remaining[remaining.length - 1].id : null);
+                    }
+                  }}
+                  className="ml-2 text-red-400 hover:text-red-300"
+                >
+                  ×
+                </button>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Tab Content */}
+          {activeTabId && searchTabs.find(tab => tab.id === activeTabId) && (
+            <div className="bg-black/80 backdrop-blur-md rounded-lg border border-neon-cyan/30 p-6 max-h-96 overflow-y-auto">
+              {(() => {
+                const activeTab = searchTabs.find(tab => tab.id === activeTabId)!;
+                return (
+                  <div>
+                    <div className="flex justify-between items-start mb-4">
+                      <h3 className="text-lg font-semibold text-neon-cyan">
+                        {activeTab.type === 'sub' ? '🔍 Sub-pesquisa: ' : '🧠 Análise Principal: '}
+                        {activeTab.query}
+                      </h3>
+                      <span className="text-xs text-gray-400">
+                        {new Date(activeTab.timestamp).toLocaleTimeString()}
+                      </span>
+                    </div>
+                    
+                    <div className="prose prose-sm max-w-none text-gray-300 mb-4">
+                      <div dangerouslySetInnerHTML={{ 
+                        __html: activeTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                      }} />
+                    </div>
+
+                    {/* Sub-search suggestions */}
+                    {activeTab.suggestions.length > 0 && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-gray-400 mb-2">Aprofundar pesquisa:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {activeTab.suggestions.map((suggestion, index) => (
+                            <button
+                              key={index}
+                              onClick={() => handleSubSearch(suggestion, activeTab.id)}
+                              disabled={subSearchActive}
+                              className="px-3 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded-full text-xs hover:bg-purple-600/30 transition-all disabled:opacity-50"
+                            >
+                              {subSearchActive && subSearchTerm === suggestion ? (
+                                <span className="animate-pulse">Pesquisando...</span>
+                              ) : (
+                                suggestion
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Related results */}
+                    {activeTab.results.length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-medium text-gray-400 mb-2">Resultados relacionados:</h4>
+                        <div className="grid gap-2">
+                          {activeTab.results.slice(0, 3).map((result, index) => (
+                            <div key={index} className="p-3 bg-gray-800/40 rounded border border-gray-700/40">
+                              <div className="text-xs text-gray-500 mb-1">
+                                {result.type === 'study' ? '📚 Estudo' : result.type === 'case' ? '👨‍⚕️ Caso' : '⚠️ Alerta'}
+                              </div>
+                              <div className="text-sm text-gray-300">
+                                {result.data?.title || result.data?.caseNumber || result.data?.message}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </div>
+          )}
         </div>
       )}
 

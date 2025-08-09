@@ -12,13 +12,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Implemented cross-data analysis system with neural chat interface
-- Chat only activates when clicking Dr. Cannabis IA avatar (160x160px)
-- Cross-data search analyzes scientific studies + clinical cases + alerts simultaneously  
-- AI processes real medical data from platform database for authentic responses
-- Neural connection line appears with fade-in animation when chat is active
-- Fixed DashboardLayout setSideNavOpen error for stable interface
-- System now provides comprehensive medical analysis from integrated data sources
+**2025-08-09**: Implemented tabbed sub-search system with organized research flow
+- Chat creates organized tabs below search area - each new search opens separate tab
+- Sub-search functionality: click suggestions to create child tabs with purple indicators 
+- Each tab maintains independent research context without affecting previous searches
+- Hierarchical organization: main searches and sub-searches clearly differentiated
+- Tab management: close individual tabs, switch between research threads
+- Real-time cross-data analysis connects PubMed-style scientific data sources
+- System designed for deep research workflows inspired by scientific databases
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
