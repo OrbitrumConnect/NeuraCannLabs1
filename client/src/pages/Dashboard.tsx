@@ -123,15 +123,14 @@ export default function Dashboard() {
     setAiResults(results);
     if (query) setAiSearchQuery(query);
     
-    // Se o card já existe e está minimizado, mantém a posição atual
+    // Se o card já existe e está minimizado, expande na posição atual
     if (aiResponse && aiCardMinimized) {
-      // Mantém minimizado e posição atual
+      setAiCardMinimized(false);
       return;
     }
     
-    // Se é nova pesquisa ou card não existe, mostra expandido
+    // Se é nova pesquisa ou card não existe, mostra expandido na posição favorita
     setAiCardMinimized(false);
-    // Use a posição favorita quando uma nova resposta chegar
     setCardPosition(favoritePosition);
   };
 
@@ -145,7 +144,6 @@ export default function Dashboard() {
     setAiResults([]);
     setAiSearchQuery("");
     setAiCardMinimized(false);
-    // Voltar para a posição favorita quando fechar
     setCardPosition(favoritePosition);
   };
 
@@ -155,7 +153,7 @@ export default function Dashboard() {
       setIsDragging(true);
       setDragStart({
         x: e.clientX - (cardPosition.x || 50),
-        y: e.clientY - (cardPosition.y || 250)
+        y: e.clientY - (cardPosition.y || favoritePosition.y)
       });
     }
   };
