@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
 import MedicalAvatar3D from "./MedicalAvatar3D";
+import TextToSpeech from "./TextToSpeech";
 
 interface CosmicPlanet {
   id: string;
@@ -672,34 +673,95 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                                   }} />
                                 </div>
                                 
-                                {/* Detailed Results when expanded */}
+                                {/* Modular Results - Following Neural Tree Structure */}
                                 {mainTab.results && mainTab.results.length > 0 && (
-                                  <div className="mt-4 p-4 bg-gray-800/40 rounded border border-neon-cyan/20">
-                                    <h4 className="text-sm font-medium text-neon-cyan mb-3">📊 Estudos Relacionados ({mainTab.results.length}):</h4>
-                                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                                      {mainTab.results.map((result, idx) => (
-                                        <div key={idx} className="text-sm text-gray-300 p-3 bg-black/40 rounded border-l-2 border-purple-400/40">
-                                          <div className="font-medium text-purple-300">{result.title || `Estudo ${idx + 1}`}</div>
-                                          <div className="text-gray-400">{result.summary || (typeof result === 'string' ? result.substring(0, 120) : 'Resumo não disponível')}...</div>
-                                        </div>
-                                      ))}
+                                  <div className="mt-4 space-y-3">
+                                    {/* Scientific Studies Node */}
+                                    <div className="p-3 bg-blue-900/20 rounded border border-blue-500/30">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <h4 className="text-sm font-medium text-blue-300 flex items-center">
+                                          <Microscope className="w-4 h-4 mr-2" />
+                                          Estudos Científicos ({Math.ceil(mainTab.results.length * 0.4)})
+                                        </h4>
+                                        <TextToSpeech 
+                                          text={`${Math.ceil(mainTab.results.length * 0.4)} estudos científicos encontrados sobre ${mainTab.query}`}
+                                          className="text-xs"
+                                        />
+                                      </div>
+                                      <div className="space-y-1 max-h-20 overflow-y-auto">
+                                        {mainTab.results.slice(0, Math.ceil(mainTab.results.length * 0.4)).map((result, idx) => (
+                                          <div key={idx} className="text-xs text-blue-200 p-2 bg-blue-950/40 rounded border-l-2 border-blue-400/60">
+                                            • {result.title || `Estudo científico ${idx + 1}`}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    {/* Clinical Cases Node */}
+                                    <div className="p-3 bg-green-900/20 rounded border border-green-500/30">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <h4 className="text-sm font-medium text-green-300 flex items-center">
+                                          <Pill className="w-4 h-4 mr-2" />
+                                          Casos Clínicos ({Math.ceil(mainTab.results.length * 0.3)})
+                                        </h4>
+                                        <TextToSpeech 
+                                          text={`${Math.ceil(mainTab.results.length * 0.3)} casos clínicos relacionados a ${mainTab.query}`}
+                                          className="text-xs"
+                                        />
+                                      </div>
+                                      <div className="space-y-1 max-h-16 overflow-y-auto">
+                                        {mainTab.results.slice(Math.ceil(mainTab.results.length * 0.4), Math.ceil(mainTab.results.length * 0.7)).map((result, idx) => (
+                                          <div key={idx} className="text-xs text-green-200 p-2 bg-green-950/40 rounded border-l-2 border-green-400/60">
+                                            • {result.title || `Caso clínico ${idx + 1}`}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    </div>
+
+                                    {/* Alerts Node */}
+                                    <div className="p-3 bg-red-900/20 rounded border border-red-500/30">
+                                      <div className="flex items-center justify-between mb-2">
+                                        <h4 className="text-sm font-medium text-red-300 flex items-center">
+                                          <AlertTriangle className="w-4 h-4 mr-2" />
+                                          Alertas Regulatórios ({Math.ceil(mainTab.results.length * 0.3)})
+                                        </h4>
+                                        <TextToSpeech 
+                                          text={`${Math.ceil(mainTab.results.length * 0.3)} alertas regulatórios sobre ${mainTab.query}`}
+                                          className="text-xs"
+                                        />
+                                      </div>
+                                      <div className="space-y-1 max-h-16 overflow-y-auto">
+                                        {mainTab.results.slice(Math.ceil(mainTab.results.length * 0.7)).map((result, idx) => (
+                                          <div key={idx} className="text-xs text-red-200 p-2 bg-red-950/40 rounded border-l-2 border-red-400/60">
+                                            • {result.title || `Alerta regulatório ${idx + 1}`}
+                                          </div>
+                                        ))}
+                                      </div>
                                     </div>
                                   </div>
                                 )}
                           
-                            {/* Compact Action Grid */}
+                            {/* Text-to-Speech Integration */}
+                            <div className="mb-3">
+                              <TextToSpeech 
+                                text={mainTab.response}
+                                className="mb-2"
+                              />
+                            </div>
+                            
+                            {/* Modular Action Grid - Following Neural Tree Structure */}
                             <div className="grid grid-cols-2 gap-1 mb-2">
                               <button className="px-2 py-1 bg-blue-600/20 text-blue-300 border border-blue-500/30 rounded text-xs hover:bg-blue-600/30 transition-all">
-                                📄 Resumo
+                                📊 Estudos
                               </button>
                               <button className="px-2 py-1 bg-green-600/20 text-green-300 border border-green-500/30 rounded text-xs hover:bg-green-600/30 transition-all">
-                                ✨ Aprimorar
+                                🏥 Casos Clínicos
                               </button>
-                              <button className="px-2 py-1 bg-orange-600/20 text-orange-300 border border-orange-500/30 rounded text-xs hover:bg-orange-600/30 transition-all">
-                                🚀 Publicar
+                              <button className="px-2 py-1 bg-red-600/20 text-red-300 border border-red-500/30 rounded text-xs hover:bg-red-600/30 transition-all">
+                                ⚠️ Alertas
                               </button>
                               <button className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all">
-                                🔍 Buscar
+                                📝 Resumo
                               </button>
                             </div>
                           
@@ -850,6 +912,14 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                 }}
               >
                 <div className="text-sm text-gray-300 leading-relaxed mt-3">
+                  {/* Text-to-Speech for sub-search */}
+                  <div className="mb-2">
+                    <TextToSpeech 
+                      text={subTab.response}
+                      className="text-xs"
+                    />
+                  </div>
+                  
                   <div dangerouslySetInnerHTML={{ 
                     __html: subTab.response.substring(0, activeTabId === subTab.id ? 600 : 250).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
                   }} />

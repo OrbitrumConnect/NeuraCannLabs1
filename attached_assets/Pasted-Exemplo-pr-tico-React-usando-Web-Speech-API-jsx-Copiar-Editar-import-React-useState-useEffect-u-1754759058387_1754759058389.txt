@@ -1,0 +1,74 @@
+Exemplo prático React usando Web Speech API
+jsx
+Copiar
+Editar
+import React, { useState, useEffect, useRef } from "react";
+
+const paragraphs = [
+  "Cannabidiol para epilepsia resistente ao tratamento em crianças: um estudo randomizado controlado.",
+  "Spray oromucosal THC:CBD para dor relacionada ao câncer: meta-análise de ensaios clínicos.",
+  "Efeitos neuroprotetores do canabigerol em modelos de Parkinson: estudo pré-clínico."
+];
+
+export default function InteractiveTTS() {
+  const [index, setIndex] = useState(0);
+  const [speaking, setSpeaking] = useState(false);
+  const utteranceRef = useRef(null);
+
+  useEffect(() => {
+    if (speaking && index < paragraphs.length) {
+      const utterance = new SpeechSynthesisUtterance(paragraphs[index]);
+      utterance.lang = "pt-BR";
+      utterance.onend = () => {
+        setSpeaking(false);
+      };
+      utterance.onerror = () => {
+        setSpeaking(false);
+      };
+      utteranceRef.current = utterance;
+      window.speechSynthesis.speak(utterance);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [speaking, index]);
+
+  const handlePlayPause = () => {
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+    } else {
+      setSpeaking(true);
+    }
+  };
+
+  const handleNext = () => {
+    if (index < paragraphs.length - 1) {
+      setIndex(index + 1);
+      setSpeaking(true);
+    }
+  };
+
+  const handleRepeat = () => {
+    setSpeaking(true);
+  };
+
+  const handleStop = () => {
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+    setIndex(0);
+  };
+
+  return (
+    <div>
+      <h2>Leitura interativa do estudo</h2>
+      <p><strong>Texto atual:</strong> {paragraphs[index]}</p>
+      <button onClick={handlePlayPause}>
+        {speaking ? "Pausar" : "Ler"}
+      </button>
+      <button onClick={handleNext} disabled={index === paragraphs.length - 1}>
+        Próximo trecho
+      </button>
+      <button onClick={handleRepeat}>Repetir</button>
+      <button onClick={handleStop}>Parar</button>
+    </div>
+  );
+}

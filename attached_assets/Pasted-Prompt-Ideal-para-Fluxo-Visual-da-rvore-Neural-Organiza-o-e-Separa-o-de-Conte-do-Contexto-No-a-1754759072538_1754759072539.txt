@@ -1,0 +1,66 @@
+Prompt Ideal para Fluxo Visual da Árvore Neural — Organização e Separação de Conteúdo
+Contexto:
+No app Dr. Cannabis IA, ao realizar uma consulta (ex: "dosagem"), o sistema deve apresentar os resultados científicos, clínicos, alertas, resumos e ações de forma clara, organizada e distribuída em nós distintos dentro da árvore neural interativa, evitando aglomeração de informações em um único card.
+
+Regras para a visualização dos resultados:
+Nó raiz:
+
+Representa a consulta realizada (ex: "Consulta: dosagem")
+
+Posição central e topo da árvore
+
+Nós filhos diretos do nó raiz:
+
+Categorias separadas e visuais distintas:
+
+Estudos Científicos
+
+Casos Clínicos
+
+Alertas
+
+Resumo do Estudo (se aplicável)
+
+Ações (botões ou nós especiais): “Aprimorar”, “Publicar”, “Buscar”
+
+Subnós:
+
+Cada categoria deve conter seus próprios nós filhos correspondentes (ex: cada estudo, caso clínico ou alerta é um nó filho individual)
+
+Os subnós devem apresentar título, resumo curto e ser expansíveis para detalhes completos
+
+Layout e interatividade:
+
+Os nós devem estar posicionados lateralmente e hierarquicamente, evitando sobreposição
+
+As conexões entre nós (linhas neurais) devem refletir a hierarquia e relações, com cores diferenciadas para categorias distintas
+
+Navegação com zoom, pan e drag para explorar o mapa da árvore
+
+Painel lateral opcional para ações e detalhes adicionais, separados da visualização principal da árvore
+
+Design visual:
+
+Espaço suficiente para leitura confortável em cada nó
+
+Animações suaves ao expandir/contrair nós
+
+Ícones e cores que ajudem a identificar tipos de conteúdo (ex: azul para estudos, verde para casos, vermelho para alertas)
+
+Exemplo simplificado da estrutura de nós:
+less
+Copiar
+Editar
+[Consulta: dosagem]
+       |
+ ------------------------------------------
+ |            |           |           |     
+[Estudos] [Casos Clínicos] [Alertas] [Resumo]
+ |           |            |           |  
+[Estudo1]  [Caso1]      [Alerta1]  [Texto resumo]  
+[Estudo2]  [Caso2]      [Alerta2]  [Botões ações]  
+...
+Objetivo final:
+Garantir que os resultados da pesquisa sejam apresentados de forma modular, legível e navegável, com cada tipo de dado e ação claramente separado em nós próprios da árvore, para proporcionar uma experiência de usuário fluida, intuitiva e eficiente.
+
+Se quiser, posso ajudar a gerar um JSON de exemplo, código para React + D3.js ou uma arquitetura para backend que retorne os dados já organizados nessa estrutura.
