@@ -73,13 +73,13 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **SISTEMA FINALIZADO - READY FOR INVESTMENT PRESENTATION** 🚀
 
-**FUNCIONAMENTO CONFIRMADO v3.9 - AVATAR AMPLIADO COM EFEITO NEON**:
-✅ Avatar Dr. Cannabis IA 25% maior - 260x260px (era 208px)
+**FUNCIONAMENTO CONFIRMADO v4.0 - AVATAR RAIO AJUSTADO**:
+✅ Avatar Dr. Cannabis IA 260x260px com raio menor - rounded-2xl
 ✅ Efeito visual ativo: fundo cinza + borda neon cyan quando clicado
-✅ Borda neon sutil: border-cyan-400/40 + shadow glow 10% verde-ciano
-✅ Container ajustado para comportar avatar maior
+✅ Borda neon sutil: border-cyan-400/40 + shadow glow verde-ciano
+✅ Raio do círculo diminuído para aparência mais equilibrada
 ✅ Transições suaves entre estados ativo/inativo
-✅ Sistema com avatar destacado e feedback visual neon
+✅ Sistema com avatar destacado e raio visual otimizado
 
 **EVOLUÇÃO v3.0 - DR. CANNABIS IA INTERATIVO RESTAURADO**:
 ✅ Dr. Cannabis IA clicável - ativa todo o sistema ao clicar

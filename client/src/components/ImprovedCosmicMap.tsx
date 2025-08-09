@@ -219,7 +219,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {/* Dr. Cannabis IA - Avatar 25% bigger with neon border when active */}
       <div className="absolute top-8 left-8 w-56 h-56 z-20">
         <div 
-          className={`w-65 h-65 mx-auto mt-1 cursor-pointer transition-all duration-500 rounded-full flex items-center justify-center ${
+          className={`w-65 h-65 mx-auto mt-1 cursor-pointer transition-all duration-500 rounded-2xl flex items-center justify-center ${
             isDrAIActive 
               ? 'scale-105 bg-gray-800/80 border-4 border-cyan-400/40 shadow-[0_0_20px_rgba(34,211,238,0.3)] drop-shadow-2xl' 
               : 'hover:scale-102 drop-shadow-lg drop-shadow-cyan-400/20'
