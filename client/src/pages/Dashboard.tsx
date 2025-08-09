@@ -41,7 +41,7 @@ export default function Dashboard() {
         // Limitar movimento dentro da área de conteúdo
         const maxX = window.innerWidth - 370;
         const maxY = window.innerHeight - 100;
-        const minY = 120; // Espaço para header e search
+        const minY = 160; // Espaço para header, search e cosmic map
         
         setCardPosition({
           x: Math.max(0, Math.min(newX, maxX)),
@@ -102,7 +102,7 @@ export default function Dashboard() {
     // Se é nova pesquisa ou card não existe, mostra expandido
     setAiCardMinimized(false);
     // Reset position when new response comes - position for minimized state
-    setCardPosition({ x: 50, y: 200 });
+    setCardPosition({ x: 50, y: 250 });
   };
 
   const toggleAiCard = () => {
@@ -115,7 +115,7 @@ export default function Dashboard() {
     setAiResults([]);
     setAiSearchQuery("");
     setAiCardMinimized(false);
-    setCardPosition({ x: 50, y: 200 });
+    setCardPosition({ x: 50, y: 250 });
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -124,7 +124,7 @@ export default function Dashboard() {
       setIsDragging(true);
       setDragStart({
         x: e.clientX - (cardPosition.x || 50),
-        y: e.clientY - (cardPosition.y || 200)
+        y: e.clientY - (cardPosition.y || 250)
       });
     }
   };
@@ -250,26 +250,25 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
       {/* Floating Movable AI Card */}
       {aiResponse && (
         <div 
-          className={`absolute z-50 transition-all duration-300 ease-in-out ${
+          className={`absolute z-40 transition-all duration-300 ease-in-out ${
             aiCardMinimized ? 'cursor-move' : ''
           }`}
           style={{
-            // Quando expandido: centralizado na tela
+            // Quando expandido: centralizado horizontalmente, mas abaixo da pesquisa
             left: aiCardMinimized 
               ? `${Math.max(20, Math.min(cardPosition?.x || 50, window.innerWidth - 370))}px`
               : '50%',
             top: aiCardMinimized 
-              ? `${Math.max(120, Math.min(cardPosition?.y || 200, window.innerHeight - 100))}px` 
-              : '50%',
-            transform: aiCardMinimized ? 'none' : 'translate(-50%, -50%)',
-            maxWidth: '90vw',
-            maxHeight: '90vh'
+              ? `${Math.max(160, Math.min(cardPosition?.y || 250, window.innerHeight - 100))}px` 
+              : '300px', // Posição fixa abaixo da área de pesquisa
+            transform: aiCardMinimized ? 'none' : 'translateX(-50%)',
+            maxWidth: '90%',
+            width: aiCardMinimized ? '350px' : '800px'
           }}
           onMouseDown={onMouseDown}
         >
           <div className="bg-black/95 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/20 animate-pulse-glow" style={{
-            width: aiCardMinimized ? '350px' : '800px',
-            maxHeight: aiCardMinimized ? '64px' : '80vh',
+            maxHeight: aiCardMinimized ? '64px' : '60vh',
             opacity: aiCardMinimized ? '0.97' : '1'
           }}>
             {/* Header */}
