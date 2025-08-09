@@ -128,33 +128,7 @@ export default function DashboardLayout({
         {children}
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-t border-neon-cyan/30 py-8">
-        <div className="container mx-auto px-4 text-center">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <div className="w-8 h-8 bg-gradient-to-br from-neon-cyan to-neon-blue rounded-lg flex items-center justify-center">
-                <i className="fas fa-cannabis text-white text-sm" />
-              </div>
-              <span className="font-semibold text-gray-300">Cannabis Clinical Hub</span>
-            </div>
-            <p className="text-gray-500 text-sm">
-              &copy; 2025 Cannabis Clinical Hub — Todos os direitos reservados
-            </p>
-            <div className="flex space-x-4 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-neon-cyan transition-colors">
-                <i className="fab fa-twitter" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-neon-cyan transition-colors">
-                <i className="fab fa-linkedin" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-neon-cyan transition-colors">
-                <i className="fab fa-github" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
+
     </div>
   );
 }
