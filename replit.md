@@ -12,8 +12,23 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**2025-08-09**: Implemented sub-search system with lateral cards
+- Added sub-search functionality at the end of VerdiData IA analysis
+- Sub-search opens purple-themed lateral card on the right side of screen
+- Main AI card automatically reduces width when sub-search is active
+- Sub-search card is fully functional with same interactive elements as main analysis
+- Card can be closed independently while maintaining main analysis
+- Input field with Enter key support and dedicated search button
+- Smooth animations and transitions between card states
+
+**2025-08-09**: Improved AI response integration approach
+- VerdiData AI now displays as integrated content section when expanded
+- Only becomes draggable floating card when minimized
+- Better space utilization and natural content flow
+- Maintains all interactive features and smooth animations
+
 **2025-08-09**: Implemented fully draggable AI response card system
-- VerdiData AI card now fully draggable when minimized with smooth movement
+- VerdiData AI card now fully draggable when minimized with smooth movement  
 - Card opens below search area instead of top of screen
 - Maintains single card instance - new searches update existing card content
 - Position limits prevent card from moving outside screen boundaries

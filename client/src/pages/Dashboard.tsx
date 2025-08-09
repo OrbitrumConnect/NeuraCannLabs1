@@ -22,6 +22,11 @@ export default function Dashboard() {
   const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  
+  // Sub-search states
+  const [subSearchResponse, setSubSearchResponse] = useState<string>('');
+  const [subSearchQuery, setSubSearchQuery] = useState<string>('');
+  const [showSubSearch, setShowSubSearch] = useState(false);
 
 
   useEffect(() => {
@@ -129,6 +134,37 @@ export default function Dashboard() {
     }
   };
 
+  // Sub-search functions
+  const handleSubSearch = async (query: string) => {
+    if (!query.trim()) return;
+    
+    setSubSearchQuery(query);
+    
+    try {
+      const response = await fetch('/api/ai-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSubSearchResponse(data.answer);
+        setShowSubSearch(true);
+      }
+    } catch (error) {
+      console.error('Sub-search error:', error);
+    }
+  };
+
+  const closeSubSearch = () => {
+    setSubSearchResponse('');
+    setSubSearchQuery('');
+    setShowSubSearch(false);
+  };
+
 
 
   // Close side nav when clicking outside
@@ -174,6 +210,12 @@ export default function Dashboard() {
           cardPosition={cardPosition}
           onMouseDown={handleMouseDown}
           isDragging={isDragging}
+          // Sub-search props
+          onSubSearch={handleSubSearch}
+          subSearchResponse={subSearchResponse}
+          subSearchQuery={subSearchQuery}
+          showSubSearch={showSubSearch}
+          onCloseSubSearch={closeSubSearch}
         />;
     }
   };
@@ -209,9 +251,15 @@ interface OverviewDashboardProps {
   cardPosition?: { x: number; y: number };
   onMouseDown?: (e: React.MouseEvent) => void;
   isDragging?: boolean;
+  // Sub-search props
+  onSubSearch?: (query: string) => void;
+  subSearchResponse?: string;
+  subSearchQuery?: string;
+  showSubSearch?: boolean;
+  onCloseSubSearch?: () => void;
 }
 
-function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery, cardPosition, onMouseDown, isDragging }: OverviewDashboardProps) {
+function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery, cardPosition, onMouseDown, isDragging, onSubSearch, subSearchResponse, subSearchQuery, showSubSearch, onCloseSubSearch }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-4 py-8">
       {/* Hero Section with 3D Avatar */}
@@ -249,7 +297,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
 
       {/* AI Response Section - Integrated in content when expanded */}
       {aiResponse && !aiCardMinimized && (
-        <div className="mt-8 mb-12">
+        <div className={`mt-8 mb-12 transition-all duration-300 ${showSubSearch ? 'mr-[410px]' : ''}`}>
           <div className="bg-gradient-to-r from-gray-900/80 via-black/90 to-gray-900/80 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/10">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
@@ -343,6 +391,145 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
                     return <div key={i} className="text-gray-400">{line}</div>
                   }
                   return <div key={i} className="py-1">{line}</div>
+                })}
+              </div>
+              
+              {/* Sub-search section at the end of analysis */}
+              <div className="mt-6 pt-4 border-t border-gray-600/30">
+                <div className="flex items-center space-x-3 mb-3">
+                  <i className="fas fa-search-plus text-neon-cyan text-sm"></i>
+                  <span className="text-neon-cyan font-medium">Sub-pesquisa Específica</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="text"
+                    placeholder="Pesquisar tópico específico desta análise..."
+                    className="flex-1 bg-gray-800/50 border border-gray-600/50 rounded-lg px-4 py-2 text-gray-100 text-sm focus:outline-none focus:border-neon-cyan/50 focus:ring-1 focus:ring-neon-cyan/20"
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        const query = (e.target as HTMLInputElement).value;
+                        if (query.trim() && onSubSearch) {
+                          onSubSearch(query);
+                          (e.target as HTMLInputElement).value = '';
+                        }
+                      }
+                    }}
+                  />
+                  <button 
+                    onClick={() => {
+                      const input = document.querySelector('input[placeholder*="específico"]') as HTMLInputElement;
+                      if (input && input.value.trim() && onSubSearch) {
+                        onSubSearch(input.value);
+                        input.value = '';
+                      }
+                    }}
+                    className="bg-neon-cyan/20 hover:bg-neon-cyan/30 border border-neon-cyan/40 rounded-lg px-4 py-2 transition-colors"
+                    title="Pesquisar"
+                  >
+                    <i className="fas fa-arrow-right text-neon-cyan text-sm"></i>
+                  </button>
+                </div>
+                <p className="text-gray-400 text-xs mt-2">
+                  Faça uma sub-pesquisa para explorar aspectos específicos desta análise
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sub-search lateral card */}
+      {showSubSearch && subSearchResponse && (
+        <div 
+          className="fixed right-4 top-20 bottom-4 w-96 z-50 transition-all duration-300 ease-in-out"
+          style={{ 
+            transform: showSubSearch ? 'translateX(0)' : 'translateX(100%)',
+          }}
+        >
+          <div className="bg-gradient-to-b from-gray-900/95 via-black/95 to-gray-900/95 backdrop-blur-sm rounded-xl border border-purple-500/40 shadow-2xl shadow-purple-500/10 h-full flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-700/50 flex-shrink-0">
+              <div className="flex items-center space-x-3">
+                <div className="w-6 h-6 bg-purple-500/20 rounded-full flex items-center justify-center">
+                  <i className="fas fa-search-plus text-purple-400 text-xs"></i>
+                </div>
+                <h3 className="text-purple-400 font-medium text-sm">Sub-pesquisa: {subSearchQuery}</h3>
+              </div>
+              <button 
+                onClick={onCloseSubSearch}
+                className="text-gray-400 hover:text-red-400 transition-colors p-1"
+                title="Fechar"
+              >
+                <i className="fas fa-times text-xs"></i>
+              </button>
+            </div>
+            
+            {/* Content */}
+            <div className="p-4 flex-1 overflow-y-auto">
+              <div className="whitespace-pre-line leading-relaxed text-gray-100 text-sm">
+                {subSearchResponse.split('\n').map((line, i) => {
+                  // Títulos de estudos clicáveis
+                  if (line.startsWith('🔬 **') || line.startsWith('📊 **')) {
+                    const title = line.replace(/\*\*/g, '').replace('🔬 ', '').replace('📊 ', '');
+                    return (
+                      <button 
+                        key={i} 
+                        onClick={() => onPlanetClick('scientific')}
+                        className="font-semibold text-emerald-400 hover:text-emerald-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-emerald-500/10 px-2 py-1 rounded transition-all text-left w-full text-xs"
+                      >
+                        🔬 {title}
+                      </button>
+                    )
+                  }
+                  if (line.startsWith('📈 **') || line.startsWith('📚 **')) {
+                    return <div key={i} className="font-semibold text-blue-400 mt-3 text-sm">{line.replace(/\*\*/g, '')}</div>
+                  }
+                  // Casos clínicos clicáveis
+                  if (line.startsWith('👨‍⚕️ **') || line.startsWith('🏥 **')) {
+                    return (
+                      <button 
+                        key={i}
+                        onClick={() => onPlanetClick('clinical')} 
+                        className="font-semibold text-purple-400 hover:text-purple-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-purple-500/10 px-2 py-1 rounded transition-all text-left w-full text-xs"
+                      >
+                        {line.replace(/\*\*/g, '')}
+                      </button>
+                    )
+                  }
+                  // Alertas clicáveis
+                  if (line.startsWith('⚠️ **')) {
+                    return (
+                      <button 
+                        key={i}
+                        onClick={() => onPlanetClick('alerts')} 
+                        className="font-semibold text-amber-400 hover:text-amber-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-amber-500/10 px-2 py-1 rounded transition-all text-left w-full text-xs"
+                      >
+                        {line.replace(/\*\*/g, '')}
+                      </button>
+                    )
+                  }
+                  if (line.startsWith('🎯 **')) {
+                    return <div key={i} className="font-semibold text-purple-400 mt-3 text-sm">{line.replace(/\*\*/g, '')}</div>
+                  }
+                  // Itens com bullet points
+                  if (line.startsWith('•')) {
+                    if (line.includes('HC-') || line.includes('caso')) {
+                      return (
+                        <button 
+                          key={i} 
+                          onClick={() => onPlanetClick('clinical')}
+                          className="ml-4 text-gray-300 hover:text-white cursor-pointer hover:bg-gray-600/20 px-2 py-1 rounded transition-all text-left w-full text-xs"
+                        >
+                          {line}
+                        </button>
+                      )
+                    }
+                    return <div key={i} className="ml-4 text-gray-300 py-0.5 text-xs">{line}</div>
+                  }
+                  if (line.startsWith('❌') || line.startsWith('🔍')) {
+                    return <div key={i} className="text-gray-400 text-xs">{line}</div>
+                  }
+                  return <div key={i} className="py-0.5 text-xs">{line}</div>
                 })}
               </div>
             </div>
