@@ -22,7 +22,7 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
   }, [text, autoPlay, supported]);
 
   const handleSpeak = () => {
-    if (!supported) return;
+    if (!supported || !text) return;
 
     if (speaking) {
       window.speechSynthesis.cancel();
@@ -30,10 +30,20 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(text);
+    // Clean text for better speech synthesis
+    let cleanText = text
+      .replace(/\*\*(.*?)\*\*/g, '$1') // Remove markdown bold
+      .replace(/🔬|📚|👨‍⚕️|🚨|🎯|📊|📖|⚕️|💊|📋|📈|⚠️|✅|🔺|📢|📅/g, '') // Remove emojis
+      .replace(/\n/g, '. ') // Replace line breaks with periods
+      .replace(/\s+/g, ' ') // Normalize spaces
+      .replace(/\.\.\./g, '') // Remove ellipsis
+      .trim();
+
+    const utterance = new SpeechSynthesisUtterance(cleanText);
     utterance.lang = 'pt-BR';
-    utterance.rate = 0.9;
+    utterance.rate = 0.85; // Slightly slower for medical content
     utterance.pitch = 1;
+    utterance.volume = 0.9;
     
     utterance.onstart = () => setSpeaking(true);
     utterance.onend = () => setSpeaking(false);

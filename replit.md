@@ -73,13 +73,16 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **SISTEMA FINALIZADO - READY FOR INVESTMENT PRESENTATION** 🚀
 
-**FUNCIONAMENTO CONFIRMADO v5.0 - LAYOUT LIMPO COM LEITURA**:
+**FUNCIONAMENTO CONFIRMADO v6.0 - DADOS CIENTÍFICOS COMPLETOS EM PORTUGUÊS**:
 ✅ Planetas removidos - área limpa acima da barra de pesquisa
 ✅ Cards de sub-pesquisa movidos mais baixo (top: 280px + index * 200px)
-✅ Avatar lê resultados das pesquisas com TextToSpeech integrado
-✅ Glow verde-ciano mantido no container externo
-✅ Efeito cinza aplicado apenas no avatar quando ativo
-✅ Sistema com layout otimizado e funcionalidade de leitura completa
+✅ Dados científicos traduzidos para português com resultados detalhados
+✅ Estudos científicos com protocolos, dosagens e efeitos adversos completos
+✅ Avatar lê resultados das pesquisas com TextToSpeech otimizado para conteúdo médico
+✅ APIs externas configuradas (PubMed, ClinicalTrials.gov) para atualizações automáticas
+✅ Sistema preparado para integração Supabase via DATABASE_URL
+✅ Base de dados ampliada com estudos brasileiros e casos clínicos reais
+✅ Análise cruzada de dados melhorada com informações científicas detalhadas
 
 **EVOLUÇÃO v3.0 - DR. CANNABIS IA INTERATIVO RESTAURADO**:
 ✅ Dr. Cannabis IA clicável - ativa todo o sistema ao clicar
@@ -94,14 +97,15 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 ---
 
-**2025-08-09**: Fixed main cards with harmonious sub-cards dock system
-- Cards principais fixos na teia neural para estabilidade e foco na leitura
-- Sub-cards organizados em dock inferior harmônico e expansível
-- Sistema de abertura/fechamento individual para cada sub-pesquisa
-- Cards móveis horizontalmente no dock com handles específicos para arraste
-- Área de arraste restrita apenas ao ícone ⋮⋮ para controle preciso
-- Layout em dock permite visualizar múltiplas sub-pesquisas simultaneamente
-- Interface organizada: teia neural fixa + dock de sub-pesquisas móvel
+**2025-08-09**: Sistema de dados científicos completos em português implementado
+- Dados científicos traduzidos para português com resultados detalhados
+- Estudos científicos incluem protocolos, dosagens, efeitos adversos e resultados específicos
+- Casos clínicos reais brasileiros com evolução completa documentada
+- APIs externas integradas (PubMed, ClinicalTrials.gov) para atualizações automáticas
+- Sistema de sincronização de dados científicos globais em tempo real
+- TextToSpeech otimizado para leitura de conteúdo médico científico
+- Base preparada para integração Supabase e armazenamento persistente
+- Avatar Dr. Cannabis IA lê completamente estudos científicos e resultados clínicos
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
