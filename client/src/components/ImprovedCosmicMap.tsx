@@ -327,23 +327,23 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           
           {/* Scientific Studies - Compacto */}
           {scientificData.length > 0 && (
-            <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg border border-slate-600/30 p-3">
-              <h3 className="text-sm font-medium text-slate-200 flex items-center mb-2">
-                <Microscope className="w-4 h-4 mr-2" />
+            <div className="bg-white/95 rounded-lg border border-gray-200 p-3 shadow-sm">
+              <h3 className="text-sm font-medium text-gray-800 flex items-center mb-2">
+                <Microscope className="w-4 h-4 mr-2 text-blue-600" />
                 Estudos ({scientificData.length})
               </h3>
               <div className="space-y-1.5 max-h-28 overflow-y-auto">
                 {scientificData.slice(0, 2).map((study, idx) => (
                   <div key={study.id} 
-                       className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded border-l-2 border-blue-500/40 hover:bg-slate-700/60 cursor-pointer transition-colors"
+                       className="text-xs text-gray-700 p-2 bg-white/90 rounded border-l-2 border-blue-400 hover:bg-gray-50 cursor-pointer transition-colors"
                        onClick={() => window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(study.title)}`, '_blank')}>
-                    <div className="font-medium text-slate-200">{study.title.substring(0, 35)}...</div>
-                    <div className="text-slate-400 mt-0.5 text-xs">{study.compound} • {study.phase}</div>
+                    <div className="font-medium text-gray-900">{study.title.substring(0, 35)}...</div>
+                    <div className="text-gray-600 mt-0.5 text-xs">{study.compound} • {study.phase}</div>
                   </div>
                 ))}
               </div>
               <div className="mt-2 text-center">
-                <button className="text-blue-400 hover:text-blue-300 text-xs underline">
+                <button className="text-blue-600 hover:text-blue-700 text-xs underline">
                   Ver todos →
                 </button>
               </div>
@@ -352,21 +352,21 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
           {/* Clinical Cases - Compacto */}
           {clinicalData.length > 0 && (
-            <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg border border-slate-600/30 p-3">
-              <h3 className="text-sm font-medium text-slate-200 flex items-center mb-2">
-                <Pill className="w-4 h-4 mr-2" />
+            <div className="bg-white/95 rounded-lg border border-gray-200 p-3 shadow-sm">
+              <h3 className="text-sm font-medium text-gray-800 flex items-center mb-2">
+                <Pill className="w-4 h-4 mr-2 text-green-600" />
                 Casos ({clinicalData.length})
               </h3>
               <div className="space-y-1.5 max-h-28 overflow-y-auto">
                 {clinicalData.slice(0, 2).map((case_, idx) => (
-                  <div key={case_.id} className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded border-l-2 border-green-500/40 hover:bg-slate-700/60 cursor-pointer transition-colors">
-                    <div className="font-medium text-slate-200">{case_.caseNumber}</div>
-                    <div className="text-slate-400 mt-0.5 text-xs">{case_.indication} • {case_.outcome}</div>
+                  <div key={case_.id} className="text-xs text-gray-700 p-2 bg-white/90 rounded border-l-2 border-green-400 hover:bg-gray-50 cursor-pointer transition-colors">
+                    <div className="font-medium text-gray-900">{case_.caseNumber}</div>
+                    <div className="text-gray-600 mt-0.5 text-xs">{case_.indication} • {case_.outcome}</div>
                   </div>
                 ))}
               </div>
               <div className="mt-2 text-center">
-                <button className="text-green-400 hover:text-green-300 text-xs underline">
+                <button className="text-green-600 hover:text-green-700 text-xs underline">
                   Ver todos →
                 </button>
               </div>
@@ -375,23 +375,23 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
           {/* Regulatory Alerts - Compacto */}
           {alertsData.length > 0 && (
-            <div className="bg-slate-900/95 backdrop-blur-sm rounded-lg border border-slate-600/30 p-3">
-              <h3 className="text-sm font-medium text-slate-200 flex items-center mb-2">
-                <AlertTriangle className="w-4 h-4 mr-2" />
+            <div className="bg-white/95 rounded-lg border border-gray-200 p-3 shadow-sm">
+              <h3 className="text-sm font-medium text-gray-800 flex items-center mb-2">
+                <AlertTriangle className="w-4 h-4 mr-2 text-orange-600" />
                 Alertas ({alertsData.length})
               </h3>
               <div className="space-y-1.5 max-h-28 overflow-y-auto">
                 {alertsData.slice(0, 2).map((alert, idx) => (
                   <div key={alert.id} 
-                       className="text-xs text-slate-300 p-2 bg-slate-800/60 rounded border-l-2 border-orange-500/40 hover:bg-slate-700/60 cursor-pointer transition-colors"
+                       className="text-xs text-gray-700 p-2 bg-white/90 rounded border-l-2 border-orange-400 hover:bg-gray-50 cursor-pointer transition-colors"
                        onClick={() => window.open('https://www.gov.br/anvisa/pt-br', '_blank')}>
-                    <div className="font-medium text-slate-200">{alert.type}</div>
-                    <div className="text-slate-400 mt-0.5 text-xs">{alert.message.substring(0, 40)}...</div>
+                    <div className="font-medium text-gray-900">{alert.type}</div>
+                    <div className="text-gray-600 mt-0.5 text-xs">{alert.message.substring(0, 40)}...</div>
                   </div>
                 ))}
               </div>
               <div className="mt-2 text-center">
-                <button className="text-orange-400 hover:text-orange-300 text-xs underline">
+                <button className="text-orange-600 hover:text-orange-700 text-xs underline">
                   Ver ANVISA →
                 </button>
               </div>
