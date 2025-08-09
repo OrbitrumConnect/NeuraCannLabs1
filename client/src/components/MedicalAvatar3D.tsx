@@ -59,8 +59,8 @@ export default function MedicalAvatar3D({
 
     mountRef.current.appendChild(renderer.domElement);
 
-    // Lighting with green-yellow theme
-    const ambientLight = new THREE.AmbientLight(0x7cff5a, 0.4); // Verde-amarelado ambiente
+    // Lighting - natural professional
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
     scene.add(ambientLight);
 
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -70,8 +70,8 @@ export default function MedicalAvatar3D({
     directionalLight.shadow.mapSize.height = 1024;
     scene.add(directionalLight);
 
-    // Medical professional lighting (green-yellow accent)
-    const fillLight = new THREE.DirectionalLight(0x7cff5a, 0.2); // Verde-amarelado de preenchimento
+    // Medical professional lighting (neutral fill)
+    const fillLight = new THREE.DirectionalLight(0xf0f0f0, 0.3);
     fillLight.position.set(-2, 2, 1);
     scene.add(fillLight);
 
@@ -95,16 +95,11 @@ export default function MedicalAvatar3D({
             child.castShadow = true;
             child.receiveShadow = true;
             
-            // Make it look more professional/medical with green-yellow tint
+            // Make it look more professional/medical
             if (child.material) {
               const material = child.material as THREE.MeshStandardMaterial;
               material.metalness = 0.1;
               material.roughness = 0.8;
-              // Subtle green-yellow tint when active
-              if (isActive) {
-                material.emissive = new THREE.Color(0x2a4a1a); // Verde escuro emissivo
-                material.emissiveIntensity = 0.1;
-              }
             }
           }
         });
