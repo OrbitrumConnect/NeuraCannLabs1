@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQuery } from '@tanstack/react-query';
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
 import MedicalAvatar3D from "./MedicalAvatar3D";
 import TextToSpeech from "./TextToSpeech";
@@ -90,6 +91,11 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [cardPositions, setCardPositions] = useState<Record<string, {x: number, y: number}>>({});
   const [draggingCard, setDraggingCard] = useState<string | null>(null);
+  
+  // Fetch real data from APIs
+  const { data: scientificData } = useQuery({ queryKey: ['/api/scientific'] });
+  const { data: clinicalData } = useQuery({ queryKey: ['/api/clinical'] });
+  const { data: alertsData } = useQuery({ queryKey: ['/api/alerts'] });
 
   const filters = [
     { id: "todos", label: "Todos", icon: Brain },
@@ -673,73 +679,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                                   }} />
                                 </div>
                                 
-                                {/* Modular Results - Following Neural Tree Structure */}
-                                {mainTab.results && mainTab.results.length > 0 && (
-                                  <div className="mt-4 space-y-3">
-                                    {/* Scientific Studies Node */}
-                                    <div className="p-3 bg-blue-900/20 rounded border border-blue-500/30">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <h4 className="text-sm font-medium text-blue-300 flex items-center">
-                                          <Microscope className="w-4 h-4 mr-2" />
-                                          Estudos Científicos ({Math.ceil(mainTab.results.length * 0.4)})
-                                        </h4>
-                                        <TextToSpeech 
-                                          text={`${Math.ceil(mainTab.results.length * 0.4)} estudos científicos encontrados sobre ${mainTab.query}`}
-                                          className="text-xs"
-                                        />
-                                      </div>
-                                      <div className="space-y-1 max-h-20 overflow-y-auto">
-                                        {mainTab.results.slice(0, Math.ceil(mainTab.results.length * 0.4)).map((result, idx) => (
-                                          <div key={idx} className="text-xs text-blue-200 p-2 bg-blue-950/40 rounded border-l-2 border-blue-400/60">
-                                            • {result.title || `Estudo científico ${idx + 1}`}
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-
-                                    {/* Clinical Cases Node */}
-                                    <div className="p-3 bg-green-900/20 rounded border border-green-500/30">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <h4 className="text-sm font-medium text-green-300 flex items-center">
-                                          <Pill className="w-4 h-4 mr-2" />
-                                          Casos Clínicos ({Math.ceil(mainTab.results.length * 0.3)})
-                                        </h4>
-                                        <TextToSpeech 
-                                          text={`${Math.ceil(mainTab.results.length * 0.3)} casos clínicos relacionados a ${mainTab.query}`}
-                                          className="text-xs"
-                                        />
-                                      </div>
-                                      <div className="space-y-1 max-h-16 overflow-y-auto">
-                                        {mainTab.results.slice(Math.ceil(mainTab.results.length * 0.4), Math.ceil(mainTab.results.length * 0.7)).map((result, idx) => (
-                                          <div key={idx} className="text-xs text-green-200 p-2 bg-green-950/40 rounded border-l-2 border-green-400/60">
-                                            • {result.title || `Caso clínico ${idx + 1}`}
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-
-                                    {/* Alerts Node */}
-                                    <div className="p-3 bg-red-900/20 rounded border border-red-500/30">
-                                      <div className="flex items-center justify-between mb-2">
-                                        <h4 className="text-sm font-medium text-red-300 flex items-center">
-                                          <AlertTriangle className="w-4 h-4 mr-2" />
-                                          Alertas Regulatórios ({Math.ceil(mainTab.results.length * 0.3)})
-                                        </h4>
-                                        <TextToSpeech 
-                                          text={`${Math.ceil(mainTab.results.length * 0.3)} alertas regulatórios sobre ${mainTab.query}`}
-                                          className="text-xs"
-                                        />
-                                      </div>
-                                      <div className="space-y-1 max-h-16 overflow-y-auto">
-                                        {mainTab.results.slice(Math.ceil(mainTab.results.length * 0.7)).map((result, idx) => (
-                                          <div key={idx} className="text-xs text-red-200 p-2 bg-red-950/40 rounded border-l-2 border-red-400/60">
-                                            • {result.title || `Alerta regulatório ${idx + 1}`}
-                                          </div>
-                                        ))}
-                                      </div>
-                                    </div>
-                                  </div>
-                                )}
+                                {/* Data Sources Available */}
+                                <div className="mt-4 text-xs text-gray-400 bg-gray-800/30 p-2 rounded">
+                                  📊 Base de dados: {scientificData?.length || 0} estudos • {clinicalData?.length || 0} casos clínicos • {alertsData?.length || 0} alertas
+                                </div>
                           
                             {/* Text-to-Speech Integration */}
                             <div className="mb-3">
@@ -953,6 +896,92 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
           </div>
         );
       })}
+
+      {/* Neural Tree Structure - Separate cards for each data type */}
+      {searchTabs.length > 0 && (
+        <>
+          {/* Scientific Studies Cards */}
+          {scientificData && scientificData.length > 0 && (
+            <div className="absolute z-50" style={{ left: '50px', top: window.innerHeight - 450 }}>
+              <div className="w-80 bg-blue-950/90 backdrop-blur-md rounded-lg border border-blue-500/40 p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-blue-300 flex items-center">
+                    <Microscope className="w-4 h-4 mr-2" />
+                    Estudos Científicos ({scientificData.length})
+                  </h3>
+                  <TextToSpeech 
+                    text={`${scientificData.length} estudos científicos disponíveis: ${scientificData.map(s => s.title).join(', ')}`}
+                    className="text-xs"
+                  />
+                </div>
+                <div className="space-y-2 max-h-32 overflow-y-auto">
+                  {scientificData.map((study, idx) => (
+                    <div key={idx} className="text-xs text-blue-200 p-2 bg-blue-900/40 rounded border-l-2 border-blue-400/60 cursor-pointer hover:bg-blue-800/40">
+                      <div className="font-medium">{study.title}</div>
+                      <div className="text-blue-300 mt-1">{study.description}</div>
+                      <div className="text-blue-400 mt-1 text-xs">📍 {study.compound} • {study.indication}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Clinical Cases Cards */}
+          {clinicalData && clinicalData.length > 0 && (
+            <div className="absolute z-50" style={{ left: '450px', top: window.innerHeight - 450 }}>
+              <div className="w-80 bg-green-950/90 backdrop-blur-md rounded-lg border border-green-500/40 p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-green-300 flex items-center">
+                    <Pill className="w-4 h-4 mr-2" />
+                    Casos Clínicos ({clinicalData.length})
+                  </h3>
+                  <TextToSpeech 
+                    text={`${clinicalData.length} casos clínicos documentados: ${clinicalData.map(c => c.caseNumber).join(', ')}`}
+                    className="text-xs"
+                  />
+                </div>
+                <div className="space-y-2 max-h-32 overflow-y-auto">
+                  {clinicalData.map((case_, idx) => (
+                    <div key={idx} className="text-xs text-green-200 p-2 bg-green-900/40 rounded border-l-2 border-green-400/60 cursor-pointer hover:bg-green-800/40">
+                      <div className="font-medium">{case_.caseNumber}</div>
+                      <div className="text-green-300 mt-1">{case_.description}</div>
+                      <div className="text-green-400 mt-1 text-xs">👨‍⚕️ {case_.indication} • Resultado: {case_.outcome}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Regulatory Alerts Cards */}
+          {alertsData && alertsData.length > 0 && (
+            <div className="absolute z-50" style={{ left: '850px', top: window.innerHeight - 450 }}>
+              <div className="w-80 bg-red-950/90 backdrop-blur-md rounded-lg border border-red-500/40 p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-semibold text-red-300 flex items-center">
+                    <AlertTriangle className="w-4 h-4 mr-2" />
+                    Alertas Regulatórios ({alertsData.length})
+                  </h3>
+                  <TextToSpeech 
+                    text={`${alertsData.length} alertas regulatórios ativos: ${alertsData.map(a => a.message).join(', ')}`}
+                    className="text-xs"
+                  />
+                </div>
+                <div className="space-y-2 max-h-32 overflow-y-auto">
+                  {alertsData.map((alert, idx) => (
+                    <div key={idx} className="text-xs text-red-200 p-2 bg-red-900/40 rounded border-l-2 border-red-400/60 cursor-pointer hover:bg-red-800/40">
+                      <div className="font-medium">{alert.type}</div>
+                      <div className="text-red-300 mt-1">{alert.message}</div>
+                      <div className="text-red-400 mt-1 text-xs">🚨 Prioridade: {alert.priority} • Status: {alert.readStatus ? 'Lido' : 'Novo'}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
 
     </div>
   );
