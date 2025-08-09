@@ -88,14 +88,14 @@ export default function DashboardLayout({
         </div>
       </header>
 
-      {/* Side Navigation */}
+      {/* Side Navigation - positioned at bottom of screen */}
       <nav
-        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-10 lg:hidden holographic-border ${
-          sideNavOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed bottom-0 left-0 h-3/4 w-full sm:w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-10 lg:hidden holographic-border rounded-t-2xl ${
+          sideNavOpen ? "translate-y-0" : "translate-y-full"
         }`}
         data-testid="side-navigation"
       >
-        <div className="p-6 pt-24">
+        <div className="p-6 pt-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-semibold text-neon-cyan neon-text">Plataforma Médica</h2>
             <button
@@ -107,7 +107,7 @@ export default function DashboardLayout({
             </button>
           </div>
           
-          <div className="space-y-3 max-h-[calc(100vh-160px)] overflow-y-auto">
+          <div className="space-y-3 max-h-[calc(75vh-120px)] overflow-y-auto">
             {dashboardOptions.map((option) => (
               <button
                 key={option.id}
