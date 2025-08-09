@@ -38,10 +38,10 @@ export default function DashboardLayout({
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-neon-cyan to-neon-blue rounded-lg flex items-center justify-center animate-pulse-glow">
+            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
               <i className="fas fa-cannabis text-white text-lg" />
             </div>
-            <h1 className="text-2xl font-bold neon-text">Cannabis Clinical Hub</h1>
+            <h1 className="text-2xl font-bold neon-text">NeuroCann Lab</h1>
             <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs rounded-full border border-emerald-500/30">
               v2.0 BETA
             </span>

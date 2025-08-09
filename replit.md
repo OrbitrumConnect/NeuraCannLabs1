@@ -1,8 +1,8 @@
-# Cannabis Clinical Hub - Plataforma Médica Inteligente
+# NeuroCann Lab - Plataforma Médica Inteligente
 
 ## Overview - Visão Evolutiva do Sistema
 
-Cannabis Clinical Hub é uma plataforma médica avançada que combina inteligência artificial, visualização de dados em tempo real e interface imersiva para análise científica de cannabis medicinal. O sistema evoluiu para ser uma ferramenta de pesquisa neural hierárquica onde:
+NeuroCann Lab é uma plataforma médica avançada que combina inteligência artificial, visualização de dados em tempo real e interface imersiva para análise científica de cannabis medicinal. O sistema evoluiu para ser uma ferramenta de pesquisa neural hierárquica onde:
 
 **CONCEITO CENTRAL**: Teia neural de conhecimento que conecta estudos científicos, casos clínicos e alertas regulatórios através de IA especializada, permitindo exploração profunda e descoberta de correlações médicas.
 
