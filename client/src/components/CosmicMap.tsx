@@ -252,44 +252,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
         </div>
       </div>
       
-      {/* Knowledge Planets - Reduced brightness */}
-      {planets.map((planet) => (
-        <div
-          key={planet.id}
-          className={`absolute ${planet.size} bg-gradient-to-br ${planet.color} rounded-full cursor-pointer transition-transform opacity-80 ${
-            activeDashboard === planet.id ? "ring-2 ring-neon-cyan/30 ring-opacity-50" : ""
-          }`}
-          style={{
-            ...planet.position,
-            transform: hoveredPlanet === planet.id ? "scale(1.05)" : "scale(1)",
-          }}
-          onClick={() => onPlanetClick(planet.id)}
-          onMouseEnter={() => setHoveredPlanet(planet.id)}
-          onMouseLeave={() => setHoveredPlanet(null)}
-          data-testid={`cosmic-planet-${planet.id}`}
-        >
-          <div className="w-full h-full rounded-full flex items-center justify-center">
-            <i className={`${planet.icon} text-white/80 ${planet.size.includes("16") ? "" : "text-sm"}`} />
-          </div>
-          <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-white/70 whitespace-nowrap">
-            {planet.name}
-          </div>
-        </div>
-      ))}
+
       
-      {/* Subtle connecting lines from search bar to planets */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none">
-        <defs>
-          <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: "rgba(0,255,255,0.1)", stopOpacity: 1 }} />
-            <stop offset="100%" style={{ stopColor: "rgba(0,255,255,0.03)", stopOpacity: 1 }} />
-          </linearGradient>
-        </defs>
-        <line x1="50%" y1="30%" x2="95%" y2="20%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.1"/>
-        <line x1="50%" y1="30%" x2="95%" y2="35%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.1"/>
-        <line x1="50%" y1="30%" x2="95%" y2="50%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.1"/>
-        <line x1="50%" y1="30%" x2="95%" y2="65%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.1"/>
-      </svg>
+
     </div>
   );
 }
