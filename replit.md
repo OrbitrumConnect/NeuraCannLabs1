@@ -168,14 +168,15 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 - ✅ **Sistema médico profissional completo** pronto para uso clínico
 - ✅ **Diferencial competitivo único** no mercado de cannabis medicinal
 
-**2025-08-09**: Implemented fully draggable AI response card system
-- VerdiData AI card now fully draggable when minimized with smooth movement  
-- Card opens below search area instead of top of screen
-- Maintains single card instance - new searches update existing card content
-- Position limits prevent card from moving outside screen boundaries
-- Cursor changes to "move" when dragging minimized card
-- Fixed positioning with proper header clearance (64px minimum top)
-- Card remembers position when minimized and being moved around screen
+**2025-08-09**: Sistema IA COMPLETAMENTE CORRIGIDO e Mobile OTIMIZADO
+- ✅ **Sistema IA restaurado**: ai-search.ts recriado eliminando erro "resposta não disponível"
+- ✅ **conditionKeywords definidas**: Array completo de condições médicas (epilepsia, dor crônica, etc.)
+- ✅ **Funcionalidades áudio restauradas**: TextToSpeech funcionando nas sub-pesquisas
+- ✅ **Header mobile AJUSTADO**: Padding reduzido (py-1 mobile, py-4 desktop)
+- ✅ **Safe area iPhone**: paddingTop com env(safe-area-inset-top) 
+- ✅ **Main content mobile**: pt-14 mobile vs pt-20 desktop
+- ✅ **Tamanhos mobile**: Logo 8x8 mobile vs 10x10 desktop, texto lg vs 2xl
+- ✅ **Espaço preto ELIMINADO**: Header colado no topo sem espaçamento desnecessário
 
 **2025-08-08**: Added intelligent AI chat system integrated to search bar
 - VerdiData AI responds to questions about scientific studies and clinical cases

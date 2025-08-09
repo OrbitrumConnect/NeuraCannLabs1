@@ -38,12 +38,12 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-1 sm:py-4 flex items-center justify-between" style={{ paddingTop: 'max(4px, env(safe-area-inset-top))', paddingBottom: '4px' }}>
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
-              <i className="fas fa-cannabis text-white text-lg" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
+              <i className="fas fa-cannabis text-white text-sm sm:text-lg" />
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
+            <h1 className="text-lg sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
           </div>
           
           <nav className="hidden lg:flex items-center space-x-6">
@@ -169,7 +169,7 @@ export default function DashboardLayout({
       )}
 
       {/* Main Content */}
-      <main className="pt-20 min-h-screen cyber-grid">
+      <main className="pt-14 sm:pt-20 min-h-screen cyber-grid">
         {children}
       </main>
 
