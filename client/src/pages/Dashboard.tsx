@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "wouter";
 import DashboardLayout from "@/components/DashboardLayout";
-import CosmicMap from "@/components/CosmicMapFixed";
+import CosmicMap from "@/components/CosmicMap";
 import ScientificDashboard from "./ScientificDashboard";
 import ClinicalDashboard from "./ClinicalDashboard";
 import AlertsDashboard from "./AlertsDashboard";
