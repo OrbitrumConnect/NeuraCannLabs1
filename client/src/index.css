@@ -180,3 +180,18 @@
 .animate-hologram {
   animation: hologram 4s ease-in-out infinite;
 }
+
+@keyframes float-gentle {
+  0%, 100% { 
+    transform: translateY(0px);
+    opacity: 0.97;
+  }
+  50% { 
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 3s ease-in-out infinite;
+}

@@ -12,6 +12,14 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**2025-08-09**: Implemented floating AI response card with minimization feature
+- VerdiData AI responses now appear in minimizable floating card (600px wide)
+- Card floats gently with 3% opacity animation when minimized
+- Users can minimize/maximize or close the AI response card
+- Fixed search accumulation - previous results are cleared on new searches
+- Improved related topics display with better styling and compact layout
+- All clickable elements in AI responses navigate to appropriate dashboard sections
+
 **2025-08-08**: Added intelligent AI chat system integrated to search bar
 - VerdiData AI responds to questions about scientific studies and clinical cases
 - Chat mode toggle with real-time responses based on platform data

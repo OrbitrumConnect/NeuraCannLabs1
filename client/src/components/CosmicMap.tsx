@@ -81,11 +81,14 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
     if (!searchTerm.trim() || isTyping) return;
 
     const userMessage = searchTerm;
+    // Clear previous results first to avoid accumulation
+    setRelatedOptions([]);
+    setSearchResults([]);
+    setAiResponse('');
+    
     setChatMessages(prev => [...prev, { type: 'user', message: userMessage }]);
     setSearchTerm("");
     setIsTyping(true);
-    setRelatedOptions([]);
-    setSearchResults([]);
 
     try {
       const response = await fetch('/api/ai-search', {
