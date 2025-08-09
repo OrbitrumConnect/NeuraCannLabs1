@@ -73,13 +73,13 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **SISTEMA FINALIZADO - READY FOR INVESTMENT PRESENTATION** 🚀
 
-**FUNCIONAMENTO CONFIRMADO v4.5 - AVATAR OTIMIZADO E POSICIONADO**:
+**FUNCIONAMENTO CONFIRMADO v4.6 - GLOW E CINZA SEPARADOS**:
 ✅ Avatar Three.js ajustado para 216x216px (10% menor)
-✅ Posição movida para left-4 próxima aos planetas
-✅ Container trigger mantido em 288x288px para área clicável precisa
-✅ Efeito cinza quando ativo: brightness-75 + saturate-50 + grayscale-30%
-✅ Glow neon aplicado no avatar renderizado otimizado
-✅ Sistema com avatar posicionado harmonicamente próximo aos planetas
+✅ Glow verde-ciano mantido no container externo
+✅ Efeito cinza aplicado apenas no avatar: brightness-75 + saturate-50 + grayscale-30%
+✅ Separação perfeita: glow cyan + avatar cinza quando ativo
+✅ Posição harmonicamente próxima aos planetas
+✅ Sistema com efeitos visuais corretamente isolados
 
 **EVOLUÇÃO v3.0 - DR. CANNABIS IA INTERATIVO RESTAURADO**:
 ✅ Dr. Cannabis IA clicável - ativa todo o sistema ao clicar

@@ -227,11 +227,19 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           onClick={() => setIsDrAIActive(!isDrAIActive)}
           style={{
             filter: isDrAIActive 
-              ? 'drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(34, 211, 238, 0.2)) brightness(0.75) saturate(0.5) grayscale(30%)' 
+              ? 'drop-shadow(0 0 20px rgba(34, 211, 238, 0.4)) drop-shadow(0 0 40px rgba(34, 211, 238, 0.2))' 
               : 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.1))'
           }}
         >
-          <MedicalAvatar3D className="w-40" />
+          <div 
+            style={{
+              filter: isDrAIActive 
+                ? 'brightness(0.75) saturate(0.5) grayscale(30%)' 
+                : 'none'
+            }}
+          >
+            <MedicalAvatar3D className="w-40" />
+          </div>
         </div>
       </div>
 
