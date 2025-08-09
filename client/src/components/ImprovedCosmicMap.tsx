@@ -217,10 +217,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar positioned much closer to planets */}
-      <div className="absolute top-8 -left-4 w-72 h-72 z-20">
+      {/* Dr. Cannabis IA - Avatar positioned differently on mobile */}
+      <div className="absolute top-20 sm:top-8 left-2 sm:-left-4 w-48 h-48 sm:w-72 sm:h-72 z-20">
         <div 
-          className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
+          className={`w-48 h-48 sm:w-72 sm:h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
               ? 'scale-105 drop-shadow-2xl filter brightness-75 saturate-50 grayscale-[30%]' 
               : 'hover:scale-102 drop-shadow-lg'
@@ -239,14 +239,14 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-40" />
+            <MedicalAvatar3D className="w-32 sm:w-40" />
           </div>
         </div>
       </div>
 
-      {/* Search Interface - Top Center - Only show when Dr AI is active */}
+      {/* Search Interface - Positioned below header on mobile - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl px-4 sm:px-0">
+        <div className="absolute top-24 sm:top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl px-4 sm:px-0">
           <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 sm:p-6">
             
             {/* Search Bar */}
