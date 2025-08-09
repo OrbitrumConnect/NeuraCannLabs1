@@ -214,15 +214,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 overflow-hidden">
+    <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Grid Pattern Background - Same as app */}
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-      }}></div>
-
-      {/* Avatar Section - Right Side */}
-      <div className="absolute top-8 right-8 w-80 h-80 z-20">
+      {/* Avatar Section - Left Side */}
+      <div className="absolute top-8 left-8 w-80 h-80 z-20">
         <MedicalAvatar3D />
       </div>
 
@@ -297,9 +292,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Category Cards - Stacked vertically on the left */}
+      {/* Category Cards - Stacked vertically on the right */}
       {currentResult && (
-        <div className="fixed left-8 top-1/2 transform -translate-y-1/2 z-20 space-y-4" style={{ width: '380px' }}>
+        <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-20 space-y-4" style={{ width: '380px' }}>
           
           {/* Scientific Studies */}
           {scientificData.length > 0 && (
@@ -360,11 +355,11 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Sub-search Results - Right Side with better spacing */}
+      {/* Sub-search Results - Left Side with better spacing */}
       {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="fixed right-8 z-30"
+          className="fixed left-8 z-30"
           style={{ 
             top: `${150 + (index * 200)}px`, 
             width: '300px',
@@ -392,8 +387,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       ))}
 
-      {/* Floating Planets */}
-      {planets.map((planet) => (
+      {/* Floating Planets - Now on the left */}
+      {planets.map((planet, index) => (
         <div
           key={planet.id}
           className={`absolute ${planet.size} rounded-full bg-gradient-to-br ${planet.color} 
@@ -403,7 +398,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             ${activeDashboard === planet.id ? 'ring-2 ring-cyan-400 shadow-cyan-400/50' : ''}
           `}
           style={{
-            ...planet.position,
+            left: "20px",
+            top: `${400 + (index * 80)}px`,
             animationDelay: planet.delay,
           }}
           onMouseEnter={() => setHoveredPlanet(planet.id)}
