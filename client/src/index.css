@@ -154,8 +154,15 @@
 
   .profile-avatar {
     /* Remove glow for profile avatar */
-    filter: none;
-    box-shadow: none;
+    filter: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  .profile-avatar * {
+    filter: none !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
   }
 }
 

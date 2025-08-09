@@ -39,7 +39,7 @@ export default function ProfileDashboard() {
           <i className="fas fa-user-circle text-white text-2xl" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold neon-text">Perfil do Usuário</h1>
+          <h1 className="text-3xl font-bold text-white">Perfil do Usuário</h1>
           <p className="text-gray-400">Configurações e preferências pessoais</p>
         </div>
       </div>
@@ -47,7 +47,7 @@ export default function ProfileDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profile Info */}
         <div className="lg:col-span-2 space-y-6">
-          <Card className="data-card rounded-xl holographic-border">
+          <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
             <CardContent className="p-6">
               <h2 className="text-xl font-semibold text-white mb-6">Informações Pessoais</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -56,7 +56,7 @@ export default function ProfileDashboard() {
                   <Input 
                     type="text" 
                     defaultValue={profile?.name || ""} 
-                    className="w-full bg-cyber-light border-neon-cyan/30 text-white"
+                    className="w-full bg-gray-700 border-gray-500 text-white"
                     data-testid="profile-name-input"
                   />
                 </div>
@@ -65,7 +65,7 @@ export default function ProfileDashboard() {
                   <Input 
                     type="text" 
                     defaultValue={profile?.specialty || ""} 
-                    className="w-full bg-cyber-light border-neon-cyan/30 text-white"
+                    className="w-full bg-gray-700 border-gray-500 text-white"
                     data-testid="profile-specialty-input"
                   />
                 </div>
@@ -74,7 +74,7 @@ export default function ProfileDashboard() {
                   <Input 
                     type="email" 
                     defaultValue={profile?.email || ""} 
-                    className="w-full bg-cyber-light border-neon-cyan/30 text-white"
+                    className="w-full bg-gray-700 border-gray-500 text-white"
                     data-testid="profile-email-input"
                   />
                 </div>
@@ -83,7 +83,7 @@ export default function ProfileDashboard() {
                   <Input 
                     type="text" 
                     defaultValue={profile?.crm || ""} 
-                    className="w-full bg-cyber-light border-neon-cyan/30 text-white"
+                    className="w-full bg-gray-700 border-gray-500 text-white"
                     data-testid="profile-crm-input"
                   />
                 </div>
@@ -97,7 +97,7 @@ export default function ProfileDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="data-card rounded-xl holographic-border">
+          <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
             <CardContent className="p-6">
               <h2 className="text-xl font-semibold text-white mb-6">Preferências da Plataforma</h2>
               <div className="space-y-4">
@@ -106,7 +106,7 @@ export default function ProfileDashboard() {
                   <input 
                     type="checkbox" 
                     defaultChecked 
-                    className="rounded bg-cyber-light border-neon-cyan/30"
+                    className="rounded bg-gray-700 border-gray-500"
                     data-testid="dark-theme-toggle"
                   />
                 </div>
@@ -115,7 +115,7 @@ export default function ProfileDashboard() {
                   <input 
                     type="checkbox" 
                     defaultChecked 
-                    className="rounded bg-cyber-light border-neon-cyan/30"
+                    className="rounded bg-gray-700 border-gray-500"
                     data-testid="email-notifications-toggle"
                   />
                 </div>
@@ -124,7 +124,7 @@ export default function ProfileDashboard() {
                   <input 
                     type="checkbox" 
                     defaultChecked 
-                    className="rounded bg-cyber-light border-neon-cyan/30"
+                    className="rounded bg-gray-700 border-gray-500"
                     data-testid="avatar-3d-toggle"
                   />
                 </div>
@@ -133,7 +133,7 @@ export default function ProfileDashboard() {
                   <input 
                     type="checkbox" 
                     defaultChecked 
-                    className="rounded bg-cyber-light border-neon-cyan/30"
+                    className="rounded bg-gray-700 border-gray-500"
                     data-testid="ai-analysis-toggle"
                   />
                 </div>
@@ -144,9 +144,9 @@ export default function ProfileDashboard() {
 
         {/* Profile Stats */}
         <div className="space-y-6">
-          <Card className="data-card rounded-xl holographic-border text-center">
+          <Card className="bg-gray-800/50 border border-gray-600 rounded-xl text-center">
             <CardContent className="p-6">
-              <div className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <div className="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full mx-auto mb-4 flex items-center justify-center profile-avatar">
                 <i className="fas fa-user-md text-white text-3xl" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">{profile?.name || "Usuário"}</h3>
@@ -164,7 +164,7 @@ export default function ProfileDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="data-card rounded-xl holographic-border">
+          <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
             <CardContent className="p-6">
               <h3 className="font-semibold text-white mb-4">Atividade Recente</h3>
               <div className="space-y-3">
@@ -193,7 +193,7 @@ export default function ProfileDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="data-card rounded-xl holographic-border">
+          <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
             <CardContent className="p-6">
               <h3 className="font-semibold text-white mb-4">Conquistas</h3>
               <div className="grid grid-cols-2 gap-3">
