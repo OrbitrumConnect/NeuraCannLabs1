@@ -177,9 +177,23 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         </button>
       </div>
 
-      {/* Central Search Bar with AI Chat - Moved to bottom */}
-      <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-[600px] max-w-4xl">
+      {/* Neural Connection Line - When chat is active */}
+      {chatMode && (
+        <div className="absolute left-32 top-1/2 transform -translate-y-1/2 z-10">
+          <div 
+            className="h-0.5 bg-gradient-to-r from-neon-cyan via-blue-400 to-transparent animate-pulse"
+            style={{
+              width: 'calc(50vw - 420px)',
+              boxShadow: '0 0 10px rgba(0,255,255,0.5)'
+            }}
+          />
+        </div>
+      )}
+
+      {/* Central Search Bar with AI Chat - Only shows when active */}
+      {chatMode && (
+        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10">
+          <div className="bg-black/60 backdrop-blur-md rounded-2xl p-4 border border-neon-cyan/40 w-[600px] max-w-4xl shadow-lg shadow-neon-cyan/20 animate-fade-in">
           {/* Chat Mode Header */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
@@ -289,10 +303,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
               ))}
             </div>
           )}
+          </div>
         </div>
-
-
-      </div>
+      )}
 
     </div>
   );

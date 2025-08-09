@@ -51,6 +51,22 @@
   --neon-green: hsl(141, 100%, 50%);
 }
 
+/* Neural connection animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
 .dark {
   --background: hsl(0, 0%, 4%);
   --foreground: hsl(200, 6.6667%, 91.1765%);
