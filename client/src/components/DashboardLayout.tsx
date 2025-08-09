@@ -38,12 +38,12 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
-              <i className="fas fa-cannabis text-white text-lg" />
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2 sm:space-x-3">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
+              <i className="fas fa-cannabis text-white text-sm sm:text-lg" />
             </div>
-            <h1 className="text-2xl font-bold neon-text">NeuroCann Lab</h1>
+            <h1 className="text-lg sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
           </div>
           
           <nav className="hidden lg:flex items-center space-x-6">
@@ -79,52 +79,77 @@ export default function DashboardLayout({
           <button
             id="menuToggle"
             onClick={onMenuClick}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all"
+            className="lg:hidden w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
             data-testid="mobile-menu-toggle"
+            aria-label="Menu"
           >
-            <i className="fas fa-bars text-neon-cyan" />
+            <i className="fas fa-bars text-neon-cyan text-base sm:text-lg" />
           </button>
         </div>
       </header>
 
       {/* Side Navigation */}
       <nav
-        className={`fixed top-0 left-0 h-full w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-40 lg:hidden holographic-border ${
+        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-40 lg:hidden holographic-border ${
           sideNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         data-testid="side-navigation"
       >
-        <div className="p-6 pt-20">
-          <h2 className="text-xl font-semibold text-neon-cyan mb-8 neon-text">Plataforma Médica</h2>
+        <div className="p-4 sm:p-6 pt-16 sm:pt-20">
+          <div className="flex items-center justify-between mb-6 sm:mb-8">
+            <h2 className="text-lg sm:text-xl font-semibold text-neon-cyan neon-text">Plataforma Médica</h2>
+            <button
+              onClick={() => setSideNavOpen(false)}
+              className="w-8 h-8 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all"
+              aria-label="Fechar menu"
+            >
+              <i className="fas fa-times text-neon-cyan text-sm" />
+            </button>
+          </div>
           
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4 max-h-[calc(100vh-120px)] overflow-y-auto">
             {dashboardOptions.map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
-                className={`w-full text-left p-4 rounded-xl transition-all data-card ${
+                className={`w-full text-left p-3 sm:p-4 rounded-xl transition-all data-card touch-manipulation ${
                   activeDashboard === option.id
                     ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30"
                     : "hover:bg-neon-cyan/10"
                 }`}
                 data-testid={`side-nav-${option.id}`}
               >
-                <i className={`${option.icon} mr-3 ${
-                  option.id === "scientific" ? "text-emerald-400" :
-                  option.id === "clinical" ? "text-blue-400" :
-                  option.id === "alerts" ? "text-amber-400" :
-                  option.id === "admin" ? "text-green-400" :
-                  option.id === "profile" ? "text-purple-400" : ""
-                }`} />
-                <span className="font-semibold">{option.name}</span>
-                {option.id === "alerts" && (
-                  <span className="float-right bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
-                )}
-                <div className="text-sm text-gray-400 mt-1">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <i className={`${option.icon} mr-3 text-base ${
+                      option.id === "scientific" ? "text-emerald-400" :
+                      option.id === "clinical" ? "text-blue-400" :
+                      option.id === "alerts" ? "text-amber-400" :
+                      option.id === "admin" ? "text-green-400" :
+                      option.id === "profile" ? "text-purple-400" : ""
+                    }`} />
+                    <span className="font-semibold text-sm sm:text-base">{option.name}</span>
+                  </div>
+                  {option.id === "alerts" && (
+                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
+                  )}
+                  {option.id === "my-study" && (
+                    <span className="bg-purple-500 text-white text-xs rounded-full px-2 py-1">NEW</span>
+                  )}
+                  {option.id === "forum" && (
+                    <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1">29</span>
+                  )}
+                  {option.id === "admin" && (
+                    <span className="bg-green-500 text-white text-xs rounded-full px-2 py-1">🌍</span>
+                  )}
+                </div>
+                <div className="text-xs sm:text-sm text-gray-400 mt-1 ml-7">
                   {option.id === "overview" && "Dashboard principal"}
                   {option.id === "scientific" && "Estudos e pesquisas"}
                   {option.id === "clinical" && "Registros médicos"}
                   {option.id === "alerts" && "Notificações importantes"}
+                  {option.id === "my-study" && "Submissões de estudos"}
+                  {option.id === "forum" && "Discussões colaborativas"}
                   {option.id === "admin" && "Central científica mundial"}
                   {option.id === "profile" && "Configurações pessoais"}
                 </div>
@@ -134,8 +159,17 @@ export default function DashboardLayout({
         </div>
       </nav>
 
+      {/* Overlay for mobile */}
+      {sideNavOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          onClick={() => setSideNavOpen(false)}
+          data-testid="nav-overlay"
+        />
+      )}
+
       {/* Main Content */}
-      <main className="pt-20 min-h-screen cyber-grid">
+      <main className="pt-16 sm:pt-20 min-h-screen cyber-grid">
         {children}
       </main>
 

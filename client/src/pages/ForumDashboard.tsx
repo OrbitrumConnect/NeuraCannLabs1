@@ -141,22 +141,22 @@ export default function ForumDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-dark text-gray-100 p-6">
+    <div className="min-h-screen bg-cyber-dark text-gray-100 p-3 sm:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <div>
-              <h1 className="text-3xl font-bold neon-text mb-2">
+              <h1 className="text-xl sm:text-3xl font-bold neon-text mb-2">
                 💬 Fórum de Discussão Científica
               </h1>
-              <p className="text-gray-400">
+              <p className="text-sm sm:text-base text-gray-400">
                 Espaço colaborativo para médicos discutirem cannabis medicinal
               </p>
             </div>
             <Button 
               onClick={() => setShowNewPost(true)}
-              className="bg-neon-cyan text-cyber-dark hover:bg-cyan-400"
+              className="bg-neon-cyan text-cyber-dark hover:bg-cyan-400 w-full sm:w-auto"
               data-testid="button-new-post"
             >
               <i className="fas fa-plus mr-2" />
@@ -165,20 +165,21 @@ export default function ForumDashboard() {
           </div>
 
           {/* Categories */}
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-2 rounded-lg border transition-all ${
+                className={`px-3 sm:px-4 py-2 rounded-lg border transition-all text-xs sm:text-sm ${
                   activeCategory === category.id
                     ? "bg-neon-cyan/20 border-neon-cyan text-neon-cyan"
                     : "border-gray-600 hover:border-neon-cyan/50 hover:text-neon-cyan"
                 }`}
                 data-testid={`category-${category.id}`}
               >
-                {category.name}
-                <span className="ml-2 bg-gray-600 text-gray-300 text-xs px-2 py-1 rounded-full">
+                <span className="hidden sm:inline">{category.name}</span>
+                <span className="sm:hidden">{category.name.replace('Discussões', '').replace('Protocolos & ', '')}</span>
+                <span className="ml-1 sm:ml-2 bg-gray-600 text-gray-300 text-xs px-1 sm:px-2 py-1 rounded-full">
                   {category.count}
                 </span>
               </button>
