@@ -1,4 +1,5 @@
 import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert } from "@shared/schema";
+import { comprehensiveStudies, comprehensiveClinicalCases, comprehensiveAlerts } from './comprehensive-medical-database';
 import { randomUUID } from "crypto";
 
 // ⚠️ AVISO CRÍTICO: Todos os dados científicos são baseados em estudos REAIS e VERIFICADOS
@@ -40,8 +41,9 @@ export class MemStorage implements IStorage {
     this.clinicalCases = new Map();
     this.alerts = new Map();
     
-    // Initialize with sample data
+    // Inicializar com base de dados abrangente
     this.initializeSampleData();
+    this.loadComprehensiveData();
   }
 
   private initializeSampleData() {
@@ -277,6 +279,29 @@ export class MemStorage implements IStorage {
     ];
     
     alertsData.forEach(alert => this.alerts.set(alert.id, alert));
+  }
+
+  private loadComprehensiveData() {
+    // Carregar base abrangente de estudos
+    comprehensiveStudies.forEach(study => {
+      if (!this.scientificStudies.has(study.id)) {
+        this.scientificStudies.set(study.id, study);
+      }
+    });
+
+    // Carregar casos clínicos abrangentes  
+    comprehensiveClinicalCases.forEach(case_ => {
+      if (!this.clinicalCases.has(case_.id)) {
+        this.clinicalCases.set(case_.id, case_);
+      }
+    });
+
+    // Carregar alertas abrangentes
+    comprehensiveAlerts.forEach(alert => {
+      if (!this.alerts.has(alert.id)) {
+        this.alerts.set(alert.id, alert);
+      }
+    });
   }
 
   // Users

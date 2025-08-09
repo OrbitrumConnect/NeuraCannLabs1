@@ -1,4 +1,5 @@
 import { type ScientificStudy, type ClinicalCase, type Alert } from "@shared/schema";
+import { searchByCondition } from './comprehensive-medical-database';
 
 export interface SearchResult {
   type: 'study' | 'case' | 'alert';
@@ -18,11 +19,21 @@ export class MedicalAISearch {
   static analyzeQuery(query: string, studies: ScientificStudy[], cases: ClinicalCase[], alerts: Alert[]): AIResponse {
     const lowerQuery = query.toLowerCase();
     
+    // Usar busca inteligente da base abrangente
+    const searchResults = searchByCondition(query);
+    
+    // Combinar dados existentes com dados específicos da condição
+    const allStudies = [...studies, ...searchResults.studies];
+    const allCases = [...cases, ...searchResults.cases]; 
+    const allAlerts = [...alerts, ...searchResults.alerts];
+    
+    // Detectar condições específicas
+    const detectedConditions = searchResults.detectedConditions;
+
     // Keywords para diferentes tipos de pesquisa
     const doseKeywords = ['dose', 'dosagem', 'mg', 'quantidade', 'administração'];
     const efficacyKeywords = ['eficácia', 'resultado', 'melhora', 'resposta', 'efeito'];
     const sideEffectsKeywords = ['efeito colateral', 'adverso', 'reação', 'segurança'];
-    const conditionKeywords = ['epilepsia', 'dor', 'câncer', 'parkinson', 'ansiedade', 'sono'];
     const compoundKeywords = ['cbd', 'thc', 'cannabidiol', 'tetrahidrocanabinol'];
     
     let relatedResults: SearchResult[] = [];
@@ -30,24 +41,47 @@ export class MedicalAISearch {
     let suggestions: string[] = [];
     let confidence = 0.7;
     
-    // Buscar estudos relevantes
-    studies.forEach(study => {
-      const relevance = this.calculateRelevance(lowerQuery, study.title + ' ' + study.description + ' ' + study.compound + ' ' + study.indication);
+    // Usar dados específicos da condição detectada
+    allStudies.forEach(study => {
+      let relevance = 0;
+      const studyText = `${study.title} ${study.description} ${study.compound} ${study.indication}`.toLowerCase();
+      
+      // Alta relevância para condições detectadas
+      if (detectedConditions.length > 0 && detectedConditions[0] !== 'busca geral') {
+        const hasConditionMatch = detectedConditions.some(condition => 
+          studyText.includes(condition.toLowerCase())
+        );
+        relevance = hasConditionMatch ? 0.95 : this.calculateRelevance(lowerQuery, studyText);
+      } else {
+        relevance = this.calculateRelevance(lowerQuery, studyText);
+      }
+      
       if (relevance > 0.3) {
         relatedResults.push({ type: 'study', relevance, data: study });
       }
     });
     
-    // Buscar casos clínicos relevantes
-    cases.forEach(caseItem => {
-      const relevance = this.calculateRelevance(lowerQuery, caseItem.description + ' ' + caseItem.indication + ' ' + caseItem.outcome);
+    // Casos clínicos com foco na condição
+    allCases.forEach(caseItem => {
+      let relevance = 0;
+      const caseText = `${caseItem.description} ${caseItem.indication} ${caseItem.outcome}`.toLowerCase();
+      
+      if (detectedConditions.length > 0 && detectedConditions[0] !== 'busca geral') {
+        const hasConditionMatch = detectedConditions.some(condition => 
+          caseText.includes(condition.toLowerCase())
+        );
+        relevance = hasConditionMatch ? 0.95 : this.calculateRelevance(lowerQuery, caseText);
+      } else {
+        relevance = this.calculateRelevance(lowerQuery, caseText);
+      }
+      
       if (relevance > 0.3) {
         relatedResults.push({ type: 'case', relevance, data: caseItem });
       }
     });
     
-    // Buscar alertas relevantes
-    alerts.forEach(alert => {
+    // Alertas relevantes
+    allAlerts.forEach(alert => {
       const relevance = this.calculateRelevance(lowerQuery, alert.message + ' ' + alert.type);
       if (relevance > 0.2) {
         relatedResults.push({ type: 'alert', relevance, data: alert });
