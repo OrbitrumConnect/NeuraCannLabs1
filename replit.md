@@ -12,6 +12,20 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+**2025-08-09**: Integrated 3D Medical Avatar as chat interface
+- Added Three.js powered 3D medical avatar to replace static chat button
+- Avatar responds visually to chat states (active, listening, idle)
+- Professional medical styling with lab coat appearance and medical badge
+- Real-time lighting changes based on interaction state
+- Named "Dr. Cannabis IA" for better medical context
+- Avatar animations provide natural, professional interaction feel
+
+**2025-08-09**: Removed duplicate VerdiData IA system
+- Eliminated confusing dual chat systems that were causing user confusion
+- Maintained only the functional "IA Cannabis" chat system
+- Simplified codebase by removing redundant card systems and drag functionality
+- Cleaner interface focusing on single, effective AI interaction
+
 **2025-08-09**: Implemented sub-search system with lateral cards
 - Added sub-search functionality at the end of VerdiData IA analysis
 - Sub-search opens purple-themed lateral card on the right side of screen

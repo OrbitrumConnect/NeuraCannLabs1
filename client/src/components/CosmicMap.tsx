@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
+import MedicalAvatar3D from "./MedicalAvatar3D";
 
 interface CosmicPlanet {
   id: string;
@@ -155,7 +156,15 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-[600px] max-w-4xl">
           {/* Mode Toggle */}
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-3">
+              {/* Medical Avatar */}
+              <MedicalAvatar3D 
+                isActive={chatMode}
+                isListening={isTyping}
+                message={isTyping ? "Analisando..." : ""}
+                className="w-12 h-12"
+              />
+              
               <button
                 onClick={() => setChatMode(!chatMode)}
                 className={`flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs transition-all ${
@@ -165,7 +174,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                 }`}
               >
                 <Bot className="w-3 h-3" />
-                <span>IA Cannabis</span>
+                <span>Dr. Cannabis IA</span>
               </button>
               {chatMode && chatMessages.length > 0 && (
                 <button
