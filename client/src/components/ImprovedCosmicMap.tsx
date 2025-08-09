@@ -63,8 +63,8 @@ const planets: CosmicPlanet[] = [
     id: "scientific",
     name: "Dados Científicos",
     position: { top: "20%", right: "5%" },
-    size: "w-14 h-14",
-    color: "from-emerald-400 to-green-600",
+    size: "w-11 h-11",
+    color: "from-cyan-400 to-blue-600",
     icon: "fas fa-flask",
     delay: "0s",
   },
@@ -72,7 +72,7 @@ const planets: CosmicPlanet[] = [
     id: "clinical",
     name: "Casos Clínicos",
     position: { top: "35%", right: "5%" },
-    size: "w-14 h-14",
+    size: "w-11 h-11", 
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
     delay: "0s",
@@ -81,8 +81,8 @@ const planets: CosmicPlanet[] = [
     id: "alerts",
     name: "Alertas",
     position: { top: "50%", right: "5%" },
-    size: "w-11 h-11",
-    color: "from-amber-400 to-orange-600",
+    size: "w-9 h-9",
+    color: "from-orange-400 to-red-500",
     icon: "fas fa-bell",
     delay: "0s",
   },
@@ -90,8 +90,8 @@ const planets: CosmicPlanet[] = [
     id: "profile",
     name: "Perfil",
     position: { top: "65%", right: "5%" },
-    size: "w-11 h-11",
-    color: "from-purple-400 to-pink-600",
+    size: "w-9 h-9",
+    color: "from-purple-400 to-pink-500",
     icon: "fas fa-user-circle",
     delay: "0s",
   },
@@ -216,14 +216,16 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Avatar Section - Left Side - Clickable */}
+      {/* Avatar Section - Left Side - Clickable - 20% bigger with glow effect */}
       <div 
-        className="absolute top-8 left-8 w-80 h-80 z-20 cursor-pointer group"
+        className="absolute top-8 left-8 w-96 h-96 z-20 cursor-pointer group"
         onClick={() => setIsDrAIActive(!isDrAIActive)}
       >
         <div className="relative">
-          <MedicalAvatar3D />
-          <div className="absolute inset-0 bg-cyan-500/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className={`transition-all duration-500 ${isDrAIActive ? 'drop-shadow-2xl drop-shadow-cyan-400/30' : 'drop-shadow-lg drop-shadow-cyan-400/20'}`}>
+            <MedicalAvatar3D />
+          </div>
+          <div className={`absolute inset-0 rounded-full transition-all duration-500 ${isDrAIActive ? 'bg-cyan-400/20 shadow-lg shadow-cyan-400/40' : 'bg-cyan-500/5 group-hover:bg-cyan-500/15'}`}></div>
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-cyan-900/80 text-cyan-100 px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             Dr. Cannabis IA - Clique para ativar
           </div>
@@ -303,9 +305,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Category Cards - Stacked vertically on the right - Only show when Dr AI is active */}
+      {/* Category Cards - Stacked vertically on the right - Only show when Dr AI is active - Lower position */}
       {isDrAIActive && currentResult && (
-        <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-20 space-y-4" style={{ width: '380px' }}>
+        <div className="fixed right-8 top-1/2 transform translate-y-8 z-20 space-y-3" style={{ width: '380px' }}>
           
           {/* Scientific Studies */}
           {scientificData.length > 0 && (
@@ -403,10 +405,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         <div
           key={planet.id}
           className={`absolute ${planet.size} rounded-full bg-gradient-to-br ${planet.color} 
-            cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/50
+            cursor-pointer transition-all duration-300 hover:scale-110 hover:shadow-md hover:shadow-cyan-500/30
             flex items-center justify-center text-white font-bold text-xs z-10
-            ${hoveredPlanet === planet.id ? 'animate-pulse' : 'animate-float'}
-            ${activeDashboard === planet.id ? 'ring-2 ring-cyan-400 shadow-cyan-400/50' : ''}
+            ${hoveredPlanet === planet.id ? 'animate-pulse shadow-lg shadow-cyan-400/40' : 'animate-float shadow-sm shadow-cyan-400/20'}
+            ${activeDashboard === planet.id ? 'ring-1 ring-cyan-400/60 shadow-cyan-400/40' : ''}
           `}
           style={{
             left: "20px",
