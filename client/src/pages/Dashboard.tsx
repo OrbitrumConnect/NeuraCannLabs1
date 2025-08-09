@@ -19,7 +19,8 @@ export default function Dashboard() {
   const [aiResults, setAiResults] = useState<any[]>([]);
   const [aiCardMinimized, setAiCardMinimized] = useState(false);
   const [aiSearchQuery, setAiSearchQuery] = useState("");
-  const [cardPosition, setCardPosition] = useState({ x: 0, y: 0 });
+  const [cardPosition, setCardPosition] = useState({ x: 50, y: 200 });
+  const [favoritePosition, setFavoritePosition] = useState({ x: 50, y: 200 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   
@@ -52,10 +53,13 @@ export default function Dashboard() {
         const maxY = window.innerHeight - 100;
         const minY = 200; // Acima da área de pesquisa IA Cannabis
         
-        setCardPosition({
+        const newPosition = {
           x: Math.max(0, Math.min(newX, maxX)),
           y: Math.max(minY, Math.min(newY, maxY))
-        });
+        };
+        setCardPosition(newPosition);
+        // Salvar a posição como favorita quando o usuário mover o card
+        setFavoritePosition(newPosition);
       }
       
       if (isDraggingSubCard && subCardMinimized) {
@@ -127,8 +131,8 @@ export default function Dashboard() {
     
     // Se é nova pesquisa ou card não existe, mostra expandido
     setAiCardMinimized(false);
-    // Reset position when new response comes - position for minimized state
-    setCardPosition({ x: 50, y: 200 });
+    // Use a posição favorita quando uma nova resposta chegar
+    setCardPosition(favoritePosition);
   };
 
   const toggleAiCard = () => {
@@ -141,7 +145,8 @@ export default function Dashboard() {
     setAiResults([]);
     setAiSearchQuery("");
     setAiCardMinimized(false);
-    setCardPosition({ x: 50, y: 200 });
+    // Voltar para a posição favorita quando fechar
+    setCardPosition(favoritePosition);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
