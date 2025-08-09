@@ -216,8 +216,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar positioned near planets */}
-      <div className="absolute top-8 left-4 w-72 h-72 z-20">
+      {/* Dr. Cannabis IA - Avatar positioned closer to planets */}
+      <div className="absolute top-8 left-2 w-72 h-72 z-20">
         <div 
           className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
