@@ -1,0 +1,621 @@
+
+1) Visão rápida do que você vai receber aqui
+Frontend (React + TypeScript): components principais
+
+Avatar3D (Three.js) — carrega GLB/GLTF do avatar
+
+NeuralTree (Cytoscape.js) — árvore interativa/arrastável
+
+MainCard, CategoryCards, Dock (sub-pesquisas)
+
+TTSController (Web Speech + endpoint opcional Google TTS)
+
+UI de tradução automática e controles de leitura por trecho
+
+Backend (Node.js + Express): endpoints REST + Socket.IO
+
+/api/search — orquestra busca (PubMed, ClinicalTrials, EuropePMC)
+
+/api/translate — tradução (DeepL / Google / fallback GPT)
+
+/api/tts — opcional: gerar MP3 (Google Cloud TTS)
+
+Socket.IO para push de resultados e updates em tempo real
+
+Arquivo .env.example, Dockerfile, README resumido
+
+Prompt final (pronto para enviar ao time ou para gerar código via IA)
+
+Observação: alguns serviços (Google Cloud TTS, DeepL, Dimensions) exigem credenciais. No código abaixo uso placeholders e paths padrão que você deve ajustar (variáveis de ambiente).
+
+2) Estrutura mínima do projeto
+pgsql
+Copiar
+Editar
+cannabis-hub/
+├─ backend/
+│  ├─ package.json
+│  ├─ src/
+│  │  ├─ index.js           // Express + Socket.IO
+│  │  ├─ routes/
+│  │  │  ├─ search.js
+│  │  │  ├─ translate.js
+│  │  │  ├─ tts.js
+│  └─ .env.example
+├─ frontend/
+│  ├─ package.json
+│  ├─ src/
+│  │  ├─ main.tsx
+│  │  ├─ App.tsx
+│  │  ├─ components/
+│  │  │  ├─ Avatar3D.tsx
+│  │  │  ├─ NeuralTree.tsx
+│  │  │  ├─ MainCard.tsx
+│  │  │  ├─ CategoryCard.tsx
+│  │  │  ├─ Dock.tsx
+│  │  │  └─ TTSController.tsx
+└─ Dockerfile
+3) Backend — código essencial (Node.js + Express + Socket.IO)
+backend/package.json (resumido)
+
+json
+Copiar
+Editar
+{
+  "name": "cannabis-hub-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": { "start": "node src/index.js" },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "socket.io": "^4.7.2",
+    "body-parser": "^1.20.2",
+    "dotenv": "^16.0.3"
+  }
+}
+backend/src/index.js
+
+js
+Copiar
+Editar
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+import cors from "cors";
+import dotenv from "dotenv";
+import searchRouter from "./routes/search.js";
+import translateRouter from "./routes/translate.js";
+import ttsRouter from "./routes/tts.js";
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+app.use("/api/search", searchRouter);
+app.use("/api/translate", translateRouter);
+app.use("/api/tts", ttsRouter);
+
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: { origin: "*" }
+});
+
+// Simple realtime channel: emit results to clients
+io.on("connection", socket => {
+  console.log("socket connected:", socket.id);
+  socket.on("join", room => socket.join(room));
+});
+
+// Helper to broadcast from routes
+app.set("io", io);
+
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => console.log(`Backend running on ${PORT}`));
+backend/src/routes/search.js (exemplo com PubMed E-utilities + ClinicalTrials minimal)
+
+js
+Copiar
+Editar
+import express from "express";
+import axios from "axios";
+const router = express.Router();
+
+/**
+ * POST /api/search
+ * body: { query: "dosagem", locale: "pt" }
+ * returns structured object with categories and items
+ */
+router.post("/", async (req, res) => {
+  const { query } = req.body;
+  try {
+    // 1) PubMed search via E-utilities (esearch -> efetch for summaries)
+    const esearchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi`;
+    const esearchParams = {
+      db: "pubmed",
+      term: query,
+      retmode: "json",
+      retmax: 6
+    };
+    const esearch = await axios.get(esearchUrl, { params: esearchParams });
+    const ids = esearch.data.esearchresult.idlist || [];
+
+    let studies = [];
+    if (ids.length) {
+      const efetchUrl = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi`;
+      const efetchParams = {
+        db: "pubmed",
+        id: ids.join(","),
+        retmode: "xml"
+      };
+      const efetch = await axios.get(efetchUrl, { params: efetchParams });
+      // NOTE: for production parse XML properly (xml2js). For demo return snippets.
+      studies = ids.map((id, i) => ({
+        id,
+        title: `PubMed study ${id}`,
+        snippet: "Resumo disponível via efetch (processar XML)",
+        source: "pubmed",
+      }));
+    }
+
+    // 2) ClinicalTrials.gov (example)
+    const ctUrl = `https://clinicaltrials.gov/api/query/study_fields`;
+    const ctResp = await axios.get(ctUrl, {
+      params: {
+        expr: query,
+        fields: "NCTId,BriefTitle,Condition,Phase",
+        min_rnk: 1,
+        max_rnk: 5,
+        fmt: "json"
+      }
+    });
+    const trials = (ctResp.data.StudyFieldsResponse.StudyFields || []).map(s => ({
+      id: s.NCTId?.[0] || `ct-${Math.random().toString(36).slice(2,8)}`,
+      title: s.BriefTitle?.[0] || "Trial",
+      source: "clinicaltrials",
+    }));
+
+    // 3) Europe PMC (example)
+    const epmcUrl = "https://www.ebi.ac.uk/europepmc/webservices/rest/search";
+    const epmc = await axios.get(epmcUrl, {
+      params: { query, pageSize: 5, format: "json" }
+    });
+    const epmcItems = (epmc.data.resultList?.result || []).map(it => ({
+      id: it.id,
+      title: it.title,
+      source: "europe_pmc"
+    }));
+
+    // Compose response with categories separated
+    const result = {
+      query,
+      meta: {
+        counts: { studies: studies.length + epmcItems.length, trials: trials.length }
+      },
+      categories: {
+        scientific: [...studies, ...epmcItems],
+        clinical: trials,
+        alerts: [] // You can integrate regulatory alerts later
+      }
+    };
+
+    // Emit via socket if needed
+    const io = req.app.get("io");
+    io && io.emit("search:result", { query, result });
+
+    res.json(result);
+  } catch (err) {
+    console.error("search error", err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+export default router;
+backend/src/routes/translate.js (mock; plug DeepL/Google)
+
+js
+Copiar
+Editar
+import express from "express";
+import axios from "axios";
+const router = express.Router();
+
+// POST /api/translate { text: "...", target: "pt" }
+router.post("/", async (req, res) => {
+  const { text, target = "pt" } = req.body;
+  try {
+    // Example: use DeepL or Google. Here a dummy pass-through
+    // For production, call DeepL: https://www.deepl.com/docs-api
+    // or Google Cloud Translation API.
+    // Mock: return same text
+    // Replace below with actual API call
+    res.json({ translatedText: text });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+export default router;
+backend/src/routes/tts.js (endpoint opcional para gerar MP3 via Google Cloud)
+
+js
+Copiar
+Editar
+import express from "express";
+const router = express.Router();
+
+// This route is a placeholder. Implement Google Cloud TTS here.
+// POST /api/tts { text: "...", voice: "pt-BR-..." }
+router.post("/", async (req, res) => {
+  const { text } = req.body;
+  // Example: call Google Cloud Text-to-Speech SDK and respond with base64 MP3
+  // For now: return 204
+  res.status(204).send();
+});
+
+export default router;
+4) Frontend — React + TypeScript (essencial para o MVP)
+frontend/package.json (resumido)
+
+json
+Copiar
+Editar
+{
+  "name": "cannabis-hub-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "axios": "^1.4.0",
+    "cytoscape": "^3.25.1",
+    "react-cytoscapejs": "^1.2.0",
+    "@react-three/fiber": "^8.0.27",
+    "three": "^0.152.2",
+    "socket.io-client": "^4.7.2"
+  },
+  "scripts": { "start": "vite" }
+}
+frontend/src/App.tsx (esqueleto)
+
+tsx
+Copiar
+Editar
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { io } from "socket.io-client";
+import NeuralTree from "./components/NeuralTree";
+import Avatar3D from "./components/Avatar3D";
+import MainCard from "./components/MainCard";
+import Dock from "./components/Dock";
+
+const socket = io(import.meta.env.VITE_BACKEND_URL || "http://localhost:4000");
+
+export default function App() {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState(null);
+
+  useEffect(() => {
+    socket.on("search:result", (payload) => {
+      console.log("socket search result", payload);
+      setResults(payload.result);
+    });
+    return () => { socket.off("search:result"); };
+  }, []);
+
+  async function handleSearch() {
+    const resp = await axios.post(`${import.meta.env.VITE_BACKEND_URL || "http://localhost:4000"}/api/search`, { query });
+    setResults(resp.data);
+  }
+
+  return (
+    <div className="app-root" style={{ display: "flex", height: "100vh" }}>
+      <div style={{ width: 320, padding: 12 }}>
+        <Avatar3D />
+        <div style={{ marginTop: 12 }}>
+          <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Digite 'dosagem'..." />
+          <button onClick={handleSearch}>Pesquisar</button>
+        </div>
+      </div>
+
+      <div style={{ flex: 1, padding: 12 }}>
+        <MainCard result={results} />
+        <NeuralTree data={results} />
+      </div>
+
+      <div style={{ width: 360 }}>
+        <Dock data={results} />
+      </div>
+    </div>
+  );
+}
+Componentes principais (resumidos)
+frontend/src/components/MainCard.tsx
+
+tsx
+Copiar
+Editar
+import React from "react";
+import TTSController from "./TTSController";
+
+export default function MainCard({ result }: any) {
+  if (!result) return <div style={{height:480}}>Nenhuma pesquisa</div>;
+
+  return (
+    <div style={{ borderRadius:8, padding:16, height:480, background:"#0f172a", color:"#fff" }}>
+      <h3>Consulta: {result.query}</h3>
+      <p>Bases consultadas: estudos {result.meta.counts.studies}, trials {result.meta.counts.trials}</p>
+
+      <div style={{ display:"flex", gap:8, marginTop:12 }}>
+        <div style={{ flex:1, background:"#071033", padding:8, borderRadius:6 }}>
+          <h4 style={{color:"#60a5fa"}}>Estudos Científicos</h4>
+          {result.categories.scientific?.slice(0,4).map((s:any)=>(
+            <div key={s.id} style={{ padding:6, borderBottom:"1px solid #111" }}>
+              <div style={{ fontWeight:700 }}>{s.title}</div>
+              <div style={{ fontSize:12, color:"#cbd5e1" }}>{s.snippet || 'Resumo não disponível'}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ width:180, background:"#071a0b", padding:8, borderRadius:6 }}>
+          <h4 style={{color:"#34d399"}}>Casos Clínicos</h4>
+          {result.categories.clinical?.slice(0,4).map((s:any)=>(
+            <div key={s.id}>{s.title}</div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop:10 }}>
+        <TTSController text={`Resultados encontrados para ${result.query}. Estudos: ${result.meta.counts.studies}. Trials: ${result.meta.counts.trials}.`} />
+      </div>
+    </div>
+  )
+}
+frontend/src/components/TTSController.tsx
+
+tsx
+Copiar
+Editar
+import React, { useState, useRef } from "react";
+
+/**
+ * Simple wrapper for Web Speech API. Use this for quick MVP.
+ * For production, swap to server-side Google Cloud TTS for higher quality.
+ */
+export default function TTSController({ text }: { text: string }) {
+  const [speaking, setSpeaking] = useState(false);
+  const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const speak = (t: string) => {
+    if (!("speechSynthesis" in window)) { alert("Navegador sem TTS"); return; }
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(cleanText(t));
+    u.lang = "pt-BR";
+    u.onend = () => setSpeaking(false);
+    u.onerror = () => setSpeaking(false);
+    utterRef.current = u;
+    setSpeaking(true);
+    window.speechSynthesis.speak(u);
+  };
+
+  function cleanText(s: string) {
+    return s.replace(/\s+/g, " ").replace(/[^\x00-\x7F]/g, (c) => c); // basic sanitize
+  }
+
+  return (
+    <div>
+      <button onClick={() => speak(text)}>{speaking ? "Parar" : "Ouvir resumo"}</button>
+    </div>
+  );
+}
+frontend/src/components/Avatar3D.tsx (esqueleto usando react-three)
+
+tsx
+Copiar
+Editar
+import React from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+
+function Model({ url }: { url: string }) {
+  const gltf = useGLTF(url) as any;
+  return <primitive object={gltf.scene} scale={1.2} />;
+}
+
+export default function Avatar3D() {
+  // Use a public GLB/GLTF 3D model (e.g. Ready Player Me or Three.js example)
+  const modelUrl = "/models/dr_cannabis.glb"; // upload to public folder
+  return (
+    <div style={{ width: 280, height: 280 }}>
+      <Canvas camera={{ position: [0, 1.5, 3] }}>
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} />
+        <Model url={modelUrl} />
+        <OrbitControls enableZoom={false} enablePan={false} />
+      </Canvas>
+    </div>
+  );
+}
+frontend/src/components/NeuralTree.tsx (usando cytoscape)
+
+tsx
+Copiar
+Editar
+import React, { useEffect, useRef } from "react";
+import CytoscapeComponent from "react-cytoscapejs";
+
+export default function NeuralTree({ data }: any) {
+  const elements = [];
+  if (!data) return <div style={{height: 320}}>Árvore vazia</div>;
+
+  // root
+  elements.push({ data: { id: "root", label: `Consulta: ${data.query}` }});
+  // categories
+  elements.push({ data: { id: "cat_scientific", label: "Estudos" }, position: { x: 200, y: 50 }});
+  elements.push({ data: { id: "cat_clinical", label: "Casos" }, position: { x: 200, y: 200 }});
+  elements.push({ data: { id: "cat_alerts", label: "Alertas" }, position: { x: 200, y: 350 }});
+  elements.push({ data: { id: "r1", source: "root", target: "cat_scientific" }});
+  elements.push({ data: { id: "r2", source: "root", target: "cat_clinical" }});
+  elements.push({ data: { id: "r3", source: "root", target: "cat_alerts" }});
+
+  (data.categories.scientific || []).slice(0,6).forEach((s:any,i:number) => {
+    const id = `s${i}`;
+    elements.push({ data: { id, label: s.title }});
+    elements.push({ data: { id: `e-${id}`, source: "cat_scientific", target: id }});
+  });
+
+  return (
+    <div style={{ height: 380 }}>
+      <CytoscapeComponent elements={elements} style={{ width: "100%", height: "100%" }} />
+    </div>
+  );
+}
+5) Regras essenciais para TTS contextual + leitura por trecho
+Segmentação: gere parágrafos/trechos no backend (por sentença ou parágrafo). Envie lista de trechos para o front.
+
+Sanitização: remova caracteres especiais, marcadores HTML, LaTeX etc antes de enviar ao TTS.
+
+Idioma: detectar idioma original; se != pt-BR, traduzir antes de TTS.
+
+Controle: TTS executa trecho a trecho; ao fim de cada trecho, o sistema pausa e aguarda continuar (botão ou voz).
+
+Qualidade: para voz mais natural, gerar MP3 via Google Cloud TTS no backend e enviar ao front como URL/base64; usar WebAudio para play/pause.
+
+6) Comunicação realtime e UX
+Socket.IO broadcasta início/fim de busca e resultados parciais. Isso permite streaming: avatar pode anunciar “encontrei 2 estudos até agora…” enquanto a busca continua.
+
+Avatar: animações
+
+estado listening quando usuário dita
+
+processing durante busca (linha neural pulsando)
+
+speaking quando TTS rodando (sincronizar visemes com TTS se possível)
+
+Dock de sub-pesquisas: recebe itens clicados e os organiza horizontalmente; cada item tem handle ⋮⋮ para arrastar.
+
+7) Arquivo .env.example (backend)
+ini
+Copiar
+Editar
+PORT=4000
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/google/creds.json
+DEEPL_API_KEY=your_deepl_key
+BACKEND_URL=http://localhost:4000
+8) Dockerfile (básico)
+dockerfile
+Copiar
+Editar
+FROM node:18-alpine
+WORKDIR /app
+COPY backend/package.json backend/package-lock.json ./ 
+RUN npm ci
+COPY backend ./src
+EXPOSE 4000
+CMD ["node", "src/index.js"]
+9) Checklist para rodar o MVP (prioridade)
+Subir backend (npm install && npm start) em porta 4000.
+
+Subir frontend (npm install && npm run dev) e apontar VITE_BACKEND_URL.
+
+Colocar dr_cannabis.glb na pasta public/models/.
+
+Testar pesquisa dosagem → verificar socket broadcasts.
+
+Testar TTS com Web Speech; depois integrar Google Cloud TTS (para voz neural PT-BR).
+
+Implementar real parsing efetch XML (xml2js) para obter resumos reais.
+
+10) PROMPT FINAL — copie e envie para a equipe de dev ou IA (versão master, direta)
+PROMPT MASTER — Implementação: Cannabis Clinical Hub — Dr. Cannabis IA (tempo real)
+Objetivo: Construir o MVP da plataforma “Cannabis Clinical Hub” como descrito — árvore neural interativa guiada pelo avatar “Dr. Cannabis”, onde o usuário insere um estudo/hypótese (texto ou voz), o sistema faz busca cruzada (PubMed, ClinicalTrials, Europe PMC), traduz e gera resumos, organiza resultados em cards separados por categoria (Estudos/ Casos/ Alertas), e lê os resumos em voz natural PT-BR. Interface principal: Avatar (esquerda), Card principal grande (centro), NeuralTree (centro abaixo), Dock de sub-pesquisas (rodapé/direita).
+
+Requisitos técnicos mínimos:
+
+Frontend: React 18 + TypeScript, Vite. Use @react-three/fiber para avatar (Three.js), Cytoscape.js para árvore. UI com component lib (shadcn/ui ou Tailwind).
+
+Backend: Node.js + Express + Socket.IO. Endpoints: /api/search, /api/translate, /api/tts.
+
+Integração de fontes científicas: PubMed (Entrez E-utilities), ClinicalTrials.gov API, Europe PMC REST API. Parseie e normalize os metadados (título, resumo, DOI, data, fonte).
+
+Tradução: DeepL ou Google Translate API; detecte idioma e traduza para pt-BR antes do TTS.
+
+TTS: MVP com Web Speech API (front); para produção suporte Google Cloud TTS / Azure neural voices. Gere MP3 via backend para qualidade e sincronização com avatar.
+
+TTS Behavior: ler trecho por trecho (parágrafo/sentença), pausar no fim de cada trecho, esperar comando do usuário (“continuar”, “repetir”, “parar”) via botão ou STT (futuro).
+
+Dados: cachear traduções e resumos para reduzir custo; usar Supabase/Postgres para persistência futura.
+
+UX: Card principal com altura mínima 480px e cards de categoria com ~396px. Cores: azul(estudos), verde(casos), vermelho(alertas). Dock inferior com rolagem horizontal para sub-pesquisas.
+
+Realtime: usar Socket.IO para push de resultados parciais; avatar deve reagir (animação) a eventos: listening / processing / speaking / idle.
+
+Comportamento esperado (fluxo de usuário):
+
+Usuário fala/digita “dosagem”. Avatar indica “processando” (linha neural animada).
+
+Backend executa buscas nas 3 bases e retorna categorias separadas. Translations if needed.
+
+Front mostra:
+
+Card principal (grande): resumo cruzado + contagem + botões (Estudos / Casos / Alertas / OuvirResumo / PublicarNovoEstudo).
+
+Cada categoria aparece como card próprio com lista de estudos; cada estudo é um nó filho da categoria na árvore (Cytoscape).
+
+Ao clicar em estudo: abre painel lateral com resumo traduzido (limpo) e botões: Ler (TTS), Comparar, Publicar, CriarSubpesquisa.
+
+TTS lê trecho a trecho; ao fim de trecho aguarda comando (botão ou STT).
+
+Subpesquisas adicionadas vão pro dock inferior em cards roxos e são conectadas visualmente ao nó pai por linhas.
+
+Entregáveis técnicos:
+
+Repositório com frontend e backend (scripts start/dev).
+
+Documentação .env.example e README com instruções de deploy.
+
+Implementação de parsing PubMed (efetch) com xml parsing.
+
+Endpoint de tradução real (DeepL/Google).
+
+MVP TTS via Web Speech; documentação para substituir por Google Cloud TTS.
+
+Demonstração funcional: pesquisar “dosagem” → apresentar 3 categorias separadas, abrir estudo, ler trecho, pausar, continuar.
+
+Critérios de aceitação (QA):
+
+Card principal tem 480px+ mostrando contagem e resumo.
+
+Cada categoria é um card separado, com cor e lista de estudos.
+
+Ao abrir um estudo, o resumo traduzido aparece e TTS consegue ler parágrafo e aguardar comando.
+
+Subpesquisas aparecem no dock e podem ser arrastadas horizontalmente.
+
+Avatar 3D responde a estados (listening/processing/speaking).
+
+Observações de infra/ops: usar cache para traduções e resumos. Em produção considerar geração de MP3 server-side para voz neural e sincronização de visemes para o avatar.
+
+11) Próximos passos que eu recomendo agora (curto prazo)
+Implementar backend /api/search com parsing real do efetch XML (use xml2js) e normalizar resumos.
+
+Plugar DeepL/Google Translate e testar traduções automáticas.
+
+Implementar TTS server-side (Google Cloud) para voz PT-BR natural; deixar fallback Web Speech para dev.
+
+Subir frontend e integrar com Socket.IO; testar fluxo dosagem.
+
+Ajustar layout dos cards (MainCard -> CategoryCards -> Dock) e polir animações do avatar.
+
+Se quiser, eu já posso:
+
+Gerar os arquivos completos (você me diz se prefere que eu crie num canmore canvas para você copiar o código diretamente), ou
+
+Gerar os arquivos de cada componente completos (prontos para colar no Replit/Vercel), ou
+
+Montar passo-a-passo para migrar do sistema atual para este fluxo (commits e PRs).
+
+Qual opção prefere agora? Quer que eu gere os arquivos completos prontos para colar no Replit

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "wouter";
 import DashboardLayout from "@/components/DashboardLayout";
-import CosmicMap from "@/components/CosmicMap";
+import ImprovedCosmicMap from "@/components/ImprovedCosmicMap";
 import ScientificDashboard from "./ScientificDashboard";
 import ClinicalDashboard from "./ClinicalDashboard";
 import AlertsDashboard from "./AlertsDashboard";
@@ -80,7 +80,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
     <section className="relative container mx-auto px-4 py-8">
       {/* Cosmic Knowledge Map */}
       <div className="mb-8">
-        <CosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} onSearch={onSearch} />
+        <ImprovedCosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} onSearch={onSearch} />
       </div>
     </section>
   );

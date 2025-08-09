@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
 import MedicalAvatar3D from "./MedicalAvatar3D";
 import TextToSpeech from "./TextToSpeech";
+import MainCard from "./MainCard";
+import CategoryCard from "./CategoryCard";
 
 interface CosmicPlanet {
   id: string;
