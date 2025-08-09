@@ -269,64 +269,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
           )}
         </div>
 
-        {/* Related Options - Show only in chat mode when there are suggestions */}
-        {chatMode && relatedOptions.length > 0 && (
-          <div className="mt-4 p-3 bg-black/20 rounded-lg border border-gray-700/30">
-            <p className="text-xs text-gray-300 mb-2">💡 Tópicos relacionados:</p>
-            <div className="flex flex-wrap gap-2">
-              {relatedOptions.map((option, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setSearchTerm(option);
-                    handleChatSubmit({ preventDefault: () => {} } as React.FormEvent);
-                  }}
-                  className="text-xs px-3 py-1.5 bg-gray-800/60 text-gray-300 rounded-full border border-gray-600/40 hover:bg-gray-700/60 hover:text-white transition-all"
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {/* Search Results Preview */}
-        {chatMode && searchResults.length > 0 && (
-          <div className="mt-4 p-4 bg-black/20 rounded-lg border border-gray-700/30">
-            <p className="text-sm text-gray-300 mb-3 font-medium">📚 Fontes consultadas:</p>
-            <div className="space-y-3">
-              {searchResults.slice(0, 3).map((result, index) => (
-                <button 
-                  key={index} 
-                  onClick={() => {
-                    if (result.type === 'study') onPlanetClick('scientific');
-                    if (result.type === 'case') onPlanetClick('clinical'); 
-                    if (result.type === 'alert') onPlanetClick('alerts');
-                  }}
-                  className="w-full text-left text-sm p-3 bg-gray-800/40 hover:bg-gray-700/60 rounded border border-gray-600/20 transition-all cursor-pointer"
-                >
-                  <div className="flex items-center space-x-2 mb-2">
-                    {result.type === 'study' && <Microscope className="w-4 h-4 text-emerald-400" />}
-                    {result.type === 'case' && <i className="fas fa-user-md text-blue-400" />}
-                    {result.type === 'alert' && <AlertTriangle className="w-4 h-4 text-amber-400" />}
-                    <span className="text-gray-200 font-medium">
-                      {result.type === 'study' && 'Estudo Científico'}
-                      {result.type === 'case' && 'Caso Clínico'}
-                      {result.type === 'alert' && 'Alerta Regulatório'}
-                    </span>
-                    <span className="text-gray-400 text-xs">({Math.round(result.relevance * 100)}% relevância)</span>
-                  </div>
-                  <p className="text-gray-300 line-clamp-2">
-                    {result.data.title || result.data.description || result.data.message}
-                  </p>
-                  <div className="text-xs text-neon-cyan mt-2 opacity-70">
-                    → Clique para ver detalhes
-                  </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
 
     </div>

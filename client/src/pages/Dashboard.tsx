@@ -364,39 +364,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
                   })}
                 </div>
 
-                {/* Related Sources */}
-                {aiResults && aiResults.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-gray-700/50">
-                    <h4 className="text-xs font-medium text-gray-400 mb-2">📚 Fontes consultadas:</h4>
-                    <div className="space-y-2">
-                      {aiResults.slice(0, 2).map((result, index) => (
-                        <button 
-                          key={index} 
-                          onClick={() => {
-                            if (result.type === 'study') onPlanetClick('scientific');
-                            if (result.type === 'case') onPlanetClick('clinical'); 
-                            if (result.type === 'alert') onPlanetClick('alerts');
-                          }}
-                          className="text-left p-2 bg-gray-900/50 hover:bg-gray-800/60 rounded border border-gray-600/20 transition-all cursor-pointer w-full"
-                        >
-                          <div className="flex items-center space-x-2 mb-1">
-                            {result.type === 'study' && <i className="fas fa-microscope text-emerald-400 text-xs"></i>}
-                            {result.type === 'case' && <i className="fas fa-user-md text-purple-400 text-xs"></i>}
-                            {result.type === 'alert' && <i className="fas fa-exclamation-triangle text-amber-400 text-xs"></i>}
-                            <span className="text-gray-300 font-medium text-xs">
-                              {result.type === 'study' && 'Estudo'}
-                              {result.type === 'case' && 'Caso Clínico'}
-                              {result.type === 'alert' && 'Alerta'}
-                            </span>
-                          </div>
-                          <p className="text-gray-400 text-xs line-clamp-1">
-                            {result.data.title || result.data.description || result.data.message}
-                          </p>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+
               </div>
             )}
           </div>
