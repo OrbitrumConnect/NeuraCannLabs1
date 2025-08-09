@@ -12,14 +12,15 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Implemented tabbed sub-search system with organized research flow
-- Chat creates organized tabs below search area - each new search opens separate tab
-- Sub-search functionality: click suggestions to create child tabs with purple indicators 
-- Each tab maintains independent research context without affecting previous searches
-- Hierarchical organization: main searches and sub-searches clearly differentiated
-- Tab management: close individual tabs, switch between research threads
-- Real-time cross-data analysis connects PubMed-style scientific data sources
-- System designed for deep research workflows inspired by scientific databases
+**2025-08-09**: Implemented neural research tree expanding from Dr. Cannabis IA
+- Research tree expands vertically from avatar with neural connection lines
+- Main searches appear as expandable nodes connected to avatar via cyan neural lines
+- Sub-searches branch from main nodes with purple neural connections  
+- Each node expandable/collapsible to avoid interface overlap
+- Visual hierarchy: main nodes (cyan) → sub-nodes (purple) with proper spacing
+- Node management: close individual research threads, expand/collapse content
+- Tree structure prevents interface overlap while maintaining research context
+- Neural aesthetic matches avatar's "mind expansion" concept
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion

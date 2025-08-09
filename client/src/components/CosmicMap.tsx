@@ -403,109 +403,147 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         </div>
       )}
 
-      {/* Research Tabs Area - Below chat when active */}
+      {/* Neural Research Tree - Expanding from Dr. Cannabis IA */}
       {searchTabs.length > 0 && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-20 w-[90vw] max-w-6xl">
-          {/* Tab Headers */}
-          <div className="flex gap-2 mb-2 overflow-x-auto">
-            {searchTabs.map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTabId(tab.id)}
-                className={`px-4 py-2 rounded-t-lg text-sm whitespace-nowrap transition-all ${
-                  activeTabId === tab.id
-                    ? "bg-neon-cyan/20 text-neon-cyan border-t border-l border-r border-neon-cyan/40"
-                    : "bg-gray-800/60 text-gray-300 hover:bg-gray-700/60"
-                } ${tab.type === 'sub' ? 'ml-4 border-l-4 border-purple-500' : ''}`}
-              >
-                {tab.type === 'sub' && <span className="text-purple-400 mr-1">↳</span>}
-                {tab.query.substring(0, 30)}...
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSearchTabs(prev => prev.filter(t => t.id !== tab.id));
-                    if (activeTabId === tab.id) {
-                      const remaining = searchTabs.filter(t => t.id !== tab.id);
-                      setActiveTabId(remaining.length > 0 ? remaining[remaining.length - 1].id : null);
-                    }
-                  }}
-                  className="ml-2 text-red-400 hover:text-red-300"
+        <div className="absolute left-44 top-32 z-15">
+          {/* Main neural line from avatar */}
+          <div className="absolute w-0.5 h-16 bg-gradient-to-b from-neon-cyan to-blue-400 animate-pulse left-0 top-0"
+               style={{boxShadow: '0 0 6px rgba(0,255,255,0.5)'}} />
+          
+          {/* Research Tree */}
+          <div className="mt-16 space-y-6">
+            {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
+              <div key={mainTab.id} className="relative">
+                {/* Horizontal line to main node */}
+                <div className="absolute w-8 h-0.5 bg-neon-cyan/70 top-6 -left-8" />
+                
+                {/* Main Research Node */}
+                <div 
+                  className={`relative bg-black/90 backdrop-blur-md rounded-lg border p-4 w-80 cursor-pointer transition-all ${
+                    activeTabId === mainTab.id 
+                      ? 'border-neon-cyan shadow-lg shadow-neon-cyan/20 scale-105' 
+                      : 'border-gray-600/50 hover:border-neon-cyan/50'
+                  }`}
+                  onClick={() => setActiveTabId(activeTabId === mainTab.id ? null : mainTab.id)}
                 >
-                  ×
-                </button>
-              </button>
-            ))}
-          </div>
-
-          {/* Active Tab Content */}
-          {activeTabId && searchTabs.find(tab => tab.id === activeTabId) && (
-            <div className="bg-black/80 backdrop-blur-md rounded-lg border border-neon-cyan/30 p-6 max-h-96 overflow-y-auto">
-              {(() => {
-                const activeTab = searchTabs.find(tab => tab.id === activeTabId)!;
-                return (
-                  <div>
-                    <div className="flex justify-between items-start mb-4">
-                      <h3 className="text-lg font-semibold text-neon-cyan">
-                        {activeTab.type === 'sub' ? '🔍 Sub-pesquisa: ' : '🧠 Análise Principal: '}
-                        {activeTab.query}
-                      </h3>
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="text-sm font-semibold text-neon-cyan truncate flex-1">
+                      🧠 {mainTab.query}
+                    </h3>
+                    <div className="flex gap-1 ml-2">
                       <span className="text-xs text-gray-400">
-                        {new Date(activeTab.timestamp).toLocaleTimeString()}
+                        {new Date(mainTab.timestamp).toLocaleTimeString()}
+                      </span>
+                      <span 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSearchTabs(prev => prev.filter(t => t.id !== mainTab.id && t.parentId !== mainTab.id));
+                          if (activeTabId === mainTab.id) setActiveTabId(null);
+                        }}
+                        className="text-red-400 hover:text-red-300 cursor-pointer ml-2"
+                      >
+                        ×
                       </span>
                     </div>
-                    
-                    <div className="prose prose-sm max-w-none text-gray-300 mb-4">
-                      <div dangerouslySetInnerHTML={{ 
-                        __html: activeTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                      }} />
-                    </div>
-
-                    {/* Sub-search suggestions */}
-                    {activeTab.suggestions.length > 0 && (
-                      <div className="mb-4">
-                        <h4 className="text-sm font-medium text-gray-400 mb-2">Aprofundar pesquisa:</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {activeTab.suggestions.map((suggestion, index) => (
-                            <button
-                              key={index}
-                              onClick={() => handleSubSearch(suggestion, activeTab.id)}
-                              disabled={subSearchActive}
-                              className="px-3 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded-full text-xs hover:bg-purple-600/30 transition-all disabled:opacity-50"
-                            >
-                              {subSearchActive && subSearchTerm === suggestion ? (
-                                <span className="animate-pulse">Pesquisando...</span>
-                              ) : (
-                                suggestion
-                              )}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Related results */}
-                    {activeTab.results.length > 0 && (
-                      <div>
-                        <h4 className="text-sm font-medium text-gray-400 mb-2">Resultados relacionados:</h4>
-                        <div className="grid gap-2">
-                          {activeTab.results.slice(0, 3).map((result, index) => (
-                            <div key={index} className="p-3 bg-gray-800/40 rounded border border-gray-700/40">
-                              <div className="text-xs text-gray-500 mb-1">
-                                {result.type === 'study' ? '📚 Estudo' : result.type === 'case' ? '👨‍⚕️ Caso' : '⚠️ Alerta'}
-                              </div>
-                              <div className="text-sm text-gray-300">
-                                {result.data?.title || result.data?.caseNumber || result.data?.message}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
                   </div>
-                );
-              })()}
-            </div>
-          )}
+                  
+                  {/* Collapsed preview */}
+                  {activeTabId !== mainTab.id && (
+                    <div className="text-xs text-gray-400 truncate">
+                      {mainTab.response.substring(0, 80)}...
+                    </div>
+                  )}
+                  
+                  {/* Expanded content */}
+                  {activeTabId === mainTab.id && (
+                    <div className="space-y-3">
+                      <div className="text-xs text-gray-300 max-h-32 overflow-y-auto">
+                        <div dangerouslySetInnerHTML={{ 
+                          __html: mainTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                        }} />
+                      </div>
+                      
+                      {/* Sub-search suggestions */}
+                      {mainTab.suggestions.length > 0 && (
+                        <div>
+                          <h4 className="text-xs font-medium text-gray-400 mb-1">Aprofundar:</h4>
+                          <div className="flex flex-wrap gap-1">
+                            {mainTab.suggestions.map((suggestion, index) => (
+                              <span
+                                key={index}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSubSearch(suggestion, mainTab.id);
+                                }}
+                                className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all cursor-pointer"
+                              >
+                                {suggestion}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* Sub-research nodes */}
+                {searchTabs.filter(tab => tab.parentId === mainTab.id).length > 0 && (
+                  <div className="ml-8 mt-4 space-y-3">
+                    {/* Vertical line for sub-nodes */}
+                    <div className="absolute w-0.5 bg-purple-400/60 left-80 top-6" 
+                         style={{height: `${searchTabs.filter(tab => tab.parentId === mainTab.id).length * 80}px`}} />
+                    
+                    {searchTabs.filter(tab => tab.parentId === mainTab.id).map((subTab, subIndex) => (
+                      <div key={subTab.id} className="relative">
+                        {/* Horizontal line to sub-node */}
+                        <div className="absolute w-6 h-0.5 bg-purple-400/60 top-4 -left-6" />
+                        
+                        {/* Sub Research Node */}
+                        <div 
+                          className={`bg-black/80 backdrop-blur-sm rounded border p-3 w-72 cursor-pointer transition-all ${
+                            activeTabId === subTab.id 
+                              ? 'border-purple-400 shadow-lg shadow-purple-400/20' 
+                              : 'border-purple-600/40 hover:border-purple-400/60'
+                          }`}
+                          onClick={() => setActiveTabId(activeTabId === subTab.id ? null : subTab.id)}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <h4 className="text-xs font-medium text-purple-300 truncate flex-1">
+                              ↳ {subTab.query}
+                            </h4>
+                            <span 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
+                                if (activeTabId === subTab.id) setActiveTabId(null);
+                              }}
+                              className="text-red-400 hover:text-red-300 cursor-pointer ml-2"
+                            >
+                              ×
+                            </span>
+                          </div>
+                          
+                          {/* Sub-node content */}
+                          {activeTabId === subTab.id ? (
+                            <div className="text-xs text-gray-300 max-h-24 overflow-y-auto">
+                              <div dangerouslySetInnerHTML={{ 
+                                __html: subTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                              }} />
+                            </div>
+                          ) : (
+                            <div className="text-xs text-gray-400 truncate">
+                              {subTab.response.substring(0, 60)}...
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
