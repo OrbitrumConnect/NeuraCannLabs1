@@ -144,7 +144,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
     <div className="relative h-96 overflow-hidden">
       {/* Central Search Bar with AI Chat */}
       <div className="absolute top-20 left-1/2 transform -translate-x-1/2 z-10">
-        <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-96">
+        <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-[600px] max-w-4xl">
           {/* Mode Toggle */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
@@ -176,49 +176,90 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
 
           {/* Chat Messages */}
           {chatMode && chatMessages.length > 0 && (
-            <div className="mb-4 max-h-64 overflow-y-auto space-y-2 bg-black/20 rounded-lg p-3">
+            <div className="mb-4 max-h-96 overflow-y-auto space-y-3 bg-black/20 rounded-lg p-4">
               {chatMessages.map((msg, index) => (
                 <div
                   key={index}
                   className={`flex ${msg.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[80%] px-3 py-2 rounded-lg text-xs ${
+                    className={`max-w-[85%] px-4 py-3 rounded-lg text-sm ${
                       msg.type === 'user'
                         ? 'bg-neon-cyan/20 text-white'
                         : 'bg-gray-700/60 text-gray-200'
                     }`}
                   >
                     {msg.type === 'ai' && (
-                      <div className="flex items-center space-x-2 mb-1">
-                        <Bot className="w-3 h-3 text-neon-cyan" />
-                        <span className="text-neon-cyan font-semibold">VerdiData IA</span>
+                      <div className="flex items-center space-x-2 mb-2">
+                        <Bot className="w-4 h-4 text-neon-cyan" />
+                        <span className="text-neon-cyan font-semibold text-sm">VerdiData IA</span>
                       </div>
                     )}
-                    <div className="whitespace-pre-line">
+                    <div className="whitespace-pre-line leading-relaxed">
                       {msg.message.split('\n').map((line, i) => {
+                        // Títulos de estudos clicáveis
                         if (line.startsWith('🔬 **') || line.startsWith('📊 **')) {
-                          return <div key={i} className="font-semibold text-emerald-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                          const title = line.replace(/\*\*/g, '').replace('🔬 ', '').replace('📊 ', '');
+                          return (
+                            <button 
+                              key={i} 
+                              onClick={() => onPlanetClick('scientific')}
+                              className="font-semibold text-emerald-400 hover:text-emerald-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-emerald-500/10 px-2 py-1 rounded transition-all text-left w-full"
+                            >
+                              🔬 {title}
+                            </button>
+                          )
                         }
                         if (line.startsWith('📈 **') || line.startsWith('📚 **')) {
-                          return <div key={i} className="font-semibold text-blue-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                          return <div key={i} className="font-semibold text-blue-400 mt-3 text-base">{line.replace(/\*\*/g, '')}</div>
                         }
+                        // Casos clínicos clicáveis
                         if (line.startsWith('👨‍⚕️ **') || line.startsWith('🏥 **')) {
-                          return <div key={i} className="font-semibold text-purple-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                          return (
+                            <button 
+                              key={i}
+                              onClick={() => onPlanetClick('clinical')} 
+                              className="font-semibold text-purple-400 hover:text-purple-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-purple-500/10 px-2 py-1 rounded transition-all text-left w-full"
+                            >
+                              {line.replace(/\*\*/g, '')}
+                            </button>
+                          )
                         }
+                        // Alertas clicáveis
                         if (line.startsWith('⚠️ **')) {
-                          return <div key={i} className="font-semibold text-amber-400 mt-2">{line.replace(/\*\*/g, '')}</div>
+                          return (
+                            <button 
+                              key={i}
+                              onClick={() => onPlanetClick('alerts')} 
+                              className="font-semibold text-amber-400 hover:text-amber-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-amber-500/10 px-2 py-1 rounded transition-all text-left w-full"
+                            >
+                              {line.replace(/\*\*/g, '')}
+                            </button>
+                          )
                         }
                         if (line.startsWith('🎯 **')) {
-                          return <div key={i} className="font-semibold text-neon-cyan mt-2">{line.replace(/\*\*/g, '')}</div>
+                          return <div key={i} className="font-semibold text-neon-cyan mt-3 text-base">{line.replace(/\*\*/g, '')}</div>
                         }
+                        // Itens com bullet points
                         if (line.startsWith('•')) {
-                          return <div key={i} className="ml-2 text-gray-200">{line}</div>
+                          // Se contém número de caso clínico, tornar clicável
+                          if (line.includes('HC-') || line.includes('caso')) {
+                            return (
+                              <button 
+                                key={i} 
+                                onClick={() => onPlanetClick('clinical')}
+                                className="ml-4 text-gray-200 hover:text-white cursor-pointer hover:bg-gray-600/20 px-2 py-1 rounded transition-all text-left w-full"
+                              >
+                                {line}
+                              </button>
+                            )
+                          }
+                          return <div key={i} className="ml-4 text-gray-200 py-1">{line}</div>
                         }
                         if (line.startsWith('❌') || line.startsWith('🔍')) {
                           return <div key={i} className="text-gray-300">{line}</div>
                         }
-                        return <div key={i}>{line}</div>
+                        return <div key={i} className="py-0.5">{line}</div>
                       })}
                     </div>
                   </div>
@@ -324,26 +365,37 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
 
         {/* Search Results Preview */}
         {chatMode && searchResults.length > 0 && (
-          <div className="mt-4 p-3 bg-black/20 rounded-lg border border-gray-700/30">
-            <p className="text-xs text-gray-300 mb-2">📚 Fontes consultadas:</p>
-            <div className="space-y-2">
+          <div className="mt-4 p-4 bg-black/20 rounded-lg border border-gray-700/30">
+            <p className="text-sm text-gray-300 mb-3 font-medium">📚 Fontes consultadas:</p>
+            <div className="space-y-3">
               {searchResults.slice(0, 3).map((result, index) => (
-                <div key={index} className="text-xs p-2 bg-gray-800/40 rounded border border-gray-600/20">
-                  <div className="flex items-center space-x-2 mb-1">
-                    {result.type === 'study' && <Microscope className="w-3 h-3 text-emerald-400" />}
-                    {result.type === 'case' && <i className="fas fa-user-md w-3 h-3 text-blue-400" />}
-                    {result.type === 'alert' && <AlertTriangle className="w-3 h-3 text-amber-400" />}
+                <button 
+                  key={index} 
+                  onClick={() => {
+                    if (result.type === 'study') onPlanetClick('scientific');
+                    if (result.type === 'case') onPlanetClick('clinical'); 
+                    if (result.type === 'alert') onPlanetClick('alerts');
+                  }}
+                  className="w-full text-left text-sm p-3 bg-gray-800/40 hover:bg-gray-700/60 rounded border border-gray-600/20 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center space-x-2 mb-2">
+                    {result.type === 'study' && <Microscope className="w-4 h-4 text-emerald-400" />}
+                    {result.type === 'case' && <i className="fas fa-user-md text-blue-400" />}
+                    {result.type === 'alert' && <AlertTriangle className="w-4 h-4 text-amber-400" />}
                     <span className="text-gray-200 font-medium">
                       {result.type === 'study' && 'Estudo Científico'}
                       {result.type === 'case' && 'Caso Clínico'}
                       {result.type === 'alert' && 'Alerta Regulatório'}
                     </span>
-                    <span className="text-gray-400">({Math.round(result.relevance * 100)}% relevância)</span>
+                    <span className="text-gray-400 text-xs">({Math.round(result.relevance * 100)}% relevância)</span>
                   </div>
                   <p className="text-gray-300 line-clamp-2">
                     {result.data.title || result.data.description || result.data.message}
                   </p>
-                </div>
+                  <div className="text-xs text-neon-cyan mt-2 opacity-70">
+                    → Clique para ver detalhes
+                  </div>
+                </button>
               ))}
             </div>
           </div>
