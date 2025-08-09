@@ -88,9 +88,9 @@ export default function DashboardLayout({
         </div>
       </header>
 
-      {/* Side Navigation - positioned below everything */}
+      {/* Side Navigation - positioned below complete overview */}
       {sideNavOpen && (
-        <div className="fixed top-96 left-0 right-0 bottom-0 z-5 lg:hidden">
+        <div className="fixed bottom-0 left-0 right-0 h-2/3 z-5 lg:hidden">
           <nav className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md h-full overflow-y-auto holographic-border rounded-t-2xl"
         data-testid="side-navigation"
       >
