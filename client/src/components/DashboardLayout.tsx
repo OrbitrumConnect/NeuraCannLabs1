@@ -88,26 +88,26 @@ export default function DashboardLayout({
         </div>
       </header>
 
-      {/* Side Navigation - positioned below complete overview */}
+      {/* Side Navigation - positioned below complete overview without scroll */}
       {sideNavOpen && (
-        <div className="fixed bottom-0 left-0 right-0 h-1/2 z-5 lg:hidden">
+        <div className="relative mt-8 mx-4 mb-8 lg:hidden">
           <nav 
-            className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md h-full overflow-y-auto holographic-border rounded-t-2xl"
+            className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md holographic-border rounded-2xl"
             data-testid="side-navigation"
           >
-        <div className="p-6 pt-8">
-          <div className="flex items-center justify-between mb-8">
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-neon-cyan neon-text">Plataforma Médica</h2>
             <button
               onClick={() => setSideNavOpen(false)}
-              className="w-12 h-12 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
+              className="w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
               aria-label="Fechar menu"
             >
               <i className="fas fa-times text-neon-cyan text-lg" />
             </button>
           </div>
           
-          <div className="space-y-3 max-h-[calc(50vh-120px)] overflow-y-auto">
+          <div className="space-y-3">
             {dashboardOptions.map((option) => (
               <button
                 key={option.id}
