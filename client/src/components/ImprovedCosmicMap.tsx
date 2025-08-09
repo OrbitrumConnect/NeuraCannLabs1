@@ -215,12 +215,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20">
+    <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar fixo */}
-      <div className="absolute top-8 left-8 w-64 h-64 z-20">
+      {/* Dr. Cannabis IA - Avatar positioned much closer to planets */}
+      <div className="absolute top-8 -left-4 w-72 h-72 z-20">
         <div 
-          className={`w-full h-full cursor-pointer transition-all duration-500 flex items-center justify-center ${
+          className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
               ? 'scale-105 drop-shadow-2xl filter brightness-75 saturate-50 grayscale-[30%]' 
               : 'hover:scale-102 drop-shadow-lg'
@@ -244,15 +244,13 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       </div>
 
-      {/* Search Interface */}
+      {/* Search Interface - Top Center - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl px-4">
-          <div className="bg-gray-900/90 backdrop-blur-lg rounded-2xl border border-cyan-500/30 p-6">
-            
-            <h3 className="text-white text-lg font-semibold mb-4 text-center">🧠 Dr. Cannabis IA</h3>
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl">
+          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6">
             
             {/* Search Bar */}
-            <form onSubmit={handleChatSubmit} className="flex space-x-2 mb-4">
+            <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 <input
@@ -294,7 +292,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Main Result Card */}
+      {/* Main Result Card - Only show when Dr AI is active */}
       {isDrAIActive && currentResult && (
         <div className="absolute top-64 left-1/2 transform -translate-x-1/2 z-20">
           <MainCard result={currentResult} />
@@ -302,7 +300,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           
           {/* Suggestions for Sub-search */}
           {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
-            <div className="mt-4 p-3 bg-gray-900/90 backdrop-blur-lg rounded-lg border border-cyan-500/30">
+            <div className="mt-4 p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
               <h4 className="text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
               <div className="flex flex-wrap gap-2">
                 {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
@@ -322,15 +320,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Tela principal limpa - sem cards de dados que devem ficar no dashboard */}
 
-      {/* Sub-search Results - Responsivo mobile */}
+      {/* Sub-search Results - Left Side positioned lower - Only show when Dr AI is active */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="fixed left-4 right-4 sm:left-8 sm:right-auto z-30"
+          className="fixed left-8 z-30"
           style={{ 
-            top: `${350 + (index * 180)}px`, 
-            width: window.innerWidth < 640 ? 'calc(100vw - 2rem)' : '300px',
-            maxHeight: '160px'
+            top: `${280 + (index * 200)}px`, 
+            width: '300px',
+            maxHeight: '180px'
           }}
         >
           <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-4">

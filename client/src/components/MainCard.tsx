@@ -41,17 +41,7 @@ interface MainCardProps {
 export default function MainCard({ result }: MainCardProps) {
   if (!result) {
     return (
-      <div style={{ 
-        height: 480, 
-        width: 400,
-        borderRadius: 8, 
-        padding: 16, 
-        background: "#0f172a", 
-        color: "#fff", 
-        display: "flex", 
-        alignItems: "center", 
-        justifyContent: "center"
-      }}>
+      <div style={{ height: 480, borderRadius: 8, padding: 16, background: "#0f172a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div className="text-center text-gray-400">
           <div className="text-2xl mb-2">🧠</div>
           <div>Nenhuma pesquisa realizada</div>
@@ -74,7 +64,6 @@ export default function MainCard({ result }: MainCardProps) {
       borderRadius: 8, 
       padding: 16, 
       height: 480, 
-      width: 400,
       background: "#0f172a", 
       color: "#fff",
       border: "1px solid rgba(59, 130, 246, 0.3)",
@@ -100,11 +89,7 @@ export default function MainCard({ result }: MainCardProps) {
       </div>
 
       {/* Data Categories Grid */}
-      <div style={{ 
-        display: "flex", 
-        gap: 8, 
-        marginTop: 12 
-      }}>
+      <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
         
         {/* Scientific Studies */}
         <div style={{ flex: 1, background: "#071033", padding: 8, borderRadius: 6, border: "1px solid rgba(59, 130, 246, 0.3)" }}>

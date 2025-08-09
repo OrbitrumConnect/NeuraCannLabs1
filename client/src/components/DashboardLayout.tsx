@@ -90,7 +90,7 @@ export default function DashboardLayout({
 
       {/* Side Navigation */}
       <nav
-        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-gray-900/95 backdrop-blur-md transform transition-transform duration-300 z-50 lg:hidden border-r border-gray-700 ${
+        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-50 lg:hidden holographic-border ${
           sideNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         data-testid="side-navigation"
@@ -162,14 +162,14 @@ export default function DashboardLayout({
       {/* Overlay for mobile */}
       {sideNavOpen && (
         <div
-          className="fixed inset-0 bg-black/20 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
           onClick={() => setSideNavOpen(false)}
           data-testid="nav-overlay"
         />
       )}
 
       {/* Main Content */}
-      <main className="pt-16 min-h-screen">
+      <main className="pt-20 min-h-screen cyber-grid">
         {children}
       </main>
 
