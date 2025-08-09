@@ -216,10 +216,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar 30% bigger than previous size with gray effect when active */}
-      <div className="absolute top-8 left-8 w-[416px] h-[416px] z-20">
+      {/* Dr. Cannabis IA - Avatar with proper Three.js size increase */}
+      <div className="absolute top-8 left-8 w-72 h-72 z-20">
         <div 
-          className={`w-[416px] h-[416px] cursor-pointer transition-all duration-500 flex items-center justify-center ${
+          className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
               ? 'scale-105 drop-shadow-2xl filter brightness-75 saturate-50 grayscale-[30%]' 
               : 'hover:scale-102 drop-shadow-lg'
@@ -231,7 +231,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               : 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.1))'
           }}
         >
-          <MedicalAvatar3D />
+          <MedicalAvatar3D className="w-40" />
         </div>
       </div>
 
