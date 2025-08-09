@@ -217,8 +217,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar same position on all devices */}
-      <div className="absolute top-8 -left-4 w-72 h-72 z-20">
+      {/* Dr. Cannabis IA - Avatar moved to center-left to avoid menu conflict */}
+      <div className="absolute top-32 left-1/4 transform -translate-x-1/2 w-72 h-72 z-20">
         <div 
           className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
