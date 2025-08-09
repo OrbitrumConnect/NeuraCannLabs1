@@ -247,47 +247,137 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
 
 
 
-      {/* Floating Movable AI Card */}
-      {aiResponse && (
-        <div 
-          className={`absolute z-40 transition-all duration-300 ease-in-out ${
-            aiCardMinimized ? 'cursor-move' : ''
-          }`}
-          style={{
-            // Quando expandido: centralizado horizontalmente, mas abaixo da pesquisa
-            left: aiCardMinimized 
-              ? `${Math.max(20, Math.min(cardPosition?.x || 50, window.innerWidth - 370))}px`
-              : '50%',
-            top: aiCardMinimized 
-              ? `${Math.max(160, Math.min(cardPosition?.y || 250, window.innerHeight - 100))}px` 
-              : '400px', // Posição mais abaixo da área de pesquisa
-            transform: aiCardMinimized ? 'none' : 'translateX(-50%)',
-            maxWidth: '90%',
-            width: aiCardMinimized ? '350px' : '800px'
-          }}
-          onMouseDown={onMouseDown}
-        >
-          <div className="bg-black/95 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/20 animate-pulse-glow" style={{
-            maxHeight: aiCardMinimized ? '64px' : '60vh',
-            opacity: aiCardMinimized ? '0.97' : '1'
-          }}>
+      {/* AI Response Section - Integrated in content when expanded */}
+      {aiResponse && !aiCardMinimized && (
+        <div className="mt-8 mb-12">
+          <div className="bg-gradient-to-r from-gray-900/80 via-black/90 to-gray-900/80 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/10">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-neon-cyan/20 rounded-full flex items-center justify-center">
                   <i className="fas fa-robot text-neon-cyan text-sm animate-pulse"></i>
                 </div>
-                <h3 className="text-neon-cyan font-semibold text-sm">
-                  {aiCardMinimized ? `VerdiData IA: ${aiSearchQuery || 'Análise'}` : 'VerdiData IA - Análise Científica'}
-                </h3>
+                <h3 className="text-neon-cyan font-semibold text-lg">VerdiData IA - Análise Científica</h3>
               </div>
               <div className="flex items-center space-x-2">
                 <button 
                   onClick={onToggleAI}
-                  className="text-gray-400 hover:text-neon-cyan transition-colors p-1"
-                  title={aiCardMinimized ? "Expandir" : "Minimizar"}
+                  className="text-gray-400 hover:text-neon-cyan transition-colors p-2 rounded-lg hover:bg-gray-700/30"
+                  title="Minimizar"
                 >
-                  <i className={`fas ${aiCardMinimized ? 'fa-chevron-up' : 'fa-chevron-down'} text-xs`}></i>
+                  <i className="fas fa-chevron-down text-sm"></i>
+                </button>
+                <button 
+                  onClick={onCloseAI}
+                  className="text-gray-400 hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-gray-700/30"
+                  title="Fechar"
+                >
+                  <i className="fas fa-times text-sm"></i>
+                </button>
+              </div>
+            </div>
+            
+            {/* Content */}
+            <div className="p-6 max-h-[70vh] overflow-y-auto">
+              <div className="whitespace-pre-line leading-relaxed text-gray-100">
+                {aiResponse.split('\n').map((line, i) => {
+                  // Títulos de estudos clicáveis
+                  if (line.startsWith('🔬 **') || line.startsWith('📊 **')) {
+                    const title = line.replace(/\*\*/g, '').replace('🔬 ', '').replace('📊 ', '');
+                    return (
+                      <button 
+                        key={i} 
+                        onClick={() => onPlanetClick('scientific')}
+                        className="font-semibold text-emerald-400 hover:text-emerald-300 mt-4 block cursor-pointer underline decoration-dotted hover:bg-emerald-500/10 px-3 py-2 rounded transition-all text-left w-full"
+                      >
+                        🔬 {title}
+                      </button>
+                    )
+                  }
+                  if (line.startsWith('📈 **') || line.startsWith('📚 **')) {
+                    return <div key={i} className="font-semibold text-blue-400 mt-4 text-lg">{line.replace(/\*\*/g, '')}</div>
+                  }
+                  // Casos clínicos clicáveis
+                  if (line.startsWith('👨‍⚕️ **') || line.startsWith('🏥 **')) {
+                    return (
+                      <button 
+                        key={i}
+                        onClick={() => onPlanetClick('clinical')} 
+                        className="font-semibold text-purple-400 hover:text-purple-300 mt-4 block cursor-pointer underline decoration-dotted hover:bg-purple-500/10 px-3 py-2 rounded transition-all text-left w-full"
+                      >
+                        {line.replace(/\*\*/g, '')}
+                      </button>
+                    )
+                  }
+                  // Alertas clicáveis
+                  if (line.startsWith('⚠️ **')) {
+                    return (
+                      <button 
+                        key={i}
+                        onClick={() => onPlanetClick('alerts')} 
+                        className="font-semibold text-amber-400 hover:text-amber-300 mt-4 block cursor-pointer underline decoration-dotted hover:bg-amber-500/10 px-3 py-2 rounded transition-all text-left w-full"
+                      >
+                        {line.replace(/\*\*/g, '')}
+                      </button>
+                    )
+                  }
+                  if (line.startsWith('🎯 **')) {
+                    return <div key={i} className="font-semibold text-neon-cyan mt-4 text-lg">{line.replace(/\*\*/g, '')}</div>
+                  }
+                  // Itens com bullet points
+                  if (line.startsWith('•')) {
+                    if (line.includes('HC-') || line.includes('caso')) {
+                      return (
+                        <button 
+                          key={i} 
+                          onClick={() => onPlanetClick('clinical')}
+                          className="ml-6 text-gray-300 hover:text-white cursor-pointer hover:bg-gray-600/20 px-3 py-1 rounded transition-all text-left w-full"
+                        >
+                          {line}
+                        </button>
+                      )
+                    }
+                    return <div key={i} className="ml-6 text-gray-300 py-1">{line}</div>
+                  }
+                  if (line.startsWith('❌') || line.startsWith('🔍')) {
+                    return <div key={i} className="text-gray-400">{line}</div>
+                  }
+                  return <div key={i} className="py-1">{line}</div>
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Minimized AI Card - Floating and draggable */}
+      {aiResponse && aiCardMinimized && (
+        <div 
+          className="fixed z-50 cursor-move transition-all duration-300 ease-in-out"
+          style={{
+            left: `${Math.max(20, Math.min(cardPosition?.x || 50, window.innerWidth - 370))}px`,
+            top: `${Math.max(180, Math.min(cardPosition?.y || 250, window.innerHeight - 100))}px`,
+            width: '350px'
+          }}
+          onMouseDown={onMouseDown}
+        >
+          <div className="bg-black/95 backdrop-blur-sm rounded-xl border border-neon-cyan/40 shadow-xl shadow-neon-cyan/20 animate-pulse-glow opacity-95">
+            <div className="flex items-center justify-between p-3">
+              <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 bg-neon-cyan/20 rounded-full flex items-center justify-center">
+                  <i className="fas fa-robot text-neon-cyan text-xs animate-pulse"></i>
+                </div>
+                <h3 className="text-neon-cyan font-medium text-sm">
+                  VerdiData IA: {aiSearchQuery || 'Análise'}
+                </h3>
+              </div>
+              <div className="flex items-center space-x-1">
+                <button 
+                  onClick={onToggleAI}
+                  className="text-gray-400 hover:text-neon-cyan transition-colors p-1"
+                  title="Expandir"
+                >
+                  <i className="fas fa-chevron-up text-xs"></i>
                 </button>
                 <button 
                   onClick={onCloseAI}
@@ -298,80 +388,6 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
                 </button>
               </div>
             </div>
-            
-            {/* Content - Hidden when minimized */}
-            {!aiCardMinimized && (
-              <div className="p-4 max-h-[60vh] overflow-y-auto">
-                <div className="whitespace-pre-line leading-relaxed text-gray-100 text-sm">
-                  {aiResponse.split('\n').map((line, i) => {
-                    // Títulos de estudos clicáveis
-                    if (line.startsWith('🔬 **') || line.startsWith('📊 **')) {
-                      const title = line.replace(/\*\*/g, '').replace('🔬 ', '').replace('📊 ', '');
-                      return (
-                        <button 
-                          key={i} 
-                          onClick={() => onPlanetClick('scientific')}
-                          className="font-semibold text-emerald-400 hover:text-emerald-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-emerald-500/10 px-2 py-1 rounded transition-all text-left w-full text-sm"
-                        >
-                          🔬 {title}
-                        </button>
-                      )
-                    }
-                    if (line.startsWith('📈 **') || line.startsWith('📚 **')) {
-                      return <div key={i} className="font-semibold text-blue-400 mt-3 text-sm">{line.replace(/\*\*/g, '')}</div>
-                    }
-                    // Casos clínicos clicáveis
-                    if (line.startsWith('👨‍⚕️ **') || line.startsWith('🏥 **')) {
-                      return (
-                        <button 
-                          key={i}
-                          onClick={() => onPlanetClick('clinical')} 
-                          className="font-semibold text-purple-400 hover:text-purple-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-purple-500/10 px-2 py-1 rounded transition-all text-left w-full text-sm"
-                        >
-                          {line.replace(/\*\*/g, '')}
-                        </button>
-                      )
-                    }
-                    // Alertas clicáveis
-                    if (line.startsWith('⚠️ **')) {
-                      return (
-                        <button 
-                          key={i}
-                          onClick={() => onPlanetClick('alerts')} 
-                          className="font-semibold text-amber-400 hover:text-amber-300 mt-3 block cursor-pointer underline decoration-dotted hover:bg-amber-500/10 px-2 py-1 rounded transition-all text-left w-full text-sm"
-                        >
-                          {line.replace(/\*\*/g, '')}
-                        </button>
-                      )
-                    }
-                    if (line.startsWith('🎯 **')) {
-                      return <div key={i} className="font-semibold text-neon-cyan mt-3 text-sm">{line.replace(/\*\*/g, '')}</div>
-                    }
-                    // Itens com bullet points
-                    if (line.startsWith('•')) {
-                      if (line.includes('HC-') || line.includes('caso')) {
-                        return (
-                          <button 
-                            key={i} 
-                            onClick={() => onPlanetClick('clinical')}
-                            className="ml-4 text-gray-300 hover:text-white cursor-pointer hover:bg-gray-600/20 px-2 py-1 rounded transition-all text-left w-full text-xs"
-                          >
-                            {line}
-                          </button>
-                        )
-                      }
-                      return <div key={i} className="ml-4 text-gray-300 py-0.5 text-xs">{line}</div>
-                    }
-                    if (line.startsWith('❌') || line.startsWith('🔍')) {
-                      return <div key={i} className="text-gray-400 text-xs">{line}</div>
-                    }
-                    return <div key={i} className="py-0.5 text-xs">{line}</div>
-                  })}
-                </div>
-
-
-              </div>
-            )}
           </div>
         </div>
       )}
