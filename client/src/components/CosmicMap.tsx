@@ -656,7 +656,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                                 <div className="text-xs text-neon-cyan font-medium mb-1">Resultados Encontrados:</div>
                                 <div className="text-xs text-gray-300">
                                   {mainTab.results.slice(0, 2).map((result, idx) => (
-                                    <div key={idx} className="mb-1">• {result.title || result.substring(0, 60)}...</div>
+                                    <div key={idx} className="mb-1">• {result.title || (typeof result === 'string' ? result.substring(0, 60) : `Estudo ${idx + 1}`)}...</div>
                                   ))}
                                   {mainTab.results.length > 2 && <div className="text-gray-500">+{mainTab.results.length - 2} mais...</div>}
                                 </div>
@@ -680,7 +680,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                                       {mainTab.results.map((result, idx) => (
                                         <div key={idx} className="text-xs text-gray-300 p-2 bg-black/40 rounded border-l-2 border-purple-400/40">
                                           <div className="font-medium text-purple-300">{result.title || `Estudo ${idx + 1}`}</div>
-                                          <div className="text-gray-400">{result.summary || result.substring(0, 100)}...</div>
+                                          <div className="text-gray-400">{result.summary || (typeof result === 'string' ? result.substring(0, 100) : 'Resumo não disponível')}...</div>
                                         </div>
                                       ))}
                                     </div>
@@ -855,7 +855,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                   <div className="mt-3 p-2 bg-purple-900/20 rounded border border-purple-500/30">
                     <div className="text-xs font-medium text-purple-300 mb-1">Sub-resultados:</div>
                     {subTab.results.slice(0, 2).map((result, idx) => (
-                      <div key={idx} className="text-xs text-gray-400 mb-1">• {result.title || result.substring(0, 50)}...</div>
+                      <div key={idx} className="text-xs text-gray-400 mb-1">• {result.title || (typeof result === 'string' ? result.substring(0, 50) : `Sub-estudo ${idx + 1}`)}...</div>
                     ))}
                   </div>
                 )}
