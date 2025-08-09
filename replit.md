@@ -12,10 +12,10 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Implemented floating AI response card with minimization feature
-- VerdiData AI responses now appear in minimizable floating card (600px wide)
-- Card floats gently with 3% opacity animation when minimized
-- Users can minimize/maximize or close the AI response card
+**2025-08-09**: Moved AI response to fixed footer position and removed stats cards
+- VerdiData AI responses now appear in fixed position at page bottom
+- Removed traditional stats cards (2,547 studies, 1,234 cases, etc.) for cleaner layout
+- Card floats gently with smooth animations when AI response is active
 - Fixed search accumulation - previous results are cleared on new searches
 - Improved related topics display with better styling and compact layout
 - All clickable elements in AI responses navigate to appropriate dashboard sections

@@ -159,7 +159,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
 
 
 
-      {/* AI Response Area - Fixed position where stats were */}
+      {/* AI Response Area - Fixed position */}
       {aiResponse && (
         <div className="mt-16 pt-8 border-t border-gray-700/30">
           <div className="bg-black/90 backdrop-blur-sm rounded-2xl p-6 border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/20 animate-pulse-glow animate-float-gentle">
@@ -284,44 +284,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
         </div>
       )}
 
-      {/* Footer Stats - Now shown when no AI response */}
-      {!aiResponse && (
-        <div className="mt-16 pt-8 border-t border-gray-700/30">
-          <div className="flex justify-center space-x-8">
-            <div className="data-card rounded-lg p-3 holographic-border text-center min-w-[100px]">
-              <div className="bg-emerald-500/20 p-2 rounded-full mx-auto w-10 h-10 flex items-center justify-center mb-2">
-                <i className="fas fa-flask text-emerald-400"></i>
-              </div>
-              <p className="text-white text-lg font-bold">2,547</p>
-              <p className="text-emerald-400 text-sm">Estudos Analisados</p>
-            </div>
 
-            <div className="data-card rounded-lg p-3 holographic-border text-center min-w-[100px]">
-              <div className="bg-blue-500/20 p-2 rounded-full mx-auto w-10 h-10 flex items-center justify-center mb-2">
-                <i className="fas fa-heartbeat text-blue-400"></i>
-              </div>
-              <p className="text-white text-lg font-bold">1,234</p>
-              <p className="text-blue-400 text-sm">Casos Registrados</p>
-            </div>
-
-            <div className="data-card rounded-lg p-3 holographic-border text-center min-w-[100px]">
-              <div className="bg-purple-500/20 p-2 rounded-full mx-auto w-10 h-10 flex items-center justify-center mb-2">
-                <i className="fas fa-users text-purple-400"></i>
-              </div>
-              <p className="text-white text-lg font-bold">15,678</p>
-              <p className="text-purple-400 text-sm">Médicos Ativos</p>
-            </div>
-
-            <div className="data-card rounded-lg p-3 holographic-border text-center min-w-[100px]">
-              <div className="bg-amber-500/20 p-2 rounded-full mx-auto w-10 h-10 flex items-center justify-center mb-2">
-                <i className="fas fa-brain text-amber-400"></i>
-              </div>
-              <p className="text-white text-lg font-bold">99.2%</p>
-              <p className="text-amber-400 text-sm">Precisão IA</p>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }
