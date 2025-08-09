@@ -15,7 +15,7 @@ interface CosmicMapProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
-  onAIResponse?: (response: string, suggestions: string[], results: any[]) => void;
+  onAIResponse?: (response: string, suggestions: string[], results: any[], query?: string) => void;
 }
 
 const planets: CosmicPlanet[] = [
@@ -109,7 +109,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
       setAiResponse(result.answer);
       setRelatedOptions(result.suggestions);
       setSearchResults(result.relatedResults);
-      onAIResponse?.(result.answer, result.suggestions, result.relatedResults);
+      onAIResponse?.(result.answer, result.suggestions, result.relatedResults, userMessage);
 
     } catch (error) {
       console.error('Erro na busca IA:', error);
