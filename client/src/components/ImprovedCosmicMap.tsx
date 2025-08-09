@@ -340,7 +340,11 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 🔍 {subTab.query.substring(0, 30)}...
               </h3>
               <button 
-                onClick={() => setSearchTabs(prev => prev.filter(t => t.id !== subTab.id))}
+                onClick={() => {
+                  // Stop any ongoing speech synthesis when closing card
+                  window.speechSynthesis.cancel();
+                  setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
+                }}
                 className="text-red-400 hover:text-red-300 text-lg"
               >
                 ×

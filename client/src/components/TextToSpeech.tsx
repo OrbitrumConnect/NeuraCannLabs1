@@ -15,6 +15,15 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
     setSupported('speechSynthesis' in window);
   }, []);
 
+  // Stop speech when component unmounts
+  useEffect(() => {
+    return () => {
+      if (speaking) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [speaking]);
+
   useEffect(() => {
     if (autoPlay && text && supported) {
       handleSpeak();
