@@ -44,9 +44,7 @@ export default function Dashboard() {
       onDashboardChange={handleDashboardChange}
       onMenuClick={handleMenuClick}
       sideNavOpen={sideNavOpen}
-      searchTerm={globalSearchTerm}
-      searchFilter={globalFilter}
-      onSearch={handleGlobalSearch}
+      setSideNavOpen={setSideNavOpen}
     >
       {activeDashboard === "overview" && (
         <OverviewDashboard 
@@ -56,25 +54,13 @@ export default function Dashboard() {
         />
       )}
       {activeDashboard === "scientific" && (
-        <ScientificDashboard
-          searchTerm={globalSearchTerm}
-          searchFilter={globalFilter}
-          onSearch={handleGlobalSearch}
-        />
+        <ScientificDashboard />
       )}
       {activeDashboard === "clinical" && (
-        <ClinicalDashboard
-          searchTerm={globalSearchTerm}
-          searchFilter={globalFilter}
-          onSearch={handleGlobalSearch}
-        />
+        <ClinicalDashboard />
       )}
       {activeDashboard === "alerts" && (
-        <AlertsDashboard
-          searchTerm={globalSearchTerm}
-          searchFilter={globalFilter}
-          onSearch={handleGlobalSearch}
-        />
+        <AlertsDashboard />
       )}
       {activeDashboard === "profile" && (
         <ProfileDashboard />
