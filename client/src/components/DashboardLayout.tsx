@@ -37,7 +37,7 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
+      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md h-16 sm:h-20">
         <div className="container mx-auto px-4 py-1 sm:py-4 flex items-center justify-between" style={{ paddingTop: 'max(4px, env(safe-area-inset-top))', paddingBottom: '4px' }}>
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
@@ -169,7 +169,7 @@ export default function DashboardLayout({
       )}
 
       {/* Main Content */}
-      <main className="pt-14 sm:pt-20 min-h-screen cyber-grid">
+      <main className="pt-20 sm:pt-24 min-h-screen cyber-grid bg-cyber-dark">
         {children}
       </main>
 
