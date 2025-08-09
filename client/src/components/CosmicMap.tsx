@@ -21,7 +21,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "scientific",
     name: "Dados Científicos",
-    position: { top: "20%", left: "20%" },
+    position: { bottom: "25%", left: "25%" },
     size: "w-16 h-16",
     color: "from-emerald-400 to-green-600",
     icon: "fas fa-microscope",
@@ -30,7 +30,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "clinical",
     name: "Casos Clínicos",
-    position: { top: "20%", right: "20%" },
+    position: { bottom: "25%", right: "25%" },
     size: "w-16 h-16",
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
@@ -39,7 +39,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "alerts",
     name: "Alertas",
-    position: { bottom: "20%", left: "20%" },
+    position: { bottom: "5%", left: "30%" },
     size: "w-12 h-12",
     color: "from-amber-400 to-orange-600",
     icon: "fas fa-bell",
@@ -48,7 +48,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "profile",
     name: "Perfil",
-    position: { bottom: "20%", right: "20%" },
+    position: { bottom: "5%", right: "30%" },
     size: "w-12 h-12",
     color: "from-purple-400 to-pink-600",
     icon: "fas fa-user-circle",
@@ -71,12 +71,9 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
 
   return (
     <div className="relative h-96 overflow-hidden">
-      {/* Removed background rectangle - now transparent */}
-      
-      {/* Central Search Hub */}
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
-        {/* Search Bar */}
-        <div className="mb-6 bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20">
+      {/* Central Search Bar */}
+      <div className="absolute top-16 left-1/2 transform -translate-x-1/2 z-10">
+        <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-96">
           <div className="flex items-center space-x-3 mb-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neon-cyan/60 w-4 h-4" />
@@ -115,11 +112,6 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
             ))}
           </div>
         </div>
-        
-        {/* Reduced brightness cannabis icon */}
-        <div className="w-16 h-16 bg-gradient-to-br from-neon-cyan/30 to-neon-blue/30 rounded-full animate-pulse flex items-center justify-center border border-neon-cyan/20">
-          <i className="fas fa-cannabis text-neon-cyan/70 text-xl" />
-        </div>
       </div>
       
       {/* Knowledge Planets - Reduced brightness */}
@@ -148,18 +140,18 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
         </div>
       ))}
       
-      {/* Connecting Lines - Reduced brightness */}
+      {/* Subtle connecting lines from search bar to planets */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none">
         <defs>
           <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" style={{ stopColor: "rgba(0,255,255,0.15)", stopOpacity: 1 }} />
-            <stop offset="100%" style={{ stopColor: "rgba(0,255,255,0.05)", stopOpacity: 1 }} />
+            <stop offset="0%" style={{ stopColor: "rgba(0,255,255,0.1)", stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: "rgba(0,255,255,0.03)", stopOpacity: 1 }} />
           </linearGradient>
         </defs>
-        <line x1="50%" y1="50%" x2="20%" y2="20%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.4"/>
-        <line x1="50%" y1="50%" x2="80%" y2="20%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.4"/>
-        <line x1="50%" y1="50%" x2="20%" y2="80%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.4"/>
-        <line x1="50%" y1="50%" x2="80%" y2="80%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.4"/>
+        <line x1="50%" y1="25%" x2="25%" y2="75%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="25%" x2="75%" y2="75%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="25%" x2="30%" y2="95%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
+        <line x1="50%" y1="25%" x2="70%" y2="95%" stroke="url(#connectionGradient)" strokeWidth="1" opacity="0.3"/>
       </svg>
     </div>
   );
