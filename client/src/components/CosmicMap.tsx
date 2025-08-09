@@ -387,10 +387,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         </div>
       )}
 
-      {/* Central Search Bar with AI Chat - Only shows when active */}
+      {/* Central Search Bar with AI Chat - Always visible when chat active */}
       {chatMode && (
-        <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="bg-black/60 backdrop-blur-md rounded-2xl p-4 border border-neon-cyan/40 w-[600px] max-w-4xl shadow-lg shadow-neon-cyan/20 animate-fade-in">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+          <div className="bg-black/90 backdrop-blur-md rounded-2xl p-6 border border-neon-cyan/60 w-[700px] max-w-4xl shadow-2xl shadow-neon-cyan/40 animate-fade-in">
           {/* Chat Mode Header */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
@@ -576,14 +576,36 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                   <div className="w-6 h-6 bg-neon-cyan rounded-full animate-pulse shadow-xl shadow-neon-cyan/60" />
                 </div>
                 
-                {/* Research Tree Grid */}
+                {/* Neural Network Flow - Dr. Cannabis → Pesquisas → Sub-pesquisas */}
                 <div className="px-6 pb-6">
-                  <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8">
-                {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
-                  <div key={mainTab.id} className="relative">
-                    {/* Neural connection line to this node */}
-                    <div className="absolute -top-4 left-1/2 w-0.5 h-4 bg-neon-cyan/60 transform -translate-x-1/2" />
+                  <div className="max-w-7xl mx-auto">
+                    
+                    {/* Level 1: Central Hub - Dr. Cannabis */}
+                    <div className="flex justify-center mb-12">
+                      <div className="relative">
+                        <div className="w-64 h-64 bg-gradient-to-br from-neon-cyan/20 to-purple-600/20 rounded-full border-2 border-neon-cyan/60 flex items-center justify-center shadow-2xl shadow-neon-cyan/30">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-neon-cyan mb-2">Dr. Cannabis IA</div>
+                            <div className="text-sm text-gray-300">Conexão Neural Ativa</div>
+                            <div className="text-xs text-green-400 mt-1">
+                              {searchTabs.filter(tab => tab.type === 'main').length} pesquisas ativas
+                            </div>
+                          </div>
+                        </div>
+                        {/* Neural pulse animation */}
+                        <div className="absolute inset-0 rounded-full border-2 border-neon-cyan/30 animate-ping" />
+                      </div>
+                    </div>
+                    
+                    {/* Level 2: Main Research Network */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mb-8">
+                      {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
+                        <div key={mainTab.id} className="relative">
+                          {/* Neural connection line from Dr. Cannabis */}
+                          <div className="absolute -top-16 left-1/2 transform -translate-x-1/2">
+                            <div className="w-0.5 h-16 bg-gradient-to-b from-neon-cyan/80 to-neon-cyan/40" />
+                            <div className="absolute top-0 left-1/2 w-2 h-2 bg-neon-cyan rounded-full transform -translate-x-1/2 animate-pulse" />
+                          </div>
                     
                     {/* Main Research Node - Fixed position, no drag */}
                     <div 
@@ -631,21 +653,37 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                             }} />
                           </div>
                           
+                          {/* Action buttons */}
+                          <div className="grid grid-cols-2 gap-2 mt-4">
+                            <button className="px-3 py-2 bg-blue-600/20 text-blue-300 border border-blue-500/30 rounded-lg text-xs hover:bg-blue-600/30 transition-all">
+                              📄 Resumo
+                            </button>
+                            <button className="px-3 py-2 bg-green-600/20 text-green-300 border border-green-500/30 rounded-lg text-xs hover:bg-green-600/30 transition-all">
+                              🆕 Novo Estudo
+                            </button>
+                            <button className="px-3 py-2 bg-orange-600/20 text-orange-300 border border-orange-500/30 rounded-lg text-xs hover:bg-orange-600/30 transition-all">
+                              🔄 Comparar
+                            </button>
+                            <button className="px-3 py-2 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded-lg text-xs hover:bg-purple-600/30 transition-all">
+                              🔍 Aprofundar
+                            </button>
+                          </div>
+                          
                           {/* Sub-search suggestions */}
                           {mainTab.suggestions.length > 0 && (
-                            <div>
-                              <h4 className="text-sm font-medium text-gray-400 mb-2">🔍 Aprofundar pesquisa:</h4>
-                              <div className="flex flex-wrap gap-2">
-                                {mainTab.suggestions.map((suggestion, index) => (
+                            <div className="mt-3">
+                              <h4 className="text-xs font-medium text-gray-500 mb-2">Sub-pesquisas sugeridas:</h4>
+                              <div className="flex flex-wrap gap-1">
+                                {mainTab.suggestions.slice(0, 3).map((suggestion, index) => (
                                   <button
                                     key={index}
                                     onClick={(e) => {
                                       e.stopPropagation();
                                       handleSubSearch(suggestion, mainTab.id);
                                     }}
-                                    className="px-3 py-2 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded-lg text-sm hover:bg-purple-600/30 transition-all cursor-pointer"
+                                    className="px-2 py-1 bg-purple-600/10 text-purple-400 border border-purple-500/20 rounded text-xs hover:bg-purple-600/20 transition-all cursor-pointer"
                                   >
-                                    {suggestion}
+                                    {suggestion.substring(0, 20)}...
                                   </button>
                                 ))}
                               </div>
@@ -657,12 +695,22 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
 
 
                   </div>
-                    ))}
+                ))}
                     </div>
+                    
+                    {/* Level 3: Sub-research indicators */}
+                    {searchTabs.filter(tab => tab.type === 'sub').length > 0 && (
+                      <div className="text-center mt-8">
+                        <div className="inline-flex items-center space-x-2 px-4 py-2 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-300">
+                          <span className="text-sm">Sub-pesquisas ativas:</span>
+                          <span className="bg-purple-500 text-white px-2 py-1 rounded-full text-xs">
+                            {searchTabs.filter(tab => tab.type === 'sub').length}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-
-
               </div>
             </div>
           </div>
