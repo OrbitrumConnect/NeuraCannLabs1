@@ -128,7 +128,6 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
 
       {/* Cosmic Knowledge Map */}
       <div className="mb-12">
-        <h2 className="text-3xl font-bold text-center mb-8 neon-text">Mapa do Conhecimento</h2>
         <CosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} onSearch={onSearch} />
       </div>
 
