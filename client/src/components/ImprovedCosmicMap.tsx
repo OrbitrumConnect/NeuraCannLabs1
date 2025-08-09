@@ -216,18 +216,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Avatar Section - Left Side - Clickable - 20% bigger with glow effect */}
+      {/* Dr. Cannabis IA - 20% bigger with glow effect - HE IS the trigger */}
       <div 
-        className="absolute top-8 left-8 w-96 h-96 z-20 cursor-pointer group"
+        className="absolute top-8 left-8 w-96 h-96 z-20 cursor-pointer"
         onClick={() => setIsDrAIActive(!isDrAIActive)}
       >
-        <div className="relative">
-          <div className={`transition-all duration-500 ${isDrAIActive ? 'drop-shadow-2xl drop-shadow-cyan-400/30' : 'drop-shadow-lg drop-shadow-cyan-400/20'}`}>
+        <div className={`transition-all duration-500 ${isDrAIActive ? 'drop-shadow-2xl drop-shadow-cyan-400/30' : 'drop-shadow-lg drop-shadow-cyan-400/20'}`}>
+          <div className={`relative ${isDrAIActive ? 'scale-105' : 'hover:scale-102'} transition-transform duration-300`}>
             <MedicalAvatar3D />
-          </div>
-          <div className={`absolute inset-0 rounded-full transition-all duration-500 ${isDrAIActive ? 'bg-cyan-400/20 shadow-lg shadow-cyan-400/40' : 'bg-cyan-500/5 group-hover:bg-cyan-500/15'}`}></div>
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-cyan-900/80 text-cyan-100 px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            Dr. Cannabis IA - Clique para ativar
+            <div className={`absolute inset-0 rounded-full transition-all duration-500 ${isDrAIActive ? 'bg-cyan-400/15 shadow-xl shadow-cyan-400/50' : 'bg-transparent hover:bg-cyan-500/10'}`}></div>
           </div>
         </div>
       </div>
