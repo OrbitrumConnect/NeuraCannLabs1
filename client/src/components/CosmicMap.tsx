@@ -578,39 +578,36 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                 <div className="px-6 pb-6">
                   <div className="max-w-7xl mx-auto">
                     
-                    {/* Study Input Area - Root Node Creation */}
-                    <div className="text-center mb-8">
-                      <div className="max-w-2xl mx-auto">
-                        <div className="bg-black/80 border border-neon-cyan/40 rounded-xl backdrop-blur-md p-6">
-                          <div className="flex items-center justify-center space-x-3 mb-4">
-                            <div className="w-3 h-3 bg-neon-cyan rounded-full animate-pulse"></div>
-                            <span className="text-lg font-medium text-neon-cyan">Inserir Novo Estudo</span>
-                          </div>
-                          
-                          <textarea 
-                            placeholder="Digite ou fale seu estudo, hipótese ou resumo aqui..."
-                            className="w-full h-24 bg-black/60 border border-gray-600/50 rounded-lg p-3 text-gray-300 placeholder-gray-500 resize-none focus:border-neon-cyan/60 focus:outline-none"
-                          />
-                          
-                          <div className="flex justify-between items-center mt-4">
-                            <div className="flex space-x-2">
-                              <button className="px-3 py-2 bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30 rounded-lg text-sm hover:bg-neon-cyan/30 transition-all">
-                                🧠 Processar com IA
-                              </button>
-                              <button className="px-3 py-2 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded-lg text-sm hover:bg-purple-600/30 transition-all">
-                                🎤 Falar
-                              </button>
+                    {/* Compact Study Input Area */}
+                    <div className="mb-6">
+                      <div className="max-w-4xl mx-auto">
+                        <div className="bg-black/60 border border-neon-cyan/30 rounded-lg backdrop-blur-md p-4">
+                          <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-2">
+                              <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></div>
+                              <span className="text-sm font-medium text-neon-cyan">Novo Estudo</span>
                             </div>
-                            <span className="text-xs text-gray-500">
-                              {searchTabs.filter(tab => tab.type === 'main').length} estudos na árvore
-                            </span>
+                            
+                            <textarea 
+                              placeholder="Digite seu estudo ou hipótese..."
+                              className="flex-1 h-12 bg-black/40 border border-gray-600/30 rounded p-2 text-sm text-gray-300 placeholder-gray-500 resize-none focus:border-neon-cyan/60 focus:outline-none"
+                            />
+                            
+                            <div className="flex space-x-2">
+                              <button className="px-3 py-2 bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30 rounded text-xs hover:bg-neon-cyan/30 transition-all">
+                                🧠 Processar
+                              </button>
+                              <span className="text-xs text-gray-500 self-center">
+                                {searchTabs.filter(tab => tab.type === 'main').length} estudos
+                              </span>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                     
-                    {/* Level 2: Main Research Network */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8 mb-8">
+                    {/* Level 2: Main Research Network - Compact Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-4 gap-4 mb-6">
                       {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
                         <div key={mainTab.id} className="relative">
                           {/* Simple connection indicator */}
@@ -618,48 +615,40 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                             <div className="w-1 h-4 bg-neon-cyan/60 rounded-full" />
                           </div>
                     
-                    {/* Main Research Node - Fixed position, no drag */}
-                    <div 
-                      className={`research-node relative bg-black/90 backdrop-blur-md rounded-xl border p-6 cursor-pointer transition-all min-h-[220px] ${
-                        activeTabId === mainTab.id 
-                          ? 'border-neon-cyan shadow-xl shadow-neon-cyan/30' 
-                          : 'border-gray-600/50 hover:border-neon-cyan/60'
-                      }`}
-                      onClick={() => setActiveTabId(activeTabId === mainTab.id ? null : mainTab.id)}
-                    >
-                      <div className="flex justify-between items-start mb-3">
-                        <div className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></div>
-                          <h3 className="text-lg font-semibold text-neon-cyan">
-                            📄 {mainTab.query}
-                          </h3>
-                          <span className="px-2 py-1 bg-neon-cyan/20 text-neon-cyan rounded text-xs">
-                            Nó Raiz
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-gray-400 bg-gray-800/60 px-2 py-1 rounded">
-                            {new Date(mainTab.timestamp).toLocaleTimeString()}
-                          </span>
-                          <button 
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setSearchTabs(prev => prev.filter(t => t.id !== mainTab.id && t.parentId !== mainTab.id));
-                              if (activeTabId === mainTab.id) setActiveTabId(null);
-                            }}
-                            className="text-red-400 hover:text-red-300 w-6 h-6 flex items-center justify-center rounded hover:bg-red-500/20"
+                          {/* Compact Main Research Node */}
+                          <div 
+                            className={`research-node relative bg-black/80 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[180px] ${
+                              activeTabId === mainTab.id 
+                                ? 'border-neon-cyan shadow-lg shadow-neon-cyan/20' 
+                                : 'border-gray-600/50 hover:border-neon-cyan/60'
+                            }`}
+                            onClick={() => setActiveTabId(activeTabId === mainTab.id ? null : mainTab.id)}
                           >
-                            ×
-                          </button>
-                        </div>
-                      </div>
+                            <div className="flex justify-between items-start mb-2">
+                              <div className="flex items-center space-x-1">
+                                <div className="w-1.5 h-1.5 bg-neon-cyan rounded-full"></div>
+                                <h3 className="text-sm font-semibold text-neon-cyan truncate">
+                                  {mainTab.query.substring(0, 30)}...
+                                </h3>
+                              </div>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSearchTabs(prev => prev.filter(t => t.id !== mainTab.id && t.parentId !== mainTab.id));
+                                  if (activeTabId === mainTab.id) setActiveTabId(null);
+                                }}
+                                className="text-red-400 hover:text-red-300 w-4 h-4 flex items-center justify-center rounded hover:bg-red-500/20 text-xs"
+                              >
+                                ×
+                              </button>
+                            </div>
                   
-                      {/* Collapsed preview */}
-                      {activeTabId !== mainTab.id && (
-                        <div className="text-sm text-gray-400 leading-relaxed">
-                          {mainTab.response.substring(0, 200)}...
-                        </div>
-                      )}
+                            {/* Collapsed preview */}
+                            {activeTabId !== mainTab.id && (
+                              <div className="text-xs text-gray-400 leading-relaxed mb-2">
+                                {mainTab.response.substring(0, 100)}...
+                              </div>
+                            )}
                       
                       {/* Expanded content */}
                       {activeTabId === mainTab.id && (
@@ -670,43 +659,21 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                             }} />
                           </div>
                           
-                          {/* Action Flow - Hierarchical Tree System */}
-                          <div className="grid grid-cols-3 gap-2 mt-4">
-                            <button 
-                              className="px-3 py-2 bg-blue-600/20 text-blue-300 border border-blue-500/30 rounded-lg text-xs hover:bg-blue-600/30 transition-all"
-                              title="Gerar resumo expandido do estudo"
-                            >
-                              📄 Resumo
-                            </button>
-                            <button 
-                              className="px-3 py-2 bg-green-600/20 text-green-300 border border-green-500/30 rounded-lg text-xs hover:bg-green-600/30 transition-all"
-                              title="Criar versão aprimorada com IA"
-                            >
-                              ✨ Aprimorar
-                            </button>
-                            <button 
-                              className="px-3 py-2 bg-orange-600/20 text-orange-300 border border-orange-500/30 rounded-lg text-xs hover:bg-orange-600/30 transition-all"
-                              title="Publicar no banco de estudos"
-                            >
-                              🚀 Publicar
-                            </button>
-                          </div>
-                          
-                          {/* Hierarchical Navigation */}
-                          <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-700/50">
-                            <button 
-                              className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all"
-                              title="Buscar estudos relacionados automaticamente"
-                            >
-                              🔍 Busca Cruzada
-                            </button>
-                            <button 
-                              className="px-2 py-1 bg-cyan-600/20 text-cyan-300 border border-cyan-500/30 rounded text-xs hover:bg-cyan-600/30 transition-all"
-                              title="Comparar com outros estudos"
-                            >
-                              ⚖️ Comparar
-                            </button>
-                          </div>
+                            {/* Compact Action Grid */}
+                            <div className="grid grid-cols-2 gap-1 mb-2">
+                              <button className="px-2 py-1 bg-blue-600/20 text-blue-300 border border-blue-500/30 rounded text-xs hover:bg-blue-600/30 transition-all">
+                                📄 Resumo
+                              </button>
+                              <button className="px-2 py-1 bg-green-600/20 text-green-300 border border-green-500/30 rounded text-xs hover:bg-green-600/30 transition-all">
+                                ✨ Aprimorar
+                              </button>
+                              <button className="px-2 py-1 bg-orange-600/20 text-orange-300 border border-orange-500/30 rounded text-xs hover:bg-orange-600/30 transition-all">
+                                🚀 Publicar
+                              </button>
+                              <button className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all">
+                                🔍 Buscar
+                              </button>
+                            </div>
                           
                           {/* Tree Expansion - Child Nodes */}
                           {mainTab.suggestions.length > 0 && (
@@ -766,10 +733,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         const parentTab = searchTabs.find(tab => tab.id === subTab.parentId);
         const parentIndex = searchTabs.filter(tab => tab.type === 'main').findIndex(tab => tab.id === subTab.parentId);
         
-        // Position harmoniously next to parent card (n8n style)
+        // Position below main cards area for better organization
         const basePosition = {
-          x: 600 + (parentIndex % 3) * 450 + 40, // Closer to parent, more organized
-          y: 150 + Math.floor(parentIndex / 3) * 320 + index * 90 // Better grid alignment
+          x: 100 + index * 300, // Horizontal spread
+          y: window.innerHeight - 300 + (Math.floor(index / 4) * 150) // Bottom area with rows
         };
         
         const position = cardPositions[subTab.id] || basePosition;
