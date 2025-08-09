@@ -80,6 +80,11 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
   const [activeTabId, setActiveTabId] = useState<string | null>(null);
   const [subSearchActive, setSubSearchActive] = useState(false);
   const [subSearchTerm, setSubSearchTerm] = useState("");
+  const [zoomLevel, setZoomLevel] = useState(1);
+  const [panX, setPanX] = useState(0);
+  const [panY, setPanY] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   const filters = [
     { id: "todos", label: "Todos", icon: Brain },
@@ -217,6 +222,35 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
       setSubSearchActive(false);
       setSubSearchTerm("");
     }
+  };
+
+  const handleZoomIn = () => {
+    setZoomLevel(prev => Math.min(prev + 0.2, 2));
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel(prev => Math.max(prev - 0.2, 0.5));
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - panX, y: e.clientY - panY });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging) return;
+    setPanX(e.clientX - dragStart.x);
+    setPanY(e.clientY - dragStart.y);
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+  };
+
+  const resetView = () => {
+    setZoomLevel(1);
+    setPanX(0);
+    setPanY(0);
   };
 
   const generateAIResponse = (question: string): string => {
@@ -415,16 +449,58 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                  }} />
           </div>
 
-          {/* Research Web Area - Expanded bottom area */}
-          <div className="fixed bottom-0 left-0 right-0 z-20 px-6 pb-6" style={{top: '50vh'}}>
-            <div className="max-w-7xl mx-auto h-full flex flex-col">
-              {/* Connection point indicator */}
-              <div className="flex justify-center mb-6">
-                <div className="w-6 h-6 bg-neon-cyan rounded-full animate-pulse shadow-xl shadow-neon-cyan/60" />
+          {/* Neural Web Viewport - Zoomable and Pannable */}
+          <div className="fixed bottom-0 left-0 right-0 z-20" style={{top: '50vh'}}>
+            {/* Zoom Controls */}
+            <div className="absolute top-4 right-4 z-30 flex flex-col gap-2">
+              <button
+                onClick={handleZoomIn}
+                className="w-10 h-10 bg-black/80 border border-neon-cyan/50 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all"
+              >
+                +
+              </button>
+              <button
+                onClick={handleZoomOut}
+                className="w-10 h-10 bg-black/80 border border-neon-cyan/50 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all"
+              >
+                −
+              </button>
+              <button
+                onClick={resetView}
+                className="w-10 h-10 bg-black/80 border border-neon-cyan/50 rounded-lg flex items-center justify-center text-neon-cyan hover:bg-neon-cyan/20 transition-all text-xs"
+              >
+                ⌂
+              </button>
+              <div className="text-xs text-center text-gray-400 mt-1">
+                {Math.round(zoomLevel * 100)}%
               </div>
-              
-              {/* Research Tree Grid - with more space */}
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 overflow-y-auto flex-1 pb-4">
+            </div>
+
+            {/* Zoomable Research Web */}
+            <div 
+              className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing"
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp}
+            >
+              <div 
+                className="w-full h-full relative"
+                style={{
+                  transform: `scale(${zoomLevel}) translate(${panX}px, ${panY}px)`,
+                  transformOrigin: 'center center',
+                  transition: isDragging ? 'none' : 'transform 0.3s ease'
+                }}
+              >
+                {/* Connection point indicator */}
+                <div className="flex justify-center pt-8 mb-8">
+                  <div className="w-6 h-6 bg-neon-cyan rounded-full animate-pulse shadow-xl shadow-neon-cyan/60" />
+                </div>
+                
+                {/* Research Tree Grid */}
+                <div className="px-6 pb-6">
+                  <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                 {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
                   <div key={mainTab.id} className="relative">
                     {/* Neural connection line to this node */}
@@ -432,15 +508,15 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                     
                     {/* Main Research Node */}
                     <div 
-                      className={`relative bg-black/90 backdrop-blur-md rounded-xl border p-6 cursor-pointer transition-all min-h-[200px] ${
+                      className={`relative bg-black/90 backdrop-blur-md rounded-xl border p-4 cursor-pointer transition-all min-h-[150px] ${
                         activeTabId === mainTab.id 
-                          ? 'border-neon-cyan shadow-xl shadow-neon-cyan/30 scale-105 transform' 
-                          : 'border-gray-600/50 hover:border-neon-cyan/60 hover:scale-102'
+                          ? 'border-neon-cyan shadow-xl shadow-neon-cyan/30' 
+                          : 'border-gray-600/50 hover:border-neon-cyan/60'
                       }`}
                       onClick={() => setActiveTabId(activeTabId === mainTab.id ? null : mainTab.id)}
                     >
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="text-lg font-semibold text-neon-cyan">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="text-base font-semibold text-neon-cyan">
                           🧠 {mainTab.query}
                         </h3>
                         <div className="flex items-center gap-2">
@@ -470,7 +546,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                       {/* Expanded content */}
                       {activeTabId === mainTab.id && (
                         <div className="space-y-4">
-                          <div className="text-sm text-gray-300 max-h-60 overflow-y-auto border-l-2 border-neon-cyan/30 pl-3">
+                          <div className="text-xs text-gray-300 max-h-32 overflow-y-auto border-l-2 border-neon-cyan/30 pl-2">
                             <div dangerouslySetInnerHTML={{ 
                               __html: mainTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
                             }} />
@@ -549,7 +625,10 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                       </div>
                     )}
                   </div>
-                ))}
+                    ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
