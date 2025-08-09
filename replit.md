@@ -12,13 +12,13 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
-**2025-08-09**: Enhanced Medical Avatar as primary chat interface
-- Avatar now serves as the main chat toggle button (removed circular container)
-- Clean rectangular design with gradient backgrounds that respond to states
-- Avatar displays name "Dr. Cannabis IA" with dynamic status text
-- Interactive hover states and seamless transition animations
-- Medical badge and status indicators for visual feedback
-- More natural and modern interaction pattern replacing traditional buttons
+**2025-08-09**: Large Medical Avatar positioned as primary interface
+- Moved avatar to left side of screen, large size (96px) for prominence
+- Avatar completely free-floating with transparent background and enhanced shadows
+- Clicking avatar activates "neural connection" mode with enhanced visual feedback
+- Removed avatar from search bar, replaced with "Conexão Neural Ativa" indicator
+- Dynamic sizing system supports both large (main) and small (secondary) avatar instances
+- Enhanced glow effects and status indicators scale with avatar size
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion

@@ -151,34 +151,44 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
 
   return (
     <div className="relative h-96 overflow-hidden">
+      {/* Medical Avatar - Large, Left Side */}
+      <div className="absolute left-8 top-1/2 transform -translate-y-1/2 z-20">
+        <button
+          onClick={() => setChatMode(!chatMode)}
+          className="group transition-all duration-500 hover:scale-105"
+        >
+          <MedicalAvatar3D 
+            isActive={chatMode}
+            isListening={isTyping}
+            message={isTyping ? "Processando..." : chatMode ? "Modo Ativo" : ""}
+            className="w-24 h-24"
+          />
+          {/* Doctor Info */}
+          <div className={`mt-2 text-center transition-all duration-300 ${
+            chatMode 
+              ? "text-neon-cyan" 
+              : "text-gray-300 group-hover:text-white"
+          }`}>
+            <div className="text-sm font-bold">Dr. Cannabis IA</div>
+            <div className="text-xs opacity-70">
+              {chatMode ? "Mente Ativa" : "Clique para ativar"}
+            </div>
+          </div>
+        </button>
+      </div>
+
       {/* Central Search Bar with AI Chat - Moved to bottom */}
       <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 z-10">
         <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-4 border border-neon-cyan/20 w-[600px] max-w-4xl">
-          {/* Mode Toggle */}
+          {/* Chat Mode Header */}
           <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-3">
-              {/* Medical Avatar as Chat Toggle */}
-              <button
-                onClick={() => setChatMode(!chatMode)}
-                className="flex items-center space-x-3 group transition-all"
-              >
-                <MedicalAvatar3D 
-                  isActive={chatMode}
-                  isListening={isTyping}
-                  message={isTyping ? "Analisando..." : ""}
-                  className="w-12 h-12"
-                />
-                <div className={`transition-all ${
-                  chatMode 
-                    ? "text-neon-cyan" 
-                    : "text-gray-300 group-hover:text-white"
-                }`}>
-                  <div className="text-sm font-medium">Dr. Cannabis IA</div>
-                  <div className="text-xs opacity-70">
-                    {chatMode ? "Modo Chat Ativo" : "Clique para conversar"}
-                  </div>
+            <div className="flex items-center space-x-2">
+              {chatMode && (
+                <div className="flex items-center space-x-2 text-neon-cyan">
+                  <div className="w-2 h-2 bg-neon-cyan rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium">Conexão Neural Ativa</span>
                 </div>
-              </button>
+              )}
               {chatMode && chatMessages.length > 0 && (
                 <button
                   onClick={() => setChatMessages([])}

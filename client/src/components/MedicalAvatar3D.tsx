@@ -47,7 +47,9 @@ export default function MedicalAvatar3D({
       premultipliedAlpha: false,
       powerPreference: "high-performance"
     });
-    renderer.setSize(48, 48);
+    // Dynamic size based on className
+    const size = className?.includes('w-24') ? 96 : 48;
+    renderer.setSize(size, size);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0); // Transparent background
     renderer.shadowMap.enabled = true;
@@ -194,37 +196,51 @@ export default function MedicalAvatar3D({
       {/* 3D Avatar Container - Free floating */}
       <div 
         ref={mountRef} 
-        className={`relative w-12 h-12 transition-all duration-300 ${
+        className={`relative transition-all duration-500 ${className} ${
           isActive 
-            ? 'drop-shadow-lg' 
-            : 'drop-shadow-md'
+            ? 'drop-shadow-2xl' 
+            : 'drop-shadow-lg'
         }`}
         style={{
           filter: isActive 
-            ? 'drop-shadow(0 0 8px rgba(0,255,255,0.3))' 
-            : 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))'
+            ? 'drop-shadow(0 0 16px rgba(0,255,255,0.4)) drop-shadow(0 0 32px rgba(0,255,255,0.2))' 
+            : 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))'
         }}
       />
 
       {/* Status Indicators */}
       {isListening && (
-        <div className="absolute top-1 right-1 w-2 h-2 bg-neon-cyan rounded-full animate-pulse" />
+        <div className={`absolute top-2 right-2 bg-neon-cyan rounded-full animate-pulse ${
+          className?.includes('w-24') ? 'w-3 h-3' : 'w-2 h-2'
+        }`} />
       )}
       
       {isActive && !isListening && (
-        <div className="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+        <div className={`absolute top-2 right-2 bg-green-400 rounded-full animate-pulse ${
+          className?.includes('w-24') ? 'w-3 h-3' : 'w-2 h-2'
+        }`} />
       )}
 
       {/* Medical Badge */}
-      <div className="absolute -bottom-1 -right-1 bg-white rounded-full p-1 shadow-lg border border-gray-200">
-        <div className="w-2.5 h-2.5 flex items-center justify-center">
-          <i className="fas fa-user-md text-blue-600 text-[7px]" />
+      <div className={`absolute -bottom-1 -right-1 bg-white rounded-full shadow-lg border border-gray-200 ${
+        className?.includes('w-24') ? 'p-1.5' : 'p-1'
+      }`}>
+        <div className={`flex items-center justify-center ${
+          className?.includes('w-24') ? 'w-4 h-4' : 'w-2.5 h-2.5'
+        }`}>
+          <i className={`fas fa-user-md text-blue-600 ${
+            className?.includes('w-24') ? 'text-xs' : 'text-[7px]'
+          }`} />
         </div>
       </div>
 
       {/* Speech Indicator */}
       {message && (
-        <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gray-900/90 text-white text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap max-w-24 truncate">
+        <div className={`absolute left-1/2 transform -translate-x-1/2 bg-gray-900/90 text-white rounded whitespace-nowrap ${
+          className?.includes('w-24') 
+            ? '-top-8 text-xs px-2 py-1 max-w-32' 
+            : '-top-6 text-[10px] px-1.5 py-0.5 max-w-24'
+        } truncate`}>
           {message}
         </div>
       )}
