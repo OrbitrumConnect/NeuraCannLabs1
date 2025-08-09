@@ -444,13 +444,13 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
           <div className="absolute left-44 top-32 z-10">
             <div className="w-0.5 bg-gradient-to-b from-neon-cyan via-blue-400 to-transparent animate-pulse"
                  style={{
-                   height: 'calc(50vh - 120px)',
+                   height: 'calc(40vh - 120px)',
                    boxShadow: '0 0 8px rgba(0,255,255,0.4)'
                  }} />
           </div>
 
-          {/* Neural Web Viewport - Zoomable and Pannable */}
-          <div className="fixed bottom-0 left-0 right-0 z-20" style={{top: '50vh'}}>
+          {/* Neural Web Viewport - Expanded and Zoomable */}
+          <div className="fixed bottom-0 left-0 right-0 z-20" style={{top: '40vh'}}>
             {/* Zoom Controls */}
             <div className="absolute top-4 right-4 z-30 flex flex-col gap-2">
               <button
@@ -500,7 +500,7 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                 {/* Research Tree Grid */}
                 <div className="px-6 pb-6">
                   <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8">
                 {searchTabs.filter(tab => tab.type === 'main').map((mainTab, mainIndex) => (
                   <div key={mainTab.id} className="relative">
                     {/* Neural connection line to this node */}
@@ -508,15 +508,15 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                     
                     {/* Main Research Node */}
                     <div 
-                      className={`relative bg-black/90 backdrop-blur-md rounded-xl border p-4 cursor-pointer transition-all min-h-[150px] ${
+                      className={`relative bg-black/90 backdrop-blur-md rounded-xl border p-6 cursor-pointer transition-all min-h-[220px] ${
                         activeTabId === mainTab.id 
                           ? 'border-neon-cyan shadow-xl shadow-neon-cyan/30' 
                           : 'border-gray-600/50 hover:border-neon-cyan/60'
                       }`}
                       onClick={() => setActiveTabId(activeTabId === mainTab.id ? null : mainTab.id)}
                     >
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="text-base font-semibold text-neon-cyan">
+                      <div className="flex justify-between items-start mb-3">
+                        <h3 className="text-lg font-semibold text-neon-cyan">
                           🧠 {mainTab.query}
                         </h3>
                         <div className="flex items-center gap-2">
@@ -538,15 +538,15 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                   
                       {/* Collapsed preview */}
                       {activeTabId !== mainTab.id && (
-                        <div className="text-sm text-gray-400">
-                          {mainTab.response.substring(0, 120)}...
+                        <div className="text-sm text-gray-400 leading-relaxed">
+                          {mainTab.response.substring(0, 200)}...
                         </div>
                       )}
                       
                       {/* Expanded content */}
                       {activeTabId === mainTab.id && (
                         <div className="space-y-4">
-                          <div className="text-xs text-gray-300 max-h-32 overflow-y-auto border-l-2 border-neon-cyan/30 pl-2">
+                          <div className="text-sm text-gray-300 max-h-48 overflow-y-auto border-l-2 border-neon-cyan/30 pl-3 leading-relaxed">
                             <div dangerouslySetInnerHTML={{ 
                               __html: mainTab.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
                             }} />
@@ -576,59 +576,65 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
                       )}
                     </div>
 
-                    {/* Sub-research nodes - positioned below main node with more space */}
-                    {searchTabs.filter(tab => tab.parentId === mainTab.id).length > 0 && activeTabId === mainTab.id && (
-                      <div className="mt-6 space-y-4">
-                        <div className="border-l-2 border-purple-400/40 pl-5">
-                          {searchTabs.filter(tab => tab.parentId === mainTab.id).map((subTab, subIndex) => (
-                            <div key={subTab.id} className="mb-4 last:mb-0">
-                              {/* Sub Research Node */}
-                              <div 
-                                className={`bg-black/70 backdrop-blur-sm rounded-lg border p-5 cursor-pointer transition-all min-h-[120px] ${
-                                  activeTabId === subTab.id 
-                                    ? 'border-purple-400 shadow-lg shadow-purple-400/20' 
-                                    : 'border-purple-600/40 hover:border-purple-400/60'
-                                }`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
-                                }}
-                              >
-                                <div className="flex justify-between items-start mb-3">
-                                  <h4 className="text-base font-medium text-purple-300 flex items-center">
-                                    <span className="mr-2 text-purple-400">↳</span>
-                                    {subTab.query}
-                                  </h4>
-                                  <button 
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
-                                      if (activeTabId === subTab.id) setActiveTabId(null);
-                                    }}
-                                    className="text-red-400 hover:text-red-300 w-6 h-6 flex items-center justify-center rounded hover:bg-red-500/20"
-                                  >
-                                    ×
-                                  </button>
-                                </div>
-                                
-                                {/* Sub-node content with more space */}
-                                <div className="text-sm text-gray-300 leading-relaxed">
-                                  <div dangerouslySetInnerHTML={{ 
-                                    __html: subTab.response.substring(0, 300).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                                  }} />
-                                  {subTab.response.length > 300 && '...'}
-                                </div>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+
                   </div>
                     ))}
                     </div>
                   </div>
                 </div>
+
+                {/* Sub-research nodes - positioned to the right side */}
+                {searchTabs.filter(tab => tab.type === 'sub').length > 0 && (
+                  <div className="absolute right-6 top-16 w-80">
+                    <div className="space-y-4">
+                      <h3 className="text-lg font-semibold text-purple-300 mb-4 flex items-center">
+                        <span className="mr-2">🔍</span>
+                        Sub-pesquisas
+                      </h3>
+                      {searchTabs.filter(tab => tab.type === 'sub').map((subTab, subIndex) => (
+                        <div key={subTab.id} className="relative">
+                          {/* Neural line connecting to parent */}
+                          <div className="absolute -left-6 top-6 w-6 h-0.5 bg-purple-400/60" />
+                          
+                          {/* Sub Research Node */}
+                          <div 
+                            className={`bg-black/80 backdrop-blur-md rounded-lg border p-4 cursor-pointer transition-all min-h-[140px] ${
+                              activeTabId === subTab.id 
+                                ? 'border-purple-400 shadow-lg shadow-purple-400/30' 
+                                : 'border-purple-600/50 hover:border-purple-400/70'
+                            }`}
+                            onClick={() => setActiveTabId(activeTabId === subTab.id ? null : subTab.id)}
+                          >
+                            <div className="flex justify-between items-start mb-3">
+                              <h4 className="text-sm font-medium text-purple-300 flex items-center">
+                                <span className="mr-2 text-purple-400">↳</span>
+                                {subTab.query}
+                              </h4>
+                              <button 
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
+                                  if (activeTabId === subTab.id) setActiveTabId(null);
+                                }}
+                                className="text-red-400 hover:text-red-300 w-5 h-5 flex items-center justify-center rounded hover:bg-red-500/20"
+                              >
+                                ×
+                              </button>
+                            </div>
+                            
+                            {/* Sub-node content */}
+                            <div className="text-sm text-gray-300 leading-relaxed">
+                              <div dangerouslySetInnerHTML={{ 
+                                __html: subTab.response.substring(0, activeTabId === subTab.id ? 400 : 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                              }} />
+                              {subTab.response.length > (activeTabId === subTab.id ? 400 : 150) && '...'}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
