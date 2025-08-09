@@ -246,8 +246,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Search Interface - Top Center - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl">
-          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6">
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl search-interface-mobile">
+          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 sm:p-6">
             
             {/* Search Bar */}
             <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-4">
@@ -258,7 +258,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Digite sua consulta médica..."
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50"
+                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm sm:text-base"
                   disabled={isTyping}
                 />
               </div>
@@ -324,17 +324,17 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="fixed left-8 z-30"
+          className="fixed left-8 z-30 sub-search-mobile"
           style={{ 
             top: `${280 + (index * 200)}px`, 
             width: '300px',
             maxHeight: '180px'
           }}
         >
-          <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-4">
+          <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-3 sm:p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-purple-300">
-                🔍 {subTab.query.substring(0, 30)}...
+              <h3 className="text-xs sm:text-sm font-semibold text-purple-300">
+                🔍 {subTab.query.substring(0, 25)}...
               </h3>
               <button 
                 onClick={() => {
@@ -347,9 +347,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 ×
               </button>
             </div>
-            <div className="text-xs text-purple-200 max-h-40 overflow-y-auto">
+            <div className="text-xs sm:text-sm text-purple-200 max-h-32 sm:max-h-40 overflow-y-auto">
               <div dangerouslySetInnerHTML={{ 
-                __html: subTab.response.substring(0, 300).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                __html: subTab.response.substring(0, 250).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
               }} />
             </div>
             
