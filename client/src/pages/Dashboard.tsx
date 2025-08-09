@@ -41,7 +41,7 @@ export default function Dashboard() {
         // Limitar movimento dentro da área de conteúdo
         const maxX = window.innerWidth - 370;
         const maxY = window.innerHeight - 100;
-        const minY = 160; // Espaço para header, search e cosmic map
+        const minY = 180; // Mais espaço para header, search e cosmic map
         
         setCardPosition({
           x: Math.max(0, Math.min(newX, maxX)),
@@ -260,7 +260,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
               : '50%',
             top: aiCardMinimized 
               ? `${Math.max(160, Math.min(cardPosition?.y || 250, window.innerHeight - 100))}px` 
-              : '300px', // Posição fixa abaixo da área de pesquisa
+              : '400px', // Posição mais abaixo da área de pesquisa
             transform: aiCardMinimized ? 'none' : 'translateX(-50%)',
             maxWidth: '90%',
             width: aiCardMinimized ? '350px' : '800px'
