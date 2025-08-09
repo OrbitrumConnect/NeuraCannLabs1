@@ -157,24 +157,27 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
           {/* Mode Toggle */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-3">
-              {/* Medical Avatar */}
-              <MedicalAvatar3D 
-                isActive={chatMode}
-                isListening={isTyping}
-                message={isTyping ? "Analisando..." : ""}
-                className="w-12 h-12"
-              />
-              
+              {/* Medical Avatar as Chat Toggle */}
               <button
                 onClick={() => setChatMode(!chatMode)}
-                className={`flex items-center space-x-2 px-3 py-1.5 rounded-full text-xs transition-all ${
-                  chatMode
-                    ? "bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/40"
-                    : "bg-gray-800/60 text-gray-300 border border-gray-600/40 hover:bg-gray-700/60"
-                }`}
+                className="flex items-center space-x-3 group transition-all"
               >
-                <Bot className="w-3 h-3" />
-                <span>Dr. Cannabis IA</span>
+                <MedicalAvatar3D 
+                  isActive={chatMode}
+                  isListening={isTyping}
+                  message={isTyping ? "Analisando..." : ""}
+                  className="w-12 h-12"
+                />
+                <div className={`transition-all ${
+                  chatMode 
+                    ? "text-neon-cyan" 
+                    : "text-gray-300 group-hover:text-white"
+                }`}>
+                  <div className="text-sm font-medium">Dr. Cannabis IA</div>
+                  <div className="text-xs opacity-70">
+                    {chatMode ? "Modo Chat Ativo" : "Clique para conversar"}
+                  </div>
+                </div>
               </button>
               {chatMode && chatMessages.length > 0 && (
                 <button

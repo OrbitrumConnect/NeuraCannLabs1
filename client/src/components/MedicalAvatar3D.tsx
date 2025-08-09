@@ -192,27 +192,29 @@ export default function MedicalAvatar3D({
       {/* 3D Avatar Container */}
       <div 
         ref={mountRef} 
-        className={`relative w-12 h-12 rounded-full overflow-hidden border-2 transition-all duration-300 ${
+        className={`relative w-12 h-12 rounded-lg overflow-hidden transition-all duration-300 ${
           isActive 
-            ? 'border-neon-cyan shadow-lg shadow-neon-cyan/30' 
-            : 'border-gray-600'
+            ? 'shadow-lg shadow-neon-cyan/30 bg-gradient-to-br from-neon-cyan/10 to-blue-600/10' 
+            : 'bg-gradient-to-br from-gray-800/50 to-gray-900/80 hover:from-gray-700/60 hover:to-gray-800/90'
         }`}
         style={{
-          background: 'radial-gradient(circle, rgba(0,20,40,0.8) 0%, rgba(0,0,0,0.9) 100%)'
+          background: isActive 
+            ? 'radial-gradient(circle, rgba(0,255,255,0.1) 0%, rgba(0,20,40,0.8) 100%)'
+            : 'radial-gradient(circle, rgba(40,40,40,0.8) 0%, rgba(0,0,0,0.9) 100%)'
         }}
       />
 
       {/* Status Indicators */}
       {isListening && (
-        <div className="absolute top-2 right-2 w-3 h-3 bg-neon-cyan rounded-full animate-pulse" />
+        <div className="absolute top-1 right-1 w-2 h-2 bg-neon-cyan rounded-full animate-pulse" />
       )}
       
       {isActive && !isListening && (
-        <div className="absolute top-2 right-2 w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+        <div className="absolute top-1 right-1 w-2 h-2 bg-green-400 rounded-full animate-pulse" />
       )}
 
       {/* Medical Badge */}
-      <div className="absolute -bottom-1 -right-1 bg-white/90 rounded-full p-0.5">
+      <div className="absolute -bottom-0.5 -right-0.5 bg-white rounded-full p-0.5 shadow-sm">
         <div className="w-3 h-3 flex items-center justify-center">
           <i className="fas fa-user-md text-blue-600 text-[8px]" />
         </div>
