@@ -73,6 +73,15 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **READY FOR INVESTMENT PRESENTATION** 🚀
 
+**EVOLUÇÃO v2.6 - LAYOUT OTIMIZADO SEM SOBREPOSIÇÃO**:
+✅ Fundo azul removido - interface mais limpa
+✅ Cards posicionados com fixed - sem sobreposição 
+✅ Espaçamento adequado entre elementos
+✅ Sub-pesquisas reorganizadas na lateral direita
+✅ Layout harmônico e profissional para apresentação
+✅ Dados explícitos e legíveis em cards separados
+✅ Text-to-Speech otimizado para leitura natural
+
 ---
 
 **2025-08-09**: Fixed main cards with harmonious sub-cards dock system

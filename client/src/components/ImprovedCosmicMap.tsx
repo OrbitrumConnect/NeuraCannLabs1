@@ -214,13 +214,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 overflow-hidden">
-      
-      {/* Background Effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/20 via-slate-900/50 to-black"></div>
-      <div className="absolute inset-0 opacity-20" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='m36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-      }}></div>
+    <div className="relative w-full h-screen bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
 
       {/* Avatar Section - Left Side */}
       <div className="absolute top-8 left-8 w-80 h-80 z-20">
@@ -298,75 +292,84 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Category Cards - Bottom Section */}
+      {/* Category Cards - Fixed positioning to avoid overlap */}
       {currentResult && (
-        <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end z-20">
-          
-          {/* Scientific Studies */}
+        <>
+          {/* Scientific Studies - Left position */}
           {scientificData.length > 0 && (
-            <div className="w-80 bg-blue-950/90 backdrop-blur-md rounded-lg border border-blue-500/40 p-4">
-              <h3 className="text-sm font-semibold text-blue-300 flex items-center mb-3">
-                <Microscope className="w-4 h-4 mr-2" />
-                Estudos Científicos ({scientificData.length})
-              </h3>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {scientificData.slice(0, 4).map((study, idx) => (
-                  <div key={study.id} className="text-xs text-blue-200 p-2 bg-blue-900/40 rounded border-l-2 border-blue-400/60">
-                    <div className="font-medium">{study.title}</div>
-                    <div className="text-blue-300 mt-1">{study.description}</div>
-                    <div className="text-blue-400 mt-1 text-xs">📍 {study.compound} • {study.indication}</div>
-                  </div>
-                ))}
+            <div className="fixed bottom-8 left-8 z-20" style={{ width: '320px' }}>
+              <div className="bg-blue-950/90 backdrop-blur-md rounded-lg border border-blue-500/40 p-4">
+                <h3 className="text-sm font-semibold text-blue-300 flex items-center mb-3">
+                  <Microscope className="w-4 h-4 mr-2" />
+                  Estudos Científicos ({scientificData.length})
+                </h3>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {scientificData.slice(0, 4).map((study, idx) => (
+                    <div key={study.id} className="text-xs text-blue-200 p-2 bg-blue-900/40 rounded border-l-2 border-blue-400/60">
+                      <div className="font-medium">{study.title}</div>
+                      <div className="text-blue-300 mt-1">{study.description}</div>
+                      <div className="text-blue-400 mt-1 text-xs">📍 {study.compound} • {study.indication}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          {/* Clinical Cases */}
+          {/* Clinical Cases - Center position */}
           {clinicalData.length > 0 && (
-            <div className="w-80 bg-green-950/90 backdrop-blur-md rounded-lg border border-green-500/40 p-4">
-              <h3 className="text-sm font-semibold text-green-300 flex items-center mb-3">
-                <Pill className="w-4 h-4 mr-2" />
-                Casos Clínicos ({clinicalData.length})
-              </h3>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {clinicalData.slice(0, 4).map((case_, idx) => (
-                  <div key={case_.id} className="text-xs text-green-200 p-2 bg-green-900/40 rounded border-l-2 border-green-400/60">
-                    <div className="font-medium">{case_.caseNumber}</div>
-                    <div className="text-green-300 mt-1">{case_.description}</div>
-                    <div className="text-green-400 mt-1 text-xs">👨‍⚕️ {case_.indication} • Resultado: {case_.outcome}</div>
-                  </div>
-                ))}
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20" style={{ width: '320px' }}>
+              <div className="bg-green-950/90 backdrop-blur-md rounded-lg border border-green-500/40 p-4">
+                <h3 className="text-sm font-semibold text-green-300 flex items-center mb-3">
+                  <Pill className="w-4 h-4 mr-2" />
+                  Casos Clínicos ({clinicalData.length})
+                </h3>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {clinicalData.slice(0, 4).map((case_, idx) => (
+                    <div key={case_.id} className="text-xs text-green-200 p-2 bg-green-900/40 rounded border-l-2 border-green-400/60">
+                      <div className="font-medium">{case_.caseNumber}</div>
+                      <div className="text-green-300 mt-1">{case_.description}</div>
+                      <div className="text-green-400 mt-1 text-xs">👨‍⚕️ {case_.indication} • Resultado: {case_.outcome}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          {/* Regulatory Alerts */}
+          {/* Regulatory Alerts - Right position */}
           {alertsData.length > 0 && (
-            <div className="w-80 bg-red-950/90 backdrop-blur-md rounded-lg border border-red-500/40 p-4">
-              <h3 className="text-sm font-semibold text-red-300 flex items-center mb-3">
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                Alertas Regulatórios ({alertsData.length})
-              </h3>
-              <div className="space-y-2 max-h-40 overflow-y-auto">
-                {alertsData.slice(0, 4).map((alert, idx) => (
-                  <div key={alert.id} className="text-xs text-red-200 p-2 bg-red-900/40 rounded border-l-2 border-red-400/60">
-                    <div className="font-medium">{alert.type}</div>
-                    <div className="text-red-300 mt-1">{alert.message}</div>
-                    <div className="text-red-400 mt-1 text-xs">🚨 Prioridade: {alert.priority}</div>
-                  </div>
-                ))}
+            <div className="fixed bottom-8 right-8 z-20" style={{ width: '320px' }}>
+              <div className="bg-red-950/90 backdrop-blur-md rounded-lg border border-red-500/40 p-4">
+                <h3 className="text-sm font-semibold text-red-300 flex items-center mb-3">
+                  <AlertTriangle className="w-4 h-4 mr-2" />
+                  Alertas Regulatórios ({alertsData.length})
+                </h3>
+                <div className="space-y-2 max-h-40 overflow-y-auto">
+                  {alertsData.slice(0, 4).map((alert, idx) => (
+                    <div key={alert.id} className="text-xs text-red-200 p-2 bg-red-900/40 rounded border-l-2 border-red-400/60">
+                      <div className="font-medium">{alert.type}</div>
+                      <div className="text-red-300 mt-1">{alert.message}</div>
+                      <div className="text-red-400 mt-1 text-xs">🚨 Prioridade: {alert.priority}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )}
-        </div>
+        </>
       )}
 
-      {/* Sub-search Results - Right Side */}
+      {/* Sub-search Results - Right Side with better spacing */}
       {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="absolute right-8 z-20"
-          style={{ top: `${200 + (index * 280)}px`, width: '350px' }}
+          className="fixed right-8 z-30"
+          style={{ 
+            top: `${150 + (index * 200)}px`, 
+            width: '300px',
+            maxHeight: '180px'
+          }}
         >
           <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-4">
             <div className="flex items-center justify-between mb-3">
