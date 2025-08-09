@@ -321,31 +321,7 @@ interface OverviewDashboardProps {
 function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery, cardPosition, onMouseDown, isDragging, onSubSearch, subSearchResponse, subSearchQuery, showSubSearch, onCloseSubSearch, subCardMinimized, onToggleSubCard, subCardPosition, onSubCardMouseDown }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-4 py-8">
-      {/* Hero Section with 3D Avatar - Reduced by 30% */}
-      <div className="flex flex-col lg:flex-row items-center justify-between mb-8">
-        {/* Welcome Message - Moved to left */}
-        <div className="text-center lg:text-left lg:mr-6 mb-6 lg:mb-0">
-          <h1 className="text-3xl lg:text-4xl font-bold mb-3">
-            <span className="text-white">Bem-vindo ao</span>
-            <span className="neon-text block">Futuro da Medicina</span>
-          </h1>
-          <p className="text-base text-gray-300 mb-4 max-w-xl">
-            Plataforma avançada para análise científica, casos clínicos e descobertas em cannabis medicinal
-          </p>
-          <button 
-            className="px-6 py-2.5 bg-gradient-to-r from-neon-cyan to-neon-blue rounded-xl font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all transform hover:scale-105 animate-pulse-glow text-sm"
-            data-testid="explore-platform-button"
-          >
-            <i className="fas fa-rocket mr-2" />
-            Explorar Plataforma
-          </button>
-        </div>
-        
-        {/* 3D Avatar - Moved to right */}
-        <div className="relative">
-          <Avatar3D className="w-24 h-24" size={105} />
-        </div>
-      </div>
+
 
       {/* Cosmic Knowledge Map */}
       <div className="mb-8">
