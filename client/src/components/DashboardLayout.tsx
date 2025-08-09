@@ -90,29 +90,29 @@ export default function DashboardLayout({
 
       {/* Side Navigation */}
       <nav
-        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-40 lg:hidden holographic-border ${
+        className={`fixed top-0 left-0 h-full w-full sm:w-80 bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md transform transition-transform duration-300 z-50 lg:hidden holographic-border ${
           sideNavOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         data-testid="side-navigation"
       >
-        <div className="p-6 pt-20">
+        <div className="p-6 pt-24">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-xl font-semibold text-neon-cyan neon-text">Plataforma Médica</h2>
             <button
               onClick={() => setSideNavOpen(false)}
-              className="w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all"
+              className="w-12 h-12 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
               aria-label="Fechar menu"
             >
-              <i className="fas fa-times text-neon-cyan" />
+              <i className="fas fa-times text-neon-cyan text-lg" />
             </button>
           </div>
           
-          <div className="space-y-4 max-h-[calc(100vh-140px)] overflow-y-auto">
+          <div className="space-y-3 max-h-[calc(100vh-160px)] overflow-y-auto">
             {dashboardOptions.map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
-                className={`w-full text-left p-4 rounded-xl transition-all data-card touch-manipulation min-h-16 ${
+                className={`w-full text-left p-5 rounded-xl transition-all data-card touch-manipulation min-h-20 ${
                   activeDashboard === option.id
                     ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30"
                     : "hover:bg-neon-cyan/10"
@@ -121,14 +121,14 @@ export default function DashboardLayout({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <i className={`${option.icon} mr-3 text-lg ${
+                    <i className={`${option.icon} mr-4 text-xl ${
                       option.id === "scientific" ? "text-emerald-400" :
                       option.id === "clinical" ? "text-blue-400" :
                       option.id === "alerts" ? "text-amber-400" :
                       option.id === "admin" ? "text-green-400" :
                       option.id === "profile" ? "text-purple-400" : ""
                     }`} />
-                    <span className="font-semibold text-base">{option.name}</span>
+                    <span className="font-semibold text-lg">{option.name}</span>
                   </div>
                   {option.id === "alerts" && (
                     <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
@@ -143,7 +143,7 @@ export default function DashboardLayout({
                     <span className="bg-green-500 text-white text-xs rounded-full px-2 py-1">🌍</span>
                   )}
                 </div>
-                <div className="text-sm text-gray-400 mt-2 ml-8">
+                <div className="text-base text-gray-400 mt-2 ml-9">
                   {option.id === "overview" && "Dashboard principal"}
                   {option.id === "scientific" && "Estudos e pesquisas"}
                   {option.id === "clinical" && "Registros médicos"}
@@ -162,7 +162,7 @@ export default function DashboardLayout({
       {/* Overlay for mobile */}
       {sideNavOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
           onClick={() => setSideNavOpen(false)}
           data-testid="nav-overlay"
         />
