@@ -153,29 +153,29 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
-            <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-              🧠 Central de Inteligência Cannabis Global
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30">
-                <Activity className="w-4 h-4 mr-1" />
-                TEMPO REAL
-              </span>
-            </h1>
-            <p className="text-slate-300">
-              Monitoramento científico mundial • Dados da ANVISA, PubMed, ClinicalTrials.gov • Alimentando Dr. Cannabis IA
-            </p>
-          </div>
-          {onBackToOverview && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
+                🧠 Central de Inteligência Cannabis Global
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30">
+                  <Activity className="w-4 h-4 mr-1" />
+                  TEMPO REAL
+                </span>
+              </h1>
+              <p className="text-slate-300">
+                Monitoramento científico mundial • Dados da ANVISA, PubMed, ClinicalTrials.gov • Alimentando Dr. Cannabis IA
+              </p>
+            </div>
             <Button
-              onClick={onBackToOverview}
-              className="bg-gray-600 hover:bg-gray-700 text-white"
-              data-testid="button-back-to-overview"
+              onClick={() => window.location.href = '/'}
+              className="bg-gray-600 hover:bg-gray-700 text-white flex items-center gap-2"
+              data-testid="button-back-home"
             >
-              <i className="fas fa-arrow-left mr-2" />
-              Voltar à Visão Geral
+              <i className="fas fa-arrow-left" />
+              Voltar ao Sistema
             </Button>
-          )}
+          </div>
         </div>
 
         {/* Global Real-Time Statistics */}
