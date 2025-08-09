@@ -670,105 +670,113 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch, on
         </>
       )}
 
-      {/* Sub-research Cards Area - Bottom dock */}
-      {searchTabs.filter(tab => tab.type === 'sub').length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-gradient-to-t from-black/95 via-black/60 to-transparent backdrop-blur-md border-t border-purple-600/30" style={{height: '220px'}}>
-          <div className="p-4 h-full overflow-x-auto">
-            <div className="flex gap-4 h-full">
-              {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => {
-                const parentTab = searchTabs.find(tab => tab.id === subTab.parentId);
-                const position = cardPositions[subTab.id] || { 
-                  x: index * 20, // Small horizontal offset for dragging
-                  y: 0
-                };
-                
-                return (
-                  <div
-                    key={`sub-card-${subTab.id}`}
-                    className="flex-shrink-0"
-                    style={{
-                      transform: `translate(${position.x}px, ${position.y}px) ${draggingCard === subTab.id ? 'scale(1.05)' : 'scale(1)'}`,
-                      transition: draggingCard === subTab.id ? 'none' : 'transform 0.2s ease'
-                    }}
+      {/* Sub-research Cards - Positioned next to main cards */}
+      {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => {
+        const parentTab = searchTabs.find(tab => tab.id === subTab.parentId);
+        const parentIndex = searchTabs.filter(tab => tab.type === 'main').findIndex(tab => tab.id === subTab.parentId);
+        
+        // Position next to the parent main card with 8% distance
+        const basePosition = {
+          x: 220 + (parentIndex % 3) * 400 + 320 + (window.innerWidth * 0.08), // 8% distance from parent
+          y: 120 + parentIndex * 280 + index * 180
+        };
+        
+        const position = cardPositions[subTab.id] || basePosition;
+        
+        return (
+          <div
+            key={`sub-card-${subTab.id}`}
+            className="absolute z-50"
+            style={{
+              left: `${position.x}px`,
+              top: `${position.y}px`,
+              transform: draggingCard === subTab.id ? 'scale(1.05)' : 'scale(1)',
+              transition: draggingCard === subTab.id ? 'none' : 'transform 0.2s ease'
+            }}
+          >
+            {/* Neural connection line to parent */}
+            <div 
+              className="absolute -left-16 top-20 w-16 h-0.5 bg-purple-400/60 animate-pulse"
+              style={{
+                background: 'linear-gradient(90deg, rgba(168,85,247,0.6) 0%, rgba(168,85,247,0.2) 100%)'
+              }}
+            />
+            <div className="absolute -left-16 top-20 w-0.5 h-4 bg-purple-400/60" />
+            
+            {/* Sub Research Card */}
+            <div 
+              className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all w-80 shadow-lg ${
+                activeTabId === subTab.id 
+                  ? 'border-purple-400 shadow-purple-400/30 h-52' 
+                  : 'border-purple-600/40 hover:border-purple-400/60 h-44'
+              } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
+            >
+              {/* Header */}
+              <div className="flex justify-between items-start p-3 pb-2">
+                <div className="flex items-center flex-1">
+                  <div 
+                    className="w-6 h-6 mr-2 flex items-center justify-center text-purple-400 cursor-grab bg-purple-900/30 rounded text-xs border border-purple-600/40 hover:bg-purple-800/40"
+                    onMouseDown={(e) => handleCardMouseDown(e, subTab.id)}
+                    title="Arrastar card"
                   >
-                    {/* Sub Research Card */}
-                    <div 
-                      className={`draggable-card bg-black/95 backdrop-blur-md rounded-lg border transition-all w-80 shadow-lg ${
-                        activeTabId === subTab.id 
-                          ? 'border-purple-400 shadow-purple-400/30 h-52' 
-                          : 'border-purple-600/40 hover:border-purple-400/60 h-44'
-                      } ${draggingCard === subTab.id ? 'ring-2 ring-purple-400/50' : ''}`}
-                    >
-                      {/* Header */}
-                      <div className="flex justify-between items-start p-3 pb-2">
-                        <div className="flex items-center flex-1">
-                          <div 
-                            className="w-6 h-6 mr-2 flex items-center justify-center text-purple-400 cursor-grab bg-purple-900/30 rounded text-xs border border-purple-600/40 hover:bg-purple-800/40"
-                            onMouseDown={(e) => handleCardMouseDown(e, subTab.id)}
-                            title="Arrastar card"
-                          >
-                            ⋮⋮
-                          </div>
-                          <h4 
-                            className="text-sm font-medium text-purple-300 cursor-pointer truncate"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
-                            }}
-                            title={subTab.query}
-                          >
-                            🔍 {subTab.query.substring(0, 30)}{subTab.query.length > 30 ? '...' : ''}
-                          </h4>
-                        </div>
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
-                            setCardPositions(prev => {
-                              const newPos = { ...prev };
-                              delete newPos[subTab.id];
-                              return newPos;
-                            });
-                            if (activeTabId === subTab.id) setActiveTabId(null);
-                          }}
-                          className="text-red-400 hover:text-red-300 w-5 h-5 flex items-center justify-center rounded hover:bg-red-500/20"
-                        >
-                          ×
-                        </button>
-                      </div>
-                      
-                      {/* Content */}
-                      <div 
-                        className="px-3 pb-3 cursor-pointer flex-1"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
-                        }}
-                      >
-                        <div className="text-xs text-gray-300 leading-relaxed">
-                          <div dangerouslySetInnerHTML={{ 
-                            __html: subTab.response.substring(0, activeTabId === subTab.id ? 400 : 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                          }} />
-                          {subTab.response.length > (activeTabId === subTab.id ? 400 : 150) && (
-                            <span className="text-purple-400 cursor-pointer">... {activeTabId === subTab.id ? '' : '[clique para expandir]'}</span>
-                          )}
-                        </div>
-                        
-                        {/* Parent indicator */}
-                        {parentTab && (
-                          <div className="text-xs text-purple-500 mt-2 pt-1 border-t border-purple-800/30 opacity-70 truncate">
-                            ↖ De: {parentTab.query.substring(0, 35)}...
-                          </div>
-                        )}
-                      </div>
-                    </div>
+                    ⋮⋮
                   </div>
-                );
-              })}
+                  <h4 
+                    className="text-sm font-medium text-purple-300 cursor-pointer truncate"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
+                    }}
+                    title={subTab.query}
+                  >
+                    ↳ {subTab.query.substring(0, 25)}{subTab.query.length > 25 ? '...' : ''}
+                  </h4>
+                </div>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
+                    setCardPositions(prev => {
+                      const newPos = { ...prev };
+                      delete newPos[subTab.id];
+                      return newPos;
+                    });
+                    if (activeTabId === subTab.id) setActiveTabId(null);
+                  }}
+                  className="text-red-400 hover:text-red-300 w-5 h-5 flex items-center justify-center rounded hover:bg-red-500/20"
+                >
+                  ×
+                </button>
+              </div>
+              
+              {/* Content */}
+              <div 
+                className="px-3 pb-3 cursor-pointer flex-1"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveTabId(activeTabId === subTab.id ? null : subTab.id);
+                }}
+              >
+                <div className="text-xs text-gray-300 leading-relaxed">
+                  <div dangerouslySetInnerHTML={{ 
+                    __html: subTab.response.substring(0, activeTabId === subTab.id ? 400 : 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                  }} />
+                  {subTab.response.length > (activeTabId === subTab.id ? 400 : 150) && (
+                    <span className="text-purple-400 cursor-pointer">... {activeTabId === subTab.id ? '' : '[clique para expandir]'}</span>
+                  )}
+                </div>
+                
+                {/* Parent indicator */}
+                {parentTab && (
+                  <div className="text-xs text-purple-500 mt-2 pt-1 border-t border-purple-800/30 opacity-70 truncate">
+                    ↖ De: {parentTab.query.substring(0, 35)}...
+                  </div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })}
 
     </div>
   );
