@@ -63,6 +63,8 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
   const [chatMode, setChatMode] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{type: 'user' | 'ai', message: string}>>([]);
   const [isTyping, setIsTyping] = useState(false);
+  const [relatedOptions, setRelatedOptions] = useState<string[]>([]);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
 
   const filters = [
     { id: "todos", label: "Todos", icon: Brain },
@@ -80,13 +82,36 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
     setChatMessages(prev => [...prev, { type: 'user', message: userMessage }]);
     setSearchTerm("");
     setIsTyping(true);
+    setRelatedOptions([]);
+    setSearchResults([]);
 
-    // Simulated AI response based on platform data
-    setTimeout(() => {
+    try {
+      const response = await fetch('/api/ai-search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: userMessage }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro na busca');
+      }
+
+      const result = await response.json();
+
+      setChatMessages(prev => [...prev, { type: 'ai', message: result.answer }]);
+      setRelatedOptions(result.suggestions);
+      setSearchResults(result.relatedResults);
+
+    } catch (error) {
+      console.error('Erro na busca IA:', error);
+      // Fallback to local response
       const aiResponse = generateAIResponse(userMessage);
       setChatMessages(prev => [...prev, { type: 'ai', message: aiResponse }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const generateAIResponse = (question: string): string => {
@@ -250,10 +275,55 @@ export default function CosmicMap({ onPlanetClick, activeDashboard, onSearch }: 
             </div>
           )}
         </div>
-      </div>
-      
 
-      
+        {/* Related Options - Show only in chat mode when there are suggestions */}
+        {chatMode && relatedOptions.length > 0 && (
+          <div className="mt-4 p-3 bg-black/20 rounded-lg border border-gray-700/30">
+            <p className="text-xs text-gray-300 mb-2">💡 Tópicos relacionados:</p>
+            <div className="flex flex-wrap gap-2">
+              {relatedOptions.map((option, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setSearchTerm(option);
+                    handleChatSubmit({ preventDefault: () => {} } as React.FormEvent);
+                  }}
+                  className="text-xs px-3 py-1.5 bg-gray-800/60 text-gray-300 rounded-full border border-gray-600/40 hover:bg-gray-700/60 hover:text-white transition-all"
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Search Results Preview */}
+        {chatMode && searchResults.length > 0 && (
+          <div className="mt-4 p-3 bg-black/20 rounded-lg border border-gray-700/30">
+            <p className="text-xs text-gray-300 mb-2">📚 Fontes consultadas:</p>
+            <div className="space-y-2">
+              {searchResults.slice(0, 3).map((result, index) => (
+                <div key={index} className="text-xs p-2 bg-gray-800/40 rounded border border-gray-600/20">
+                  <div className="flex items-center space-x-2 mb-1">
+                    {result.type === 'study' && <Microscope className="w-3 h-3 text-emerald-400" />}
+                    {result.type === 'case' && <i className="fas fa-user-md w-3 h-3 text-blue-400" />}
+                    {result.type === 'alert' && <AlertTriangle className="w-3 h-3 text-amber-400" />}
+                    <span className="text-gray-200 font-medium">
+                      {result.type === 'study' && 'Estudo Científico'}
+                      {result.type === 'case' && 'Caso Clínico'}
+                      {result.type === 'alert' && 'Alerta Regulatório'}
+                    </span>
+                    <span className="text-gray-400">({Math.round(result.relevance * 100)}% relevância)</span>
+                  </div>
+                  <p className="text-gray-300 line-clamp-2">
+                    {result.data.title || result.data.description || result.data.message}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
     </div>
   );

@@ -136,6 +136,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Search endpoint
+  app.post("/api/ai-search", async (req, res) => {
+    try {
+      const { query } = req.body;
+      
+      if (!query || typeof query !== 'string') {
+        return res.status(400).json({ error: 'Query is required' });
+      }
+      
+      // Import AI search functionality
+      const { MedicalAISearch } = await import('./ai-search.js');
+      
+      // Get all data for analysis
+      const [studies, cases, alerts] = await Promise.all([
+        storage.getScientificStudies(),
+        storage.getClinicalCases(),
+        storage.getAlerts()
+      ]);
+      
+      // Analyze query and generate response
+      const result = MedicalAISearch.analyzeQuery(query, studies, cases, alerts);
+      
+      res.json(result);
+    } catch (error) {
+      console.error('AI search error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
