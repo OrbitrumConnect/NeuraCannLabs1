@@ -215,12 +215,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full min-h-screen">
       
-      {/* Dr. Cannabis IA - Avatar same position on all devices */}
-      <div className="absolute top-8 -left-4 w-72 h-72 z-20">
+      {/* Dr. Cannabis IA - Mobile friendly positioning */}
+      <div className="flex justify-center pt-8 sm:absolute sm:top-8 sm:-left-4 sm:w-72 sm:h-72 z-20">
         <div 
-          className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
+          className={`cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
               ? 'scale-105 drop-shadow-2xl filter brightness-75 saturate-50 grayscale-[30%]' 
               : 'hover:scale-102 drop-shadow-lg'
@@ -239,14 +239,20 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-40" />
+            <MedicalAvatar3D className="w-32 sm:w-40" />
           </div>
+          
+          {!isDrAIActive && (
+            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-center sm:hidden">
+              <p className="text-xs text-cyan-400">Toque para ativar</p>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Search Interface - Mobile below avatar, Desktop centered - Only show when Dr AI is active */}
+      {/* Search Interface - Clean mobile flow, Desktop overlay - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="relative mt-8 mx-4 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl sm:px-0">
+        <div className="mt-12 mx-4 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl sm:px-0">
           <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 sm:p-6">
             
             {/* Search Bar */}
