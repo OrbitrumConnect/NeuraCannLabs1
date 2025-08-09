@@ -130,6 +130,16 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 - Interface principal focada na experiência de consulta médica
 - Dados científicos detalhados acessíveis via navegação específica
 
+**2025-08-09**: Sistema de Revisão Colaborativa Completo e Interface Atualizada
+- ✅ **Sistema de revisão colaborativa implementado** com aba "Revisão" no admin
+- ✅ **3 tipos de ação administrativa**: Aprovar, Rejeitar ou Solicitar Revisão  
+- ✅ **Ciclo de feedback colaborativo**: admin → notas detalhadas → usuário corrige com IA → reenvio
+- ✅ **4 estudos de exemplo** em diferentes status incluindo 2 aguardando revisão
+- ✅ **Removido "v2.0 BETA"** do cabeçalho conforme solicitado pelo usuário
+- ✅ **Adicionado Fórum de Discussão** no cabeçalho com 24 discussões ativas
+- ✅ **ForumDashboard completo** com categorias, posts médicos e estatísticas
+- ✅ **Interface médica colaborativa** para discussão de casos clínicos e protocolos
+
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
 - Maintained only the functional "IA Cannabis" chat system

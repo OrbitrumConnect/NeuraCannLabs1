@@ -6,6 +6,7 @@ import ScientificDashboard from "./ScientificDashboard";
 import ClinicalDashboard from "./ClinicalDashboard";
 import AlertsDashboard from "./AlertsDashboard";
 import MyStudyDashboard from "./MyStudyDashboard";
+import ForumDashboard from "./ForumDashboard";
 import ProfileDashboard from "./ProfileDashboard";
 import { AdminNavigation } from '@/components/AdminNavigation';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
@@ -74,6 +75,9 @@ export default function Dashboard() {
       )}
       {activeDashboard === "my-study" && (
         <MyStudyDashboard />
+      )}
+      {activeDashboard === "forum" && (
+        <ForumDashboard />
       )}
       {activeDashboard === "admin" && (
         <GlobalAdminDashboard />

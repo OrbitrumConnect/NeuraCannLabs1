@@ -16,6 +16,7 @@ const dashboardOptions = [
   { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
+  { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
 ];
@@ -43,9 +44,6 @@ export default function DashboardLayout({
               <i className="fas fa-cannabis text-white text-lg" />
             </div>
             <h1 className="text-2xl font-bold neon-text">NeuroCann Lab</h1>
-            <span className="px-2 py-1 bg-emerald-500/20 text-emerald-400 text-xs rounded-full border border-emerald-500/30">
-              v2.0 BETA
-            </span>
           </div>
           
           <nav className="hidden lg:flex items-center space-x-6">
@@ -67,6 +65,9 @@ export default function DashboardLayout({
                 )}
                 {option.id === "my-study" && (
                   <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1">NEW</span>
+                )}
+                {option.id === "forum" && (
+                  <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1">24</span>
                 )}
                 {option.id === "admin" && (
                   <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1">🌍</span>
