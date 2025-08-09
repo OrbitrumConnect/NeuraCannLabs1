@@ -63,7 +63,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "scientific",
     name: "Dados Científicos",
-    position: { bottom: "25%", left: "3%" },
+    position: { top: "20%", right: "5%" },
     size: "w-11 h-11",
     color: "from-cyan-400 to-blue-600",
     icon: "fas fa-flask",
@@ -72,7 +72,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "clinical",
     name: "Casos Clínicos",
-    position: { bottom: "35%", left: "3%" },
+    position: { top: "35%", right: "5%" },
     size: "w-11 h-11", 
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
@@ -81,7 +81,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "alerts",
     name: "Alertas",
-    position: { bottom: "45%", left: "3%" },
+    position: { top: "50%", right: "5%" },
     size: "w-9 h-9",
     color: "from-orange-400 to-red-500",
     icon: "fas fa-bell",
@@ -90,7 +90,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "profile",
     name: "Perfil",
-    position: { bottom: "55%", left: "3%" },
+    position: { top: "65%", right: "5%" },
     size: "w-9 h-9",
     color: "from-purple-400 to-pink-500",
     icon: "fas fa-user-circle",
@@ -217,8 +217,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Dr. Cannabis IA - Avatar moved to center-left to avoid menu conflict */}
-      <div className="absolute top-32 left-1/4 transform -translate-x-1/2 w-72 h-72 z-20">
+      {/* Dr. Cannabis IA - Avatar same position on all devices */}
+      <div className="absolute top-8 -left-4 w-72 h-72 z-20">
         <div 
           className={`w-72 h-72 cursor-pointer transition-all duration-500 flex items-center justify-center ${
             isDrAIActive 
