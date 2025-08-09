@@ -73,14 +73,14 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **READY FOR INVESTMENT PRESENTATION** 🚀
 
-**EVOLUÇÃO v2.6 - LAYOUT OTIMIZADO SEM SOBREPOSIÇÃO**:
-✅ Fundo azul removido - interface mais limpa
-✅ Cards posicionados com fixed - sem sobreposição 
-✅ Espaçamento adequado entre elementos
-✅ Sub-pesquisas reorganizadas na lateral direita
-✅ Layout harmônico e profissional para apresentação
-✅ Dados explícitos e legíveis em cards separados
-✅ Text-to-Speech otimizado para leitura natural
+**EVOLUÇÃO v2.7 - LAYOUT VERTICAL HARMONIOSO**:
+✅ Cards empilhados verticalmente na esquerda
+✅ Avatar movido para lado direito para balanceamento
+✅ Fundo azul restaurado - consistente com o app
+✅ Cards com espaçamento vertical adequado (space-y-4)
+✅ Largura aumentada para 380px para melhor legibilidade
+✅ Altura reduzida dos cards (max-h-32) para visualização completa
+✅ Layout harmonioso e organizado para apresentação
 
 ---
 

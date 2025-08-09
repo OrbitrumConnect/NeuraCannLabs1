@@ -214,10 +214,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full h-screen bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
+    <div className="relative w-full h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 overflow-hidden">
 
-      {/* Avatar Section - Left Side */}
-      <div className="absolute top-8 left-8 w-80 h-80 z-20">
+      {/* Avatar Section - Right Side */}
+      <div className="absolute top-8 right-8 w-80 h-80 z-20">
         <MedicalAvatar3D />
       </div>
 
@@ -292,72 +292,67 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Category Cards - Fixed positioning to avoid overlap */}
+      {/* Category Cards - Stacked vertically on the left */}
       {currentResult && (
-        <>
-          {/* Scientific Studies - Left position */}
+        <div className="fixed left-8 top-1/2 transform -translate-y-1/2 z-20 space-y-4" style={{ width: '380px' }}>
+          
+          {/* Scientific Studies */}
           {scientificData.length > 0 && (
-            <div className="fixed bottom-8 left-8 z-20" style={{ width: '320px' }}>
-              <div className="bg-blue-950/90 backdrop-blur-md rounded-lg border border-blue-500/40 p-4">
-                <h3 className="text-sm font-semibold text-blue-300 flex items-center mb-3">
-                  <Microscope className="w-4 h-4 mr-2" />
-                  Estudos Científicos ({scientificData.length})
-                </h3>
-                <div className="space-y-2 max-h-40 overflow-y-auto">
-                  {scientificData.slice(0, 4).map((study, idx) => (
-                    <div key={study.id} className="text-xs text-blue-200 p-2 bg-blue-900/40 rounded border-l-2 border-blue-400/60">
-                      <div className="font-medium">{study.title}</div>
-                      <div className="text-blue-300 mt-1">{study.description}</div>
-                      <div className="text-blue-400 mt-1 text-xs">📍 {study.compound} • {study.indication}</div>
-                    </div>
-                  ))}
-                </div>
+            <div className="bg-blue-950/90 backdrop-blur-md rounded-lg border border-blue-500/40 p-4">
+              <h3 className="text-sm font-semibold text-blue-300 flex items-center mb-3">
+                <Microscope className="w-4 h-4 mr-2" />
+                Estudos Científicos ({scientificData.length})
+              </h3>
+              <div className="space-y-2 max-h-32 overflow-y-auto">
+                {scientificData.slice(0, 3).map((study, idx) => (
+                  <div key={study.id} className="text-xs text-blue-200 p-2 bg-blue-900/40 rounded border-l-2 border-blue-400/60">
+                    <div className="font-medium">{study.title}</div>
+                    <div className="text-blue-300 mt-1">{study.description}</div>
+                    <div className="text-blue-400 mt-1 text-xs">📍 {study.compound} • {study.indication}</div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Clinical Cases - Center position */}
+          {/* Clinical Cases */}
           {clinicalData.length > 0 && (
-            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-20" style={{ width: '320px' }}>
-              <div className="bg-green-950/90 backdrop-blur-md rounded-lg border border-green-500/40 p-4">
-                <h3 className="text-sm font-semibold text-green-300 flex items-center mb-3">
-                  <Pill className="w-4 h-4 mr-2" />
-                  Casos Clínicos ({clinicalData.length})
-                </h3>
-                <div className="space-y-2 max-h-40 overflow-y-auto">
-                  {clinicalData.slice(0, 4).map((case_, idx) => (
-                    <div key={case_.id} className="text-xs text-green-200 p-2 bg-green-900/40 rounded border-l-2 border-green-400/60">
-                      <div className="font-medium">{case_.caseNumber}</div>
-                      <div className="text-green-300 mt-1">{case_.description}</div>
-                      <div className="text-green-400 mt-1 text-xs">👨‍⚕️ {case_.indication} • Resultado: {case_.outcome}</div>
-                    </div>
-                  ))}
-                </div>
+            <div className="bg-green-950/90 backdrop-blur-md rounded-lg border border-green-500/40 p-4">
+              <h3 className="text-sm font-semibold text-green-300 flex items-center mb-3">
+                <Pill className="w-4 h-4 mr-2" />
+                Casos Clínicos ({clinicalData.length})
+              </h3>
+              <div className="space-y-2 max-h-32 overflow-y-auto">
+                {clinicalData.slice(0, 3).map((case_, idx) => (
+                  <div key={case_.id} className="text-xs text-green-200 p-2 bg-green-900/40 rounded border-l-2 border-green-400/60">
+                    <div className="font-medium">{case_.caseNumber}</div>
+                    <div className="text-green-300 mt-1">{case_.description}</div>
+                    <div className="text-green-400 mt-1 text-xs">👨‍⚕️ {case_.indication} • Resultado: {case_.outcome}</div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Regulatory Alerts - Right position */}
+          {/* Regulatory Alerts */}
           {alertsData.length > 0 && (
-            <div className="fixed bottom-8 right-8 z-20" style={{ width: '320px' }}>
-              <div className="bg-red-950/90 backdrop-blur-md rounded-lg border border-red-500/40 p-4">
-                <h3 className="text-sm font-semibold text-red-300 flex items-center mb-3">
-                  <AlertTriangle className="w-4 h-4 mr-2" />
-                  Alertas Regulatórios ({alertsData.length})
-                </h3>
-                <div className="space-y-2 max-h-40 overflow-y-auto">
-                  {alertsData.slice(0, 4).map((alert, idx) => (
-                    <div key={alert.id} className="text-xs text-red-200 p-2 bg-red-900/40 rounded border-l-2 border-red-400/60">
-                      <div className="font-medium">{alert.type}</div>
-                      <div className="text-red-300 mt-1">{alert.message}</div>
-                      <div className="text-red-400 mt-1 text-xs">🚨 Prioridade: {alert.priority}</div>
-                    </div>
-                  ))}
-                </div>
+            <div className="bg-red-950/90 backdrop-blur-md rounded-lg border border-red-500/40 p-4">
+              <h3 className="text-sm font-semibold text-red-300 flex items-center mb-3">
+                <AlertTriangle className="w-4 h-4 mr-2" />
+                Alertas Regulatórios ({alertsData.length})
+              </h3>
+              <div className="space-y-2 max-h-32 overflow-y-auto">
+                {alertsData.slice(0, 3).map((alert, idx) => (
+                  <div key={alert.id} className="text-xs text-red-200 p-2 bg-red-900/40 rounded border-l-2 border-red-400/60">
+                    <div className="font-medium">{alert.type}</div>
+                    <div className="text-red-300 mt-1">{alert.message}</div>
+                    <div className="text-red-400 mt-1 text-xs">🚨 Prioridade: {alert.priority}</div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
 
       {/* Sub-search Results - Right Side with better spacing */}
