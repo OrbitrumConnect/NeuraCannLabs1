@@ -73,16 +73,16 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 **READY FOR INVESTMENT PRESENTATION** 🚀
 
-**EVOLUÇÃO v2.9 - LAYOUT INVERTIDO E FUNDO TRANSPARENTE**:
-✅ Avatar Dr. Cannabis IA movido para esquerda
-✅ Cards empilhados verticalmente na direita
+**EVOLUÇÃO v3.0 - DR. CANNABIS IA INTERATIVO RESTAURADO**:
+✅ Dr. Cannabis IA clicável - ativa todo o sistema ao clicar
+✅ Interface de pesquisa aparece apenas quando Dr. IA é ativado
+✅ Cards de dados mostram apenas após ativação do Dr. IA
+✅ Sub-pesquisas funcionam apenas com Dr. IA ativo
+✅ Avatar com hover effect e tooltip explicativo
+✅ Layout invertido mantido: Avatar esquerda, Cards direita
 ✅ Planetas flutuantes organizados verticalmente na esquerda
-✅ Sub-pesquisas movidas para lado esquerdo
-✅ Fundo azul removido - apenas fundo transparente do app
-✅ Cards com espaçamento vertical adequado (space-y-4)
-✅ Largura 380px para melhor legibilidade
-✅ Layout espelhado e harmonioso para apresentação
-✅ Interface completamente integrada ao fundo real do app
+✅ Fundo transparente integrado ao app real
+✅ Sistema completo controlado pelo Dr. Cannabis IA
 
 ---
 

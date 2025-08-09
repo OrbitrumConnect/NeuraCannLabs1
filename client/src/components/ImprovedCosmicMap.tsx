@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
 import MedicalAvatar3D from "./MedicalAvatar3D";
 import MainCard from "./MainCard";
-import CategoryCard from "./CategoryCard";
 
 // Import the missing interface for proper typing
 interface ScientificStudy {
@@ -106,6 +105,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [isTyping, setIsTyping] = useState(false);
   const [searchTabs, setSearchTabs] = useState<SearchTab[]>([]);
   const [subSearchTerm, setSubSearchTerm] = useState("");
+  const [isDrAIActive, setIsDrAIActive] = useState(false);
 
   // Fetch real data from APIs with proper typing
   const { data: scientificData = [] } = useQuery<ScientificStudy[]>({ queryKey: ['/api/scientific'] });
@@ -216,59 +216,70 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full h-screen overflow-hidden">
       
-      {/* Avatar Section - Left Side */}
-      <div className="absolute top-8 left-8 w-80 h-80 z-20">
-        <MedicalAvatar3D />
-      </div>
-
-      {/* Search Interface - Top Center */}
-      <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl">
-        <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6">
-          
-          {/* Search Bar */}
-          <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-              <input
-                type="text"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                placeholder="Digite sua consulta médica..."
-                className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50"
-                disabled={isTyping}
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isTyping}
-              className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
-            >
-              {isTyping ? <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-5 h-5" />}
-            </button>
-          </form>
-
-          {/* Filters */}
-          <div className="flex flex-wrap gap-2">
-            {filters.map((filter) => (
-              <button
-                key={filter.id}
-                onClick={() => setSelectedFilter(filter.id)}
-                className={`px-3 py-1 rounded-full text-xs transition-all flex items-center space-x-1 ${
-                  selectedFilter === filter.id
-                    ? "bg-blue-600/80 text-white"
-                    : "bg-white/10 text-gray-300 hover:bg-white/20"
-                }`}
-              >
-                <filter.icon className="w-3 h-3" />
-                <span>{filter.label}</span>
-              </button>
-            ))}
+      {/* Avatar Section - Left Side - Clickable */}
+      <div 
+        className="absolute top-8 left-8 w-80 h-80 z-20 cursor-pointer group"
+        onClick={() => setIsDrAIActive(!isDrAIActive)}
+      >
+        <div className="relative">
+          <MedicalAvatar3D />
+          <div className="absolute inset-0 bg-cyan-500/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-cyan-900/80 text-cyan-100 px-3 py-1 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            Dr. Cannabis IA - Clique para ativar
           </div>
         </div>
       </div>
 
-      {/* Main Result Card */}
-      {currentResult && (
+      {/* Search Interface - Top Center - Only show when Dr AI is active */}
+      {isDrAIActive && (
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 z-30 w-full max-w-2xl">
+          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-6">
+            
+            {/* Search Bar */}
+            <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Digite sua consulta médica..."
+                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50"
+                  disabled={isTyping}
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isTyping}
+                className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
+              >
+                {isTyping ? <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-5 h-5" />}
+              </button>
+            </form>
+
+            {/* Filters */}
+            <div className="flex flex-wrap gap-2">
+              {filters.map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => setSelectedFilter(filter.id)}
+                  className={`px-3 py-1 rounded-full text-xs transition-all flex items-center space-x-1 ${
+                    selectedFilter === filter.id
+                      ? "bg-blue-600/80 text-white"
+                      : "bg-white/10 text-gray-300 hover:bg-white/20"
+                  }`}
+                >
+                  <filter.icon className="w-3 h-3" />
+                  <span>{filter.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Result Card - Only show when Dr AI is active */}
+      {isDrAIActive && currentResult && (
         <div className="absolute top-64 left-1/2 transform -translate-x-1/2 z-20">
           <MainCard result={currentResult} />
           
@@ -292,8 +303,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Category Cards - Stacked vertically on the right */}
-      {currentResult && (
+      {/* Category Cards - Stacked vertically on the right - Only show when Dr AI is active */}
+      {isDrAIActive && currentResult && (
         <div className="fixed right-8 top-1/2 transform -translate-y-1/2 z-20 space-y-4" style={{ width: '380px' }}>
           
           {/* Scientific Studies */}
@@ -355,8 +366,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Sub-search Results - Left Side with better spacing */}
-      {searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
+      {/* Sub-search Results - Left Side with better spacing - Only show when Dr AI is active */}
+      {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
           className="fixed left-8 z-30"
