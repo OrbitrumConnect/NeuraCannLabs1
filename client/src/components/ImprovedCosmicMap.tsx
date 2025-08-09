@@ -215,9 +215,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   } : null;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-cyber-dark">
-      {/* Solid background to prevent black spaces */}
-      <div className="absolute inset-0 bg-cyber-dark" />
+    <div className="relative w-full h-screen overflow-hidden">
       
       {/* Dr. Cannabis IA - Avatar positioned much closer to planets */}
       <div className="absolute top-8 -left-4 w-72 h-72 z-20">
