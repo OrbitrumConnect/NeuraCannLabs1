@@ -271,19 +271,19 @@ interface OverviewDashboardProps {
 function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIResponse, aiResponse, aiResults, onCloseAI, aiCardMinimized, onToggleAI, aiSearchQuery, cardPosition, onMouseDown, isDragging, onSubSearch, subSearchResponse, subSearchQuery, showSubSearch, onCloseSubSearch }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-4 py-8">
-      {/* Hero Section with 3D Avatar */}
-      <div className="flex flex-col lg:flex-row items-center justify-between mb-12">
+      {/* Hero Section with 3D Avatar - Reduced by 30% */}
+      <div className="flex flex-col lg:flex-row items-center justify-between mb-8">
         {/* Welcome Message - Moved to left */}
-        <div className="text-center lg:text-left lg:mr-8 mb-8 lg:mb-0">
-          <h1 className="text-4xl lg:text-6xl font-bold mb-4">
+        <div className="text-center lg:text-left lg:mr-6 mb-6 lg:mb-0">
+          <h1 className="text-3xl lg:text-4xl font-bold mb-3">
             <span className="text-white">Bem-vindo ao</span>
             <span className="neon-text block">Futuro da Medicina</span>
           </h1>
-          <p className="text-xl text-gray-300 mb-6 max-w-2xl">
+          <p className="text-base text-gray-300 mb-4 max-w-xl">
             Plataforma avançada para análise científica, casos clínicos e descobertas em cannabis medicinal
           </p>
           <button 
-            className="px-8 py-3 bg-gradient-to-r from-neon-cyan to-neon-blue rounded-xl font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all transform hover:scale-105 animate-pulse-glow"
+            className="px-6 py-2.5 bg-gradient-to-r from-neon-cyan to-neon-blue rounded-xl font-semibold hover:from-cyan-400 hover:to-blue-500 transition-all transform hover:scale-105 animate-pulse-glow text-sm"
             data-testid="explore-platform-button"
           >
             <i className="fas fa-rocket mr-2" />
@@ -293,20 +293,20 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
         
         {/* 3D Avatar - Moved to right */}
         <div className="relative">
-          <Avatar3D className="w-32 h-32" size={150} />
+          <Avatar3D className="w-24 h-24" size={105} />
         </div>
       </div>
 
       {/* Cosmic Knowledge Map */}
-      <div className="mb-12">
+      <div className="mb-8">
         <CosmicMap onPlanetClick={onPlanetClick} activeDashboard={activeDashboard} onSearch={onSearch} onAIResponse={onAIResponse} />
       </div>
 
 
 
-      {/* AI Response Section - Integrated in content when expanded */}
+      {/* AI Response Section - Integrated in content when expanded - Above search */}
       {aiResponse && !aiCardMinimized && (
-        <div className={`mt-8 mb-12 transition-all duration-300 ${showSubSearch ? 'mr-[340px]' : ''}`}>
+        <div className={`mb-6 transition-all duration-300 ${showSubSearch ? 'mr-[340px]' : ''}`}>
           <div className="bg-gradient-to-r from-gray-900/80 via-black/90 to-gray-900/80 backdrop-blur-sm rounded-2xl border border-neon-cyan/40 shadow-2xl shadow-neon-cyan/10">
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-700/50">
@@ -466,7 +466,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, onAIRespo
       {/* Sub-search lateral card */}
       {showSubSearch && subSearchResponse && (
         <div 
-          className="fixed right-6 top-32 w-80 h-[60vh] z-50 transition-all duration-300 ease-in-out"
+          className="fixed right-6 top-24 w-80 h-[65vh] z-50 transition-all duration-300 ease-in-out"
           style={{ 
             transform: showSubSearch ? 'translateX(0)' : 'translateX(100%)',
           }}
