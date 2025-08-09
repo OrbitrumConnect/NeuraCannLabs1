@@ -168,26 +168,26 @@ export default function MedicalAvatar3D({
     const lights = scene.children.filter(child => child instanceof THREE.Light);
     
     if (isListening) {
-      // Green-yellow glow when listening (30% ciano, 40% verde, 30% amarelo)
+      // Green glow when listening (nova paleta verde-amarelado)
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.48, 1.0, 0.35); // Verde-amarelado vibrante RGB
-          light.intensity = 2.0;
+          light.color.setRGB(0.133, 0.773, 0.369); // Verde #22c55e (green-500)
+          light.intensity = 1.8;
         }
       });
     } else if (isActive) {
-      // Green-yellow when active
+      // Green when active (nova paleta verde-amarelado)
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.48, 1.0, 0.35); // Verde-amarelado RGB
-          light.intensity = 1.5;
+          light.color.setRGB(0.196, 0.804, 0.196); // Verde-lima #32cd32
+          light.intensity = 1.3;
         }
       });
     } else {
       // Gray when idle
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.5, 0.5, 0.5); // Cinza neutro RGB
+          light.color.setRGB(0.4, 0.4, 0.4); // Cinza mais suave
           light.intensity = 1.0;
         }
       });
@@ -206,8 +206,8 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: isActive 
-            ? 'drop-shadow(0 0 20px rgba(124,255,90,0.6)) drop-shadow(0 0 40px rgba(124,255,90,0.4)) brightness(1.2)' 
-            : 'drop-shadow(0 4px 12px rgba(100,100,100,0.4)) brightness(0.7)'
+            ? 'drop-shadow(0 0 15px rgba(34,197,94,0.5)) brightness(1.1)' 
+            : 'drop-shadow(0 4px 8px rgba(100,100,100,0.3)) brightness(0.8)'
         }}
       />
 
