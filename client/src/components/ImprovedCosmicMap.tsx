@@ -298,16 +298,16 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           <MainCard result={currentResult} />
           {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
           
-          {/* Suggestions for Sub-search */}
+          {/* Suggestions for Sub-search - Responsive layout */}
           {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
             <div className="mt-4 p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
               <h4 className="text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
-              <div className="flex flex-wrap gap-2">
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
                 {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSubSearch(suggestion)}
-                    className="px-3 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all"
+                    className="px-3 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all text-center"
                   >
                     {suggestion}
                   </button>
@@ -320,36 +320,35 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Tela principal limpa - sem cards de dados que devem ficar no dashboard */}
 
-      {/* Sub-search Results - Left Side positioned lower - Only show when Dr AI is active */}
+      {/* Sub-search Results - Responsive positioning - Only show when Dr AI is active */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="fixed left-8 z-30"
+          className="relative mt-4 mx-4 sm:fixed sm:left-8 z-30 sm:z-30"
           style={{ 
-            top: `${280 + (index * 200)}px`, 
-            width: '300px',
+            top: window.innerWidth >= 640 ? `${280 + (index * 200)}px` : 'auto',
+            width: window.innerWidth >= 640 ? '300px' : 'auto',
             maxHeight: '180px'
           }}
         >
           <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-4">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-purple-300">
-                🔍 {subTab.query.substring(0, 30)}...
+              <h3 className="text-sm font-semibold text-purple-300 truncate pr-2">
+                🔍 {subTab.query.substring(0, 20)}...
               </h3>
               <button 
                 onClick={() => {
-                  // Stop any ongoing speech synthesis when closing card
                   window.speechSynthesis.cancel();
                   setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
                 }}
-                className="text-red-400 hover:text-red-300 text-lg"
+                className="text-red-400 hover:text-red-300 text-lg flex-shrink-0"
               >
                 ×
               </button>
             </div>
-            <div className="text-xs text-purple-200 max-h-40 overflow-y-auto">
+            <div className="text-xs text-purple-200 max-h-32 sm:max-h-40 overflow-y-auto">
               <div dangerouslySetInnerHTML={{ 
-                __html: subTab.response.substring(0, 300).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                __html: subTab.response.substring(0, 200).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
               }} />
             </div>
             
