@@ -10,6 +10,14 @@ The application serves as a comprehensive hub for medical professionals to acces
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+**2025-08-08**: Added intelligent AI chat system integrated to search bar
+- VerdiData AI responds to questions about scientific studies and clinical cases
+- Chat mode toggle with real-time responses based on platform data
+- Smart responses about dosages, efficacy, adverse effects, and regulations
+- Interface improvements: removed cannabis icon, repositioned planets below search bar
+
 ## System Architecture
 
 ### Frontend Architecture
