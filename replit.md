@@ -97,14 +97,13 @@ Sistema de "memória de pesquisa" que correlaciona automaticamente sub-pesquisas
 
 ---
 
-**2025-08-09**: Sistema otimizado - Interface clean e dados científicos verificados
+**2025-08-09**: Interface home limpa - dados científicos movidos para dashboard
 - ⚠️ CRÍTICO: Apenas dados reais com PMID/NCT verificados (ex: PMID 28538134)
-- Interface otimizada: cards compactos, sem animações neon que prejudicam leitura
-- Links diretos para PubMed, ClinicalTrials.gov e ANVISA nos cards
-- Conteúdo resumido com opção "Ver mais" para estudos completos
+- Home principal limpa focada no Dr. Cannabis IA e consultas médicas
+- Cards de estudos/casos removidos da home - pertencem ao dashboard específico
 - Dr. Cannabis IA com respostas específicas por consulta médica
-- Sistema de verificação de integridade científica ativo
-- Plataforma pronta para apresentação a investidores
+- Interface principal focada na experiência de consulta médica
+- Dados científicos detalhados acessíveis via navegação específica
 
 **2025-08-09**: Removed duplicate VerdiData IA system
 - Eliminated confusing dual chat systems that were causing user confusion
