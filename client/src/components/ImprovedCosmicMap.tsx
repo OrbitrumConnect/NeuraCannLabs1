@@ -63,7 +63,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "scientific",
     name: "Dados Científicos",
-    position: { top: "20%", right: "5%" },
+    position: { bottom: "25%", left: "3%" },
     size: "w-11 h-11",
     color: "from-cyan-400 to-blue-600",
     icon: "fas fa-flask",
@@ -72,7 +72,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "clinical",
     name: "Casos Clínicos",
-    position: { top: "35%", right: "5%" },
+    position: { bottom: "35%", left: "3%" },
     size: "w-11 h-11", 
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
@@ -81,7 +81,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "alerts",
     name: "Alertas",
-    position: { top: "50%", right: "5%" },
+    position: { bottom: "45%", left: "3%" },
     size: "w-9 h-9",
     color: "from-orange-400 to-red-500",
     icon: "fas fa-bell",
@@ -90,7 +90,7 @@ const planets: CosmicPlanet[] = [
   {
     id: "profile",
     name: "Perfil",
-    position: { top: "65%", right: "5%" },
+    position: { bottom: "55%", left: "3%" },
     size: "w-9 h-9",
     color: "from-purple-400 to-pink-500",
     icon: "fas fa-user-circle",
