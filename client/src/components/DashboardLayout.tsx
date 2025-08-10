@@ -43,10 +43,10 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Scanner: linha amarela 3s passando pelo avatar (40% a 52%)
+  // Scanner: linha amarela expandida 4s antes até sair do avatar (32% a 52%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 40 && position <= 52;
+    const isScanning = position >= 32 && position <= 52;
     setAvatarScanning(isScanning);
     
     // Debug visual para confirmar detecção
