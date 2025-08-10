@@ -1,6 +1,6 @@
-import { Session } from "express-session";
+import 'express-session';
 
-declare module "express-session" {
+declare module 'express-session' {
   interface SessionData {
     user?: {
       id: string;
@@ -8,11 +8,5 @@ declare module "express-session" {
       name: string;
       role: string;
     };
-  }
-}
-
-declare module "express" {
-  interface Request {
-    session: Session & Partial<SessionData>;
   }
 }

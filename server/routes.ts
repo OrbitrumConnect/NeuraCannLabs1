@@ -5,7 +5,7 @@ import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchem
 import { z } from "zod";
 import session from "express-session";
 import MemoryStore from "memorystore";
-import "./types"; // Import session types
+import "./types";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Session setup

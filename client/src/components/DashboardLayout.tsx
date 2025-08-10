@@ -1,8 +1,11 @@
 import { useState } from "react";
 import Avatar3D from "./Avatar3D";
-
 import { DynamicMedicalBackground } from "./DynamicMedicalBackground";
 import { useScan } from "@/contexts/ScanContext";
+import { useAuth } from "@/hooks/useAuth";
+import { Button } from "@/components/ui/button";
+import { LogOut, User } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 
 interface DashboardLayoutProps {
@@ -36,8 +39,35 @@ export default function DashboardLayout({
   setSideNavOpen,
   onSearchQuery,
 }: DashboardLayoutProps) {
-
+  const { user, isAuthenticated } = useAuth();
+  const { toast } = useToast();
   const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/logout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (response.ok) {
+        localStorage.removeItem('user');
+        toast({
+          title: "Logout realizado com sucesso!",
+          description: "Redirecionando para a landing page..."
+        });
+        setTimeout(() => {
+          window.location.href = '/landing';
+        }, 1000);
+      }
+    } catch (error) {
+      toast({
+        title: "Erro no logout",
+        description: "Tente novamente",
+        variant: "destructive"
+      });
+    }
+  };
   const handleDashboardClick = (dashboardId: string) => {
     onDashboardChange(dashboardId);
     setSideNavOpen(false);
@@ -96,6 +126,31 @@ export default function DashboardLayout({
               </button>
             ))}
           </nav>
+          
+          {/* User Info & Logout - Desktop */}
+          <div className="hidden lg:flex items-center space-x-4">
+            {isAuthenticated && user && (
+              <>
+                <div className="flex items-center space-x-2 text-sm text-gray-300">
+                  <User className="w-4 h-4 text-neon-cyan" />
+                  <span>{user.name}</span>
+                  <span className="text-xs bg-neon-cyan/20 text-neon-cyan px-2 py-1 rounded-full border border-neon-cyan/30">
+                    {user.role === 'admin' ? 'ADMIN' : 'USER'}
+                  </span>
+                </div>
+                <Button
+                  onClick={handleLogout}
+                  variant="ghost"
+                  size="sm"
+                  className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400"
+                  data-testid="button-logout-desktop"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Sair
+                </Button>
+              </>
+            )}
+          </div>
           
           <button
             id="menuToggle"
@@ -177,7 +232,35 @@ export default function DashboardLayout({
               </button>
             ))}
           </div>
-          </div>
+
+          {/* User Info & Logout - Mobile */}
+          {isAuthenticated && user && (
+            <div className="mt-6 pt-6 border-t border-neon-cyan/20">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-2 text-sm">
+                  <User className="w-4 h-4 text-neon-cyan" />
+                  <div>
+                    <div className="text-white font-medium">{user.name}</div>
+                    <div className="text-xs text-gray-400">{user.email}</div>
+                  </div>
+                </div>
+                <span className="text-xs bg-neon-cyan/20 text-neon-cyan px-2 py-1 rounded-full border border-neon-cyan/30">
+                  {user.role === 'admin' ? 'ADMIN' : 'USER'}
+                </span>
+              </div>
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                size="sm"
+                className="w-full text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400"
+                data-testid="button-logout-mobile"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Fazer Logout
+              </Button>
+            </div>
+          )}
+        </div>
           </nav>
         </div>
       )}
