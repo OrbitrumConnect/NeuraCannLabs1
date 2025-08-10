@@ -8,13 +8,15 @@ interface MedicalAvatar3DProps {
   isListening?: boolean;
   message?: string;
   className?: string;
+  isScanning?: boolean;
 }
 
 export default function MedicalAvatar3D({ 
   isActive = false, 
   isListening = false, 
   message = '', 
-  className = ''
+  className = '',
+  isScanning = false
 }: MedicalAvatar3DProps) {
   const { avatarScanning, scanPosition } = useScan();
   

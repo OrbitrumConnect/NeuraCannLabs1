@@ -5,6 +5,7 @@ import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, 
 import MedicalAvatar3D from "./MedicalAvatar3D";
 import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
+import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
 
 // Import the missing interface for proper typing
 interface ScientificStudy {
@@ -217,7 +218,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {/* Dr. Cannabis IA - Mobile friendly positioning */}
       <div className="flex justify-center pt-8 sm:absolute sm:top-8 sm:-left-4 sm:w-72 sm:h-72 z-20">
         <div 
-          className={`cursor-pointer transition-all duration-500 flex items-center justify-center ${
+          className={`cursor-pointer transition-all duration-500 flex items-center justify-center relative ${
             isDrAIActive 
               ? 'scale-105 drop-shadow-2xl filter brightness-75 saturate-50 grayscale-[30%]' 
               : 'hover:scale-102 drop-shadow-lg'
@@ -229,6 +230,13 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               : 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.1))'
           }}
         >
+          {/* Avatar Thought Bubble */}
+          <AvatarThoughtBubble 
+            isActive={isDrAIActive}
+            context={isTyping ? 'searching' : (isDrAIActive ? 'overview' : 'idle')}
+            className="absolute"
+          />
+          
           <div 
             style={{
               filter: isDrAIActive 

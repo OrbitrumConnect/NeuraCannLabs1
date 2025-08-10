@@ -101,6 +101,19 @@
   animation: fade-in 0.3s ease-out;
 }
 
+@keyframes bounce-subtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 2s ease-in-out infinite;
+}
+
 .dark {
   --background: hsl(0, 0%, 4%);
   --foreground: hsl(200, 6.6667%, 91.1765%);

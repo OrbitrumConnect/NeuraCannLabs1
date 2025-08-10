@@ -15,10 +15,11 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - Prioridade: organização visual harmônica que permite leitura simultânea
 
 ## Recent Changes
-- **Scanner Timing Finalized**: Perfect anticipation timing achieved - avatar glows yellow from 12%-20% (0.4s before line), line glows yellow from 22%-32% (1 second duration)
-- **Optimal User Experience**: Avatar provides subtle anticipation without overwhelming the interface, creating elegant visual harmony
-- **Professional Landing Page**: Complete landing/login page created with sophisticated animations, mobile-responsive design, partner section, testimonials, and seamless integration with main platform
-- **Smart Interaction Hub**: Complete voice commands in Portuguese, touch gestures, and AI contextual system with minimize button for mobile optimization
+- **Scan Animation Enhanced**: Line scanner now fade-out at end and fade-in at start, eliminating visible return animation for seamless experience
+- **Avatar Thought Bubble**: Contextual floating bubble above Dr. Cannabis IA with smart messages, suggestions, and breathing animation
+- **Mobile Plans Interface**: Compact floating crown button for accessing plan upgrades (Free/Professional/Premium), shown only on free plan
+- **Smart Context Messages**: Avatar bubble adapts to user actions - idle, searching, or offering study suggestions based on medical topics
+- **Perfect Visual Harmony**: All animations synchronized without interface disruption, professional medical platform ready for deployment
 
 ## System Architecture
 
