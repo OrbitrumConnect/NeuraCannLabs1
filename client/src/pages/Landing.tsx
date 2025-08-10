@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -20,11 +20,21 @@ import {
   Award,
   Building,
   UserPlus,
-  LogIn
+  LogIn,
+  Sparkles,
+  Zap
 } from 'lucide-react';
 
 export default function Landing() {
   const [activeTab, setActiveTab] = useState('about');
+  const [scrollY, setScrollY] = useState(0);
+  const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const features = [
     {
@@ -90,26 +100,53 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900 relative overflow-x-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+          style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+        />
+        <div 
+          className="absolute top-40 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"
+          style={{ transform: `translateY(${scrollY * 0.3}px)` }}
+        />
+        <div 
+          className="absolute bottom-40 left-1/2 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-2000"
+          style={{ transform: `translateY(${scrollY * 0.7}px)` }}
+        />
+      </div>
+
       {/* Header */}
-      <header className="relative z-50 bg-black/20 backdrop-blur-md border-b border-purple-500/20">
+      <header className="relative z-50 bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0 transition-all duration-300">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+            <div className="flex items-center space-x-3 group cursor-pointer">
+              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white">NeuroCann Lab</h1>
-                <p className="text-sm text-purple-300">Plataforma Médica de Cannabis</p>
+                <h1 className="text-2xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
+                  NeuroCann Lab
+                </h1>
+                <p className="text-sm text-purple-300 group-hover:text-purple-200 transition-colors duration-300">
+                  Plataforma Médica de Cannabis
+                </p>
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="text-white hover:bg-white/10" data-testid="button-login">
-                <LogIn className="w-4 h-4 mr-2" />
+              <Button 
+                variant="ghost" 
+                className="text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 group" 
+                data-testid="button-login"
+              >
+                <LogIn className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
                 Entrar
               </Button>
-              <Button className="bg-purple-600 hover:bg-purple-700 text-white" data-testid="button-register">
+              <Button 
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300" 
+                data-testid="button-register"
+              >
                 <UserPlus className="w-4 h-4 mr-2" />
                 Cadastrar
               </Button>
@@ -123,36 +160,37 @@ export default function Landing() {
         <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 bg-purple-600/20 text-purple-300 border-purple-500">
+            <Badge className="mb-6 bg-purple-600/20 text-purple-300 border-purple-500 hover:bg-purple-600/30 hover:scale-105 transition-all duration-500 cursor-default">
+              <Sparkles className="w-4 h-4 mr-2" />
               Plataforma Médica Oficial
             </Badge>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-in fade-in slide-in-from-bottom-4 duration-1000">
               Cannabis Medicinal
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 hover:from-purple-300 hover:to-blue-300 transition-all duration-500">
                 {" "}Baseada em Evidência
               </span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
               Plataforma científica para profissionais de saúde com IA especializada, 
               pesquisa atualizada e sistema colaborativo de estudos médicos.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
               <Button 
                 size="lg" 
-                className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg"
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-8 py-3 text-lg hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group"
                 data-testid="button-start-trial"
               >
-                <Play className="w-5 h-5 mr-2" />
+                <Play className="w-5 h-5 mr-2 group-hover:animate-pulse" />
                 Começar Gratuitamente
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-purple-500 text-purple-300 hover:bg-purple-500/10 px-8 py-3 text-lg"
+                className="border-purple-500 text-purple-300 hover:bg-purple-500/10 hover:border-purple-400 hover:text-purple-200 px-8 py-3 text-lg hover:scale-105 transition-all duration-300 group"
                 data-testid="button-demo"
               >
                 Ver Demonstração
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
             </div>
           </div>
@@ -162,18 +200,38 @@ export default function Landing() {
       {/* Navigation Tabs */}
       <section className="container mx-auto px-4 py-12">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto bg-black/20 backdrop-blur-md">
-            <TabsTrigger value="about" className="text-white data-[state=active]:bg-purple-600">
-              Sobre Nós
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mx-auto bg-black/20 backdrop-blur-md border border-purple-500/20">
+            <TabsTrigger 
+              value="about" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+            >
+              <Brain className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <span className="hidden sm:inline">Sobre Nós</span>
+              <span className="sm:hidden">Sobre</span>
             </TabsTrigger>
-            <TabsTrigger value="features" className="text-white data-[state=active]:bg-purple-600">
-              Funcionalidades
+            <TabsTrigger 
+              value="features" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+            >
+              <Zap className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <span className="hidden sm:inline">Funcionalidades</span>
+              <span className="sm:hidden">Features</span>
             </TabsTrigger>
-            <TabsTrigger value="partners" className="text-white data-[state=active]:bg-purple-600">
-              Parceiros
+            <TabsTrigger 
+              value="partners" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+            >
+              <Users className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <span className="hidden sm:inline">Parceiros</span>
+              <span className="sm:hidden">Parceiros</span>
             </TabsTrigger>
-            <TabsTrigger value="testimonials" className="text-white data-[state=active]:bg-purple-600">
-              Depoimentos
+            <TabsTrigger 
+              value="testimonials" 
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+            >
+              <Star className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <span className="hidden sm:inline">Depoimentos</span>
+              <span className="sm:hidden">Reviews</span>
             </TabsTrigger>
           </TabsList>
 
@@ -233,15 +291,28 @@ export default function Landing() {
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {features.map((feature, index) => (
-                  <Card key={index} className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 transition-colors">
+                  <Card 
+                    key={index} 
+                    className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 hover:bg-black/50 transition-all duration-500 group cursor-pointer hover:scale-105 hover:shadow-xl hover:shadow-purple-500/10"
+                    onMouseEnter={() => setHoveredFeature(index)}
+                    onMouseLeave={() => setHoveredFeature(null)}
+                  >
                     <CardHeader className="text-center">
-                      <div className="mx-auto mb-4 p-3 bg-white/10 rounded-full w-fit">
+                      <div className={`mx-auto mb-4 p-3 rounded-full w-fit transition-all duration-500 ${
+                        hoveredFeature === index 
+                          ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20 scale-110' 
+                          : 'bg-white/10'
+                      }`}>
                         {feature.icon}
                       </div>
-                      <CardTitle className="text-white text-lg">{feature.title}</CardTitle>
+                      <CardTitle className="text-white text-lg group-hover:text-purple-300 transition-colors duration-300">
+                        {feature.title}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-300 text-center">{feature.description}</p>
+                      <p className="text-gray-300 text-center group-hover:text-gray-200 transition-colors duration-300">
+                        {feature.description}
+                      </p>
                     </CardContent>
                   </Card>
                 ))}
@@ -261,13 +332,21 @@ export default function Landing() {
               
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {partners.map((partner, index) => (
-                  <Card key={index} className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 transition-colors">
+                  <Card 
+                    key={index} 
+                    className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 hover:bg-black/50 transition-all duration-500 group cursor-pointer hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20"
+                  >
                     <CardContent className="p-6 text-center">
-                      <div className="w-full h-20 bg-white/10 rounded-lg mb-4 flex items-center justify-center">
-                        <Building className="w-8 h-8 text-gray-400" />
+                      <div className="w-full h-20 bg-gradient-to-br from-white/10 to-purple-500/10 rounded-lg mb-4 flex items-center justify-center group-hover:from-purple-500/20 group-hover:to-blue-500/20 transition-all duration-500">
+                        <Building className="w-8 h-8 text-gray-400 group-hover:text-purple-300 group-hover:scale-110 transition-all duration-300" />
                       </div>
-                      <h3 className="font-semibold text-white mb-2">{partner.name}</h3>
-                      <Badge variant="outline" className="text-purple-300 border-purple-500">
+                      <h3 className="font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors duration-300">
+                        {partner.name}
+                      </h3>
+                      <Badge 
+                        variant="outline" 
+                        className="text-purple-300 border-purple-500 group-hover:bg-purple-500/10 group-hover:border-purple-400 transition-all duration-300"
+                      >
                         {partner.category}
                       </Badge>
                     </CardContent>
@@ -275,7 +354,7 @@ export default function Landing() {
                 ))}
               </div>
 
-              <Card className="mt-12 bg-purple-900/20 backdrop-blur-md border-purple-500/30">
+              <Card className="mt-12 bg-gradient-to-br from-purple-900/20 via-black/40 to-blue-900/20 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 transition-all duration-500">
                 <CardHeader className="text-center">
                   <CardTitle className="text-2xl text-white">Seja Nosso Parceiro</CardTitle>
                   <CardDescription className="text-purple-200">
@@ -284,35 +363,45 @@ export default function Landing() {
                 </CardHeader>
                 <CardContent>
                   <div className="max-w-md mx-auto space-y-4">
-                    <div>
-                      <Label htmlFor="institution" className="text-white">Nome da Instituição</Label>
+                    <div className="group">
+                      <Label htmlFor="institution" className="text-white group-hover:text-purple-300 transition-colors duration-300">
+                        Nome da Instituição
+                      </Label>
                       <Input 
                         id="institution" 
                         placeholder="Hospital, Universidade, Clínica..." 
-                        className="bg-white/10 border-purple-500/30 text-white"
+                        className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-white/15 transition-all duration-300"
                         data-testid="input-institution"
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="contact" className="text-white">E-mail de Contato</Label>
+                    <div className="group">
+                      <Label htmlFor="contact" className="text-white group-hover:text-purple-300 transition-colors duration-300">
+                        E-mail de Contato
+                      </Label>
                       <Input 
                         id="contact" 
                         type="email" 
                         placeholder="contato@instituicao.com.br" 
-                        className="bg-white/10 border-purple-500/30 text-white"
+                        className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-white/15 transition-all duration-300"
                         data-testid="input-contact"
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="message" className="text-white">Mensagem</Label>
+                    <div className="group">
+                      <Label htmlFor="message" className="text-white group-hover:text-purple-300 transition-colors duration-300">
+                        Mensagem
+                      </Label>
                       <Textarea 
                         id="message" 
                         placeholder="Conte-nos sobre sua instituição e interesse..."
-                        className="bg-white/10 border-purple-500/30 text-white"
+                        className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-white/15 transition-all duration-300 min-h-[100px]"
                         data-testid="textarea-message"
                       />
                     </div>
-                    <Button className="w-full bg-purple-600 hover:bg-purple-700" data-testid="button-partnership">
+                    <Button 
+                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 group" 
+                      data-testid="button-partnership"
+                    >
+                      <Building className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
                       Solicitar Parceria
                     </Button>
                   </div>
@@ -328,21 +417,34 @@ export default function Landing() {
               </h2>
               <div className="grid md:grid-cols-1 gap-8">
                 {testimonials.map((testimonial, index) => (
-                  <Card key={index} className="bg-black/40 backdrop-blur-md border-purple-500/30">
+                  <Card 
+                    key={index} 
+                    className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 hover:bg-black/50 transition-all duration-500 group hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/10"
+                  >
                     <CardContent className="p-8">
                       <div className="flex items-center mb-4">
                         {[...Array(testimonial.rating)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                          <Star 
+                            key={i} 
+                            className="w-5 h-5 text-yellow-400 fill-current group-hover:scale-110 transition-transform duration-300" 
+                            style={{ transitionDelay: `${i * 100}ms` }}
+                          />
                         ))}
                       </div>
-                      <p className="text-gray-300 text-lg italic mb-6">"{testimonial.text}"</p>
+                      <p className="text-gray-300 text-lg italic mb-6 group-hover:text-gray-200 transition-colors duration-300">
+                        "{testimonial.text}"
+                      </p>
                       <div className="flex items-center">
-                        <div className="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center mr-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center mr-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                           <Award className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-white">{testimonial.name}</h4>
-                          <p className="text-purple-300">{testimonial.role}</p>
+                          <h4 className="font-semibold text-white group-hover:text-purple-300 transition-colors duration-300">
+                            {testimonial.name}
+                          </h4>
+                          <p className="text-purple-300 group-hover:text-purple-200 transition-colors duration-300">
+                            {testimonial.role}
+                          </p>
                         </div>
                       </div>
                     </CardContent>
@@ -367,17 +469,19 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button 
               size="lg" 
-              className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 text-lg"
+              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-8 py-4 text-lg hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group"
               data-testid="button-register-cta"
             >
+              <UserPlus className="w-5 h-5 mr-2 group-hover:animate-pulse" />
               Cadastrar Gratuitamente
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white/10 px-8 py-4 text-lg"
+              className="border-white text-white hover:bg-white/10 hover:border-purple-400 hover:text-purple-300 px-8 py-4 text-lg hover:scale-105 transition-all duration-300 group"
               data-testid="button-contact"
             >
+              <MessageSquare className="w-5 h-5 mr-2 group-hover:text-purple-300 transition-colors" />
               Falar com Especialista
             </Button>
           </div>
