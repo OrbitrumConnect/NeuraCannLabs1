@@ -128,14 +128,11 @@ export default function DashboardLayout({
             ))}
           </nav>
           
-          {/* User Info & Logout - Desktop - Always visible for testing */}
-          <div className="hidden lg:flex items-center space-x-4 ml-6">
+          {/* User Info & Logout - Desktop */}
+          <div className="hidden lg:flex items-center space-x-3 ml-6">
             <div className="flex items-center space-x-2 text-sm text-gray-300">
               <User className="w-4 h-4 text-neon-cyan" />
               <span>{user?.name || 'Administrador'}</span>
-              <span className="text-xs bg-neon-cyan/20 text-neon-cyan px-2 py-1 rounded-full border border-neon-cyan/30">
-                ADMIN
-              </span>
             </div>
             <Button
               onClick={handleLogout}
@@ -231,19 +228,14 @@ export default function DashboardLayout({
             ))}
           </div>
 
-          {/* User Info & Logout - Mobile - Always visible for testing */}
+          {/* User Info & Logout - Mobile */}
           <div className="mt-6 pt-6 border-t border-neon-cyan/20">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center space-x-2 text-sm">
-                <User className="w-4 h-4 text-neon-cyan" />
-                <div>
-                  <div className="text-white font-medium">{user?.name || 'Administrador'}</div>
-                  <div className="text-xs text-gray-400">{user?.email || 'Phpg69@gmail.com'}</div>
-                </div>
+            <div className="flex items-center space-x-3 mb-4">
+              <User className="w-4 h-4 text-neon-cyan" />
+              <div>
+                <div className="text-white font-medium">{user?.name || 'Administrador'}</div>
+                <div className="text-xs text-gray-400">{user?.email || 'Phpg69@gmail.com'}</div>
               </div>
-              <span className="text-xs bg-neon-cyan/20 text-neon-cyan px-2 py-1 rounded-full border border-neon-cyan/30">
-                ADMIN
-              </span>
             </div>
             <Button
               onClick={handleLogout}
