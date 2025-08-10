@@ -36,7 +36,10 @@ export default function Login() {
           title: "Login realizado com sucesso!",
           description: "Redirecionando para a plataforma...",
         });
-        setLocation('/');
+        // Pequeno delay para mostrar o toast
+        setTimeout(() => {
+          setLocation('/');
+        }, 1000);
       } else {
         toast({
           title: "Erro no login",

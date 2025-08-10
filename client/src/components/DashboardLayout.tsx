@@ -25,6 +25,8 @@ const dashboardOptions = [
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
+  { id: "landing", name: "Landing Page", icon: "fas fa-home" },
+  { id: "logout", name: "Sair", icon: "fas fa-sign-out-alt" },
 ];
 
 export default function DashboardLayout({
@@ -38,7 +40,21 @@ export default function DashboardLayout({
 }: DashboardLayoutProps) {
 
   const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
-  const handleDashboardClick = (dashboardId: string) => {
+  const handleDashboardClick = async (dashboardId: string) => {
+    if (dashboardId === "logout") {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        localStorage.removeItem('user');
+        window.location.href = '/landing';
+      } catch (error) {
+        console.error('Erro ao fazer logout:', error);
+      }
+      return;
+    }
+    if (dashboardId === "landing") {
+      window.location.href = '/landing';
+      return;
+    }
     onDashboardChange(dashboardId);
     setSideNavOpen(false);
   };
