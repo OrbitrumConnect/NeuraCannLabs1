@@ -43,10 +43,10 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Scanner com duração de 1 segundo para zona amarela (22% a 32%)
+  // Avatar fica amarelo 2 segundos antes da linha (10% a 32%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 22 && position <= 32;
+    const isScanning = position >= 10 && position <= 32;
     setAvatarScanning(isScanning);
     
     // Debug visual para confirmar detecção
