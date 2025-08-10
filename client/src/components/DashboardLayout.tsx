@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Avatar3D from "./Avatar3D";
-import { SmartInteractionHub } from "./SmartInteractionHub";
+
 import { DynamicMedicalBackground } from "./DynamicMedicalBackground";
 import { useScan } from "@/contexts/ScanContext";
 
@@ -36,7 +36,7 @@ export default function DashboardLayout({
   setSideNavOpen,
   onSearchQuery,
 }: DashboardLayoutProps) {
-  const [interactionMode, setInteractionMode] = useState<'voice' | 'gesture' | 'text'>('text');
+
   const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
   const handleDashboardClick = (dashboardId: string) => {
     onDashboardChange(dashboardId);
@@ -200,15 +200,8 @@ export default function DashboardLayout({
         
         {/* Removido: mensagem verde de scan conforme solicitado */}
 
-        
-        {/* Smart Interaction Hub - Fixed bottom right */}
-        <div className="fixed bottom-4 right-4 z-50 max-w-sm">
-          <SmartInteractionHub
-            onSearchQuery={onSearchQuery || (() => {})}
-            onModeChange={setInteractionMode}
-            className="shadow-2xl"
-          />
-        </div>
+
+
       </main>
     </div>
   );
