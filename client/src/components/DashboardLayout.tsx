@@ -128,12 +128,8 @@ export default function DashboardLayout({
             ))}
           </nav>
           
-          {/* User Info & Logout - Desktop */}
+          {/* Logout - Desktop */}
           <div className="hidden lg:flex items-center space-x-3 ml-6">
-            <div className="flex items-center space-x-2 text-sm text-gray-300">
-              <User className="w-4 h-4 text-neon-cyan" />
-              <span>{user?.name || 'Administrador'}</span>
-            </div>
             <Button
               onClick={handleLogout}
               variant="ghost"

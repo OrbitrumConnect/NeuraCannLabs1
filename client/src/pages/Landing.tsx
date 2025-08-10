@@ -38,7 +38,7 @@ export default function Landing() {
 
   const features = [
     {
-      icon: <Brain className="w-8 h-8 text-green-500" />,
+      icon: <i className="fas fa-cannabis w-8 h-8 text-green-500" />,
       title: "IA Médica Especializada",
       description: "Dr. Cannabis IA com conhecimento científico atualizado em cannabis medicinal"
     },
@@ -207,7 +207,7 @@ export default function Landing() {
               value="about" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
             >
-              <Brain className="w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
+              <i className="fas fa-cannabis w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
               <span className="hidden sm:inline">Sobre Nós</span>
               <span className="sm:hidden">Sobre</span>
             </TabsTrigger>
@@ -359,48 +359,48 @@ export default function Landing() {
               <Card className="mt-12 bg-gradient-to-br from-green-900/20 via-black/40 to-cyan-900/20 backdrop-blur-md border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-500">
                 <CardHeader className="text-center">
                   <CardTitle className="text-2xl text-white">Seja Nosso Parceiro</CardTitle>
-                  <CardDescription className="text-purple-200">
+                  <CardDescription className="text-cyan-200">
                     Instituições médicas interessadas em parceria
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="max-w-md mx-auto space-y-4">
                     <div className="group">
-                      <Label htmlFor="institution" className="text-white group-hover:text-purple-300 transition-colors duration-300">
+                      <Label htmlFor="institution" className="text-white group-hover:text-green-300 transition-colors duration-300">
                         Nome da Instituição
                       </Label>
                       <Input 
                         id="institution" 
                         placeholder="Hospital, Universidade, Clínica..." 
-                        className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-white/15 transition-all duration-300"
+                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300"
                         data-testid="input-institution"
                       />
                     </div>
                     <div className="group">
-                      <Label htmlFor="contact" className="text-white group-hover:text-purple-300 transition-colors duration-300">
+                      <Label htmlFor="contact" className="text-white group-hover:text-green-300 transition-colors duration-300">
                         E-mail de Contato
                       </Label>
                       <Input 
                         id="contact" 
                         type="email" 
                         placeholder="contato@instituicao.com.br" 
-                        className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-white/15 transition-all duration-300"
+                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300"
                         data-testid="input-contact"
                       />
                     </div>
                     <div className="group">
-                      <Label htmlFor="message" className="text-white group-hover:text-purple-300 transition-colors duration-300">
+                      <Label htmlFor="message" className="text-white group-hover:text-green-300 transition-colors duration-300">
                         Mensagem
                       </Label>
                       <Textarea 
                         id="message" 
                         placeholder="Conte-nos sobre sua instituição e interesse..."
-                        className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 hover:bg-white/15 transition-all duration-300 min-h-[100px]"
+                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300 min-h-[100px]"
                         data-testid="textarea-message"
                       />
                     </div>
                     <Button 
-                      className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 group" 
+                      className="w-full bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 group" 
                       data-testid="button-partnership"
                     >
                       <Building className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
@@ -421,7 +421,7 @@ export default function Landing() {
                 {testimonials.map((testimonial, index) => (
                   <Card 
                     key={index} 
-                    className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 hover:bg-black/50 transition-all duration-500 group hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/10"
+                    className="bg-black/40 backdrop-blur-md border-cyan-500/30 hover:border-cyan-400/50 hover:bg-black/50 transition-all duration-500 group hover:scale-[1.02] hover:shadow-xl hover:shadow-cyan-500/10"
                   >
                     <CardContent className="p-8">
                       <div className="flex items-center mb-4">
@@ -437,14 +437,14 @@ export default function Landing() {
                         "{testimonial.text}"
                       </p>
                       <div className="flex items-center">
-                        <div className="w-12 h-12 bg-gradient-to-br from-purple-600 to-blue-600 rounded-full flex items-center justify-center mr-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
+                        <div className="w-12 h-12 bg-gradient-to-br from-green-600 to-cyan-600 rounded-full flex items-center justify-center mr-4 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300">
                           <Award className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-white group-hover:text-purple-300 transition-colors duration-300">
+                          <h4 className="font-semibold text-white group-hover:text-green-300 transition-colors duration-300">
                             {testimonial.name}
                           </h4>
-                          <p className="text-purple-300 group-hover:text-purple-200 transition-colors duration-300">
+                          <p className="text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300">
                             {testimonial.role}
                           </p>
                         </div>
@@ -459,7 +459,7 @@ export default function Landing() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-800/30 to-blue-800/30">
+      <section className="py-20 bg-gradient-to-r from-green-800/30 to-cyan-800/30">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold text-white mb-6">
             Pronto Para Revolucionar Sua Prática Médica?
@@ -471,7 +471,7 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Button 
               size="lg" 
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-8 py-4 text-lg hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group"
+              className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-8 py-4 text-lg hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group"
               data-testid="button-register-cta"
             >
               <UserPlus className="w-5 h-5 mr-2 group-hover:animate-pulse" />
@@ -480,10 +480,10 @@ export default function Landing() {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white/10 hover:border-purple-400 hover:text-purple-300 px-8 py-4 text-lg hover:scale-105 transition-all duration-300 group"
+              className="border-white text-white hover:bg-white/10 hover:border-cyan-400 hover:text-cyan-300 px-8 py-4 text-lg hover:scale-105 transition-all duration-300 group"
               data-testid="button-contact"
             >
-              <MessageSquare className="w-5 h-5 mr-2 group-hover:text-purple-300 transition-colors" />
+              <MessageSquare className="w-5 h-5 mr-2 group-hover:text-cyan-300 transition-colors" />
               Falar com Especialista
             </Button>
           </div>
@@ -491,13 +491,13 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black/60 backdrop-blur-md border-t border-purple-500/20 py-12">
+      <footer className="bg-black/60 backdrop-blur-md border-t border-cyan-500/20 py-12">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-white" />
+                <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                  <i className="fas fa-cannabis w-5 h-5 text-white" />
                 </div>
                 <h3 className="text-white font-bold text-lg">NeuroCann Lab</h3>
               </div>
@@ -533,7 +533,7 @@ export default function Landing() {
               </ul>
             </div>
           </div>
-          <div className="border-t border-purple-500/20 mt-12 pt-8 text-center">
+          <div className="border-t border-cyan-500/20 mt-12 pt-8 text-center">
             <p className="text-gray-400 text-sm">
               © 2024 NeuroCann Lab. Todos os direitos reservados.
             </p>
