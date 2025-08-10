@@ -43,10 +43,10 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Avatar: 8% a 20% (começa mais cedo, termina bem antes da linha)
+  // Avatar: 12% a 20% (timing perfeito - 0.4s antes da linha)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 8 && position <= 20;
+    const isScanning = position >= 12 && position <= 20;
     setAvatarScanning(isScanning);
     
     // Debug visual para confirmar detecção
