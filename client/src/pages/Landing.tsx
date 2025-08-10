@@ -123,7 +123,7 @@ export default function Landing() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3 group cursor-pointer">
               <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                <Brain className="w-6 h-6 text-white" />
+                <i className="fas fa-cannabis w-6 h-6 text-white text-lg" />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white group-hover:text-green-300 transition-colors duration-300">
