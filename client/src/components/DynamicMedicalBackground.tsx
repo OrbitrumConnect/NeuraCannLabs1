@@ -239,19 +239,19 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
         style={{
           background: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            const isOverAvatar = currentPos >= 40 && currentPos <= 60;
+            // Linha amarela por 3.5 segundos: começa 3s antes (37%) e termina 0.5s depois (60.5%)
+            const isYellowZone = currentPos >= 37 && currentPos <= 60.5;
             
-            // Amarelo suave para quando passa pelo avatar
-            return isOverAvatar
+            return isYellowZone
               ? `linear-gradient(90deg, transparent, rgba(255,235,59,0.7), rgba(255,235,59,0.9), rgba(255,235,59,0.7), transparent)`
               : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`;
           })(),
           top: `${(currentPattern * 2) % 100}%`,
           filter: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            const isOverAvatar = currentPos >= 40 && currentPos <= 60;
+            const isYellowZone = currentPos >= 37 && currentPos <= 60.5;
             
-            return isOverAvatar
+            return isYellowZone
               ? `blur(1px) drop-shadow(0 0 4px rgba(255,235,59,0.8))`
               : `blur(1px) drop-shadow(0 0 4px ${config.color})`;
           })(),
