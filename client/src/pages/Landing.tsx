@@ -38,12 +38,12 @@ export default function Landing() {
 
   const features = [
     {
-      icon: <Brain className="w-8 h-8 text-purple-600" />,
+      icon: <Brain className="w-8 h-8 text-green-500" />,
       title: "IA Médica Especializada",
       description: "Dr. Cannabis IA com conhecimento científico atualizado em cannabis medicinal"
     },
     {
-      icon: <Microscope className="w-8 h-8 text-blue-600" />,
+      icon: <Microscope className="w-8 h-8 text-cyan-500" />,
       title: "Pesquisa Científica",
       description: "Acesso direto a estudos do PubMed, ClinicalTrials.gov e ANVISA"
     },
@@ -100,36 +100,36 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900 relative overflow-x-hidden">
+    <div className="min-h-screen bg-black relative overflow-x-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+          className="absolute top-20 left-10 w-72 h-72 bg-green-500/20 rounded-full blur-3xl animate-pulse"
           style={{ transform: `translateY(${scrollY * 0.5}px)` }}
         />
         <div 
-          className="absolute top-40 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"
+          className="absolute top-40 right-20 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl animate-pulse delay-1000"
           style={{ transform: `translateY(${scrollY * 0.3}px)` }}
         />
         <div 
-          className="absolute bottom-40 left-1/2 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-2000"
+          className="absolute bottom-40 left-1/2 w-80 h-80 bg-green-400/15 rounded-full blur-3xl animate-pulse delay-2000"
           style={{ transform: `translateY(${scrollY * 0.7}px)` }}
         />
       </div>
 
       {/* Header */}
-      <header className="relative z-50 bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0 transition-all duration-300">
+      <header className="relative z-50 bg-black/40 backdrop-blur-md border-b border-cyan-500/30 sticky top-0 transition-all duration-300">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
+                <h1 className="text-2xl font-bold text-white group-hover:text-green-300 transition-colors duration-300">
                   NeuroCann Lab
                 </h1>
-                <p className="text-sm text-purple-300 group-hover:text-purple-200 transition-colors duration-300">
+                <p className="text-sm text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300">
                   Plataforma Médica de Cannabis
                 </p>
               </div>
@@ -141,11 +141,11 @@ export default function Landing() {
                 data-testid="button-login"
                 onClick={() => window.location.href = '/login'}
               >
-                <LogIn className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+                <LogIn className="w-4 h-4 mr-2 group-hover:text-cyan-300 transition-colors" />
                 Entrar
               </Button>
               <Button 
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300" 
+                className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300" 
                 data-testid="button-register"
                 onClick={() => window.location.href = '/login'}
               >
@@ -159,16 +159,16 @@ export default function Landing() {
 
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-cyan-600/20" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 bg-purple-600/20 text-purple-300 border-purple-500 hover:bg-purple-600/30 hover:scale-105 transition-all duration-500 cursor-default">
+            <Badge className="mb-6 bg-green-600/20 text-green-300 border-green-500 hover:bg-green-600/30 hover:scale-105 transition-all duration-500 cursor-default">
               <Sparkles className="w-4 h-4 mr-2" />
               Plataforma Médica Oficial
             </Badge>
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-in fade-in slide-in-from-bottom-4 duration-1000">
               Cannabis Medicinal
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400 hover:from-purple-300 hover:to-blue-300 transition-all duration-500">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 hover:from-green-300 hover:to-cyan-300 transition-all duration-500">
                 {" "}Baseada em Evidência
               </span>
             </h1>
@@ -179,7 +179,7 @@ export default function Landing() {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white px-8 py-3 text-lg hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 transition-all duration-300 group"
+                className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-8 py-3 text-lg hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group"
                 data-testid="button-start-trial"
               >
                 <Play className="w-5 h-5 mr-2 group-hover:animate-pulse" />
@@ -188,7 +188,7 @@ export default function Landing() {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-purple-500 text-purple-300 hover:bg-purple-500/10 hover:border-purple-400 hover:text-purple-200 px-8 py-3 text-lg hover:scale-105 transition-all duration-300 group"
+                className="border-cyan-500 text-cyan-300 hover:bg-cyan-500/10 hover:border-cyan-400 hover:text-cyan-200 px-8 py-3 text-lg hover:scale-105 transition-all duration-300 group"
                 data-testid="button-demo"
               >
                 Ver Demonstração
@@ -202,36 +202,36 @@ export default function Landing() {
       {/* Navigation Tabs */}
       <section className="container mx-auto px-4 py-12">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mx-auto bg-black/20 backdrop-blur-md border border-purple-500/20">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mx-auto bg-black/20 backdrop-blur-md border border-cyan-500/20">
             <TabsTrigger 
               value="about" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
             >
-              <Brain className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <Brain className="w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
               <span className="hidden sm:inline">Sobre Nós</span>
               <span className="sm:hidden">Sobre</span>
             </TabsTrigger>
             <TabsTrigger 
               value="features" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
             >
-              <Zap className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <Zap className="w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
               <span className="hidden sm:inline">Funcionalidades</span>
               <span className="sm:hidden">Features</span>
             </TabsTrigger>
             <TabsTrigger 
               value="partners" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
             >
-              <Users className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <Users className="w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
               <span className="hidden sm:inline">Parceiros</span>
               <span className="sm:hidden">Parceiros</span>
             </TabsTrigger>
             <TabsTrigger 
               value="testimonials" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-purple-600 data-[state=active]:to-purple-500 hover:bg-white/5 transition-all duration-300 group"
+              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
             >
-              <Star className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+              <Star className="w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
               <span className="hidden sm:inline">Depoimentos</span>
               <span className="sm:hidden">Reviews</span>
             </TabsTrigger>
@@ -239,7 +239,7 @@ export default function Landing() {
 
           <TabsContent value="about" className="mt-12">
             <div className="max-w-4xl mx-auto">
-              <Card className="bg-black/40 backdrop-blur-md border-purple-500/30">
+              <Card className="bg-black/40 backdrop-blur-md border-cyan-500/30">
                 <CardHeader className="text-center">
                   <CardTitle className="text-3xl text-white mb-4">
                     Revolucionando a Medicina Canábica
@@ -295,19 +295,19 @@ export default function Landing() {
                 {features.map((feature, index) => (
                   <Card 
                     key={index} 
-                    className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 hover:bg-black/50 transition-all duration-500 group cursor-pointer hover:scale-105 hover:shadow-xl hover:shadow-purple-500/10"
+                    className="bg-black/40 backdrop-blur-md border-cyan-500/30 hover:border-cyan-400/50 hover:bg-black/50 transition-all duration-500 group cursor-pointer hover:scale-105 hover:shadow-xl hover:shadow-cyan-500/10"
                     onMouseEnter={() => setHoveredFeature(index)}
                     onMouseLeave={() => setHoveredFeature(null)}
                   >
                     <CardHeader className="text-center">
                       <div className={`mx-auto mb-4 p-3 rounded-full w-fit transition-all duration-500 ${
                         hoveredFeature === index 
-                          ? 'bg-gradient-to-r from-purple-500/20 to-blue-500/20 scale-110' 
+                          ? 'bg-gradient-to-r from-green-500/20 to-cyan-500/20 scale-110' 
                           : 'bg-white/10'
                       }`}>
                         {feature.icon}
                       </div>
-                      <CardTitle className="text-white text-lg group-hover:text-purple-300 transition-colors duration-300">
+                      <CardTitle className="text-white text-lg group-hover:text-green-300 transition-colors duration-300">
                         {feature.title}
                       </CardTitle>
                     </CardHeader>
@@ -336,18 +336,18 @@ export default function Landing() {
                 {partners.map((partner, index) => (
                   <Card 
                     key={index} 
-                    className="bg-black/40 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 hover:bg-black/50 transition-all duration-500 group cursor-pointer hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20"
+                    className="bg-black/40 backdrop-blur-md border-cyan-500/30 hover:border-cyan-400/50 hover:bg-black/50 transition-all duration-500 group cursor-pointer hover:scale-105 hover:shadow-lg hover:shadow-cyan-500/20"
                   >
                     <CardContent className="p-6 text-center">
-                      <div className="w-full h-20 bg-gradient-to-br from-white/10 to-purple-500/10 rounded-lg mb-4 flex items-center justify-center group-hover:from-purple-500/20 group-hover:to-blue-500/20 transition-all duration-500">
-                        <Building className="w-8 h-8 text-gray-400 group-hover:text-purple-300 group-hover:scale-110 transition-all duration-300" />
+                      <div className="w-full h-20 bg-gradient-to-br from-white/10 to-green-500/10 rounded-lg mb-4 flex items-center justify-center group-hover:from-green-500/20 group-hover:to-cyan-500/20 transition-all duration-500">
+                        <Building className="w-8 h-8 text-gray-400 group-hover:text-green-300 group-hover:scale-110 transition-all duration-300" />
                       </div>
-                      <h3 className="font-semibold text-white mb-2 group-hover:text-purple-300 transition-colors duration-300">
+                      <h3 className="font-semibold text-white mb-2 group-hover:text-green-300 transition-colors duration-300">
                         {partner.name}
                       </h3>
                       <Badge 
                         variant="outline" 
-                        className="text-purple-300 border-purple-500 group-hover:bg-purple-500/10 group-hover:border-purple-400 transition-all duration-300"
+                        className="text-cyan-300 border-cyan-500 group-hover:bg-cyan-500/10 group-hover:border-cyan-400 transition-all duration-300"
                       >
                         {partner.category}
                       </Badge>
@@ -356,7 +356,7 @@ export default function Landing() {
                 ))}
               </div>
 
-              <Card className="mt-12 bg-gradient-to-br from-purple-900/20 via-black/40 to-blue-900/20 backdrop-blur-md border-purple-500/30 hover:border-purple-400/50 transition-all duration-500">
+              <Card className="mt-12 bg-gradient-to-br from-green-900/20 via-black/40 to-cyan-900/20 backdrop-blur-md border-cyan-500/30 hover:border-cyan-400/50 transition-all duration-500">
                 <CardHeader className="text-center">
                   <CardTitle className="text-2xl text-white">Seja Nosso Parceiro</CardTitle>
                   <CardDescription className="text-purple-200">
