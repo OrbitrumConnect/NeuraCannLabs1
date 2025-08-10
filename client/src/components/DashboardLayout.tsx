@@ -43,10 +43,10 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Detecta quando linha fica amarela: período expandido (33% a 63%)
+  // Detecta linha amarela: começa mais cedo e termina mais rápido (30% a 58%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 33 && position <= 63;
+    const isScanning = position >= 30 && position <= 58;
     setAvatarScanning(isScanning);
     
     // Debug visual para confirmar detecção

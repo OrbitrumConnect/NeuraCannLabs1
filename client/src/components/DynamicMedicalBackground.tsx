@@ -239,8 +239,8 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
         style={{
           background: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            // Linha amarela expandida: começa bem antes (33%) e termina bem depois (63%)
-            const isYellowZone = currentPos >= 33 && currentPos <= 63;
+            // Linha amarela: começa 2s mais cedo (30%) e termina mais rápido (58%)
+            const isYellowZone = currentPos >= 30 && currentPos <= 58;
             
             return isYellowZone
               ? `linear-gradient(90deg, transparent, rgba(255,235,59,0.7), rgba(255,235,59,0.9), rgba(255,235,59,0.7), transparent)`
@@ -249,7 +249,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
           top: `${(currentPattern * 2) % 100}%`,
           filter: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            const isYellowZone = currentPos >= 33 && currentPos <= 63;
+            const isYellowZone = currentPos >= 30 && currentPos <= 58;
             
             return isYellowZone
               ? `blur(1px) drop-shadow(0 0 4px rgba(255,235,59,0.8))`
