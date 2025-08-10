@@ -210,19 +210,19 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex items-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-4">
-          <i className="fas fa-brain text-white text-2xl" />
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-6">
+      <div className="flex items-center mb-6 sm:mb-8">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
+          <i className="fas fa-brain text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Sistema de Submissão de Estudos</h1>
-          <p className="text-base text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Sistema de Submissão de Estudos</h1>
+          <p className="text-sm sm:text-base text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
         </div>
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-8">
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-6 sm:mb-8">
         <Button
           onClick={() => setActiveTab('create')}
           className={`px-6 py-3 rounded-lg transition-colors h-12 ${

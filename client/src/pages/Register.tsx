@@ -107,7 +107,7 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-green-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-green-900 to-slate-900 flex items-center justify-center p-3 sm:p-4">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-green-500/10 rounded-full blur-3xl animate-pulse" />
@@ -115,17 +115,17 @@ export default function Register() {
         <div className="absolute top-1/2 right-10 w-64 h-64 bg-green-400/8 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
 
-      <Card className="w-full max-w-md bg-black/40 backdrop-blur-md border-cyan-500/30 relative z-10">
-        <CardHeader className="text-center pb-4">
-          <div className="mx-auto mb-3 w-12 h-12 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
-            <i className="fas fa-cannabis w-6 h-6 text-white" />
+      <Card className="w-full max-w-sm sm:max-w-md bg-black/40 backdrop-blur-md border-cyan-500/30 relative z-10">
+        <CardHeader className="text-center pb-3 sm:pb-4">
+          <div className="mx-auto mb-2 sm:mb-3 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
+            <i className="fas fa-cannabis w-5 h-5 sm:w-6 sm:h-6 text-white" />
           </div>
-          <CardTitle className="text-xl text-white">Criar Conta</CardTitle>
-          <CardDescription className="text-cyan-300 text-sm">
+          <CardTitle className="text-lg sm:text-xl text-white">Criar Conta</CardTitle>
+          <CardDescription className="text-cyan-300 text-xs sm:text-sm">
             Junte-se à Plataforma Médica NeuroCann Lab
           </CardDescription>
         </CardHeader>
-        <CardContent className="p-4">
+        <CardContent className="p-3 sm:p-4">
           {/* Seleção do Tipo de Usuário */}
           <div className="mb-4 space-y-2">
             <Label className="text-white text-sm font-medium">Tipo de Conta</Label>
