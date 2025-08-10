@@ -62,15 +62,8 @@ export function MedicalHeartbeat({
   const pulseIntensity = Math.sin(Date.now() / 2000) * 0.1 + 0.6
 
   return (
-    <div className={cn("w-full h-12 relative overflow-hidden", className)}>
-      {/* Linhas sutis de fundo */}
-      <div 
-        className="absolute inset-0 opacity-5"
-        style={{
-          backgroundImage: `linear-gradient(90deg, ${color}44 1px, transparent 1px)`,
-          backgroundSize: '100px 1px'
-        }}
-      />
+    <div className={cn("w-full h-12 relative overflow-hidden bg-black/20", className)}>
+      {/* Fundo escuro como monitor médico */}
       
       {/* Linha de batimento cardíaco */}
       <svg 
@@ -79,38 +72,38 @@ export function MedicalHeartbeat({
         preserveAspectRatio="none"
         style={{ filter: `drop-shadow(0 0 4px ${color})` }}
       >
-        {/* Linha base */}
+        {/* Linha base sutil */}
         <line 
           x1="0" 
           y1="50" 
           x2="100" 
           y2="50" 
           stroke={color}
-          strokeWidth="0.5"
-          opacity="0.3"
+          strokeWidth="0.3"
+          opacity="0.2"
         />
         
-        {/* Padrão de batimento principal - mais sutil */}
+        {/* Sinal vital principal */}
         <path
           d={createHeartbeatPath()}
           fill="none"
           stroke={color}
-          strokeWidth="1.5"
-          opacity={pulseIntensity * 0.7}
-          style={{ filter: `drop-shadow(0 0 2px ${color}44)` }}
+          strokeWidth="1.2"
+          opacity={pulseIntensity}
+          style={{ filter: `drop-shadow(0 0 3px ${color}66)` }}
         />
         
-        {/* Linha que percorre suavemente */}
+        {/* Cursor de varredura médico */}
         <line
           x1={currentBeat}
-          y1="45"
+          y1="0"
           x2={currentBeat}
-          y2="55"
+          y2="100"
           stroke={color}
-          strokeWidth="0.5"
-          opacity="0.8"
+          strokeWidth="0.8"
+          opacity="0.4"
           style={{ 
-            filter: `blur(0.5px)`,
+            filter: `blur(1px) drop-shadow(0 0 4px ${color})`,
             transition: 'all 0.1s ease'
           }}
         />
