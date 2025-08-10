@@ -55,6 +55,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  app.post("/api/auth/register", async (req, res) => {
+    const { name, email, password, crm, specialty } = req.body;
+    
+    // Validações básicas
+    if (!name || !email || !password || !crm || !specialty) {
+      return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    }
+    
+    if (password.length < 8) {
+      return res.status(400).json({ message: 'A senha deve ter pelo menos 8 caracteres' });
+    }
+    
+    // Em um sistema real, aqui verificaríamos se o email já existe
+    // Por enquanto, aceitar qualquer registro
+    const user = {
+      id: `user-${Date.now()}`,
+      name,
+      email,
+      crm,
+      specialty,
+      role: 'doctor'
+    };
+    
+    res.status(201).json({ 
+      message: 'Conta criada com sucesso',
+      user 
+    });
+  });
+
   app.get("/api/auth/user", async (req, res) => {
     if (req.session.user) {
       res.json(req.session.user);

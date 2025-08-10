@@ -8,6 +8,7 @@ import Dashboard from "@/pages/Dashboard";
 import GlobalAdminDashboard from "@/pages/GlobalAdminDashboard";
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
+import Register from "@/pages/Register";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -15,6 +16,7 @@ function Router() {
     <Switch>
       <Route path="/landing" component={Landing} />
       <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
       <Route path="/" component={Dashboard} />
       <Route path="/dashboard/:section?" component={Dashboard} />
       <Route path="/admin" component={GlobalAdminDashboard} />

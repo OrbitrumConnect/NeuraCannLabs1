@@ -130,11 +130,22 @@ export default function Login() {
             </Button>
           </form>
           
-          <div className="mt-6 text-center">
+          <div className="mt-6 text-center space-y-3">
+            <div className="text-sm text-gray-400">
+              Não tem uma conta?
+            </div>
+            <Button
+              variant="ghost"
+              onClick={() => setLocation('/register')}
+              className="text-green-300 hover:text-green-200 hover:bg-white/5"
+              data-testid="button-go-register"
+            >
+              Criar Conta
+            </Button>
             <Button
               variant="ghost"
               onClick={() => setLocation('/landing')}
-              className="text-cyan-300 hover:text-cyan-200 hover:bg-white/5"
+              className="text-cyan-300 hover:text-cyan-200 hover:bg-white/5 block mx-auto"
               data-testid="button-back-landing"
             >
               ← Voltar para Landing Page

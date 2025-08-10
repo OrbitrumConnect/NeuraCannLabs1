@@ -147,7 +147,7 @@ export default function Landing() {
               <Button 
                 className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300" 
                 data-testid="button-register"
-                onClick={() => window.location.href = '/login'}
+                onClick={() => window.location.href = '/register'}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
                 Cadastrar
