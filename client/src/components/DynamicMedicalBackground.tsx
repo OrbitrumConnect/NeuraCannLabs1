@@ -82,43 +82,28 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
     return () => clearInterval(interval)
   }, [config.speed])
 
-  // Gerador de linhas médicas com sinais vitais
-  const generateMedicalLines = () => {
-    return Array.from({ length: config.lineCount }, (_, i) => {
-      const lineY = (i + 1) * (100 / (config.lineCount + 1))
-      const hasSignal = Math.random() > 0.7 // 30% das linhas têm sinal
-      const signalSpeed = 3000 + Math.random() * 2000
-      
-      return (
-        <div key={`line-${i}`} className="absolute w-full" style={{ top: `${lineY}%` }}>
-          {/* Linha base */}
-          <div
-            className="w-full h-px"
-            style={{
-              backgroundColor: config.color,
-              opacity: 0.1
-            }}
-          />
-          
-          {/* Sinal vital passando */}
-          {hasSignal && (
-            <div
-              className="absolute h-px"
-              style={{
-                backgroundColor: config.color,
-                opacity: intensity * 2,
-                width: '40px',
-                top: '0',
-                left: `${(currentPattern * 2 + i * 10) % 100}%`,
-                filter: `blur(0.5px) drop-shadow(0 0 2px ${config.color})`,
-                animation: `moveSignal ${signalSpeed}ms linear infinite`,
-                backgroundImage: `linear-gradient(90deg, transparent, ${config.color}, ${config.color}, transparent)`
-              }}
-            />
-          )}
-        </div>
-      )
-    })
+  // Efeito neon lateral sutil
+  const generateSideGlow = () => {
+    return (
+      <>
+        {/* Glow lateral esquerdo */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-8"
+          style={{
+            background: `linear-gradient(90deg, ${config.color}15, transparent)`,
+            opacity: intensity * 0.5
+          }}
+        />
+        {/* Glow lateral direito */}
+        <div
+          className="absolute right-0 top-0 bottom-0 w-8"
+          style={{
+            background: `linear-gradient(270deg, ${config.color}15, transparent)`,
+            opacity: intensity * 0.5
+          }}
+        />
+      </>
+    )
   }
 
   // Padrões SVG específicos para cada contexto
@@ -233,39 +218,20 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
   }
 
   return (
-    <div className={cn("absolute inset-0 pointer-events-none overflow-hidden", className)}>
-      {/* Sem linhas de fundo - apenas padrões médicos específicos */}
+    <div className={cn("absolute inset-0 pointer-events-none overflow-hidden bg-black/50", className)}>
+      {/* Efeito neon lateral verde sutil */}
+      {generateSideGlow()}
       
-      {/* Padrão específico do contexto */}
-      {renderPattern()}
-      
-      {/* Linhas médicas com sinais vitais */}
-      {generateMedicalLines()}
-      
-      {/* Linha de scan que atravessa a tela */}
+      {/* Linha horizontal que escaneia */}
       <div
-        className="absolute top-0 w-full h-0.5 opacity-30"
+        className="absolute left-0 right-0 h-0.5 opacity-60"
         style={{
-          background: `linear-gradient(90deg, transparent, ${config.color}, transparent)`,
-          transform: `translateY(${(currentPattern * 5) % window.innerHeight}px)`,
-          transition: 'transform 0.1s linear'
+          background: `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`,
+          top: `${(currentPattern * 2) % 100}%`,
+          filter: `blur(1px) drop-shadow(0 0 4px ${config.color})`,
+          transition: 'top 0.2s ease-out'
         }}
       />
-      
-      {/* Cantos médicos com informações */}
-      <div 
-        className="absolute top-4 left-4 text-xs font-mono opacity-40"
-        style={{ color: config.color }}
-      >
-        {context.toUpperCase()} • NEURAL ACTIVE
-      </div>
-      
-      <div 
-        className="absolute top-4 right-4 text-xs font-mono opacity-40"
-        style={{ color: config.color }}
-      >
-        {Math.round(intensity * 100)}% INTENSITY
-      </div>
     </div>
   )
 }
