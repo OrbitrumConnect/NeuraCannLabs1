@@ -14,6 +14,11 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - Interface deve ser intuitiva: cards principais fixos, sub-pesquisas móveis
 - Prioridade: organização visual harmônica que permite leitura simultânea
 
+## Recent Changes
+- **Scanner Timing Optimized**: Avatar antecipation effect implemented - avatar glows yellow 2 seconds before scanner line (10%-32%), while line stays yellow for 1 second only (22%-32%)
+- **Perfect Synchronization**: Both scanner line and Dr. Cannabis avatar now work in perfect harmony with anticipation effect
+- **Smart Interaction Hub**: Complete voice commands in Portuguese, touch gestures, and AI contextual system with minimize button for mobile optimization
+
 ## System Architecture
 
 ### Frontend Architecture
