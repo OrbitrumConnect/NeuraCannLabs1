@@ -55,25 +55,25 @@ export function AvatarThoughtBubble({ isActive, context = 'overview', className 
   if (!isVisible) return null;
 
   return (
-    <div className={cn("absolute -top-12 left-1/2 transform -translate-x-1/2 z-20", className)}>
+    <div className={cn("absolute -top-8 left-1/2 transform -translate-x-1/2 z-20", className)}>
       {/* Thought Bubble */}
       <div className="relative">
         {/* Main bubble */}
-        <div className="bg-gradient-to-br from-cyber-gray/95 to-cyber-light/95 backdrop-blur-md rounded-xl px-2.5 py-1.5 border border-neon-cyan/40 shadow-lg shadow-neon-cyan/20 max-w-44 animate-bounce-subtle">
+        <div className="bg-gradient-to-br from-cyber-gray/95 to-cyber-light/95 backdrop-blur-md rounded-lg px-2 py-1 border border-neon-cyan/40 shadow-lg shadow-neon-cyan/20 max-w-40 animate-bounce-subtle">
           <p className="text-xs text-center text-neon-cyan font-medium leading-tight">
             {currentMessage}
           </p>
         </div>
         
-        {/* Bubble tail - menor e mais próximo */}
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-0.5">
-          <div className="w-2.5 h-2.5 bg-cyber-gray/95 rotate-45 border-r border-b border-neon-cyan/40"></div>
+        {/* Bubble tail - muito pequeno e colado */}
+        <div className="absolute top-full left-1/2 transform -translate-x-1/2">
+          <div className="w-2 h-2 bg-cyber-gray/95 rotate-45 border-r border-b border-neon-cyan/40"></div>
         </div>
         
-        {/* Small floating dots for thought effect - mais próximos */}
-        <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-1">
-          <div className="w-1 h-1 bg-neon-cyan/60 rounded-full animate-pulse"></div>
-          <div className="w-1.5 h-1.5 bg-neon-cyan/40 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+        {/* Small floating dots for thought effect - bem próximos */}
+        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
+          <div className="w-0.5 h-0.5 bg-neon-cyan/60 rounded-full animate-pulse"></div>
+          <div className="w-1 h-1 bg-neon-cyan/40 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
         </div>
       </div>
     </div>

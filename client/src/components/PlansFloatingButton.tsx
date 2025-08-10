@@ -84,12 +84,12 @@ export function PlansFloatingButton() {
       {/* Plans Modal */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-cyber-gray to-cyber-light rounded-2xl border border-cyan-500/30 max-w-6xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
+          <div className="bg-gradient-to-br from-cyber-gray to-cyber-light rounded-2xl border border-cyan-500/30 max-w-4xl w-full max-h-[85vh] overflow-y-auto">
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-white">Planos NeuroCann Lab</h2>
-                  <p className="text-gray-400">Escolha o melhor plano para suas necessidades</p>
+                  <h2 className="text-xl font-bold text-white">Planos NeuroCann Lab</h2>
+                  <p className="text-gray-400 text-sm">Escolha o melhor plano para suas necessidades</p>
                 </div>
                 <Button
                   variant="ghost"
@@ -101,7 +101,7 @@ export function PlansFloatingButton() {
                 </Button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {plans.map((plan, index) => (
                   <Card
                     key={index}
@@ -126,34 +126,37 @@ export function PlansFloatingButton() {
                       </Badge>
                     )}
 
-                    <CardHeader className="text-center pb-4">
-                      <CardTitle className="text-white text-xl">{plan.name}</CardTitle>
+                    <CardHeader className="text-center pb-3">
+                      <CardTitle className="text-white text-lg">{plan.name}</CardTitle>
                       <div className="flex items-baseline justify-center space-x-1">
-                        <span className="text-3xl font-bold text-white">{plan.price}</span>
-                        <span className="text-gray-400">{plan.period}</span>
+                        <span className="text-2xl font-bold text-white">{plan.price}</span>
+                        <span className="text-gray-400 text-sm">{plan.period}</span>
                       </div>
-                      <CardDescription className="text-gray-300">
+                      <CardDescription className="text-gray-300 text-sm">
                         {plan.description}
                       </CardDescription>
                     </CardHeader>
 
-                    <CardContent className="space-y-4">
-                      <div className="space-y-2">
-                        <h4 className="text-white font-medium text-sm">✅ Recursos Inclusos</h4>
-                        {plan.features.map((feature, idx) => (
-                          <div key={idx} className="flex items-start space-x-2 text-sm">
-                            <Check className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                    <CardContent className="space-y-3">
+                      <div className="space-y-1.5">
+                        <h4 className="text-white font-medium text-xs">✅ Recursos Inclusos</h4>
+                        {plan.features.slice(0, 4).map((feature, idx) => (
+                          <div key={idx} className="flex items-start space-x-2 text-xs">
+                            <Check className="w-3 h-3 text-green-400 mt-0.5 flex-shrink-0" />
                             <span className="text-gray-300">{feature}</span>
                           </div>
                         ))}
+                        {plan.features.length > 4 && (
+                          <p className="text-xs text-gray-400">+{plan.features.length - 4} recursos adicionais</p>
+                        )}
                       </div>
 
                       {plan.limitations && (
-                        <div className="space-y-2 pt-2 border-t border-gray-700">
-                          <h4 className="text-gray-400 font-medium text-sm">⚠️ Limitações</h4>
-                          {plan.limitations.map((limitation, idx) => (
-                            <div key={idx} className="flex items-start space-x-2 text-sm">
-                              <X className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                        <div className="space-y-1.5 pt-2 border-t border-gray-700">
+                          <h4 className="text-gray-400 font-medium text-xs">⚠️ Limitações</h4>
+                          {plan.limitations.slice(0, 2).map((limitation, idx) => (
+                            <div key={idx} className="flex items-start space-x-2 text-xs">
+                              <X className="w-3 h-3 text-gray-500 mt-0.5 flex-shrink-0" />
                               <span className="text-gray-500">{limitation}</span>
                             </div>
                           ))}
