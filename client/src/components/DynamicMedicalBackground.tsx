@@ -233,19 +233,26 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       {/* Efeito neon lateral verde sutil */}
       {generateSideGlow()}
       
-      {/* Linha horizontal que escaneia - muda cor quando detecta avatar */}
+      {/* Linha horizontal que escaneia - muda cor quando passa pelo avatar */}
       <div
         className="absolute left-0 right-0 h-0.5 opacity-60"
         style={{
-          background: avatarScanning 
-            ? `linear-gradient(90deg, transparent, #ffaa0088, #ffaa00, #ffaa0088, transparent)` // Amarelo quando scanning
-            : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`, // Verde normal
+          background: (() => {
+            const currentPos = (currentPattern * 2) % 100;
+            const isOverAvatar = currentPos >= 45 && currentPos <= 55; // Avatar está entre 45-55%
+            return isOverAvatar
+              ? `linear-gradient(90deg, transparent, #ffaa0088, #ffaa00, #ffaa0088, transparent)` // Amarelo quando sobre avatar
+              : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`; // Verde normal
+          })(),
           top: `${(currentPattern * 2) % 100}%`,
-          filter: avatarScanning 
-            ? `blur(1px) drop-shadow(0 0 6px #ffaa00) drop-shadow(0 0 12px #ffaa0066)` // Brilho amarelo
-            : `blur(1px) drop-shadow(0 0 4px ${config.color})`, // Brilho normal
-          transition: 'all 0.3s ease-out',
-          animation: avatarScanning ? 'pulse 0.5s ease-in-out infinite alternate' : 'none'
+          filter: (() => {
+            const currentPos = (currentPattern * 2) % 100;
+            const isOverAvatar = currentPos >= 45 && currentPos <= 55;
+            return isOverAvatar
+              ? `blur(1px) drop-shadow(0 0 6px #ffaa00) drop-shadow(0 0 12px #ffaa0066)` // Brilho amarelo
+              : `blur(1px) drop-shadow(0 0 4px ${config.color})`; // Brilho normal
+          })(),
+          transition: 'all 0.2s ease-out'
         }}
       />
     </div>
