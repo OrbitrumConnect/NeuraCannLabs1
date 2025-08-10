@@ -72,20 +72,20 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex items-center mb-8">
-        <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-xl flex items-center justify-center mr-4">
-          <i className="fas fa-microscope text-white text-2xl" />
+    <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8">
+      <div className="flex items-center mb-6 sm:mb-8">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
+          <i className="fas fa-microscope text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-white">Dados Científicos</h1>
-          <p className="text-gray-400">Estudos e pesquisas sobre cannabis medicinal</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Dados Científicos</h1>
+          <p className="text-sm sm:text-base text-gray-400">Estudos e pesquisas sobre cannabis medicinal</p>
         </div>
       </div>
       
       {/* Search and Filters */}
-      <Card className="data-card rounded-xl mb-8">
-        <CardContent className="p-6">
+      <Card className="data-card rounded-xl mb-6 sm:mb-8">
+        <CardContent className="p-4 sm:p-6">
           <div className="flex flex-col lg:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -122,7 +122,7 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
         </Card>
       ) : (
         <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
             {filteredStudies.map((study) => (
               <Card 
                 key={study.id} 

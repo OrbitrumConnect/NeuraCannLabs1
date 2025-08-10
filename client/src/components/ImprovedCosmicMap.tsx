@@ -65,7 +65,7 @@ const planets: CosmicPlanet[] = [
     id: "scientific",
     name: "Dados Científicos",
     position: { top: "20%", right: "5%" },
-    size: "w-11 h-11",
+    size: "w-9 h-9 sm:w-11 sm:h-11",
     color: "from-cyan-400 to-blue-600",
     icon: "fas fa-flask",
     delay: "0s",
@@ -74,7 +74,7 @@ const planets: CosmicPlanet[] = [
     id: "clinical",
     name: "Casos Clínicos",
     position: { top: "35%", right: "5%" },
-    size: "w-11 h-11", 
+    size: "w-9 h-9 sm:w-11 sm:h-11", 
     color: "from-blue-400 to-indigo-600",
     icon: "fas fa-user-md",
     delay: "0s",
@@ -83,7 +83,7 @@ const planets: CosmicPlanet[] = [
     id: "alerts",
     name: "Alertas",
     position: { top: "50%", right: "5%" },
-    size: "w-9 h-9",
+    size: "w-7 h-7 sm:w-9 sm:h-9",
     color: "from-orange-400 to-red-500",
     icon: "fas fa-bell",
     delay: "0s",
@@ -92,7 +92,7 @@ const planets: CosmicPlanet[] = [
     id: "profile",
     name: "Perfil",
     position: { top: "65%", right: "5%" },
-    size: "w-9 h-9",
+    size: "w-7 h-7 sm:w-9 sm:h-9",
     color: "from-purple-400 to-pink-500",
     icon: "fas fa-user-circle",
     delay: "0s",
@@ -244,7 +244,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-20 sm:w-40" isScanning={avatarScanning} />
+            <MedicalAvatar3D className="w-16 sm:w-40" isScanning={avatarScanning} />
           </div>
           
           {!isDrAIActive && (

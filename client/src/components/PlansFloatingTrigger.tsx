@@ -81,20 +81,20 @@ export function PlansFloatingTrigger() {
   return (
     <>
       {/* Floating Trigger Button */}
-      <div className="fixed bottom-6 right-6 z-40">
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
         <Button
           onClick={() => setIsOpen(true)}
-          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 rounded-full w-16 h-16 flex items-center justify-center"
+          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 rounded-full w-12 h-12 sm:w-16 sm:h-16 flex items-center justify-center"
           size="lg"
         >
-          <Crown className="w-6 h-6" />
+          <Crown className="w-4 h-4 sm:w-6 sm:h-6" />
         </Button>
       </div>
 
       {/* Full Screen Modal */}
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-5xl sm:max-w-6xl max-h-[90vh] overflow-y-auto mx-2 sm:mx-0">
             <Card className="bg-gradient-to-br from-gray-900/95 to-black/95 backdrop-blur-md border-cyan-500/30">
               {/* Header com Botão Voltar */}
               <CardHeader className="pb-4 border-b border-cyan-500/20">
@@ -104,8 +104,8 @@ export function PlansFloatingTrigger() {
                       <Crown className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-white text-2xl">Planos NeuroCann Lab</CardTitle>
-                      <CardDescription className="text-cyan-300">
+                      <CardTitle className="text-white text-lg sm:text-2xl">Planos NeuroCann Lab</CardTitle>
+                      <CardDescription className="text-cyan-300 text-sm sm:text-base">
                         Escolha o plano ideal para sua prática médica
                       </CardDescription>
                     </div>
@@ -121,8 +121,8 @@ export function PlansFloatingTrigger() {
                 </div>
               </CardHeader>
 
-              <CardContent className="p-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <CardContent className="p-3 sm:p-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
                   {plans.map((plan, index) => (
                     <Card 
                       key={index}

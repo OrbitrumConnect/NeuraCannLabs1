@@ -41,11 +41,11 @@ interface MainCardProps {
 export default function MainCard({ result }: MainCardProps) {
   if (!result) {
     return (
-      <div style={{ height: 480, borderRadius: 8, padding: 16, background: "#0f172a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+      <div style={{ height: "400px", borderRadius: 8, padding: "12px 16px", background: "#0f172a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }} className="sm:h-[480px] sm:p-4">
         <div className="text-center text-gray-400">
-          <div className="text-2xl mb-2">🧠</div>
-          <div>Nenhuma pesquisa realizada</div>
-          <div className="text-sm mt-2">Digite uma consulta para começar</div>
+          <div className="text-xl mb-2 sm:text-2xl">🧠</div>
+          <div className="text-sm sm:text-base">Nenhuma pesquisa realizada</div>
+          <div className="text-xs mt-2 sm:text-sm">Digite uma consulta para começar</div>
         </div>
       </div>
     );
@@ -62,26 +62,26 @@ export default function MainCard({ result }: MainCardProps) {
   return (
     <div style={{ 
       borderRadius: 8, 
-      padding: 16, 
-      height: 480, 
+      padding: "12px 16px", 
+      height: "400px", 
       background: "#0f172a", 
       color: "#fff",
       border: "1px solid rgba(59, 130, 246, 0.3)",
       overflow: "auto"
-    }}>
+    }} className="sm:h-[480px] sm:p-4">
       
       {/* Header */}
-      <div className="mb-4 p-3 bg-blue-900/20 rounded border border-blue-500/30">
-        <h3 className="text-lg font-semibold text-blue-300">📊 Consulta: {result.query}</h3>
-        <p className="text-sm text-blue-200 mt-1">
+      <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-blue-900/20 rounded border border-blue-500/30">
+        <h3 className="text-base sm:text-lg font-semibold text-blue-300">📊 Consulta: {result.query}</h3>
+        <p className="text-xs sm:text-sm text-blue-200 mt-1">
           Bases consultadas: {result.categories.scientific?.length || 0} estudos • {result.categories.clinical?.length || 0} casos clínicos • {result.categories.alerts?.length || 0} alertas
         </p>
       </div>
 
       {/* AI Response */}
-      <div className="mb-4 p-3 bg-gray-800/30 rounded">
+      <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gray-800/30 rounded">
         <div 
-          className="text-sm text-gray-300 leading-relaxed"
+          className="text-xs sm:text-sm text-gray-300 leading-relaxed"
           dangerouslySetInnerHTML={{ 
             __html: result.response.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>') 
           }} 
