@@ -43,10 +43,10 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Scanner perfeito: começa antes e termina mais rápido (22% a 47%)
+  // Scanner otimizado: duração menor e mais precisa (22% a 45%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 22 && position <= 47;
+    const isScanning = position >= 22 && position <= 45;
     setAvatarScanning(isScanning);
     
     // Debug visual para confirmar detecção
