@@ -78,12 +78,12 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPattern(prev => {
-        const newPattern = (prev + 0.8) % 100
+        const newPattern = (prev + 0.5) % 100 // Movimento mais suave - reduzido de 0.8 para 0.5
         return newPattern
       })
       // Variação sutil na intensidade para efeito "respiratório"
       setIntensity(0.2 + Math.sin(Date.now() / 3000) * 0.2)
-    }, config.speed / 8) // Intervalo mais longo para movimento mais suave
+    }, 16) // 60fps para movimento ultra suave
 
     return () => clearInterval(interval)
   }, [config.speed])
@@ -265,7 +265,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
             }
             return 0.6; // Opacidade normal
           })(),
-          transition: 'opacity 0.3s ease-in-out, top 0s linear'
+          transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
         }}
       />
     </div>

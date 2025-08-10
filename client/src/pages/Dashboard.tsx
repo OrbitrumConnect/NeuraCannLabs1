@@ -28,10 +28,10 @@ export default function Dashboard() {
     if (section) {
       setActiveDashboard(section);
     }
-    // Mostrar notificação do plano gratuito apenas na primeira vez
-    if (isFreePlan && !localStorage.getItem('freePlanNotificationShown')) {
-      setShowFreePlanNotification(true);
-    }
+    // Desabilitado - navegação via header agora
+    // if (isFreePlan && !localStorage.getItem('freePlanNotificationShown')) {
+    //   setShowFreePlanNotification(true);
+    // }
   }, [section, isFreePlan]);
 
   const handleMenuClick = () => {
