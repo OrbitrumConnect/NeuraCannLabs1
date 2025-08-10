@@ -7,13 +7,15 @@ interface MedicalAvatar3DProps {
   isListening?: boolean;
   message?: string;
   className?: string;
+  isScanning?: boolean;
 }
 
 export default function MedicalAvatar3D({ 
   isActive = false, 
   isListening = false, 
   message = '', 
-  className = '' 
+  className = '',
+  isScanning = false
 }: MedicalAvatar3DProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -196,10 +198,19 @@ export default function MedicalAvatar3D({
 
   return (
     <div className={`relative ${className}`}>
+      {/* Efeito de scan quando isScanning é true */}
+      {isScanning && (
+        <>
+          <div className="absolute inset-0 rounded-full animate-ping border-4 border-neon-cyan/60 z-10" />
+          <div className="absolute inset-2 rounded-full animate-pulse bg-neon-cyan/10 border-2 border-neon-cyan/40 z-10" />
+          <div className="absolute inset-4 rounded-full animate-bounce bg-green-400/20 border border-green-400/60 z-10" />
+        </>
+      )}
+      
       {/* 3D Avatar Container - Free floating */}
       <div 
         ref={mountRef} 
-        className={`relative transition-all duration-500 ${className} ${
+        className={`relative transition-all duration-500 ${className} ${isScanning ? 'scale-110 brightness-150' : ''} ${
           isActive 
             ? 'drop-shadow-2xl' 
             : 'drop-shadow-lg'

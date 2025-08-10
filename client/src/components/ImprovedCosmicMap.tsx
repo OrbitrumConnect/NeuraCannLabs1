@@ -57,6 +57,7 @@ interface CosmicMapProps {
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
   onAIResponse?: (response: string, suggestions: string[], results: any[], query?: string) => void;
+  avatarScanning?: boolean;
 }
 
 const planets: CosmicPlanet[] = [
@@ -98,7 +99,7 @@ const planets: CosmicPlanet[] = [
   },
 ];
 
-export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSearch, onAIResponse }: CosmicMapProps) {
+export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSearch, avatarScanning }: CosmicMapProps) {
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("todos");
@@ -239,7 +240,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-32 sm:w-40" />
+            <MedicalAvatar3D className="w-32 sm:w-40" isScanning={avatarScanning} />
           </div>
           
           {!isDrAIActive && (

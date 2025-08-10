@@ -4,9 +4,10 @@ import { cn } from '@/lib/utils'
 interface DynamicMedicalBackgroundProps {
   context: 'overview' | 'scientific' | 'clinical' | 'alerts' | 'forum' | 'profile' | 'admin'
   className?: string
+  onScanUpdate?: (scanPosition: number) => void
 }
 
-export function DynamicMedicalBackground({ context, className }: DynamicMedicalBackgroundProps) {
+export function DynamicMedicalBackground({ context, className, onScanUpdate }: DynamicMedicalBackgroundProps) {
   const [currentPattern, setCurrentPattern] = useState(0)
   const [intensity, setIntensity] = useState(0.3)
 
@@ -74,13 +75,21 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentPattern(prev => (prev + 0.8) % 100) // 20% mais lento (1 -> 0.8)
+      setCurrentPattern(prev => {
+        const newPattern = (prev + 0.8) % 100
+        return newPattern
+      })
       // Variação sutil na intensidade para efeito "respiratório"
       setIntensity(0.2 + Math.sin(Date.now() / 3000) * 0.2)
     }, config.speed / 8) // Intervalo mais longo para movimento mais suave
 
     return () => clearInterval(interval)
   }, [config.speed])
+
+  // Notifica a posição do scan em um useEffect separado para evitar warnings
+  useEffect(() => {
+    onScanUpdate?.(currentPattern)
+  }, [currentPattern, onScanUpdate])
 
   // Efeito neon lateral sutil
   const generateSideGlow = () => {

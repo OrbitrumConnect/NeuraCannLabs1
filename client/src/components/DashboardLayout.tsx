@@ -11,6 +11,7 @@ interface DashboardLayoutProps {
   sideNavOpen: boolean;
   setSideNavOpen: (open: boolean) => void;
   onSearchQuery?: (query: string) => void;
+  avatarScanning?: boolean;
 }
 
 const dashboardOptions = [
@@ -34,9 +35,18 @@ export default function DashboardLayout({
   onSearchQuery,
 }: DashboardLayoutProps) {
   const [interactionMode, setInteractionMode] = useState<'voice' | 'gesture' | 'text'>('text');
+  const [scanPosition, setScanPosition] = useState(0);
+  const [avatarScanning, setAvatarScanning] = useState(false);
   const handleDashboardClick = (dashboardId: string) => {
     onDashboardChange(dashboardId);
     setSideNavOpen(false);
+  };
+
+  // Detecta quando o scan está na área do avatar (centro da tela, aprox. 45-55%)
+  const handleScanUpdate = (position: number) => {
+    setScanPosition(position);
+    const isScanning = position >= 45 && position <= 55;
+    setAvatarScanning(isScanning);
   };
 
   return (
@@ -174,6 +184,7 @@ export default function DashboardLayout({
         <DynamicMedicalBackground 
           context={activeDashboard as any}
           className="z-0"
+          onScanUpdate={handleScanUpdate}
         />
         
         {/* Content */}

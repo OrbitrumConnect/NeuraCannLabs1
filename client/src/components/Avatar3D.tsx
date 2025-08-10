@@ -2,24 +2,35 @@ interface Avatar3DProps {
   className?: string;
   size?: number;
   color?: string;
+  isScanning?: boolean;
 }
 
 export default function Avatar3D({ 
   className = "w-32 h-32", 
   size = 150,
-  color = "#00ffff" 
+  color = "#00ffff",
+  isScanning = false 
 }: Avatar3DProps) {
   return (
-    <div className={`${className} avatar-glow relative flex items-center justify-center`} style={{ width: size, height: size }}>
+    <div className={`${className} avatar-glow relative flex items-center justify-center ${isScanning ? 'avatar-scanning' : ''}`} style={{ width: size, height: size }}>
+      {/* Efeito de scan especial */}
+      {isScanning && (
+        <div className="absolute inset-0 rounded-full animate-ping border-4 border-neon-cyan/60" />
+      )}
+      {isScanning && (
+        <div className="absolute inset-2 rounded-full animate-pulse bg-neon-cyan/10 border-2 border-neon-cyan/40" />
+      )}
+      
       {/* Holographic Avatar SVG */}
-      <div className="relative animate-hologram">
+      <div className={`relative animate-hologram ${isScanning ? 'scale-110' : ''} transition-transform duration-300`}>
         <svg
           width={size * 0.7}
           height={size * 0.7}
           viewBox="0 0 100 100"
-          className="animate-pulse-glow"
+          className={`animate-pulse-glow ${isScanning ? 'animate-bounce' : ''}`}
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          style={{ filter: isScanning ? `drop-shadow(0 0 20px ${color}) brightness(1.5)` : undefined }}
         >
           {/* Outer holographic ring */}
           <circle 
