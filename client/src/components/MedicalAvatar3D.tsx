@@ -200,22 +200,12 @@ export default function MedicalAvatar3D({
 
   return (
     <div className={`relative ${className}`}>
-      {/* Efeito de scan quando avatarScanning é true - muito mais visível */}
-      {avatarScanning && (
-        <>
-          <div className="absolute -inset-4 rounded-full border-4 border-red-400 bg-red-400/20 animate-ping z-10" />
-          <div className="absolute -inset-2 rounded-full border-2 border-yellow-300 bg-yellow-300/30 animate-pulse z-10" />
-          <div className="absolute inset-0 rounded-full border-2 border-white bg-white/20 animate-bounce z-10" />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-            <div className="text-red-500 text-lg font-bold animate-pulse">SCAN</div>
-          </div>
-        </>
-      )}
+      {/* Removido: efeitos visuais estranhos do avatar conforme solicitado */}
       
       {/* 3D Avatar Container - Free floating */}
       <div 
         ref={mountRef} 
-        className={`relative transition-all duration-500 ${className} ${avatarScanning ? 'scale-110 brightness-150' : ''} ${
+        className={`relative transition-all duration-500 ${className} ${
           isActive 
             ? 'drop-shadow-2xl' 
             : 'drop-shadow-lg'

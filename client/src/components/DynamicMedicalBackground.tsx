@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useScan } from "@/contexts/ScanContext"
 
 interface DynamicMedicalBackgroundProps {
   context: 'overview' | 'scientific' | 'clinical' | 'alerts' | 'forum' | 'profile' | 'admin'
@@ -10,6 +11,7 @@ interface DynamicMedicalBackgroundProps {
 export function DynamicMedicalBackground({ context, className, onScanUpdate }: DynamicMedicalBackgroundProps) {
   const [currentPattern, setCurrentPattern] = useState(0)
   const [intensity, setIntensity] = useState(0.3)
+  const { avatarScanning } = useScan()
 
   // Configurações específicas por contexto médico
   const contextConfigs = {
@@ -231,14 +233,19 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       {/* Efeito neon lateral verde sutil */}
       {generateSideGlow()}
       
-      {/* Linha horizontal que escaneia */}
+      {/* Linha horizontal que escaneia - muda cor quando detecta avatar */}
       <div
         className="absolute left-0 right-0 h-0.5 opacity-60"
         style={{
-          background: `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`,
+          background: avatarScanning 
+            ? `linear-gradient(90deg, transparent, #ffaa0088, #ffaa00, #ffaa0088, transparent)` // Amarelo quando scanning
+            : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`, // Verde normal
           top: `${(currentPattern * 2) % 100}%`,
-          filter: `blur(1px) drop-shadow(0 0 4px ${config.color})`,
-          transition: 'top 0.2s ease-out'
+          filter: avatarScanning 
+            ? `blur(1px) drop-shadow(0 0 6px #ffaa00) drop-shadow(0 0 12px #ffaa0066)` // Brilho amarelo
+            : `blur(1px) drop-shadow(0 0 4px ${config.color})`, // Brilho normal
+          transition: 'all 0.3s ease-out',
+          animation: avatarScanning ? 'pulse 0.5s ease-in-out infinite alternate' : 'none'
         }}
       />
     </div>
@@ -255,5 +262,10 @@ export const medicalBackgroundStyles = `
   @keyframes neural-pulse {
     0%, 100% { opacity: 0.2; }
     50% { opacity: 0.6; }
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.6; transform: scaleY(1); }
+    100% { opacity: 1; transform: scaleY(1.5); }
   }
 `
