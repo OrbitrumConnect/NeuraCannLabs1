@@ -4,18 +4,23 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
-import { UserPlus, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { UserPlus, Eye, EyeOff, Stethoscope, User } from 'lucide-react';
 
 export default function Register() {
   const [, setLocation] = useLocation();
+  const [userType, setUserType] = useState<'common' | 'professional'>('common');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
-    crm: '',
-    specialty: ''
+    credentialType: '',
+    credentialNumber: '',
+    specialty: '',
+    workArea: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -65,8 +70,11 @@ export default function Register() {
           name: formData.name,
           email: formData.email,
           password: formData.password,
-          crm: formData.crm,
-          specialty: formData.specialty
+          userType: userType,
+          credentialType: formData.credentialType,
+          credentialNumber: formData.credentialNumber,
+          specialty: formData.specialty,
+          workArea: formData.workArea
         }),
       });
 
@@ -118,40 +126,57 @@ export default function Register() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          {/* Seleção do Tipo de Usuário */}
+          <div className="mb-6 space-y-3">
+            <Label className="text-white text-base font-medium">Tipo de Conta</Label>
+            <RadioGroup 
+              value={userType} 
+              onValueChange={(value: 'common' | 'professional') => setUserType(value)}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              <div className="flex items-center space-x-3 rounded-lg border border-cyan-500/30 bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                <RadioGroupItem value="common" id="common" className="border-cyan-400 text-cyan-400" />
+                <div className="flex items-center space-x-3 flex-1">
+                  <User className="w-5 h-5 text-cyan-400" />
+                  <div>
+                    <Label htmlFor="common" className="text-white font-medium cursor-pointer">
+                      Usuário Comum
+                    </Label>
+                    <p className="text-sm text-gray-400">Acesso geral à plataforma</p>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center space-x-3 rounded-lg border border-green-500/30 bg-white/5 p-4 hover:bg-white/10 transition-colors">
+                <RadioGroupItem value="professional" id="professional" className="border-green-400 text-green-400" />
+                <div className="flex items-center space-x-3 flex-1">
+                  <Stethoscope className="w-5 h-5 text-green-400" />
+                  <div>
+                    <Label htmlFor="professional" className="text-white font-medium cursor-pointer">
+                      Profissional da Saúde
+                    </Label>
+                    <p className="text-sm text-gray-400">Acesso completo e credenciado</p>
+                  </div>
+                </div>
+              </div>
+            </RadioGroup>
+          </div>
+
           <form onSubmit={handleRegister} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-white">
-                  Nome Completo
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  placeholder="Dr. João Silva"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
-                  required
-                  data-testid="input-name"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="crm" className="text-white">
-                  CRM
-                </Label>
-                <Input
-                  id="crm"
-                  name="crm"
-                  type="text"
-                  placeholder="123456/SP"
-                  value={formData.crm}
-                  onChange={handleInputChange}
-                  className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
-                  required
-                  data-testid="input-crm"
-                />
-              </div>
+            <div className="space-y-2">
+              <Label htmlFor="name" className="text-white">
+                Nome Completo
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                placeholder={userType === 'professional' ? "Dr. João Silva" : "João Silva"}
+                value={formData.name}
+                onChange={handleInputChange}
+                className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
+                required
+                data-testid="input-name"
+              />
             </div>
 
             <div className="space-y-2">
@@ -171,22 +196,93 @@ export default function Register() {
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="specialty" className="text-white">
-                Especialidade
-              </Label>
-              <Input
-                id="specialty"
-                name="specialty"
-                type="text"
-                placeholder="ex: Neurologia, Oncologia"
-                value={formData.specialty}
-                onChange={handleInputChange}
-                className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
-                required
-                data-testid="input-specialty"
-              />
-            </div>
+            {/* Campos específicos para profissionais da saúde */}
+            {userType === 'professional' && (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="credentialType" className="text-white">
+                      Tipo de Credencial
+                    </Label>
+                    <Select value={formData.credentialType} onValueChange={(value) => 
+                      setFormData(prev => ({ ...prev, credentialType: value }))
+                    }>
+                      <SelectTrigger className="bg-white/10 border-cyan-500/30 text-white focus:border-cyan-400">
+                        <SelectValue placeholder="Selecione o tipo" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-cyan-500/30">
+                        <SelectItem value="CRM" className="text-white hover:bg-white/10">CRM - Conselho Regional de Medicina</SelectItem>
+                        <SelectItem value="CREFITO" className="text-white hover:bg-white/10">CREFITO - Conselho Regional de Fisioterapia</SelectItem>
+                        <SelectItem value="CONFITO" className="text-white hover:bg-white/10">CONFITO - Conselho Federal de Fisioterapia</SelectItem>
+                        <SelectItem value="CRO" className="text-white hover:bg-white/10">CRO - Conselho Regional de Odontologia</SelectItem>
+                        <SelectItem value="COREN" className="text-white hover:bg-white/10">COREN - Conselho Regional de Enfermagem</SelectItem>
+                        <SelectItem value="CRF" className="text-white hover:bg-white/10">CRF - Conselho Regional de Farmácia</SelectItem>
+                        <SelectItem value="CRP" className="text-white hover:bg-white/10">CRP - Conselho Regional de Psicologia</SelectItem>
+                        <SelectItem value="CREFONO" className="text-white hover:bg-white/10">CREFONO - Conselho Regional de Fonoaudiologia</SelectItem>
+                        <SelectItem value="CRN" className="text-white hover:bg-white/10">CRN - Conselho Regional de Nutrição</SelectItem>
+                        <SelectItem value="OUTROS" className="text-white hover:bg-white/10">Outros</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="credentialNumber" className="text-white">
+                      Número da Credencial
+                    </Label>
+                    <Input
+                      id="credentialNumber"
+                      name="credentialNumber"
+                      type="text"
+                      placeholder="123456/SP"
+                      value={formData.credentialNumber}
+                      onChange={handleInputChange}
+                      className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
+                      required
+                      data-testid="input-credential-number"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="specialty" className="text-white">
+                      Especialidade
+                    </Label>
+                    <Input
+                      id="specialty"
+                      name="specialty"
+                      type="text"
+                      placeholder="ex: Neurologia, Oncologia"
+                      value={formData.specialty}
+                      onChange={handleInputChange}
+                      className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
+                      required
+                      data-testid="input-specialty"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="workArea" className="text-white">
+                      Área de Atuação
+                    </Label>
+                    <Select value={formData.workArea} onValueChange={(value) => 
+                      setFormData(prev => ({ ...prev, workArea: value }))
+                    }>
+                      <SelectTrigger className="bg-white/10 border-cyan-500/30 text-white focus:border-cyan-400">
+                        <SelectValue placeholder="Selecione a área" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-slate-800 border-cyan-500/30">
+                        <SelectItem value="clinica" className="text-white hover:bg-white/10">Clínica Médica</SelectItem>
+                        <SelectItem value="hospital" className="text-white hover:bg-white/10">Hospital</SelectItem>
+                        <SelectItem value="pesquisa" className="text-white hover:bg-white/10">Pesquisa e Desenvolvimento</SelectItem>
+                        <SelectItem value="ensino" className="text-white hover:bg-white/10">Ensino e Academia</SelectItem>
+                        <SelectItem value="consultorio" className="text-white hover:bg-white/10">Consultório Particular</SelectItem>
+                        <SelectItem value="sus" className="text-white hover:bg-white/10">Sistema Público (SUS)</SelectItem>
+                        <SelectItem value="outros" className="text-white hover:bg-white/10">Outros</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -242,6 +338,7 @@ export default function Register() {
                 </div>
               </div>
             </div>
+
 
             <Button
               type="submit"

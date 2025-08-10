@@ -56,15 +56,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.post("/api/auth/register", async (req, res) => {
-    const { name, email, password, crm, specialty } = req.body;
+    const { 
+      name, 
+      email, 
+      password, 
+      userType, 
+      credentialType, 
+      credentialNumber, 
+      specialty, 
+      workArea 
+    } = req.body;
     
     // Validações básicas
-    if (!name || !email || !password || !crm || !specialty) {
-      return res.status(400).json({ message: 'Todos os campos são obrigatórios' });
+    if (!name || !email || !password || !userType) {
+      return res.status(400).json({ message: 'Campos obrigatórios: nome, email, senha e tipo de usuário' });
     }
     
     if (password.length < 8) {
       return res.status(400).json({ message: 'A senha deve ter pelo menos 8 caracteres' });
+    }
+    
+    // Validações específicas para profissionais da saúde
+    if (userType === 'professional') {
+      if (!credentialType || !credentialNumber || !specialty || !workArea) {
+        return res.status(400).json({ 
+          message: 'Profissionais da saúde devem preencher: tipo de credencial, número, especialidade e área de atuação' 
+        });
+      }
     }
     
     // Em um sistema real, aqui verificaríamos se o email já existe
@@ -73,9 +91,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
       id: `user-${Date.now()}`,
       name,
       email,
-      crm,
-      specialty,
-      role: 'doctor'
+      userType,
+      credentialType: userType === 'professional' ? credentialType : null,
+      credentialNumber: userType === 'professional' ? credentialNumber : null,
+      specialty: userType === 'professional' ? specialty : null,
+      workArea: userType === 'professional' ? workArea : null,
+      role: userType === 'professional' ? 'professional' : 'user'
     };
     
     res.status(201).json({ 
