@@ -178,154 +178,161 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
           </div>
         </div>
 
-        {/* Global Real-Time Statistics */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {/* Global Real-Time Statistics - Mobile-optimized */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
           <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-500/20 rounded-lg">
-                  <Globe className="w-5 h-5 text-blue-400" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-blue-500/20 rounded-lg">
+                  <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
                 </div>
                 <div>
-                  <p className="text-blue-400 text-sm font-medium">Estudos Globais PubMed</p>
-                  <p className="text-xl sm:text-2xl font-bold text-white">{globalStats.globalStudies.toLocaleString()}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20 col-span-2">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-500/20 rounded-lg">
-                  <TrendingUp className="w-5 h-5 text-green-400" />
-                </div>
-                <div>
-                  <p className="text-green-400 text-xs font-medium">Ensaios Clínicos Ativos</p>
-                  <p className="text-2xl font-bold text-white">{globalStats.clinicalTrials}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20 col-span-2">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-500/20 rounded-lg">
-                  <AlertTriangle className="w-5 h-5 text-purple-400" />
-                </div>
-                <div>
-                  <p className="text-purple-400 text-xs font-medium">Atualizações ANVISA</p>
-                  <p className="text-2xl font-bold text-white">{globalStats.anvisaUpdates}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20 col-span-2">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-yellow-500/20 rounded-lg">
-                  <Brain className="w-5 h-5 text-yellow-400" />
-                </div>
-                <div>
-                  <p className="text-yellow-400 text-xs font-medium">Análises IA</p>
-                  <p className="text-2xl font-bold text-white">{globalStats.aiAnalyses}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Submission Statistics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-yellow-500/20 rounded-full">
-                  <Clock className="w-6 h-6 text-yellow-400" />
-                </div>
-                <div>
-                  <p className="text-yellow-400 text-sm font-medium">Em Análise</p>
-                  <p className="text-3xl font-bold text-white">{globalStats.pendingCount}</p>
+                  <p className="text-blue-400 text-xs sm:text-sm font-medium">Estudos PubMed</p>
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white">{globalStats.globalStudies.toLocaleString()}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-green-500/20 rounded-full">
-                  <CheckCircle className="w-6 h-6 text-green-400" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-green-500/20 rounded-lg">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
                 </div>
                 <div>
-                  <p className="text-green-400 text-sm font-medium">Base Científica</p>
-                  <p className="text-3xl font-bold text-white">{globalStats.approvedCount}</p>
+                  <p className="text-green-400 text-xs sm:text-sm font-medium">Ensaios Clínicos</p>
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white">{globalStats.clinicalTrials}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-red-500/20 rounded-full">
-                  <XCircle className="w-6 h-6 text-red-400" />
+          <Card className="bg-gradient-to-br from-purple-500/10 to-purple-600/5 border-purple-500/20">
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-purple-500/20 rounded-lg">
+                  <AlertTriangle className="w-4 h-4 sm:w-5 sm:h-5 text-purple-400" />
                 </div>
                 <div>
-                  <p className="text-red-400 text-sm font-medium">Revisões</p>
-                  <p className="text-3xl font-bold text-white">{globalStats.rejectedCount}</p>
+                  <p className="text-purple-400 text-xs sm:text-sm font-medium">ANVISA</p>
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white">{globalStats.anvisaUpdates}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="p-3 bg-blue-500/20 rounded-full">
-                  <Calendar className="w-6 h-6 text-blue-400" />
+          <Card className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-yellow-500/20 rounded-lg">
+                  <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
                 </div>
                 <div>
-                  <p className="text-blue-400 text-sm font-medium">Hoje</p>
-                  <p className="text-3xl font-bold text-white">{globalStats.todaySubmissions}</p>
+                  <p className="text-yellow-400 text-xs sm:text-sm font-medium">Análises IA</p>
+                  <p className="text-lg sm:text-xl lg:text-2xl font-bold text-white">{globalStats.aiAnalyses}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Tabs */}
+        {/* Submission Statistics - Mobile-optimized */}
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          <Card className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="p-2 sm:p-3 bg-yellow-500/20 rounded-full">
+                  <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400" />
+                </div>
+                <div>
+                  <p className="text-yellow-400 text-xs sm:text-sm font-medium">Em Análise</p>
+                  <p className="text-xl sm:text-3xl font-bold text-white">{globalStats.pendingCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="p-2 sm:p-3 bg-green-500/20 rounded-full">
+                  <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 text-green-400" />
+                </div>
+                <div>
+                  <p className="text-green-400 text-xs sm:text-sm font-medium">Base Científica</p>
+                  <p className="text-xl sm:text-3xl font-bold text-white">{globalStats.approvedCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="p-2 sm:p-3 bg-red-500/20 rounded-full">
+                  <XCircle className="w-4 h-4 sm:w-6 sm:h-6 text-red-400" />
+                </div>
+                <div>
+                  <p className="text-red-400 text-xs sm:text-sm font-medium">Rejeitados</p>
+                  <p className="text-xl sm:text-3xl font-bold text-white">{globalStats.rejectedCount}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
+            <CardContent className="p-3 sm:p-6">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="p-2 sm:p-3 bg-blue-500/20 rounded-full">
+                  <Calendar className="w-4 h-4 sm:w-6 sm:h-6 text-blue-400" />
+                </div>
+                <div>
+                  <p className="text-blue-400 text-xs sm:text-sm font-medium">Hoje</p>
+                  <p className="text-xl sm:text-3xl font-bold text-white">{globalStats.todaySubmissions}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Tabs - Mobile-optimized */}
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
-          <TabsList className="grid w-full grid-cols-7 bg-white/5">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400">
-              <BarChart3 className="w-4 h-4 mr-1" />
-              Visão Geral
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 bg-white/5 h-auto p-1">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400 text-xs sm:text-sm p-2">
+              <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Visão Geral</span>
+              <span className="sm:hidden">Visão</span>
             </TabsTrigger>
-            <TabsTrigger value="pending" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-400">
-              <Clock className="w-4 h-4 mr-1" />
-              Em Análise ({globalStats.pendingCount})
+            <TabsTrigger value="pending" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-400 text-xs sm:text-sm p-2">
+              <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Em Análise ({globalStats.pendingCount})</span>
+              <span className="sm:hidden">Análise</span>
             </TabsTrigger>
-            <TabsTrigger value="approved" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400">
-              <CheckCircle className="w-4 h-4 mr-1" />
-              Base Científica ({globalStats.approvedCount})
+            <TabsTrigger value="approved" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400 text-xs sm:text-sm p-2">
+              <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Base Científica ({globalStats.approvedCount})</span>
+              <span className="sm:hidden">Base</span>
             </TabsTrigger>
-            <TabsTrigger value="rejected" className="data-[state=active]:bg-red-500/20 data-[state=active]:text-red-400">
-              <XCircle className="w-4 h-4 mr-1" />
-              Rejeitados ({globalStats.rejectedCount})
+            <TabsTrigger value="rejected" className="data-[state=active]:bg-red-500/20 data-[state=active]:text-red-400 text-xs sm:text-sm p-2">
+              <XCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Rejeitados ({globalStats.rejectedCount})</span>
+              <span className="sm:hidden">Rejeit.</span>
             </TabsTrigger>
-            <TabsTrigger value="revision" className="data-[state=active]:bg-orange-500/20 data-[state=active]:text-orange-400">
-              <FileEdit className="w-4 h-4 mr-1" />
-              Revisão (2)
+            <TabsTrigger value="revision" className="data-[state=active]:bg-orange-500/20 data-[state=active]:text-orange-400 text-xs sm:text-sm p-2">
+              <FileEdit className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Revisão (2)</span>
+              <span className="sm:hidden">Revis.</span>
             </TabsTrigger>
-            <TabsTrigger value="global-data" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400">
-              <Globe className="w-4 h-4 mr-1" />
-              Dados Globais
+            <TabsTrigger value="global-data" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400 text-xs sm:text-sm p-2">
+              <Globe className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Dados Globais</span>
+              <span className="sm:hidden">Global</span>
             </TabsTrigger>
-            <TabsTrigger value="ai-analysis" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400">
-              <Brain className="w-4 h-4 mr-1" />
-              IA Analysis
+            <TabsTrigger value="ai-analysis" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400 text-xs sm:text-sm p-2">
+              <Brain className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">IA Analysis</span>
+              <span className="sm:hidden">IA</span>
             </TabsTrigger>
           </TabsList>
 

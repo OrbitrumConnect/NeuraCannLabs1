@@ -69,7 +69,7 @@ export default function Dashboard() {
       
       {/* Free Plan Notification */}
       {showFreePlanNotification && (
-        <div className="fixed top-4 right-4 z-50 w-80 max-w-sm">
+        <div className="fixed top-2 right-2 sm:top-4 sm:right-4 z-50 w-72 sm:w-80 max-w-sm">
           <FreePlanNotification onClose={handleClosePlanNotification} />
         </div>
       )}
@@ -142,7 +142,7 @@ interface OverviewDashboardProps {
 
 function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
   return (
-    <section className="relative container mx-auto px-4 py-8">
+    <section className="relative container mx-auto px-2 sm:px-4 py-4 sm:py-8">
       {/* Cosmic Knowledge Map */}
       <div className="mb-8">
         <ImprovedCosmicMap 
