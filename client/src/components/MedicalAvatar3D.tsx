@@ -212,15 +212,14 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: (() => {
-            // Avatar brilha menos tempo: sincronizado (22% a 45%)
-            const isBeingScanned = scanPosition >= 22 && scanPosition <= 45;
-            // Cor personalizada: amarelo 40%, verde 50%, azul ciano 10% = rgb(194, 230, 26)
+            // Avatar sincronizado EXATAMENTE com linha amarela (22% a 45%)
+            const isYellowZone = scanPosition >= 22 && scanPosition <= 45;
             
-            return isBeingScanned
-              ? 'drop-shadow(0 0 25px rgba(255,235,59,0.6)) drop-shadow(0 0 50px rgba(255,235,59,0.4)) brightness(1.2) saturate(1.1)' // Brilho amarelo suave, 30% menos intenso
+            return isYellowZone
+              ? 'drop-shadow(0 0 25px rgba(255,235,59,0.6)) drop-shadow(0 0 50px rgba(255,235,59,0.4)) brightness(1.2) saturate(1.1)' // Amarelo quando linha amarela
               : isActive 
-              ? 'drop-shadow(0 0 30px rgba(34,197,94,0.9)) drop-shadow(0 0 60px rgba(16,185,129,0.6)) brightness(1.3) saturate(1.2)' 
-              : 'drop-shadow(0 0 20px rgba(34,197,94,0.4)) drop-shadow(0 0 40px rgba(16,185,129,0.2)) brightness(1.0) saturate(1.1)';
+              ? 'drop-shadow(0 0 30px rgba(34,197,94,0.9)) drop-shadow(0 0 60px rgba(16,185,129,0.6)) brightness(1.3) saturate(1.2)' // Verde ativo
+              : 'drop-shadow(0 0 20px rgba(34,197,94,0.4)) drop-shadow(0 0 40px rgba(16,185,129,0.2)) brightness(1.0) saturate(1.1)'; // Verde normal
           })(),
           transition: 'all 0.2s ease-out'
         }}
