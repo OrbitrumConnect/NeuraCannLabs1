@@ -239,21 +239,20 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
         style={{
           background: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            // Ajustado para cobrir melhor o avatar: da cabeça até a perna (40-60%)
             const isOverAvatar = currentPos >= 40 && currentPos <= 60;
-            // Cor personalizada: amarelo 40%, verde 50%, azul ciano 10%
-            const customColor = 'rgb(194, 230, 26)'; // #c2e61a - mix das cores
+            
+            // Amarelo suave para quando passa pelo avatar
             return isOverAvatar
-              ? `linear-gradient(90deg, transparent, ${customColor}88, ${customColor}, ${customColor}88, transparent)`
+              ? `linear-gradient(90deg, transparent, rgba(255,235,59,0.7), rgba(255,235,59,0.9), rgba(255,235,59,0.7), transparent)`
               : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`;
           })(),
           top: `${(currentPattern * 2) % 100}%`,
           filter: (() => {
             const currentPos = (currentPattern * 2) % 100;
             const isOverAvatar = currentPos >= 40 && currentPos <= 60;
-            const customColor = 'rgb(194, 230, 26)';
+            
             return isOverAvatar
-              ? `blur(1px) drop-shadow(0 0 6px ${customColor}) drop-shadow(0 0 12px rgba(194, 230, 26, 0.4))`
+              ? `blur(1px) drop-shadow(0 0 4px rgba(255,235,59,0.8))`
               : `blur(1px) drop-shadow(0 0 4px ${config.color})`;
           })(),
           transition: 'all 0.2s ease-out'
