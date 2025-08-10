@@ -74,10 +74,10 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentPattern(prev => (prev + 1) % 100)
+      setCurrentPattern(prev => (prev + 0.8) % 100) // 20% mais lento (1 -> 0.8)
       // Variação sutil na intensidade para efeito "respiratório"
       setIntensity(0.2 + Math.sin(Date.now() / 3000) * 0.2)
-    }, config.speed / 10)
+    }, config.speed / 8) // Intervalo mais longo para movimento mais suave
 
     return () => clearInterval(interval)
   }, [config.speed])
