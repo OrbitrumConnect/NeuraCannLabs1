@@ -43,10 +43,10 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Detecção sincronizada: linha e avatar mudam juntos (28% a 55%)
+  // Detecção sincronizada: linha e avatar mudam juntos (28% a 52%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 28 && position <= 55;
+    const isScanning = position >= 28 && position <= 52;
     setAvatarScanning(isScanning);
     
     // Debug visual para confirmar detecção
