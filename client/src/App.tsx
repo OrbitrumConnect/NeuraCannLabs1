@@ -15,9 +15,9 @@ function Router() {
     <Switch>
       <Route path="/landing" component={Landing} />
       <Route path="/login" component={Login} />
+      <Route path="/" component={Dashboard} />
       <Route path="/dashboard/:section?" component={Dashboard} />
       <Route path="/admin" component={GlobalAdminDashboard} />
-      <Route path="/" component={Landing} />
       <Route component={NotFound} />
     </Switch>
   );

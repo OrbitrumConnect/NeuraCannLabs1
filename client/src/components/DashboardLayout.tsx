@@ -25,8 +25,6 @@ const dashboardOptions = [
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
-  { id: "landing", name: "Landing Page", icon: "fas fa-home" },
-  { id: "logout", name: "Sair", icon: "fas fa-sign-out-alt" },
 ];
 
 export default function DashboardLayout({
@@ -40,21 +38,7 @@ export default function DashboardLayout({
 }: DashboardLayoutProps) {
 
   const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
-  const handleDashboardClick = async (dashboardId: string) => {
-    if (dashboardId === "logout") {
-      try {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        localStorage.removeItem('user');
-        window.location.href = '/landing';
-      } catch (error) {
-        console.error('Erro ao fazer logout:', error);
-      }
-      return;
-    }
-    if (dashboardId === "landing") {
-      window.location.href = '/landing';
-      return;
-    }
+  const handleDashboardClick = (dashboardId: string) => {
     onDashboardChange(dashboardId);
     setSideNavOpen(false);
   };
@@ -77,7 +61,7 @@ export default function DashboardLayout({
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
         <div className="container mx-auto px-4 py-2 sm:py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
               <i className="fas fa-cannabis text-white text-sm sm:text-lg" />
             </div>
             <h1 className="text-lg sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
