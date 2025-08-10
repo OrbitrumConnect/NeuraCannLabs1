@@ -40,8 +40,8 @@ export function MedicalHeartbeat({
     if (!isActive) return
 
     const interval = setInterval(() => {
-      setCurrentBeat(prev => (prev + 1) % 100)
-    }, speed / 100)
+      setCurrentBeat(prev => (prev + 0.2) % 100)
+    }, speed / 200) // Mais lento e suave
 
     return () => clearInterval(interval)
   }, [speed, isActive])
@@ -58,20 +58,17 @@ export function MedicalHeartbeat({
     return path
   }
 
-  // Efeito de pulso para simular monitoramento
-  const pulseIntensity = Math.sin(Date.now() / 500) * 0.3 + 0.7
+  // Efeito de pulso suave
+  const pulseIntensity = Math.sin(Date.now() / 2000) * 0.1 + 0.6
 
   return (
-    <div className={cn("w-full h-16 relative overflow-hidden", className)}>
-      {/* Grid médico de fundo */}
+    <div className={cn("w-full h-12 relative overflow-hidden", className)}>
+      {/* Linhas sutis de fundo */}
       <div 
-        className="absolute inset-0 opacity-20"
+        className="absolute inset-0 opacity-5"
         style={{
-          backgroundImage: `
-            linear-gradient(${color}22 1px, transparent 1px),
-            linear-gradient(90deg, ${color}22 1px, transparent 1px)
-          `,
-          backgroundSize: '20px 10px'
+          backgroundImage: `linear-gradient(90deg, ${color}44 1px, transparent 1px)`,
+          backgroundSize: '100px 1px'
         }}
       />
       
@@ -93,73 +90,37 @@ export function MedicalHeartbeat({
           opacity="0.3"
         />
         
-        {/* Padrão de batimento principal */}
+        {/* Padrão de batimento principal - mais sutil */}
         <path
           d={createHeartbeatPath()}
           fill="none"
           stroke={color}
-          strokeWidth="2"
-          opacity={pulseIntensity}
-          className="animate-pulse"
+          strokeWidth="1.5"
+          opacity={pulseIntensity * 0.7}
+          style={{ filter: `drop-shadow(0 0 2px ${color}44)` }}
         />
         
-        {/* Efeito de scanning line que se move */}
+        {/* Linha que percorre suavemente */}
         <line
           x1={currentBeat}
-          y1="0"
+          y1="45"
           x2={currentBeat}
-          y2="100"
+          y2="55"
           stroke={color}
-          strokeWidth="1"
-          opacity="0.6"
-          className="animate-pulse"
-          style={{ filter: `blur(0.5px)` }}
-        />
-        
-        {/* Múltiplas linhas de batimento para efeito mais denso */}
-        <path
-          d={createHeartbeatPath()}
-          fill="none"
-          stroke={color}
-          strokeWidth="1"
-          opacity="0.4"
-          transform="translate(25, 0)"
-        />
-        
-        <path
-          d={createHeartbeatPath()}
-          fill="none"
-          stroke={color}
-          strokeWidth="1"
-          opacity="0.3"
-          transform="translate(50, 0)"
-        />
-        
-        <path
-          d={createHeartbeatPath()}
-          fill="none"
-          stroke={color}
-          strokeWidth="1"
-          opacity="0.2"
-          transform="translate(75, 0)"
+          strokeWidth="0.5"
+          opacity="0.8"
+          style={{ 
+            filter: `blur(0.5px)`,
+            transition: 'all 0.1s ease'
+          }}
         />
       </svg>
       
-      {/* Informações médicas simuladas */}
-      <div className="absolute top-1 left-4 flex items-center gap-4 text-xs font-mono opacity-60">
-        <span style={{ color }}>HR: 72 BPM</span>
-        <span style={{ color }}>BP: 120/80</span>
-        <span style={{ color }}>SpO₂: 98%</span>
-        <span className="animate-pulse" style={{ color }}>●</span>
-      </div>
-      
-      {/* Status do sistema */}
-      <div className="absolute top-1 right-4 flex items-center gap-2 text-xs font-mono opacity-60">
+      {/* Informações médicas sutis */}
+      <div className="absolute top-1 left-4 flex items-center gap-3 text-xs font-mono opacity-40">
+        <span style={{ color }}>HR: 72</span>
+        <span style={{ color }}>●</span>
         <span style={{ color }}>NeuroCann Lab</span>
-        <div 
-          className="w-2 h-2 rounded-full animate-pulse"
-          style={{ backgroundColor: color }}
-        />
       </div>
     </div>
   )

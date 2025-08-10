@@ -213,15 +213,12 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
 
   return (
     <div className={cn("absolute inset-0 pointer-events-none overflow-hidden", className)}>
-      {/* Grid médico base */}
+      {/* Linhas sutis de fundo */}
       <div 
-        className="absolute inset-0 opacity-10"
+        className="absolute inset-0 opacity-3"
         style={{
-          backgroundImage: `
-            linear-gradient(${config.color}33 1px, transparent 1px),
-            linear-gradient(90deg, ${config.color}33 1px, transparent 1px)
-          `,
-          backgroundSize: '50px 50px'
+          backgroundImage: `linear-gradient(${config.color}22 1px, transparent 1px)`,
+          backgroundSize: '100px 50px'
         }}
       />
       
