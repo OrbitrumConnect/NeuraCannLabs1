@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Brain, LogIn, Eye, EyeOff } from 'lucide-react';
+import { LogIn, Eye, EyeOff } from 'lucide-react';
 
 export default function Login() {
   const [, setLocation] = useLocation();
@@ -56,20 +56,20 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-green-900 to-slate-900 flex items-center justify-center p-4">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-20 left-10 w-72 h-72 bg-green-500/10 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
 
-      <Card className="w-full max-w-md bg-black/40 backdrop-blur-md border-purple-500/30 relative z-10">
+      <Card className="w-full max-w-md bg-black/40 backdrop-blur-md border-cyan-500/30 relative z-10">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-            <Brain className="w-8 h-8 text-white" />
+          <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
+            <i className="fas fa-cannabis w-8 h-8 text-white" />
           </div>
           <CardTitle className="text-2xl text-white">NeuroCann Lab</CardTitle>
-          <CardDescription className="text-purple-300">
+          <CardDescription className="text-cyan-300">
             Acesso à Plataforma Médica
           </CardDescription>
         </CardHeader>
@@ -85,7 +85,7 @@ export default function Login() {
                 placeholder="seu@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20"
+                className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20"
                 required
                 data-testid="input-email"
               />
@@ -101,14 +101,14 @@ export default function Login() {
                   placeholder="••••••••"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="bg-white/10 border-purple-500/30 text-white placeholder:text-gray-400 focus:border-purple-400 focus:ring-purple-400/20 pr-10"
+                  className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 pr-10"
                   required
                   data-testid="input-password"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-purple-300 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-cyan-300 transition-colors"
                   data-testid="button-toggle-password"
                 >
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -118,7 +118,7 @@ export default function Login() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25"
+              className="w-full bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25"
               data-testid="button-login"
             >
               {isLoading ? (
@@ -134,7 +134,7 @@ export default function Login() {
             <Button
               variant="ghost"
               onClick={() => setLocation('/landing')}
-              className="text-purple-300 hover:text-purple-200 hover:bg-white/5"
+              className="text-cyan-300 hover:text-cyan-200 hover:bg-white/5"
               data-testid="button-back-landing"
             >
               ← Voltar para Landing Page
