@@ -16,50 +16,57 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
       color: '#00ff88',
       pattern: 'heartbeat',
       speed: 1200,
-      intensity: 0.3,
-      particleCount: 20
+      intensity: 0.15,
+      particleCount: 10,
+      lineCount: 10
     },
     scientific: {
       color: '#00aaff',
       pattern: 'brainwaves',
       speed: 800,
-      intensity: 0.4,
-      particleCount: 30
+      intensity: 0.2,
+      particleCount: 15,
+      lineCount: 10
     },
     clinical: {
       color: '#ff6600',
       pattern: 'vitals',
       speed: 1000,
-      intensity: 0.5,
-      particleCount: 25
+      intensity: 0.25,
+      particleCount: 12,
+      lineCount: 10
     },
     alerts: {
       color: '#ff4444',
       pattern: 'alert_pulse',
       speed: 600,
-      intensity: 0.7,
-      particleCount: 40
+      intensity: 0.35,
+      particleCount: 20,
+      lineCount: 10
     },
     forum: {
       color: '#8844ff',
       pattern: 'network',
       speed: 2000,
-      intensity: 0.2,
-      particleCount: 15
+      intensity: 0.1,
+      particleCount: 8,
+      lineCount: 10
     },
     profile: {
       color: '#44ff88',
       pattern: 'personal',
       speed: 1500,
-      intensity: 0.25,
-      particleCount: 12
+      intensity: 0.125,
+      particleCount: 6,
+      lineCount: 10
     },
     admin: {
       color: '#ffaa00',
       pattern: 'system',
       speed: 500,
-      intensity: 0.6,
-      particleCount: 50
+      intensity: 0.3,
+      particleCount: 25,
+      lineCount: 10
     }
   }
 
@@ -75,29 +82,43 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
     return () => clearInterval(interval)
   }, [config.speed])
 
-  // Gerador de partículas médicas flutuantes
-  const generateParticles = () => {
-    return Array.from({ length: config.particleCount }, (_, i) => (
-      <div
-        key={i}
-        className="absolute animate-ping"
-        style={{
-          left: `${Math.random() * 100}%`,
-          top: `${Math.random() * 100}%`,
-          animationDelay: `${Math.random() * 3}s`,
-          animationDuration: `${2 + Math.random() * 2}s`
-        }}
-      >
-        <div
-          className="w-1 h-1 rounded-full"
-          style={{
-            backgroundColor: config.color,
-            opacity: intensity * 0.3,
-            boxShadow: `0 0 6px ${config.color}`
-          }}
-        />
-      </div>
-    ))
+  // Gerador de linhas médicas com sinais vitais
+  const generateMedicalLines = () => {
+    return Array.from({ length: config.lineCount }, (_, i) => {
+      const lineY = (i + 1) * (100 / (config.lineCount + 1))
+      const hasSignal = Math.random() > 0.7 // 30% das linhas têm sinal
+      const signalSpeed = 3000 + Math.random() * 2000
+      
+      return (
+        <div key={`line-${i}`} className="absolute w-full" style={{ top: `${lineY}%` }}>
+          {/* Linha base */}
+          <div
+            className="w-full h-px"
+            style={{
+              backgroundColor: config.color,
+              opacity: 0.1
+            }}
+          />
+          
+          {/* Sinal vital passando */}
+          {hasSignal && (
+            <div
+              className="absolute h-px"
+              style={{
+                backgroundColor: config.color,
+                opacity: intensity * 2,
+                width: '40px',
+                top: '0',
+                left: `${(currentPattern * 2 + i * 10) % 100}%`,
+                filter: `blur(0.5px) drop-shadow(0 0 2px ${config.color})`,
+                animation: `moveSignal ${signalSpeed}ms linear infinite`,
+                backgroundImage: `linear-gradient(90deg, transparent, ${config.color}, ${config.color}, transparent)`
+              }}
+            />
+          )}
+        </div>
+      )
+    })
   }
 
   // Padrões SVG específicos para cada contexto
@@ -218,8 +239,8 @@ export function DynamicMedicalBackground({ context, className }: DynamicMedicalB
       {/* Padrão específico do contexto */}
       {renderPattern()}
       
-      {/* Partículas flutuantes */}
-      {generateParticles()}
+      {/* Linhas médicas com sinais vitais */}
+      {generateMedicalLines()}
       
       {/* Linha de scan que atravessa a tela */}
       <div

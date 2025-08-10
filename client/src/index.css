@@ -20,6 +20,23 @@
   100% { transform: scaleY(1); }
 }
 
+@keyframes moveSignal {
+  0% { 
+    left: -50px; 
+    opacity: 0;
+  }
+  10% { 
+    opacity: 1;
+  }
+  90% { 
+    opacity: 1;
+  }
+  100% { 
+    left: 100vw; 
+    opacity: 0;
+  }
+}
+
 :root {
   --background: hsl(0, 0%, 6%);
   --foreground: hsl(200, 6.6667%, 91.1765%);
