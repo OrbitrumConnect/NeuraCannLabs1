@@ -10,7 +10,6 @@ import ForumDashboard from "./ForumDashboard";
 import ProfileDashboard from "./ProfileDashboard";
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { FreePlanNotification } from '@/components/FreePlanNotification';
-import { PlansFloatingButton } from '@/components/PlansFloatingButton';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
 
 export default function Dashboard() {
@@ -121,9 +120,6 @@ export default function Dashboard() {
         <ProfileDashboard />
       )}
       </DashboardLayout>
-      
-      {/* Plans Floating Button - Only for Free Plan */}
-      {isFreePlan && <PlansFloatingButton />}
     </div>
   );
 }

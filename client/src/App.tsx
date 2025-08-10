@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScanProvider } from "@/contexts/ScanContext";
 import Dashboard from "@/pages/Dashboard";
 import GlobalAdminDashboard from "@/pages/GlobalAdminDashboard";
+import PlansPage from "@/pages/PlansPage";
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -21,9 +22,10 @@ function Router() {
       <Route path="/landing" component={Landing} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/plans" component={PlansPage} />
       <Route path="/" component={isLoggedIn ? Dashboard : Landing} />
       <Route path="/dashboard/:section?" component={Dashboard} />
-      <Route path="/admin" component={GlobalAdminDashboard} />
+      <Route path="/admin" component={() => <GlobalAdminDashboard onBackToOverview={() => {}} />} />
       <Route component={NotFound} />
     </Switch>
   );
