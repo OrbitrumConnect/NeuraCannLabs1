@@ -43,10 +43,10 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Detecta linha amarela: começa mais cedo e termina mais rápido (30% a 58%)
+  // Detecção sincronizada: linha e avatar mudam juntos (28% a 55%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 30 && position <= 58;
+    const isScanning = position >= 28 && position <= 55;
     setAvatarScanning(isScanning);
     
     // Debug visual para confirmar detecção
