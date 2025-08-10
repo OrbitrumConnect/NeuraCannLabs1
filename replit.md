@@ -23,7 +23,7 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **State Management**: TanStack Query (React Query) for server state; React hooks for local state.
 - **Routing**: Wouter for lightweight client-side routing.
 - **UI/UX Decisions**: Fixed main cards, expandable bottom dock for sub-searches, professional zoom/pan (50%-200%), precise handles (6x6px) on sub-search icons, main card expanded to 480px height, responsive layout with intelligent absolute positioning, hover effects and smooth transitions. The main interface focuses on the Dr. Cannabis AI avatar, which controls system activation. Layout is optimized for mobile with a reorganized menu, relative positioning for elements, and vertically stacked sub-searches.
-- **Scanner System**: Horizontal line scanner with synchronized avatar glow effect. Yellow line appears during 22%-45% of screen scan (starts before avatar, ends quickly after). Dr. Cannabis avatar glows yellow synchronized with line color change. Soft yellow color (rgba(255,235,59)) with 30% reduced intensity for elegant effect.
+- **Scanner System**: Horizontal line scanner with synchronized avatar glow effect. Yellow line appears during 22%-32% of screen scan (1 second duration). Dr. Cannabis avatar glows yellow synchronized with line color change. Soft yellow color (rgba(255,235,59)) with 30% reduced intensity for elegant effect.
 
 ### Backend Architecture
 - **Runtime & Framework**: Node.js with Express.js for RESTful API endpoints, using ES modules.
