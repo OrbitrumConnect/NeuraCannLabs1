@@ -97,6 +97,7 @@ export default function DashboardLayout({
             <h1 className="text-lg sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
           </div>
           
+          <div className="flex items-center space-x-4">
           <nav className="hidden lg:flex items-center space-x-6">
             {dashboardOptions.map((option) => (
               <button
@@ -128,29 +129,27 @@ export default function DashboardLayout({
           </nav>
           
           {/* User Info & Logout - Desktop */}
-          <div className="hidden lg:flex items-center space-x-4">
-            {isAuthenticated && user && (
-              <>
-                <div className="flex items-center space-x-2 text-sm text-gray-300">
-                  <User className="w-4 h-4 text-neon-cyan" />
-                  <span>{user.name}</span>
-                  <span className="text-xs bg-neon-cyan/20 text-neon-cyan px-2 py-1 rounded-full border border-neon-cyan/30">
-                    {user.role === 'admin' ? 'ADMIN' : 'USER'}
-                  </span>
-                </div>
-                <Button
-                  onClick={handleLogout}
-                  variant="ghost"
-                  size="sm"
-                  className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400"
-                  data-testid="button-logout-desktop"
-                >
-                  <LogOut className="w-4 h-4 mr-2" />
-                  Sair
-                </Button>
-              </>
-            )}
-          </div>
+          {isAuthenticated && user && (
+            <div className="hidden lg:flex items-center space-x-4 ml-6">
+              <div className="flex items-center space-x-2 text-sm text-gray-300">
+                <User className="w-4 h-4 text-neon-cyan" />
+                <span>{user.name}</span>
+                <span className="text-xs bg-neon-cyan/20 text-neon-cyan px-2 py-1 rounded-full border border-neon-cyan/30">
+                  {user.role === 'admin' ? 'ADMIN' : 'USER'}
+                </span>
+              </div>
+              <Button
+                onClick={handleLogout}
+                variant="ghost"
+                size="sm"
+                className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400"
+                data-testid="button-logout-desktop"
+              >
+                <LogOut className="w-4 h-4 mr-2" />
+                Sair
+              </Button>
+            </div>
+          )}
           
           <button
             id="menuToggle"
@@ -161,6 +160,7 @@ export default function DashboardLayout({
           >
             <i className="fas fa-bars text-neon-cyan text-lg" />
           </button>
+          </div>
         </div>
       </header>
 
