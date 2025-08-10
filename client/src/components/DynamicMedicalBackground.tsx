@@ -233,9 +233,9 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       {/* Efeito neon lateral verde sutil */}
       {generateSideGlow()}
       
-      {/* Linha horizontal que escaneia - muda cor quando passa pelo avatar */}
+      {/* Linha horizontal que escaneia - desaparece no final e reaparece no topo */}
       <div
-        className="absolute left-0 right-0 h-0.5 opacity-60"
+        className="absolute left-0 right-0 h-0.5"
         style={{
           background: (() => {
             const currentPos = (currentPattern * 2) % 100;
@@ -255,7 +255,17 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
               ? `blur(1px) drop-shadow(0 0 4px rgba(255,235,59,0.8))`
               : `blur(1px) drop-shadow(0 0 4px ${config.color})`;
           })(),
-          transition: 'all 0.2s ease-out'
+          opacity: (() => {
+            const currentPos = (currentPattern * 2) % 100;
+            // Fade out nos últimos 10% e fade in nos primeiros 10%
+            if (currentPos > 85) {
+              return ((100 - currentPos) / 15) * 0.6; // Fade out gradual
+            } else if (currentPos < 15) {
+              return (currentPos / 15) * 0.6; // Fade in gradual
+            }
+            return 0.6; // Opacidade normal
+          })(),
+          transition: 'opacity 0.1s ease-out'
         }}
       />
     </div>
