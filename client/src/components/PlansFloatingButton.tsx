@@ -71,20 +71,20 @@ export function PlansFloatingButton() {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Button - Minimized */}
       <div className="fixed bottom-6 right-6 z-40">
         <Button
           onClick={() => setIsOpen(true)}
-          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white w-10 h-10 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
         >
-          <Crown className="w-5 h-5" />
+          <Crown className="w-4 h-4" />
         </Button>
       </div>
 
       {/* Plans Modal */}
       {isOpen && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-cyber-gray to-cyber-light rounded-2xl border border-cyan-500/30 max-w-4xl w-full max-h-[85vh] overflow-y-auto">
+          <div className="bg-gradient-to-br from-cyber-gray to-cyber-light rounded-2xl border border-cyan-500/30 max-w-3xl w-full max-h-[80vh] overflow-y-auto">
             <div className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <div>

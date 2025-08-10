@@ -265,7 +265,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
             }
             return 0.6; // Opacidade normal
           })(),
-          transition: 'opacity 0.1s ease-out'
+          transition: 'opacity 0.3s ease-in-out, top 0s linear'
         }}
       />
     </div>
