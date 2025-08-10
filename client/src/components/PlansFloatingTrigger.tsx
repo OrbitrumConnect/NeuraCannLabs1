@@ -29,8 +29,23 @@ export function PlansFloatingTrigger() {
       current: true
     },
     {
+      name: "Básico",
+      price: "R$ 10",
+      period: "/mês",
+      description: "Para estudantes e iniciantes",
+      features: [
+        "20 pesquisas/dia no PubMed",
+        "30 consultas/dia Dr. Cannabis IA",
+        "10 casos clínicos/dia",
+        "Submissão de estudos (1/mês)",
+        "Participação no fórum",
+        "Download básico de relatórios"
+      ],
+      color: "from-blue-600 to-blue-500"
+    },
+    {
       name: "Profissional",
-      price: "R$ 29",
+      price: "R$ 20",
       period: "/mês",
       description: "Para profissionais da saúde",
       features: [
@@ -40,14 +55,14 @@ export function PlansFloatingTrigger() {
         "Submissão de estudos (3/mês)",
         "Análises avançadas de IA",
         "Download de relatórios PDF",
-        "Participação ativa no fórum"
+        "Suporte prioritário"
       ],
-      color: "from-blue-600 to-blue-500",
+      color: "from-purple-600 to-purple-500",
       popular: true
     },
     {
       name: "Premium Full",
-      price: "R$ 59", 
+      price: "R$ 30", 
       period: "/mês",
       description: "Acesso completo à plataforma",
       features: [
@@ -56,9 +71,10 @@ export function PlansFloatingTrigger() {
         "Submissão de estudos ILIMITADA",
         "IA avançada para análise",
         "API personalizada",
+        "Consultoria médica",
         "Suporte 24/7"
       ],
-      color: "from-purple-600 to-purple-500"
+      color: "from-orange-600 to-red-500"
     }
   ];
 

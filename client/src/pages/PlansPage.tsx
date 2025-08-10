@@ -30,29 +30,41 @@ export default function PlansPage() {
       icon: <Crown className="w-5 h-5" />
     },
     {
+      name: "Básico",
+      price: "R$ 10",
+      period: "/mês", 
+      description: "Para estudantes e iniciantes",
+      features: [
+        "20 pesquisas por dia",
+        "30 consultas Dr. Cannabis IA",
+        "Acesso básico PubMed",
+        "1 submissão de estudo",
+        "Participação no fórum",
+        "Download básico de relatórios"
+      ],
+      color: "from-blue-600 to-blue-500",
+      icon: <Zap className="w-5 h-5" />
+    },
+    {
       name: "Professional",
-      price: "R$ 29",
+      price: "R$ 20",
       period: "/mês", 
       description: "Para profissionais da saúde",
       features: [
         "50 pesquisas por dia",
         "100 consultas Dr. Cannabis IA",
         "Acesso completo PubMed",
-        "10 submissões de estudo",
+        "3 submissões de estudo",
         "Relatórios avançados",
         "Suporte prioritário"
       ],
-      limitations: [
-        "Pesquisas com limite diário",
-        "IA com algumas restrições"
-      ],
-      color: "from-blue-600 to-blue-500",
+      color: "from-purple-600 to-purple-500",
       popular: true,
-      icon: <Zap className="w-5 h-5" />
+      icon: <Rocket className="w-5 h-5" />
     },
     {
       name: "Premium Full",
-      price: "R$ 59",
+      price: "R$ 30",
       period: "/mês", 
       description: "Acesso completo à plataforma",
       features: [
@@ -67,8 +79,8 @@ export default function PlansPage() {
         "Suporte 24/7",
         "Consultoria médica especializada"
       ],
-      color: "from-purple-600 to-purple-500",
-      icon: <Rocket className="w-5 h-5" />
+      color: "from-orange-600 to-red-500",
+      icon: <Crown className="w-5 h-5" />
     }
   ];
 
