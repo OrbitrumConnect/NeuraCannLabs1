@@ -5,7 +5,7 @@ import { Badge } from '@/components/ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { VoiceCommandSystem } from './VoiceCommandSystem'
 import { GestureControl, type GestureType } from './GestureControl'
-import { TextToSpeech } from './TextToSpeech'
+import TextToSpeech from './TextToSpeech'
 import { 
   Mic, 
   Hand, 
@@ -14,7 +14,8 @@ import {
   Zap, 
   Eye, 
   Sparkles,
-  Settings
+  Settings,
+  Minimize2
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -44,6 +45,8 @@ export function SmartInteractionHub({
     smartMode: true,
     contextAware: true
   })
+  
+  const [isMinimized, setIsMinimized] = useState(false)
 
   const [activeFeatures, setActiveFeatures] = useState<string[]>([])
   const [currentContext, setCurrentContext] = useState<string>('dashboard')
@@ -220,7 +223,7 @@ export function SmartInteractionHub({
           <div className="flex items-center gap-2">
             <Brain className="h-5 w-5 text-purple-600" />
             <h3 className="font-semibold">Interação Inteligente</h3>
-            {state.smartMode && (
+            {state.smartMode && !isMinimized && (
               <Badge variant="default" className="bg-purple-600">
                 <Sparkles className="h-3 w-3 mr-1" />
                 IA Ativa
@@ -228,15 +231,32 @@ export function SmartInteractionHub({
             )}
           </div>
           
-          <Button
-            onClick={toggleSmartMode}
-            variant="outline"
-            size="sm"
-            data-testid="button-smart-toggle"
-          >
-            <Settings className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-1">
+            <Button
+              onClick={() => setIsMinimized(!isMinimized)}
+              variant="ghost"
+              size="sm"
+              data-testid="button-minimize"
+              className="hover:bg-purple-100"
+            >
+              <Minimize2 className="h-4 w-4" />
+            </Button>
+            {!isMinimized && (
+              <Button
+                onClick={toggleSmartMode}
+                variant="outline"
+                size="sm"
+                data-testid="button-smart-toggle"
+              >
+                <Settings className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
         </div>
+
+        {/* Conteúdo minimizável */}
+        {!isMinimized && (
+          <div className="space-y-4">
 
         {/* Resposta adaptativa */}
         {adaptiveResponse && (
@@ -324,6 +344,9 @@ export function SmartInteractionHub({
           <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
             {interactionHistory.length} interações registradas
           </div>
+        )}
+        
+        </div>
         )}
       </CardContent>
     </Card>
