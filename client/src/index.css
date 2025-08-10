@@ -133,10 +133,7 @@
 
 @layer utilities {
   .cyber-grid {
-    background-image: 
-      linear-gradient(rgba(124, 255, 90, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(124, 255, 90, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+    /* Grid removido - apenas fundo limpo */
   }
 
   .holographic-border {
@@ -245,7 +242,7 @@
 /* Mobile optimizations - Samsung Android & Apple iOS */
 @media (max-width: 768px) {
   .cyber-grid {
-    background-size: 15px 15px;
+    /* Grid removido para mobile também */
   }
   
   /* Touch targets optimized for Samsung and Apple */
