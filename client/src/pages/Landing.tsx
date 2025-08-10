@@ -100,15 +100,15 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-purple-900 to-slate-900 relative overflow-x-hidden">
+    <div className="min-h-screen bg-black relative overflow-x-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
-          className="absolute top-20 left-10 w-72 h-72 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+          className="absolute top-20 left-10 w-72 h-72 bg-green-500/10 rounded-full blur-3xl animate-pulse"
           style={{ transform: `translateY(${scrollY * 0.5}px)` }}
         />
         <div 
-          className="absolute top-40 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-1000"
+          className="absolute top-40 right-20 w-96 h-96 bg-green-400/10 rounded-full blur-3xl animate-pulse delay-1000"
           style={{ transform: `translateY(${scrollY * 0.3}px)` }}
         />
         <div 
@@ -118,18 +118,18 @@ export default function Landing() {
       </div>
 
       {/* Header */}
-      <header className="relative z-50 bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0 transition-all duration-300">
+      <header className="relative z-50 bg-black/20 backdrop-blur-md border-b border-green-500/20 sticky top-0 transition-all duration-300">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
                 <Brain className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300">
+                <h1 className="text-2xl font-bold text-white group-hover:text-green-300 transition-colors duration-300">
                   NeuroCann Lab
                 </h1>
-                <p className="text-sm text-purple-300 group-hover:text-purple-200 transition-colors duration-300">
+                <p className="text-sm text-green-300 group-hover:text-green-200 transition-colors duration-300">
                   Plataforma Médica de Cannabis
                 </p>
               </div>
@@ -141,11 +141,11 @@ export default function Landing() {
                 data-testid="button-login"
                 onClick={() => window.location.href = '/login'}
               >
-                <LogIn className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
+                <LogIn className="w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
                 Entrar
               </Button>
               <Button 
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300" 
+                className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300" 
                 data-testid="button-register"
                 onClick={() => window.location.href = '/login'}
               >
