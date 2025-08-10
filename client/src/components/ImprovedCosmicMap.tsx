@@ -236,7 +236,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-32 sm:w-40" isScanning={avatarScanning} />
+            <MedicalAvatar3D className="w-20 sm:w-40" isScanning={avatarScanning} />
           </div>
           
           {!isDrAIActive && (
@@ -249,45 +249,45 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Search Interface - Clean mobile flow, Desktop overlay - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="mt-12 mx-4 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl sm:px-0">
-          <div className="bg-black/40 backdrop-blur-lg rounded-2xl border border-white/10 p-4 sm:p-6">
+        <div className="mt-8 mx-3 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl sm:px-0">
+          <div className="bg-black/40 backdrop-blur-lg rounded-xl border border-white/10 p-3 sm:p-6">
             
             {/* Search Bar */}
-            <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-4">
+            <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-3">
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <input
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Digite sua consulta médica..."
-                  className="w-full pl-10 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm sm:text-base"
+                  className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
                   disabled={isTyping}
                 />
               </div>
               <button
                 type="submit"
                 disabled={isTyping}
-                className="px-6 py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
+                className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
               >
-                {isTyping ? <div className="animate-spin w-5 h-5 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-5 h-5" />}
+                {isTyping ? <div className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-4 h-4" />}
               </button>
             </form>
 
             {/* Filters */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1 sm:gap-2">
               {filters.map((filter) => (
                 <button
                   key={filter.id}
                   onClick={() => setSelectedFilter(filter.id)}
-                  className={`px-3 py-1 rounded-full text-xs transition-all flex items-center space-x-1 ${
+                  className={`px-2 py-1 rounded-full text-xs transition-all flex items-center space-x-1 ${
                     selectedFilter === filter.id
                       ? "bg-blue-600/80 text-white"
                       : "bg-white/10 text-gray-300 hover:bg-white/20"
                   }`}
                 >
                   <filter.icon className="w-3 h-3" />
-                  <span>{filter.label}</span>
+                  <span className="hidden sm:inline">{filter.label}</span>
                 </button>
               ))}
             </div>
@@ -297,20 +297,20 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
       {isDrAIActive && currentResult && (
-        <div className="relative mt-6 mx-4 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
+        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
           <MainCard result={currentResult} />
           {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
           
           {/* Suggestions for Sub-search - Responsive layout */}
           {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
-            <div className="mt-4 p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
-              <h4 className="text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
-              <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2">
+            <div className="mt-3 p-2 sm:p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
+              <h4 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2">
                 {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
                   <button
                     key={idx}
                     onClick={() => handleSubSearch(suggestion)}
-                    className="px-3 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all text-center"
+                    className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all text-left sm:text-center"
                   >
                     {suggestion}
                   </button>
@@ -327,31 +327,31 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="relative mt-4 mx-4 sm:fixed sm:left-8 z-30 sm:z-30"
+          className="relative mt-3 mx-3 sm:fixed sm:left-8 z-30 sm:z-30"
           style={{ 
             top: window.innerWidth >= 640 ? `${280 + (index * 200)}px` : 'auto',
-            width: window.innerWidth >= 640 ? '300px' : 'auto',
-            maxHeight: '180px'
+            width: window.innerWidth >= 640 ? '280px' : 'auto',
+            maxHeight: '160px'
           }}
         >
-          <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-4">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-sm font-semibold text-purple-300 truncate pr-2">
-                🔍 {subTab.query.substring(0, 20)}...
+          <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-3">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-xs font-semibold text-purple-300 truncate pr-2">
+                🔍 {subTab.query.substring(0, 15)}...
               </h3>
               <button 
                 onClick={() => {
                   window.speechSynthesis.cancel();
                   setSearchTabs(prev => prev.filter(t => t.id !== subTab.id));
                 }}
-                className="text-red-400 hover:text-red-300 text-lg flex-shrink-0"
+                className="text-red-400 hover:text-red-300 text-base flex-shrink-0 w-6 h-6 flex items-center justify-center"
               >
                 ×
               </button>
             </div>
-            <div className="text-xs text-purple-200 max-h-32 sm:max-h-40 overflow-y-auto">
+            <div className="text-xs text-purple-200 max-h-24 sm:max-h-32 overflow-y-auto">
               <div dangerouslySetInnerHTML={{ 
-                __html: subTab.response.substring(0, 200).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+                __html: subTab.response.substring(0, 150).replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
               }} />
             </div>
             

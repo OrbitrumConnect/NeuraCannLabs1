@@ -115,53 +115,53 @@ export default function Register() {
         <div className="absolute top-1/2 right-10 w-64 h-64 bg-green-400/8 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
 
-      <Card className="w-full max-w-lg bg-black/40 backdrop-blur-md border-cyan-500/30 relative z-10">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
-            <i className="fas fa-cannabis w-8 h-8 text-white" />
+      <Card className="w-full max-w-md bg-black/40 backdrop-blur-md border-cyan-500/30 relative z-10">
+        <CardHeader className="text-center pb-4">
+          <div className="mx-auto mb-3 w-12 h-12 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
+            <i className="fas fa-cannabis w-6 h-6 text-white" />
           </div>
-          <CardTitle className="text-2xl text-white">Criar Conta</CardTitle>
-          <CardDescription className="text-cyan-300">
+          <CardTitle className="text-xl text-white">Criar Conta</CardTitle>
+          <CardDescription className="text-cyan-300 text-sm">
             Junte-se à Plataforma Médica NeuroCann Lab
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-4">
           {/* Seleção do Tipo de Usuário */}
-          <div className="mb-6 space-y-3">
-            <Label className="text-white text-base font-medium">Tipo de Conta</Label>
+          <div className="mb-4 space-y-2">
+            <Label className="text-white text-sm font-medium">Tipo de Conta</Label>
             <RadioGroup 
               value={userType} 
               onValueChange={(value: 'common' | 'professional') => setUserType(value)}
-              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              className="grid grid-cols-1 gap-2"
             >
-              <div className="flex items-center space-x-3 rounded-lg border border-cyan-500/30 bg-white/5 p-4 hover:bg-white/10 transition-colors">
+              <div className="flex items-center space-x-2 rounded-lg border border-cyan-500/30 bg-white/5 p-3 hover:bg-white/10 transition-colors">
                 <RadioGroupItem value="common" id="common" className="border-cyan-400 text-cyan-400" />
-                <div className="flex items-center space-x-3 flex-1">
-                  <User className="w-5 h-5 text-cyan-400" />
+                <div className="flex items-center space-x-2 flex-1">
+                  <User className="w-4 h-4 text-cyan-400" />
                   <div>
-                    <Label htmlFor="common" className="text-white font-medium cursor-pointer">
+                    <Label htmlFor="common" className="text-white font-medium cursor-pointer text-sm">
                       Usuário Comum
                     </Label>
-                    <p className="text-sm text-gray-400">Acesso geral à plataforma</p>
+                    <p className="text-xs text-gray-400">Acesso geral à plataforma</p>
                   </div>
                 </div>
               </div>
-              <div className="flex items-center space-x-3 rounded-lg border border-green-500/30 bg-white/5 p-4 hover:bg-white/10 transition-colors">
+              <div className="flex items-center space-x-2 rounded-lg border border-green-500/30 bg-white/5 p-3 hover:bg-white/10 transition-colors">
                 <RadioGroupItem value="professional" id="professional" className="border-green-400 text-green-400" />
-                <div className="flex items-center space-x-3 flex-1">
-                  <Stethoscope className="w-5 h-5 text-green-400" />
+                <div className="flex items-center space-x-2 flex-1">
+                  <Stethoscope className="w-4 h-4 text-green-400" />
                   <div>
-                    <Label htmlFor="professional" className="text-white font-medium cursor-pointer">
+                    <Label htmlFor="professional" className="text-white font-medium cursor-pointer text-sm">
                       Profissional da Saúde
                     </Label>
-                    <p className="text-sm text-gray-400">Acesso completo e credenciado</p>
+                    <p className="text-xs text-gray-400">Acesso completo e credenciado</p>
                   </div>
                 </div>
               </div>
             </RadioGroup>
           </div>
 
-          <form onSubmit={handleRegister} className="space-y-4">
+          <form onSubmit={handleRegister} className="space-y-3">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-white">
                 Nome Completo
@@ -199,7 +199,7 @@ export default function Register() {
             {/* Campos específicos para profissionais da saúde */}
             {userType === 'professional' && (
               <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-3">
                   <div className="space-y-2">
                     <Label htmlFor="credentialType" className="text-white">
                       Tipo de Credencial
@@ -242,7 +242,7 @@ export default function Register() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 gap-3">
                   <div className="space-y-2">
                     <Label htmlFor="specialty" className="text-white">
                       Especialidade
@@ -284,7 +284,7 @@ export default function Register() {
               </>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-3">
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-white">
                   Senha
@@ -343,7 +343,7 @@ export default function Register() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25"
+              className="w-full bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 h-10"
               data-testid="button-register"
             >
               {isLoading ? (
@@ -355,14 +355,14 @@ export default function Register() {
             </Button>
           </form>
           
-          <div className="mt-6 text-center space-y-3">
-            <div className="text-sm text-gray-400">
+          <div className="mt-4 text-center space-y-2">
+            <div className="text-xs text-gray-400">
               Já tem uma conta?
             </div>
             <Button
               variant="ghost"
               onClick={() => setLocation('/login')}
-              className="text-cyan-300 hover:text-cyan-200 hover:bg-white/5"
+              className="text-cyan-300 hover:text-cyan-200 hover:bg-white/5 h-8 text-sm"
               data-testid="button-go-login"
             >
               Fazer Login
@@ -370,7 +370,7 @@ export default function Register() {
             <Button
               variant="ghost"
               onClick={() => setLocation('/landing')}
-              className="text-gray-400 hover:text-gray-300 hover:bg-white/5 block mx-auto"
+              className="text-gray-400 hover:text-gray-300 hover:bg-white/5 block mx-auto h-8 text-xs"
               data-testid="button-back-landing"
             >
               ← Voltar para Landing Page

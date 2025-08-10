@@ -63,18 +63,18 @@ export default function Login() {
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
       </div>
 
-      <Card className="w-full max-w-md bg-black/40 backdrop-blur-md border-cyan-500/30 relative z-10">
-        <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-16 h-16 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
-            <i className="fas fa-cannabis w-8 h-8 text-white" />
+      <Card className="w-full max-w-sm bg-black/40 backdrop-blur-md border-cyan-500/30 relative z-10">
+        <CardHeader className="text-center pb-4">
+          <div className="mx-auto mb-3 w-12 h-12 bg-gradient-to-br from-green-500 to-cyan-500 rounded-lg flex items-center justify-center">
+            <i className="fas fa-cannabis w-6 h-6 text-white" />
           </div>
-          <CardTitle className="text-2xl text-white">NeuroCann Lab</CardTitle>
-          <CardDescription className="text-cyan-300">
+          <CardTitle className="text-xl text-white">NeuroCann Lab</CardTitle>
+          <CardDescription className="text-cyan-300 text-sm">
             Acesso à Plataforma Médica
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+        <CardContent className="p-4">
+          <form onSubmit={handleLogin} className="space-y-3">
             <div className="space-y-2">
               <Label htmlFor="email" className="text-white">
                 E-mail
@@ -118,7 +118,7 @@ export default function Login() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25"
+              className="w-full bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 h-10"
               data-testid="button-login"
             >
               {isLoading ? (
@@ -130,14 +130,14 @@ export default function Login() {
             </Button>
           </form>
           
-          <div className="mt-6 text-center space-y-3">
-            <div className="text-sm text-gray-400">
+          <div className="mt-4 text-center space-y-2">
+            <div className="text-xs text-gray-400">
               Não tem uma conta?
             </div>
             <Button
               variant="ghost"
               onClick={() => setLocation('/register')}
-              className="text-green-300 hover:text-green-200 hover:bg-white/5"
+              className="text-green-300 hover:text-green-200 hover:bg-white/5 h-8 text-sm"
               data-testid="button-go-register"
             >
               Criar Conta

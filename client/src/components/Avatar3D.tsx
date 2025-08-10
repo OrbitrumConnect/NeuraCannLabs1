@@ -6,8 +6,8 @@ interface Avatar3DProps {
 }
 
 export default function Avatar3D({ 
-  className = "w-32 h-32", 
-  size = 150,
+  className = "w-20 sm:w-32 h-20 sm:h-32", 
+  size = 100,
   color = "#00ffff",
   isScanning = false 
 }: Avatar3DProps) {

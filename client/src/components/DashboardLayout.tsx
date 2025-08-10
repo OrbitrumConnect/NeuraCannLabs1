@@ -89,12 +89,12 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
-        <div className="container mx-auto px-4 py-2 sm:py-4 flex items-center justify-between">
+        <div className="container mx-auto px-3 sm:px-4 py-2 sm:py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
-              <i className="fas fa-cannabis text-white text-sm sm:text-lg" />
+            <div className="w-7 h-7 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
+              <i className="fas fa-cannabis text-white text-xs sm:text-lg" />
             </div>
-            <h1 className="text-lg sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
+            <h1 className="text-base sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
           </div>
           
           <div className="flex items-center space-x-4">
@@ -145,11 +145,11 @@ export default function DashboardLayout({
           <button
             id="menuToggle"
             onClick={onMenuClick}
-            className="lg:hidden w-12 h-12 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
+            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
             data-testid="mobile-menu-toggle"
             aria-label="Menu"
           >
-            <i className="fas fa-bars text-neon-cyan text-lg" />
+            <i className="fas fa-bars text-neon-cyan text-base" />
           </button>
           </div>
         </div>
@@ -157,29 +157,29 @@ export default function DashboardLayout({
 
       {/* Side Navigation - positioned below complete overview without scroll */}
       {sideNavOpen && (
-        <div className="relative mt-8 mx-4 mb-8 lg:hidden">
+        <div className="relative mt-6 mx-3 mb-6 lg:hidden">
           <nav 
-            className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md holographic-border rounded-2xl"
+            className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md holographic-border rounded-xl"
             data-testid="side-navigation"
           >
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-neon-cyan neon-text">Plataforma Médica</h2>
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-neon-cyan neon-text">Menu</h2>
             <button
               onClick={() => setSideNavOpen(false)}
-              className="w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
+              className="w-8 h-8 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
               aria-label="Fechar menu"
             >
-              <i className="fas fa-times text-neon-cyan text-lg" />
+              <i className="fas fa-times text-neon-cyan text-sm" />
             </button>
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-2">
             {dashboardOptions.map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
-                className={`w-full text-left p-5 rounded-xl transition-all data-card touch-manipulation min-h-20 ${
+                className={`w-full text-left p-3 rounded-lg transition-all data-card touch-manipulation min-h-14 ${
                   activeDashboard === option.id
                     ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30"
                     : "hover:bg-neon-cyan/10"
@@ -188,14 +188,14 @@ export default function DashboardLayout({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <i className={`${option.icon} mr-4 text-xl ${
+                    <i className={`${option.icon} mr-3 text-base ${
                       option.id === "scientific" ? "text-emerald-400" :
                       option.id === "clinical" ? "text-blue-400" :
                       option.id === "alerts" ? "text-amber-400" :
                       option.id === "admin" ? "text-green-400" :
                       option.id === "profile" ? "text-purple-400" : ""
                     }`} />
-                    <span className="font-semibold text-lg">{option.name}</span>
+                    <span className="font-semibold text-base">{option.name}</span>
                   </div>
                   {option.id === "alerts" && (
                     <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
@@ -210,7 +210,7 @@ export default function DashboardLayout({
                     <span className="bg-green-500 text-white text-xs rounded-full px-2 py-1">🌍</span>
                   )}
                 </div>
-                <div className="text-base text-gray-400 mt-2 ml-9">
+                <div className="text-xs text-gray-400 mt-1 ml-7">
                   {option.id === "overview" && "Dashboard principal"}
                   {option.id === "scientific" && "Estudos e pesquisas"}
                   {option.id === "clinical" && "Registros médicos"}
@@ -225,11 +225,11 @@ export default function DashboardLayout({
           </div>
 
           {/* User Info & Logout - Mobile */}
-          <div className="mt-6 pt-6 border-t border-neon-cyan/20">
-            <div className="flex items-center space-x-3 mb-4">
+          <div className="mt-4 pt-4 border-t border-neon-cyan/20">
+            <div className="flex items-center space-x-2 mb-3">
               <User className="w-4 h-4 text-neon-cyan" />
               <div>
-                <div className="text-white font-medium">{user?.name || 'Administrador'}</div>
+                <div className="text-white font-medium text-sm">{user?.name || 'Administrador'}</div>
                 <div className="text-xs text-gray-400">{user?.email || 'Phpg69@gmail.com'}</div>
               </div>
             </div>
@@ -252,7 +252,7 @@ export default function DashboardLayout({
 
 
       {/* Main Content */}
-      <main className="pt-14 sm:pt-20 min-h-screen cyber-grid relative">
+      <main className="pt-12 sm:pt-20 min-h-screen cyber-grid relative">
         {/* Dynamic Medical Background */}
         <DynamicMedicalBackground 
           context={activeDashboard as any}

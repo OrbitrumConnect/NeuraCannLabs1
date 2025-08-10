@@ -119,37 +119,37 @@ export default function Landing() {
 
       {/* Header */}
       <header className="relative z-50 bg-black/40 backdrop-blur-md border-b border-cyan-500/30 sticky top-0 transition-all duration-300">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-3 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3 group cursor-pointer">
-              <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
-                <i className="fas fa-cannabis w-6 h-6 text-white text-lg" />
+            <div className="flex items-center space-x-2 group cursor-pointer">
+              <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">
+                <i className="fas fa-cannabis w-4 h-4 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-white group-hover:text-green-300 transition-colors duration-300">
+                <h1 className="text-lg font-bold text-white group-hover:text-green-300 transition-colors duration-300">
                   NeuroCann Lab
                 </h1>
-                <p className="text-sm text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300">
+                <p className="text-xs text-cyan-300 group-hover:text-cyan-200 transition-colors duration-300 hidden sm:block">
                   Plataforma Médica de Cannabis
                 </p>
               </div>
             </div>
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
               <Button 
                 variant="ghost" 
-                className="text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 group" 
+                className="text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 group h-8 px-3 text-sm" 
                 data-testid="button-login"
                 onClick={() => window.location.href = '/login'}
               >
-                <LogIn className="w-4 h-4 mr-2 group-hover:text-cyan-300 transition-colors" />
+                <LogIn className="w-3 h-3 mr-1 group-hover:text-cyan-300 transition-colors" />
                 Entrar
               </Button>
               <Button 
-                className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300" 
+                className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-700 hover:to-cyan-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 h-8 px-3 text-sm" 
                 data-testid="button-register"
                 onClick={() => window.location.href = '/register'}
               >
-                <UserPlus className="w-4 h-4 mr-2" />
+                <UserPlus className="w-3 h-3 mr-1" />
                 Cadastrar
               </Button>
             </div>
@@ -158,41 +158,41 @@ export default function Landing() {
       </header>
 
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-12 sm:py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-cyan-600/20" />
-        <div className="container mx-auto px-4 relative z-10">
+        <div className="container mx-auto px-3 relative z-10">
           <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-6 bg-green-600/20 text-green-300 border-green-500 hover:bg-green-600/30 hover:scale-105 transition-all duration-500 cursor-default">
-              <Sparkles className="w-4 h-4 mr-2" />
+            <Badge className="mb-4 bg-green-600/20 text-green-300 border-green-500 hover:bg-green-600/30 hover:scale-105 transition-all duration-500 cursor-default text-xs">
+              <Sparkles className="w-3 h-3 mr-1" />
               Plataforma Médica Oficial
             </Badge>
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-6 leading-tight animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight animate-in fade-in slide-in-from-bottom-4 duration-1000">
               Cannabis Medicinal
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 hover:from-green-300 hover:to-cyan-300 transition-all duration-500">
                 {" "}Baseada em Evidência
               </span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
+            <p className="text-base sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-300">
               Plataforma científica para profissionais de saúde com IA especializada, 
               pesquisa atualizada e sistema colaborativo de estudos médicos.
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500">
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-8 py-3 text-lg hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group"
+                className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-6 py-2 sm:px-8 sm:py-3 text-base sm:text-lg hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group w-full sm:w-auto"
                 data-testid="button-start-trial"
               >
-                <Play className="w-5 h-5 mr-2 group-hover:animate-pulse" />
+                <Play className="w-4 h-4 mr-2 group-hover:animate-pulse" />
                 Começar Gratuitamente
               </Button>
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="border-cyan-500 text-cyan-300 hover:bg-cyan-500/10 hover:border-cyan-400 hover:text-cyan-200 px-8 py-3 text-lg hover:scale-105 transition-all duration-300 group"
+                className="border-cyan-500 text-cyan-300 hover:bg-cyan-500/10 hover:border-cyan-400 hover:text-cyan-200 px-6 py-2 sm:px-8 sm:py-3 text-base sm:text-lg hover:scale-105 transition-all duration-300 group w-full sm:w-auto"
                 data-testid="button-demo"
               >
                 Ver Demonstração
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform duration-300" />
               </Button>
             </div>
           </div>
@@ -200,9 +200,9 @@ export default function Landing() {
       </section>
 
       {/* Navigation Tabs */}
-      <section className="container mx-auto px-4 py-12">
+      <section className="container mx-auto px-3 py-8 sm:py-12">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mx-auto bg-black/20 backdrop-blur-md border border-cyan-500/20">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mx-auto bg-black/20 backdrop-blur-md border border-cyan-500/20 h-10 sm:h-auto">
             <TabsTrigger 
               value="about" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
