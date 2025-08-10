@@ -212,8 +212,8 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: (() => {
-            // Avatar sincronizado com linha amarela expandida (25% a 49%)
-            const isBeingScanned = scanPosition >= 25 && scanPosition <= 49;
+            // Avatar sincronizado perfeitamente (22% a 47%)
+            const isBeingScanned = scanPosition >= 22 && scanPosition <= 47;
             // Cor personalizada: amarelo 40%, verde 50%, azul ciano 10% = rgb(194, 230, 26)
             
             return isBeingScanned
