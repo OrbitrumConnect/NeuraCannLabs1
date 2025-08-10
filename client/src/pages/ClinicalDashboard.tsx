@@ -77,31 +77,31 @@ export default function ClinicalDashboard() {
         </div>
       </div>
 
-      {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      {/* Quick Actions - Mobile Optimized */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
         <Button 
-          className="data-card rounded-xl p-4 h-auto hover:border-blue-400/50 transition-all text-left flex flex-col items-start"
+          className="data-card rounded-xl p-3 sm:p-4 h-auto hover:border-blue-400/50 transition-all text-left flex flex-col items-start"
           data-testid="new-case-button"
         >
-          <i className="fas fa-plus-circle text-blue-400 text-2xl mb-2" />
-          <h3 className="font-semibold text-white">Novo Caso</h3>
-          <p className="text-sm text-gray-400">Registrar novo caso clínico</p>
+          <i className="fas fa-plus-circle text-blue-400 text-lg sm:text-2xl mb-1 sm:mb-2" />
+          <h3 className="font-semibold text-white text-sm sm:text-base">Novo Caso</h3>
+          <p className="text-xs sm:text-sm text-gray-400">Registrar novo caso clínico</p>
         </Button>
         <Button 
-          className="data-card rounded-xl p-4 h-auto hover:border-emerald-400/50 transition-all text-left flex flex-col items-start"
+          className="data-card rounded-xl p-3 sm:p-4 h-auto hover:border-emerald-400/50 transition-all text-left flex flex-col items-start"
           data-testid="search-cases-button"
         >
-          <i className="fas fa-search text-emerald-400 text-2xl mb-2" />
-          <h3 className="font-semibold text-white">Buscar Casos</h3>
-          <p className="text-sm text-gray-400">Encontrar casos similares</p>
+          <i className="fas fa-search text-emerald-400 text-lg sm:text-2xl mb-1 sm:mb-2" />
+          <h3 className="font-semibold text-white text-sm sm:text-base">Buscar Casos</h3>
+          <p className="text-xs sm:text-sm text-gray-400">Encontrar casos similares</p>
         </Button>
         <Button 
-          className="data-card rounded-xl p-4 h-auto hover:border-purple-400/50 transition-all text-left flex flex-col items-start"
+          className="data-card rounded-xl p-3 sm:p-4 h-auto hover:border-purple-400/50 transition-all text-left flex flex-col items-start"
           data-testid="ai-analysis-button"
         >
-          <i className="fas fa-chart-bar text-purple-400 text-2xl mb-2" />
-          <h3 className="font-semibold text-white">Análise IA</h3>
-          <p className="text-sm text-gray-400">Insights automáticos</p>
+          <i className="fas fa-chart-bar text-purple-400 text-lg sm:text-2xl mb-1 sm:mb-2" />
+          <h3 className="font-semibold text-white text-sm sm:text-base">Análise IA</h3>
+          <p className="text-xs sm:text-sm text-gray-400">Insights automáticos</p>
         </Button>
       </div>
 
@@ -123,23 +123,23 @@ export default function ClinicalDashboard() {
                 className="data-card rounded-xl hover:border-blue-400/50 transition-all"
                 data-testid={`case-card-${clinicalCase.id}`}
               >
-                <CardContent className="p-6">
+                <CardContent className="p-3 sm:p-6">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
-                        <div className={`w-10 h-10 ${
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 ${
                           clinicalCase.outcome?.includes("significativa") ? "bg-green-500/20" : "bg-amber-500/20"
-                        } rounded-lg flex items-center justify-center mr-3`}>
+                        } rounded-lg flex items-center justify-center mr-2 sm:mr-3`}>
                           <i className={`${getOutcomeIcon(clinicalCase.outcome)} ${
                             clinicalCase.outcome?.includes("significativa") ? "text-green-400" : "text-amber-400"
-                          }`} />
+                          } text-sm sm:text-base`} />
                         </div>
                         <div>
-                          <h3 className="font-semibold text-white">{clinicalCase.caseNumber}</h3>
-                          <p className="text-sm text-gray-400">{clinicalCase.doctorName}</p>
+                          <h3 className="font-semibold text-white text-sm sm:text-base">{clinicalCase.caseNumber}</h3>
+                          <p className="text-xs sm:text-sm text-gray-400">{clinicalCase.doctorName}</p>
                         </div>
                       </div>
-                      <p className="text-gray-300 mb-3">{clinicalCase.description}</p>
+                      <p className="text-gray-300 mb-2 sm:mb-3 text-sm sm:text-base">{clinicalCase.description}</p>
                       <div className="flex flex-wrap gap-2">
                         {clinicalCase.compound && (
                           <span className={`text-xs px-2 py-1 rounded ${getCompoundColor(clinicalCase.compound)}`}>

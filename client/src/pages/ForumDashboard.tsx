@@ -141,44 +141,44 @@ export default function ForumDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-dark text-gray-100 p-4 sm:p-6">
+    <div className="min-h-screen bg-cyber-dark text-gray-100 p-2 sm:p-4">
       <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        {/* Header - Mobile Optimized */}
+        <div className="mb-6 sm:mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-bold neon-text mb-2">
+              <h1 className="text-lg sm:text-2xl md:text-3xl font-bold neon-text mb-1 sm:mb-2">
                 💬 Fórum de Discussão Científica
               </h1>
-              <p className="text-base text-gray-400">
+              <p className="text-sm sm:text-base text-gray-400">
                 Espaço colaborativo para médicos discutirem cannabis medicinal
               </p>
             </div>
             <Button 
               onClick={() => setShowNewPost(true)}
-              className="bg-neon-cyan text-cyber-dark hover:bg-cyan-400 w-full sm:w-auto h-12 px-6"
+              className="bg-neon-cyan text-cyber-dark hover:bg-cyan-400 w-full sm:w-auto h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base"
               data-testid="button-new-post"
             >
-              <i className="fas fa-plus mr-2" />
+              <i className="fas fa-plus mr-1 sm:mr-2 text-sm" />
               Nova Discussão
             </Button>
           </div>
 
-          {/* Categories */}
-          <div className="flex flex-wrap gap-3">
+          {/* Categories - Mobile Optimized */}
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                className={`px-4 py-3 rounded-lg border transition-all min-h-12 ${
+                className={`px-3 sm:px-4 py-2 sm:py-3 rounded-lg border transition-all min-h-10 sm:min-h-12 ${
                   activeCategory === category.id
                     ? "bg-neon-cyan/20 border-neon-cyan text-neon-cyan"
                     : "border-gray-600 hover:border-neon-cyan/50 hover:text-neon-cyan"
                 }`}
                 data-testid={`category-${category.id}`}
               >
-                <span className="text-sm font-medium">{category.name}</span>
-                <span className="ml-2 bg-gray-600 text-gray-300 text-xs px-2 py-1 rounded-full">
+                <span className="text-xs sm:text-sm font-medium">{category.name}</span>
+                <span className="ml-1 sm:ml-2 bg-gray-600 text-gray-300 text-xs px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full">
                   {category.count}
                 </span>
               </button>
@@ -186,14 +186,14 @@ export default function ForumDashboard() {
           </div>
         </div>
 
-        {/* New Post Modal */}
+        {/* New Post Modal - Mobile Optimized */}
         {showNewPost && (
-          <Card className="mb-6 bg-cyber-gray border-neon-cyan/30">
-            <CardHeader>
-              <CardTitle className="text-neon-cyan">Nova Discussão</CardTitle>
+          <Card className="mb-4 sm:mb-6 bg-cyber-gray border-neon-cyan/30">
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-neon-cyan text-lg sm:text-xl">Nova Discussão</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CardContent className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <Label htmlFor="post-title" className="text-gray-300 text-sm">Título da Discussão</Label>
                   <Input
@@ -285,8 +285,8 @@ export default function ForumDashboard() {
           </Card>
         )}
 
-        {/* Forum Posts */}
-        <div className="space-y-4">
+        {/* Forum Posts - Mobile Optimized */}
+        <div className="space-y-3 sm:space-y-4">
           {filteredPosts.map((post) => (
             <Card 
               key={post.id} 
@@ -295,41 +295,41 @@ export default function ForumDashboard() {
               }`}
               data-testid={`post-${post.id}`}
             >
-              <CardContent className="p-6">
+              <CardContent className="p-3 sm:p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-2">
                       {post.isPinned && (
-                        <i className="fas fa-thumbtack text-yellow-500" />
+                        <i className="fas fa-thumbtack text-yellow-500 text-sm" />
                       )}
                       {post.isHot && (
-                        <i className="fas fa-fire text-orange-500" />
+                        <i className="fas fa-fire text-orange-500 text-sm" />
                       )}
-                      <h3 className="text-lg font-semibold text-gray-100 hover:text-neon-cyan transition-colors">
+                      <h3 className="text-sm sm:text-lg font-semibold text-gray-100 hover:text-neon-cyan transition-colors">
                         {post.title}
                       </h3>
                       {getCategoryBadge(post.category)}
                     </div>
                     
-                    <p className="text-gray-300 mb-3 line-clamp-2">
+                    <p className="text-gray-300 mb-2 sm:mb-3 line-clamp-2 text-sm sm:text-base">
                       {post.content}
                     </p>
                     
-                    <div className="flex items-center gap-4 text-sm text-gray-400">
-                      <span>
-                        <i className="fas fa-user-md mr-1" />
-                        {post.author} - {post.authorRole}
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-400">
+                      <span className="flex items-center">
+                        <i className="fas fa-user-md mr-1 text-xs" />
+                        <span className="truncate">{post.author} - {post.authorRole}</span>
                       </span>
-                      <span>
-                        <i className="fas fa-comments mr-1" />
+                      <span className="flex items-center">
+                        <i className="fas fa-comments mr-1 text-xs" />
                         {post.replies} respostas
                       </span>
-                      <span>
-                        <i className="fas fa-eye mr-1" />
+                      <span className="flex items-center">
+                        <i className="fas fa-eye mr-1 text-xs" />
                         {post.views} visualizações
                       </span>
-                      <span>
-                        <i className="fas fa-clock mr-1" />
+                      <span className="flex items-center">
+                        <i className="fas fa-clock mr-1 text-xs" />
                         {post.lastActivity}
                       </span>
                     </div>
@@ -352,30 +352,30 @@ export default function ForumDashboard() {
           ))}
         </div>
 
-        {/* Stats */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* Stats - Mobile Optimized */}
+        <div className="mt-6 sm:mt-8 grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
           <Card className="bg-cyber-gray border-gray-600">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-neon-cyan">29</div>
-              <div className="text-sm text-gray-400">Discussões Ativas</div>
+            <CardContent className="p-2 sm:p-4 text-center">
+              <div className="text-lg sm:text-2xl font-bold text-neon-cyan">29</div>
+              <div className="text-xs sm:text-sm text-gray-400">Discussões Ativas</div>
             </CardContent>
           </Card>
           <Card className="bg-cyber-gray border-gray-600">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-500">187</div>
-              <div className="text-sm text-gray-400">Médicos Participando</div>
+            <CardContent className="p-2 sm:p-4 text-center">
+              <div className="text-lg sm:text-2xl font-bold text-green-500">187</div>
+              <div className="text-xs sm:text-sm text-gray-400">Médicos Participando</div>
             </CardContent>
           </Card>
           <Card className="bg-cyber-gray border-gray-600">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-purple-500">94</div>
-              <div className="text-sm text-gray-400">Respostas Hoje</div>
+            <CardContent className="p-2 sm:p-4 text-center">
+              <div className="text-lg sm:text-2xl font-bold text-purple-500">94</div>
+              <div className="text-xs sm:text-sm text-gray-400">Respostas Hoje</div>
             </CardContent>
           </Card>
           <Card className="bg-cyber-gray border-gray-600">
-            <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-yellow-500">15</div>
-              <div className="text-sm text-gray-400">Tópicos em Alta</div>
+            <CardContent className="p-2 sm:p-4 text-center">
+              <div className="text-lg sm:text-2xl font-bold text-yellow-500">15</div>
+              <div className="text-xs sm:text-sm text-gray-400">Tópicos em Alta</div>
             </CardContent>
           </Card>
         </div>

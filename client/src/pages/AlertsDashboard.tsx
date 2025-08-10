@@ -82,38 +82,38 @@ export default function AlertsDashboard() {
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      {/* Stats Cards - Mobile Optimized */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-6 sm:mb-8">
         <Card className="data-card rounded-xl text-center">
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-orange-400">{alertStats.regulatory}</div>
-            <div className="text-sm text-gray-400">Regulatórios</div>
+          <CardContent className="p-2 sm:p-4">
+            <div className="text-lg sm:text-2xl font-bold text-orange-400">{alertStats.regulatory}</div>
+            <div className="text-xs sm:text-sm text-gray-400">Regulatórios</div>
           </CardContent>
         </Card>
         <Card className="data-card rounded-xl text-center">
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-red-400">{alertStats.safety}</div>
-            <div className="text-sm text-gray-400">Segurança</div>
+          <CardContent className="p-2 sm:p-4">
+            <div className="text-lg sm:text-2xl font-bold text-red-400">{alertStats.safety}</div>
+            <div className="text-xs sm:text-sm text-gray-400">Segurança</div>
           </CardContent>
         </Card>
         <Card className="data-card rounded-xl text-center">
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-blue-400">{alertStats.innovation}</div>
-            <div className="text-sm text-gray-400">Inovações</div>
+          <CardContent className="p-2 sm:p-4">
+            <div className="text-lg sm:text-2xl font-bold text-blue-400">{alertStats.innovation}</div>
+            <div className="text-xs sm:text-sm text-gray-400">Inovações</div>
           </CardContent>
         </Card>
         <Card className="data-card rounded-xl text-center">
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold text-green-400">{alertStats.alta}</div>
-            <div className="text-sm text-gray-400">Alta Prioridade</div>
+          <CardContent className="p-2 sm:p-4">
+            <div className="text-lg sm:text-2xl font-bold text-green-400">{alertStats.alta}</div>
+            <div className="text-xs sm:text-sm text-gray-400">Alta Prioridade</div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Search and Filters */}
-      <Card className="data-card rounded-xl mb-8">
-        <CardContent className="p-6">
-          <div className="flex flex-col lg:flex-row gap-4">
+      {/* Search and Filters - Mobile Optimized */}
+      <Card className="data-card rounded-xl mb-6 sm:mb-8">
+        <CardContent className="p-3 sm:p-6">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="flex-1">
               <div className="relative">
                 <Input
@@ -130,7 +130,7 @@ export default function AlertsDashboard() {
             <select 
               value={selectedPriority}
               onChange={(e) => setSelectedPriority(e.target.value)}
-              className="px-4 py-2 bg-cyber-light border border-gray-600 rounded text-white focus:border-orange-500"
+              className="px-3 sm:px-4 py-2 bg-cyber-light border border-gray-600 rounded text-white focus:border-orange-500 text-sm sm:text-base"
               data-testid="priority-filter"
             >
               <option value="">Todas Prioridades</option>
