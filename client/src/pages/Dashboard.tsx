@@ -65,14 +65,14 @@ export default function Dashboard() {
             setActiveDashboard('scientific');
           }
         }}
-        avatarScanning={undefined} // Will be set by DashboardLayout internally
+        // avatarScanning handled internally by DashboardLayout
       >
       {activeDashboard === "overview" && (
         <OverviewDashboard 
           onPlanetClick={handleCosmicPlanetClick}
           activeDashboard={activeDashboard}
           onSearch={handleGlobalSearch}
-          avatarScanning={undefined} // Will get from context
+          // avatarScanning agora vem do Context useScan
         />
       )}
       {activeDashboard === "scientific" && (
@@ -111,10 +111,9 @@ interface OverviewDashboardProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
-  avatarScanning?: boolean;
 }
 
-function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, avatarScanning }: OverviewDashboardProps) {
+function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-4 py-8">
       {/* Cosmic Knowledge Map */}
@@ -123,7 +122,6 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, avatarSca
           onPlanetClick={onPlanetClick} 
           activeDashboard={activeDashboard} 
           onSearch={onSearch}
-          avatarScanning={avatarScanning}
         />
       </div>
     </section>

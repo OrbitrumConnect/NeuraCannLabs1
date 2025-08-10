@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from '@tanstack/react-query';
+import { useScan } from "@/contexts/ScanContext";
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
 import MedicalAvatar3D from "./MedicalAvatar3D";
 import MainCard from "./MainCard";
@@ -56,8 +57,6 @@ interface CosmicMapProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
-  onAIResponse?: (response: string, suggestions: string[], results: any[], query?: string) => void;
-  avatarScanning?: boolean;
 }
 
 const planets: CosmicPlanet[] = [
@@ -99,7 +98,7 @@ const planets: CosmicPlanet[] = [
   },
 ];
 
-export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSearch, avatarScanning }: CosmicMapProps) {
+export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSearch }: CosmicMapProps) {
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("todos");
@@ -108,6 +107,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [searchTabs, setSearchTabs] = useState<SearchTab[]>([]);
   const [subSearchTerm, setSubSearchTerm] = useState("");
   const [isDrAIActive, setIsDrAIActive] = useState(false);
+  const { avatarScanning } = useScan();
 
   // Fetch real data from APIs with proper typing
   const { data: scientificData = [] } = useQuery<ScientificStudy[]>({ queryKey: ['/api/scientific'] });
@@ -150,10 +150,6 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       };
 
       setSearchTabs([newTab]);
-      
-      if (onAIResponse) {
-        onAIResponse(data.answer, data.suggestions, data.results, userMessage);
-      }
     } catch (error) {
       console.error('Erro na busca:', error);
       const errorTab: SearchTab = {

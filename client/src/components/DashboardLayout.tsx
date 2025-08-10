@@ -2,6 +2,8 @@ import { useState } from "react";
 import Avatar3D from "./Avatar3D";
 import { SmartInteractionHub } from "./SmartInteractionHub";
 import { DynamicMedicalBackground } from "./DynamicMedicalBackground";
+import { useScan } from "@/contexts/ScanContext";
+
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -35,18 +37,22 @@ export default function DashboardLayout({
   onSearchQuery,
 }: DashboardLayoutProps) {
   const [interactionMode, setInteractionMode] = useState<'voice' | 'gesture' | 'text'>('text');
-  const [scanPosition, setScanPosition] = useState(0);
-  const [avatarScanning, setAvatarScanning] = useState(false);
+  const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
   const handleDashboardClick = (dashboardId: string) => {
     onDashboardChange(dashboardId);
     setSideNavOpen(false);
   };
 
-  // Detecta quando o scan está na área do avatar (centro da tela, aprox. 45-55%)
+  // Detecta quando o scan está na área do avatar (centro da tela, aprox. 40-60%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 45 && position <= 55;
+    const isScanning = position >= 40 && position <= 60;
     setAvatarScanning(isScanning);
+    
+    // Debug visual para confirmar detecção
+    if (isScanning) {
+      console.log(`🔍 SCAN DETECTOU AVATAR! Posição: ${position.toFixed(1)}%`);
+    }
   };
 
   return (
@@ -191,6 +197,14 @@ export default function DashboardLayout({
         <div className="relative z-10">
           {children}
         </div>
+        
+        {/* Indicação visual do scan */}
+        {avatarScanning && (
+          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-4 py-2 rounded-lg animate-pulse">
+            🔍 AVATAR ESCANEADO! Posição: {scanPosition.toFixed(1)}%
+          </div>
+        )}
+
         
         {/* Smart Interaction Hub - Fixed bottom right */}
         <div className="fixed bottom-4 right-4 z-50 max-w-sm">

@@ -1,22 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { useScan } from "@/contexts/ScanContext";
 
 interface MedicalAvatar3DProps {
   isActive?: boolean;
   isListening?: boolean;
   message?: string;
   className?: string;
-  isScanning?: boolean;
 }
 
 export default function MedicalAvatar3D({ 
   isActive = false, 
   isListening = false, 
   message = '', 
-  className = '',
-  isScanning = false
+  className = ''
 }: MedicalAvatar3DProps) {
+  const { avatarScanning } = useScan();
+  
+  console.log("Avatar scanning state:", avatarScanning); // Debug
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -198,19 +200,22 @@ export default function MedicalAvatar3D({
 
   return (
     <div className={`relative ${className}`}>
-      {/* Efeito de scan quando isScanning é true */}
-      {isScanning && (
+      {/* Efeito de scan quando avatarScanning é true - muito mais visível */}
+      {avatarScanning && (
         <>
-          <div className="absolute inset-0 rounded-full animate-ping border-4 border-neon-cyan/60 z-10" />
-          <div className="absolute inset-2 rounded-full animate-pulse bg-neon-cyan/10 border-2 border-neon-cyan/40 z-10" />
-          <div className="absolute inset-4 rounded-full animate-bounce bg-green-400/20 border border-green-400/60 z-10" />
+          <div className="absolute -inset-4 rounded-full border-4 border-red-400 bg-red-400/20 animate-ping z-10" />
+          <div className="absolute -inset-2 rounded-full border-2 border-yellow-300 bg-yellow-300/30 animate-pulse z-10" />
+          <div className="absolute inset-0 rounded-full border-2 border-white bg-white/20 animate-bounce z-10" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+            <div className="text-red-500 text-lg font-bold animate-pulse">SCAN</div>
+          </div>
         </>
       )}
       
       {/* 3D Avatar Container - Free floating */}
       <div 
         ref={mountRef} 
-        className={`relative transition-all duration-500 ${className} ${isScanning ? 'scale-110 brightness-150' : ''} ${
+        className={`relative transition-all duration-500 ${className} ${avatarScanning ? 'scale-110 brightness-150' : ''} ${
           isActive 
             ? 'drop-shadow-2xl' 
             : 'drop-shadow-lg'
