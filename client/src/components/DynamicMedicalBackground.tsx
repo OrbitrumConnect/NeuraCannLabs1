@@ -239,18 +239,22 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
         style={{
           background: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            const isOverAvatar = currentPos >= 45 && currentPos <= 55; // Avatar está entre 45-55%
+            // Ajustado para cobrir melhor o avatar: da cabeça até a perna (40-60%)
+            const isOverAvatar = currentPos >= 40 && currentPos <= 60;
+            // Cor personalizada: amarelo 40%, verde 50%, azul ciano 10%
+            const customColor = 'rgb(194, 230, 26)'; // #c2e61a - mix das cores
             return isOverAvatar
-              ? `linear-gradient(90deg, transparent, #ffaa0088, #ffaa00, #ffaa0088, transparent)` // Amarelo quando sobre avatar
-              : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`; // Verde normal
+              ? `linear-gradient(90deg, transparent, ${customColor}88, ${customColor}, ${customColor}88, transparent)`
+              : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`;
           })(),
           top: `${(currentPattern * 2) % 100}%`,
           filter: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            const isOverAvatar = currentPos >= 45 && currentPos <= 55;
+            const isOverAvatar = currentPos >= 40 && currentPos <= 60;
+            const customColor = 'rgb(194, 230, 26)';
             return isOverAvatar
-              ? `blur(1px) drop-shadow(0 0 6px #ffaa00) drop-shadow(0 0 12px #ffaa0066)` // Brilho amarelo
-              : `blur(1px) drop-shadow(0 0 4px ${config.color})`; // Brilho normal
+              ? `blur(1px) drop-shadow(0 0 6px ${customColor}) drop-shadow(0 0 12px rgba(194, 230, 26, 0.4))`
+              : `blur(1px) drop-shadow(0 0 4px ${config.color})`;
           })(),
           transition: 'all 0.2s ease-out'
         }}
