@@ -78,12 +78,12 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPattern(prev => {
-        const newPattern = (prev + 0.5) % 100 // Movimento mais suave - reduzido de 0.8 para 0.5
+        const newPattern = (prev + 0.3) % 100 // Movimento bem mais lento
         return newPattern
       })
       // Variação sutil na intensidade para efeito "respiratório"
       setIntensity(0.2 + Math.sin(Date.now() / 3000) * 0.2)
-    }, 16) // 60fps para movimento ultra suave
+    }, 50) // Movimento mais lento e suave
 
     return () => clearInterval(interval)
   }, [config.speed])

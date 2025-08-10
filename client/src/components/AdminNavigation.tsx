@@ -23,11 +23,11 @@ export function AdminNavigation() {
           asChild
           variant={location === '/plans' ? 'default' : 'outline'}
           size="sm"
-          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 border-cyan-400 text-xs md:text-sm"
+          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 border-cyan-400 text-xs md:text-sm shadow-lg"
         >
           <Link href="/plans">
             <i className="fas fa-crown mr-1 md:mr-2" />
-            <span className="hidden sm:inline">Planos</span>
+            <span className="hidden xs:inline">Planos</span>
           </Link>
         </Button>
         
