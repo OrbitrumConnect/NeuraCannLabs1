@@ -141,25 +141,25 @@ export default function ForumDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-dark text-gray-100 p-2 sm:p-4">
+    <div className="min-h-screen bg-cyber-dark text-gray-100 p-1 sm:p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header - Mobile Optimized */}
         <div className="mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
             <div>
-              <h1 className="text-lg sm:text-2xl md:text-3xl font-bold neon-text mb-1 sm:mb-2">
+              <h1 className="text-base sm:text-2xl md:text-3xl font-bold neon-text mb-1 sm:mb-2">
                 💬 Fórum de Discussão Científica
               </h1>
-              <p className="text-sm sm:text-base text-gray-400">
+              <p className="text-xs sm:text-base text-gray-400">
                 Espaço colaborativo para médicos discutirem cannabis medicinal
               </p>
             </div>
             <Button 
               onClick={() => setShowNewPost(true)}
-              className="bg-neon-cyan text-cyber-dark hover:bg-cyan-400 w-full sm:w-auto h-10 sm:h-12 px-4 sm:px-6 text-sm sm:text-base"
+              className="bg-neon-cyan text-cyber-dark hover:bg-cyan-400 w-full sm:w-auto h-8 sm:h-12 px-3 sm:px-6 text-xs sm:text-base"
               data-testid="button-new-post"
             >
-              <i className="fas fa-plus mr-1 sm:mr-2 text-sm" />
+              <i className="fas fa-plus mr-1 sm:mr-2 text-xs sm:text-sm" />
               Nova Discussão
             </Button>
           </div>

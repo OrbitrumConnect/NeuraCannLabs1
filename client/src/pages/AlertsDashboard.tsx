@@ -71,14 +71,14 @@ export default function AlertsDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+    <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8">
       <div className="flex items-center mb-6 sm:mb-8">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-400 to-red-600 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
           <i className="fas fa-exclamation-triangle text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Alertas e Notificações</h1>
-          <p className="text-gray-400">Novidades regulatórias e científicas</p>
+          <h1 className="text-lg sm:text-3xl font-bold text-white">Alertas e Notificações</h1>
+          <p className="text-gray-400 text-xs sm:text-base">Novidades regulatórias e científicas</p>
         </div>
       </div>
 

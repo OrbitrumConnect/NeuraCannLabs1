@@ -117,14 +117,14 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+    <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8">
       <div className="flex items-center mb-6 sm:mb-8">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
           <i className="fas fa-user-shield text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Dashboard Administrativo</h1>
-          <p className="text-gray-400 text-sm sm:text-base">Validação e aprovação de estudos científicos</p>
+          <h1 className="text-lg sm:text-3xl font-bold text-white">Dashboard Administrativo</h1>
+          <p className="text-gray-400 text-xs sm:text-base">Validação e aprovação de estudos científicos</p>
         </div>
       </div>
 
