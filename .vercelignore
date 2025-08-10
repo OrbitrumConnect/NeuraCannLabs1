@@ -1,0 +1,12 @@
+node_modules
+.env*
+*.log
+.DS_Store
+.vscode
+.replit
+attached_assets
+test-speech.html
+ESTRATEGIA_*.md
+INVESTOR_*.md
+PLATAFORMA_*.md
+SISTEMA_*.md
