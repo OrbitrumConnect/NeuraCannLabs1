@@ -5,8 +5,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-export default function ScientificDashboard() {
-  const [searchTerm, setSearchTerm] = useState("");
+interface ScientificDashboardProps {
+  searchTerm?: string;
+}
+
+export default function ScientificDashboard({ searchTerm: initialSearchTerm = "" }: ScientificDashboardProps) {
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
 
   const { data: studies, isLoading, error } = useQuery<ScientificStudy[]>({
     queryKey: ["/api/scientific"],

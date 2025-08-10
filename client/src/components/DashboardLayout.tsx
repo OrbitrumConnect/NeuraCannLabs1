@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Avatar3D from "./Avatar3D";
+import { SmartInteractionHub } from "./SmartInteractionHub";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface DashboardLayoutProps {
   activeDashboard: string;
   sideNavOpen: boolean;
   setSideNavOpen: (open: boolean) => void;
+  onSearchQuery?: (query: string) => void;
 }
 
 const dashboardOptions = [
@@ -28,7 +30,9 @@ export default function DashboardLayout({
   activeDashboard,
   sideNavOpen,
   setSideNavOpen,
+  onSearchQuery,
 }: DashboardLayoutProps) {
+  const [interactionMode, setInteractionMode] = useState<'voice' | 'gesture' | 'text'>('text');
   const handleDashboardClick = (dashboardId: string) => {
     onDashboardChange(dashboardId);
     setSideNavOpen(false);
@@ -164,11 +168,18 @@ export default function DashboardLayout({
 
 
       {/* Main Content */}
-      <main className="pt-14 sm:pt-20 min-h-screen cyber-grid">
+      <main className="pt-14 sm:pt-20 min-h-screen cyber-grid relative">
         {children}
+        
+        {/* Smart Interaction Hub - Fixed bottom right */}
+        <div className="fixed bottom-4 right-4 z-50 max-w-sm">
+          <SmartInteractionHub
+            onSearchQuery={onSearchQuery || (() => {})}
+            onModeChange={setInteractionMode}
+            className="shadow-2xl"
+          />
+        </div>
       </main>
-
-
     </div>
   );
 }

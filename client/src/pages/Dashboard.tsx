@@ -56,6 +56,15 @@ export default function Dashboard() {
         onMenuClick={handleMenuClick}
         sideNavOpen={sideNavOpen}
         setSideNavOpen={setSideNavOpen}
+        onSearchQuery={(query) => {
+          setGlobalSearchTerm(query);
+          // Auto-switch para scientific dashboard se for pesquisa médica
+          if (query.toLowerCase().includes('cannabis') || 
+              query.toLowerCase().includes('cbd') || 
+              query.toLowerCase().includes('estudo')) {
+            setActiveDashboard('scientific');
+          }
+        }}
       >
       {activeDashboard === "overview" && (
         <OverviewDashboard 
@@ -65,7 +74,7 @@ export default function Dashboard() {
         />
       )}
       {activeDashboard === "scientific" && (
-        <ScientificDashboard />
+        <ScientificDashboard searchTerm={globalSearchTerm} />
       )}
       {activeDashboard === "clinical" && (
         <ClinicalDashboard />
