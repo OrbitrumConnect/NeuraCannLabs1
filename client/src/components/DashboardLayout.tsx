@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Avatar3D from "./Avatar3D";
 import { SmartInteractionHub } from "./SmartInteractionHub";
+import { MedicalHeartbeat } from "./MedicalHeartbeat";
+import { DynamicMedicalBackground } from "./DynamicMedicalBackground";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -168,11 +170,20 @@ export default function DashboardLayout({
 
 
       {/* Main Content */}
-      <main className="pt-14 sm:pt-20 min-h-screen cyber-grid relative">
-        {children}
+      <main className="pt-14 sm:pt-20 min-h-screen cyber-grid relative pb-20">
+        {/* Dynamic Medical Background */}
+        <DynamicMedicalBackground 
+          context={activeDashboard as any}
+          className="z-0"
+        />
+        
+        {/* Content */}
+        <div className="relative z-10">
+          {children}
+        </div>
         
         {/* Smart Interaction Hub - Fixed bottom right */}
-        <div className="fixed bottom-4 right-4 z-50 max-w-sm">
+        <div className="fixed bottom-20 right-4 z-50 max-w-sm">
           <SmartInteractionHub
             onSearchQuery={onSearchQuery || (() => {})}
             onModeChange={setInteractionMode}
@@ -180,6 +191,15 @@ export default function DashboardLayout({
           />
         </div>
       </main>
+
+      {/* Medical Heartbeat Footer */}
+      <footer className="fixed bottom-0 left-0 right-0 z-40 bg-cyber-dark/90 backdrop-blur-md border-t border-neon-cyan/20">
+        <MedicalHeartbeat 
+          color="#00ff88"
+          speed={1200}
+          className="w-full"
+        />
+      </footer>
     </div>
   );
 }

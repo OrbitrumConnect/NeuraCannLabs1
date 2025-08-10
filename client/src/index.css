@@ -3,6 +3,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Medical animations */
+@keyframes move {
+  0% { transform: translateX(-20px) translateY(-20px); }
+  100% { transform: translateX(20px) translateY(20px); }
+}
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes heartbeat-line {
+  0% { transform: scaleY(1); }
+  50% { transform: scaleY(1.2); }
+  100% { transform: scaleY(1); }
+}
+
 :root {
   --background: hsl(0, 0%, 6%);
   --foreground: hsl(200, 6.6667%, 91.1765%);
