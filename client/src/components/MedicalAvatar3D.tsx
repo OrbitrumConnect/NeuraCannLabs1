@@ -211,7 +211,9 @@ export default function MedicalAvatar3D({
             : 'drop-shadow-lg'
         }`}
         style={{
-          filter: isActive 
+          filter: avatarScanning 
+            ? 'drop-shadow(0 0 40px rgba(255,170,0,0.9)) drop-shadow(0 0 80px rgba(255,170,0,0.7)) brightness(1.4) saturate(1.3)' // Brilho amarelo quando scanning
+            : isActive 
             ? 'drop-shadow(0 0 30px rgba(34,197,94,0.9)) drop-shadow(0 0 60px rgba(16,185,129,0.6)) brightness(1.3) saturate(1.2)' 
             : 'drop-shadow(0 0 20px rgba(34,197,94,0.4)) drop-shadow(0 0 40px rgba(16,185,129,0.2)) brightness(1.0) saturate(1.1)'
         }}
