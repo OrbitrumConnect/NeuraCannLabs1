@@ -7,12 +7,14 @@ import { ScanProvider } from "@/contexts/ScanContext";
 import Dashboard from "@/pages/Dashboard";
 import GlobalAdminDashboard from "@/pages/GlobalAdminDashboard";
 import Landing from "@/pages/Landing";
+import Login from "@/pages/Login";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Switch>
       <Route path="/landing" component={Landing} />
+      <Route path="/login" component={Login} />
       <Route path="/" component={Dashboard} />
       <Route path="/dashboard/:section?" component={Dashboard} />
       <Route path="/admin" component={GlobalAdminDashboard} />

@@ -3,8 +3,65 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchema } from "@shared/schema";
 import { z } from "zod";
+import session from "express-session";
+import MemoryStore from "memorystore";
+import "./types"; // Import session types
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Session setup
+  const MemStore = MemoryStore(session);
+  app.use(session({
+    secret: 'neurocann-lab-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    store: new MemStore({
+      checkPeriod: 86400000 // prune expired entries every 24h
+    }),
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+  }));
+
+  // Admin credentials
+  const ADMIN_EMAIL = 'Phpg69@gmail.com';
+  const ADMIN_PASSWORD = 'p6p7p8P9!';
+
+  // Auth routes
+  app.post("/api/auth/login", async (req, res) => {
+    const { email, password } = req.body;
+    
+    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+      const user = {
+        id: 'admin-1',
+        email: ADMIN_EMAIL,
+        name: 'Administrador',
+        role: 'admin'
+      };
+      
+      req.session.user = user;
+      
+      res.json({ user });
+    } else {
+      res.status(401).json({ message: 'Credenciais inválidas' });
+    }
+  });
+
+  app.post("/api/auth/logout", async (req, res) => {
+    req.session.destroy((err: any) => {
+      if (err) {
+        return res.status(500).json({ message: 'Erro ao fazer logout' });
+      }
+      res.json({ message: 'Logout realizado com sucesso' });
+    });
+  });
+
+  app.get("/api/auth/user", async (req, res) => {
+    if (req.session.user) {
+      res.json(req.session.user);
+    } else {
+      res.status(401).json({ message: 'Não autenticado' });
+    }
+  });
   // Scientific Studies Routes
   app.get("/api/scientific", async (req, res) => {
     try {

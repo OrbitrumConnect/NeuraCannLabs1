@@ -139,6 +139,7 @@ export default function Landing() {
                 variant="ghost" 
                 className="text-white hover:bg-white/10 hover:scale-105 transition-all duration-300 group" 
                 data-testid="button-login"
+                onClick={() => window.location.href = '/login'}
               >
                 <LogIn className="w-4 h-4 mr-2 group-hover:text-purple-300 transition-colors" />
                 Entrar
@@ -146,6 +147,7 @@ export default function Landing() {
               <Button 
                 className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300" 
                 data-testid="button-register"
+                onClick={() => window.location.href = '/login'}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
                 Cadastrar
