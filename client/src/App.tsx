@@ -12,12 +12,16 @@ import Register from "@/pages/Register";
 import NotFound from "@/pages/not-found";
 
 function Router() {
+  // Verificar se existe usuário logado
+  const user = localStorage.getItem('user');
+  const isLoggedIn = user && JSON.parse(user).id;
+
   return (
     <Switch>
       <Route path="/landing" component={Landing} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
-      <Route path="/" component={Dashboard} />
+      <Route path="/" component={isLoggedIn ? Dashboard : Landing} />
       <Route path="/dashboard/:section?" component={Dashboard} />
       <Route path="/admin" component={GlobalAdminDashboard} />
       <Route component={NotFound} />

@@ -181,6 +181,17 @@ export default function Landing() {
                 size="lg" 
                 className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-6 py-2 sm:px-8 sm:py-3 text-base sm:text-lg hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group w-full sm:w-auto"
                 data-testid="button-start-trial"
+                onClick={() => {
+                  // Simular login do usuário para acesso direto à plataforma
+                  localStorage.setItem('user', JSON.stringify({
+                    id: 'admin-1',
+                    name: 'Administrador',
+                    email: 'Phpg69@gmail.com',
+                    userType: 'admin',
+                    plan: 'free'
+                  }));
+                  window.location.href = '/';
+                }}
               >
                 <Play className="w-4 h-4 mr-2 group-hover:animate-pulse" />
                 Começar Gratuitamente

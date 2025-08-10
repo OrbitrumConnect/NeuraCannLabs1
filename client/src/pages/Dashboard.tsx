@@ -9,6 +9,7 @@ import MyStudyDashboard from "./MyStudyDashboard";
 import ForumDashboard from "./ForumDashboard";
 import ProfileDashboard from "./ProfileDashboard";
 import { AdminNavigation } from '@/components/AdminNavigation';
+import { FreePlanNotification } from '@/components/FreePlanNotification';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
 
 export default function Dashboard() {
@@ -17,12 +18,21 @@ export default function Dashboard() {
   const [sideNavOpen, setSideNavOpen] = useState(false);
   const [globalSearchTerm, setGlobalSearchTerm] = useState("");
   const [globalFilter, setGlobalFilter] = useState("todos");
+  const [showFreePlanNotification, setShowFreePlanNotification] = useState(false);
+
+  // Verificar se é usuário do plano gratuito
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+  const isFreePlan = currentUser.plan === 'free';
 
   useEffect(() => {
     if (section) {
       setActiveDashboard(section);
     }
-  }, [section]);
+    // Mostrar notificação do plano gratuito apenas na primeira vez
+    if (isFreePlan && !localStorage.getItem('freePlanNotificationShown')) {
+      setShowFreePlanNotification(true);
+    }
+  }, [section, isFreePlan]);
 
   const handleMenuClick = () => {
     setSideNavOpen(!sideNavOpen);
@@ -47,9 +57,22 @@ export default function Dashboard() {
     setGlobalFilter(filter);
   };
 
+  const handleClosePlanNotification = () => {
+    setShowFreePlanNotification(false);
+    localStorage.setItem('freePlanNotificationShown', 'true');
+  };
+
   return (
     <div className="relative">
       <AdminNavigation />
+      
+      {/* Free Plan Notification */}
+      {showFreePlanNotification && (
+        <div className="fixed top-4 right-4 z-50 w-80 max-w-sm">
+          <FreePlanNotification onClose={handleClosePlanNotification} />
+        </div>
+      )}
+
       <DashboardLayout
         activeDashboard={activeDashboard}
         onDashboardChange={handleDashboardChange}

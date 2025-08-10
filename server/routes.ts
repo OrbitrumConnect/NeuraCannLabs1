@@ -35,7 +35,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         id: 'admin-1',
         email: ADMIN_EMAIL,
         name: 'Administrador',
-        role: 'admin'
+        role: 'admin',
+        plan: 'admin'
       };
       
       req.session.user = user;
