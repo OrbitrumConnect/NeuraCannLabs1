@@ -31,6 +31,10 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **ThoughtBubble Adjustment**: Repositioned closer to avatar for better mobile spacing
 - **Text-to-Speech**: Native browser API integration, Vercel-compatible deployment
 - **Vercel Deployment Ready**: 99% ready for Vercel with serverless architecture
+- **Button Size Optimization**: All interface buttons reduced by 30% for more compact layout
+- **Voice Button Repositioning**: Purple voice command button moved to left side, all voice controls reduced 30%
+- **Improved Card Spacing**: "Explorar mais" cards now have better vertical spacing (320px + 220px intervals)
+- **Enhanced Conversation Access**: "Ver" button now opens main card minimized without requiring new search
 
 ## System Architecture
 

@@ -119,6 +119,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [studyNotes, setStudyNotes] = useState("");
   const [studyTitle, setStudyTitle] = useState("");
   const [currentStudyTopic, setCurrentStudyTopic] = useState("");
+  const [currentResult, setCurrentResult] = useState<string | null>(null);
   const { avatarScanning } = useScan();
   const {
     conversations,
@@ -152,6 +153,31 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       }
     }
   }, []);
+
+  // Escuta evento para forçar abertura do card principal
+  useEffect(() => {
+    const handleForceOpenMainCard = (event: CustomEvent) => {
+      if (event.detail?.conversation) {
+        // Ativa o Dr AI para mostrar o card principal
+        setIsDrAIActive(true);
+        
+        // Se não há resultado atual, cria um resultado básico para mostrar o card
+        if (!currentResult && event.detail.conversation.messages.length > 0) {
+          const lastMessage = event.detail.conversation.messages[event.detail.conversation.messages.length - 1];
+          setCurrentResult(lastMessage.content || 'Conversa anterior carregada');
+        }
+        
+        // Abre o card minimizado para permitir ver "Explorar mais" e "Estudos"
+        setIsMainCardMinimized(true);
+      }
+    };
+
+    window.addEventListener('forceOpenMainCard', handleForceOpenMainCard as EventListener);
+    
+    return () => {
+      window.removeEventListener('forceOpenMainCard', handleForceOpenMainCard as EventListener);
+    };
+  }, [currentResult]);
 
   // Filtros removidos para economizar espaço na interface
 
@@ -191,6 +217,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       // Adicionar resposta da IA
       addMessage({ role: 'assistant', content: assistantResponse, timestamp: Date.now() });
+
+      // Atualizar resultado atual para mostrar no MainCard
+      setCurrentResult(assistantResponse);
 
       const newTab: SearchTab = {
         id: `search-${Date.now()}`,
@@ -252,10 +281,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     }
   };
 
-  // Format result for MainCard
-  const currentResult = searchTabs.find(tab => tab.type === 'main') ? {
+  // Gerar objeto formatatado para MainCard baseado no currentResult
+  const formattedResult = currentResult ? {
     query: searchTabs.find(tab => tab.type === 'main')?.query || '',
-    response: searchTabs.find(tab => tab.type === 'main')?.response || '',
+    response: currentResult,
     meta: {
       counts: {
         studies: scientificData?.length || 0,
@@ -354,10 +383,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       )}
 
       {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
-      {isDrAIActive && currentResult && (
+      {isDrAIActive && formattedResult && (
         <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
           <MainCard 
-            result={currentResult} 
+            result={formattedResult} 
             isMinimized={isMainCardMinimized}
             onToggleMinimize={() => setIsMainCardMinimized(!isMainCardMinimized)}
           />
@@ -599,13 +628,13 @@ ${studyNotes || 'Nenhuma anotação'}`;
 
       {/* Tela principal limpa - sem cards de dados que devem ficar no dashboard */}
 
-      {/* Sub-search Results - Responsive positioning - Only show when Dr AI is active */}
+      {/* Sub-search Results - Responsive positioning com mais espaçamento - Only show when Dr AI is active */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="relative mt-3 mx-3 sm:fixed sm:left-8 z-30 sm:z-30"
+          className="relative mt-4 mx-3 sm:fixed sm:left-8 z-30 sm:z-30"
           style={{ 
-            top: window.innerWidth >= 640 ? `${280 + (index * 200)}px` : 'auto',
+            top: window.innerWidth >= 640 ? `${320 + (index * 220)}px` : 'auto',
             width: window.innerWidth >= 640 ? '280px' : 'auto',
             maxHeight: '160px'
           }}

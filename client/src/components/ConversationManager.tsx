@@ -178,6 +178,10 @@ export function ConversationManager({
               } else {
                 onSelectConversation(conv);
                 setIsOpen(false);
+                // Força abertura do card principal minimizado mesmo sem pesquisa ativa
+                window.dispatchEvent(new CustomEvent('forceOpenMainCard', { 
+                  detail: { conversation: conv } 
+                }));
               }
             }}
           >

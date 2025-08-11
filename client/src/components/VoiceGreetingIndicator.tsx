@@ -49,14 +49,14 @@ export function VoiceGreetingIndicator() {
           <Button
             onClick={playGreeting}
             size="sm"
-            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-8 h-8 md:w-10 md:h-10 p-0 rounded-full"
+            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-6 h-6 md:w-7 md:h-7 p-0 rounded-full"
             data-testid="voice-greeting-button"
             title={hasPlayedToday ? 'Repetir Saudação' : 'Saudação por Voz'}
           >
             <i className="fas fa-volume-up text-xs" />
           </Button>
           
-          {/* Botão de debug temporário - apenas para testes */}
+          {/* Botão de debug temporário - 30% menor */}
           {process.env.NODE_ENV === 'development' && (
             <Button
               onClick={() => {
@@ -67,7 +67,7 @@ export function VoiceGreetingIndicator() {
                 console.log('🎤 Cache limpo - próximo acesso tocará novamente');
               }}
               size="sm"
-              className="bg-red-500/20 border border-red-500/50 text-red-400 hover:bg-red-500/30 w-8 h-8 md:w-10 md:h-10 p-0 rounded-full"
+              className="bg-red-500/20 border border-red-500/50 text-red-400 hover:bg-red-500/30 w-6 h-6 md:w-7 md:h-7 p-0 rounded-full"
               title="Limpar cache de voz (dev)"
             >
               <i className="fas fa-trash text-xs" />
