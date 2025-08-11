@@ -11,6 +11,8 @@ import ProfileDashboard from "./ProfileDashboard";
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { FreePlanNotification } from '@/components/FreePlanNotification';
 import { PlansFloatingTrigger } from '@/components/PlansFloatingTrigger';
+import { VoiceCommandButton } from '@/components/VoiceCommandButton';
+import { VoiceGreetingIndicator } from '@/components/VoiceGreetingIndicator';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
 
 export default function Dashboard() {
@@ -64,7 +66,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black pb-12">
       <AdminNavigation />
       
       {/* Free Plan Notification */}
@@ -122,15 +124,17 @@ export default function Dashboard() {
       )}
       </DashboardLayout>
       
-      {/* Footer preto com triggers integrados */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800/50 px-4 py-2 z-40">
-        <div className="flex items-center justify-between max-w-screen-xl mx-auto">
+      {/* Rodapé preto fixo no limite inferior absoluto da viewport */}
+      <footer className="fixed inset-x-0 bottom-0 bg-black border-t border-gray-800/30 px-3 py-2 z-50 h-12">
+        <div className="flex items-center justify-between h-full max-w-full mx-auto">
           <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-400 hidden sm:block">NeuroCann Lab v3.0</span>
+            <span className="text-xs text-gray-500 hidden sm:block font-medium">NeuroCann Lab v3.0</span>
           </div>
           
-          {/* Triggers no rodapé */}
-          <div className="flex items-center gap-2">
+          {/* Triggers organizados no rodapé preto */}
+          <div className="flex items-center gap-3">
+            <VoiceGreetingIndicator />
+            <VoiceCommandButton />
             <PlansFloatingTrigger />
           </div>
         </div>

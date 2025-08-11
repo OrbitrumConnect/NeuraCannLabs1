@@ -15,7 +15,7 @@ export function VoiceGreetingIndicator() {
   if (!isSupported) return null;
 
   return (
-    <div className="fixed bottom-12 left-4 sm:bottom-4 sm:left-4 z-50">
+    <div className="relative">
       {/* Indicador quando está falando */}
       {isPlaying && (
         <Card className="bg-cyber-dark/95 border-neon-cyan p-4 mb-2 max-w-sm">
@@ -50,7 +50,7 @@ export function VoiceGreetingIndicator() {
           <Button
             onClick={playGreeting}
             size="sm"
-            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-6 h-6 md:w-7 md:h-7 p-0 rounded-full"
+            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-8 h-8 p-0 rounded-full"
             data-testid="voice-greeting-button"
             title={hasPlayedToday ? 'Repetir Saudação' : 'Saudação por Voz'}
           >
