@@ -50,11 +50,11 @@ export function VoiceGreetingIndicator() {
           <Button
             onClick={playGreeting}
             size="sm"
-            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-4 h-4 md:w-7 md:h-7 p-0 rounded-full"
+            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-3 h-3 md:w-7 md:h-7 p-0 rounded-full"
             data-testid="voice-greeting-button"
             title={hasPlayedToday ? 'Repetir Saudação' : 'Saudação por Voz'}
           >
-            <i className="fas fa-volume-up text-xs" />
+            <i className="fas fa-volume-up" style={{ fontSize: '6px' }} />
           </Button>
           
           {/* Botão de debug - APENAS DESKTOP */}

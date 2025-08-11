@@ -84,10 +84,10 @@ export function PlansFloatingTrigger() {
       <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
         <Button
           onClick={() => setIsOpen(true)}
-          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 rounded-full w-4 h-4 sm:w-16 sm:h-16 flex items-center justify-center"
+          className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white shadow-2xl hover:shadow-3xl transform hover:scale-110 transition-all duration-300 rounded-full w-3 h-3 sm:w-16 sm:h-16 flex items-center justify-center"
           size="lg"
         >
-          <Crown className="w-2 h-2 sm:w-6 sm:h-6" />
+          <Crown style={{ width: '6px', height: '6px' }} className="sm:w-6 sm:h-6" />
         </Button>
       </div>
 
