@@ -38,7 +38,7 @@ export function VoiceCommandButton() {
         <Button
           onClick={startListening}
           size="sm"
-          className="bg-purple-500/20 border border-purple-500/50 text-purple-400 hover:bg-purple-500/30 w-5 h-5 md:w-7 md:h-7 p-0 rounded-full"
+          className="bg-purple-500/20 border border-purple-500/50 text-purple-400 hover:bg-purple-500/30 w-8 h-8 md:w-7 md:h-7 p-0 rounded-full"
           data-testid="voice-command-button"
           title="Comandos por Voz - Dr. Cannabis IA"
         >
