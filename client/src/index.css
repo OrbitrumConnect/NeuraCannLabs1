@@ -241,6 +241,13 @@ html, body, #root {
 }
 
 @layer utilities {
+  /* Force remove any green colors from module cards */
+  .lab-integration-card.active {
+    background: hsl(0, 0%, 12%) !important;
+    border-color: hsl(0, 0%, 40%) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+  }
+  
   .cyber-grid {
     /* Grid removido - apenas fundo limpo */
   }

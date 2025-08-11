@@ -276,14 +276,14 @@ export default function LabIntegrationModule() {
                 key={func.id}
                 className={`cursor-pointer transition-all ${
                   isActive 
-                    ? `${func.color} holographic-border` 
+                    ? 'lab-integration-card active bg-cyber-dark/80 border-gray-400 shadow-lg' 
                     : 'bg-cyber-dark/50 border-gray-600 hover:border-gray-500'
                 }`}
                 onClick={() => setActiveFunction(func.id)}
               >
                 <CardContent className="p-4">
                   <div className="flex items-center justify-between">
-                    <Icon className={`w-5 h-5 ${isActive ? func.iconColor : 'text-gray-400'}`} />
+                    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-gray-400'}`} />
                     <Badge variant="outline" className="text-xs">
                       {func.id === 'referrals' && '24'}
                       {func.id === 'anamnesis' && '89'}  
