@@ -37,8 +37,8 @@ export default function LabIntegrationModule() {
       title: "Encaminhamentos",
       description: "Sistema de encaminhamento entre especialistas",
       icon: Users,
-      color: "bg-blue-500/20 border-blue-500/30",
-      iconColor: "text-blue-400",
+      color: "bg-cyber-dark/80 border-gray-500",
+      iconColor: "text-white",
       endpoint: "/api/modules/referrals"
     },
     {
@@ -46,8 +46,8 @@ export default function LabIntegrationModule() {
       title: "Anamnese Digital",
       description: "Assistente de anamnese com IA médica",
       icon: Stethoscope,
-      color: "bg-green-500/20 border-green-500/30",
-      iconColor: "text-green-400",
+      color: "bg-cyber-dark/80 border-gray-500",
+      iconColor: "text-white",
       endpoint: "/api/modules/anamnesis"
     },
     {
@@ -55,8 +55,8 @@ export default function LabIntegrationModule() {
       title: "Laboratórios",
       description: "Integração com laboratórios em tempo real",
       icon: FlaskConical,
-      color: "bg-purple-500/20 border-purple-500/30", 
-      iconColor: "text-purple-400",
+      color: "bg-cyber-dark/80 border-gray-500",
+      iconColor: "text-white",
       endpoint: "/api/modules/labs"
     },
     {
@@ -64,8 +64,8 @@ export default function LabIntegrationModule() {
       title: "Equipe Médica",
       description: "Gestão de equipe multidisciplinar",
       icon: UserCheck,
-      color: "bg-orange-500/20 border-orange-500/30",
-      iconColor: "text-orange-400",
+      color: "bg-cyber-dark/80 border-gray-500",
+      iconColor: "text-white",
       endpoint: "/api/modules/team"
     },
     {
@@ -73,8 +73,8 @@ export default function LabIntegrationModule() {
       title: "Compliance",
       description: "Auditoria e conformidade regulatória",
       icon: Shield,
-      color: "bg-red-500/20 border-red-500/30",
-      iconColor: "text-red-400",
+      color: "bg-cyber-dark/80 border-gray-500",
+      iconColor: "text-white",
       endpoint: "/api/modules/compliance"
     }
   ];
