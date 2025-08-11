@@ -16,7 +16,16 @@ export default function AdminDashboard() {
     pendingCount: 0,
     approvedCount: 0,
     rejectedCount: 0,
-    todaySubmissions: 0
+    todaySubmissions: 0,
+    totalUsers: 0,
+    freeUsers: 0,
+    basicUsers: 0,
+    professionalUsers: 0,
+    enterpriseUsers: 0,
+    totalRevenue: 0,
+    monthlyRevenue: 0,
+    activeUsers24h: 0,
+    newUsersToday: 0
   });
   
   const { toast } = useToast();
@@ -31,6 +40,17 @@ export default function AdminDashboard() {
       return response.json();
     },
     refetchInterval: 5000, // Atualiza a cada 5 segundos
+  });
+
+  // Fetch real-time analytics data
+  const { data: analytics } = useQuery({
+    queryKey: ['/api/admin/analytics'],
+    queryFn: async () => {
+      const response = await fetch('/api/admin/analytics');
+      if (!response.ok) throw new Error('Failed to fetch analytics');
+      return response.json();
+    },
+    refetchInterval: 10000, // Atualiza a cada 10 segundos
   });
 
   // Update real-time stats whenever submissions change
@@ -117,7 +137,8 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
+      <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8">
       <div className="flex items-center mb-6 sm:mb-8">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
           <i className="fas fa-user-shield text-white text-lg sm:text-2xl" />
@@ -156,7 +177,7 @@ export default function AdminDashboard() {
         </Button>
         <Button
           onClick={() => setActiveTab('rejected')}
-          className={`px-6 py-2 rounded-lg transition-colors ${
+          className={`mr-4 px-6 py-2 rounded-lg transition-colors ${
             activeTab === 'rejected' 
               ? 'bg-orange-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -166,11 +187,248 @@ export default function AdminDashboard() {
           <i className="fas fa-times mr-2" />
           Rejeitados ({submissions?.filter(s => s.status === 'rejected').length || 0})
         </Button>
+        <Button
+          onClick={() => setActiveTab('analytics')}
+          className={`px-6 py-2 rounded-lg transition-colors ${
+            activeTab === 'analytics' 
+              ? 'bg-orange-600 text-white' 
+              : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+          }`}
+          data-testid="button-analytics-tab"
+        >
+          <i className="fas fa-chart-bar mr-2" />
+          Analytics
+        </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6">
-        {/* Submissions List */}
-        <div className="lg:col-span-2 space-y-6">
+      {/* Analytics Tab Content */}
+      {activeTab === 'analytics' ? (
+        <div className="space-y-8">
+          {/* Real-time Analytics Dashboard */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* User Statistics */}
+            <Card className="bg-gradient-to-br from-green-900/20 to-green-800/20 border border-green-500/30">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-green-400 text-sm flex items-center">
+                  <i className="fas fa-users mr-2" />
+                  Usuários Total
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">{analytics?.users?.total?.toLocaleString() || '---'}</div>
+                <div className="text-xs text-green-300 mt-1">+{analytics?.users?.newToday || 0} hoje</div>
+                <div className="mt-3 space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Gratuito</span>
+                    <span className="text-white">{analytics?.users?.free?.toLocaleString() || '---'}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Básico (R$ 10)</span>
+                    <span className="text-white">{analytics?.users?.basic?.toLocaleString() || '---'}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Pro (R$ 20)</span>
+                    <span className="text-white">{analytics?.users?.professional?.toLocaleString() || '---'}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Enterprise (R$ 30)</span>
+                    <span className="text-white">{analytics?.users?.enterprise?.toLocaleString() || '---'}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Revenue Statistics */}
+            <Card className="bg-gradient-to-br from-blue-900/20 to-blue-800/20 border border-blue-500/30">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-blue-400 text-sm flex items-center">
+                  <i className="fas fa-dollar-sign mr-2" />
+                  Receita
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">
+                  R$ {analytics?.revenue?.totalLifetime?.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) || '---'}
+                </div>
+                <div className="text-xs text-blue-300 mt-1">Total acumulado</div>
+                <div className="mt-3 space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Este mês</span>
+                    <span className="text-white">R$ {analytics?.revenue?.currentMonth?.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) || '---'}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Mês anterior</span>
+                    <span className="text-white">R$ {analytics?.revenue?.lastMonth?.toLocaleString('pt-BR', { minimumFractionDigits: 2 }) || '---'}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Conversão</span>
+                    <span className="text-white">{analytics?.revenue?.conversionRate || 0}%</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Activity Statistics */}
+            <Card className="bg-gradient-to-br from-purple-900/20 to-purple-800/20 border border-purple-500/30">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-purple-400 text-sm flex items-center">
+                  <i className="fas fa-chart-line mr-2" />
+                  Atividade
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">{analytics?.users?.activeToday?.toLocaleString() || '---'}</div>
+                <div className="text-xs text-purple-300 mt-1">Ativos hoje</div>
+                <div className="mt-3 space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Buscas</span>
+                    <span className="text-white">{analytics?.activity?.searchesPerformed?.toLocaleString() || '---'}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Voz IA</span>
+                    <span className="text-white">{analytics?.activity?.voiceInteractions?.toLocaleString() || '---'}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">API Calls</span>
+                    <span className="text-white">{analytics?.activity?.apiCallsToday?.toLocaleString() || '---'}</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Growth Statistics */}
+            <Card className="bg-gradient-to-br from-orange-900/20 to-orange-800/20 border border-orange-500/30">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-orange-400 text-sm flex items-center">
+                  <i className="fas fa-trending-up mr-2" />
+                  Crescimento
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-white">{analytics?.growth?.userGrowthRate || 0}%</div>
+                <div className="text-xs text-orange-300 mt-1">Crescimento usuários</div>
+                <div className="mt-3 space-y-2">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Receita</span>
+                    <span className="text-white">+{analytics?.growth?.revenueGrowthRate || 0}%</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Upgrades</span>
+                    <span className="text-white">{analytics?.growth?.planUpgrades || 0}</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-gray-400">Churn Rate</span>
+                    <span className="text-white">{analytics?.revenue?.churnRate || 0}%</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Detailed Analytics */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Geographic Distribution */}
+            <Card className="bg-gray-800/50 border border-orange-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <i className="fas fa-globe mr-2 text-orange-400" />
+                  Distribuição Geográfica
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-green-500 rounded mr-3"></div>
+                    <span className="text-white">Brasil</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-white font-bold">{analytics?.geographic?.brazil?.toLocaleString() || '---'}</div>
+                    <div className="text-xs text-gray-400">{((analytics?.geographic?.brazil || 0) / (analytics?.users?.total || 1) * 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-blue-500 rounded mr-3"></div>
+                    <span className="text-white">Estados Unidos</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-white font-bold">{analytics?.geographic?.usa?.toLocaleString() || '---'}</div>
+                    <div className="text-xs text-gray-400">{((analytics?.geographic?.usa || 0) / (analytics?.users?.total || 1) * 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-purple-500 rounded mr-3"></div>
+                    <span className="text-white">Europa</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-white font-bold">{analytics?.geographic?.europe?.toLocaleString() || '---'}</div>
+                    <div className="text-xs text-gray-400">{((analytics?.geographic?.europe || 0) / (analytics?.users?.total || 1) * 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <div className="flex items-center">
+                    <div className="w-4 h-4 bg-gray-500 rounded mr-3"></div>
+                    <span className="text-white">Outros</span>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-white font-bold">{analytics?.geographic?.other?.toLocaleString() || '---'}</div>
+                    <div className="text-xs text-gray-400">{((analytics?.geographic?.other || 0) / (analytics?.users?.total || 1) * 100).toFixed(1)}%</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Research Analytics */}
+            <Card className="bg-gray-800/50 border border-orange-500/20">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <i className="fas fa-microscope mr-2 text-orange-400" />
+                  Métricas de Pesquisa
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                  <span className="text-gray-400">Estudos Submetidos</span>
+                  <div className="text-white font-bold">{analytics?.activity?.studiesSubmitted || 0}</div>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                  <span className="text-gray-400">Estudos Aprovados</span>
+                  <div className="text-white font-bold">{analytics?.activity?.studiesApproved || 0}</div>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                  <span className="text-gray-400">Taxa de Aprovação</span>
+                  <div className="text-white font-bold">
+                    {analytics?.activity?.studiesSubmitted ? 
+                      ((analytics.activity.studiesApproved / analytics.activity.studiesSubmitted) * 100).toFixed(1) : 0}%
+                  </div>
+                </div>
+                <div className="flex justify-between items-center py-2 border-b border-gray-700">
+                  <span className="text-gray-400">Tempo Médio de Revisão</span>
+                  <div className="text-white font-bold">{analytics?.activity?.averageReviewTime || 0} dias</div>
+                </div>
+                <div className="flex justify-between items-center py-2">
+                  <span className="text-gray-400">Horários de Pico</span>
+                  <div className="text-white font-bold text-xs">
+                    {analytics?.growth?.peakHours?.join(', ') || 'N/A'}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Real-time Update Indicator */}
+          <div className="flex items-center justify-center py-4">
+            <div className="flex items-center text-sm text-gray-400">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
+              Dados atualizados em tempo real • Última atualização: {analytics?.timestamp ? new Date(analytics.timestamp).toLocaleTimeString('pt-BR') : '--:--'}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-6">
+          {/* Submissions List */}
+          <div className="lg:col-span-2 space-y-6">
           {isLoading ? (
             <Card className="bg-gray-800/50 border border-orange-500/20">
               <CardContent className="p-6 text-center">
@@ -351,7 +609,9 @@ export default function AdminDashboard() {
             </Card>
           )}
         </div>
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
