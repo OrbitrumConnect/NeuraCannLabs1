@@ -129,10 +129,10 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
                 className="data-card rounded-xl hover:border-emerald-400/50 transition-all cursor-pointer"
                 data-testid={`study-card-${study.id}`}
               >
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="bg-emerald-500/20 p-3 rounded-lg">
-                      <i className="fas fa-dna text-emerald-400 text-xl" />
+                <CardContent className="p-3 sm:p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="bg-emerald-500/20 p-2 rounded-lg">
+                      <i className="fas fa-dna text-emerald-400 text-lg" />
                     </div>
                     {study.compound && (
                       <span className={`text-xs px-2 py-1 rounded-full ${getCompoundColor(study.compound)}`}>
@@ -140,9 +140,9 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
                       </span>
                     )}
                   </div>
-                  <h3 className="text-lg font-semibold text-white mb-2">{study.title}</h3>
+                  <h3 className="text-base font-semibold text-white mb-2">{study.title}</h3>
                   {study.description && (
-                    <p className="text-gray-400 text-sm mb-4">{study.description.substring(0, 150)}...</p>
+                    <p className="text-gray-400 text-xs mb-3">{study.description.substring(0, 120)}...</p>
                   )}
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-xs text-gray-500">{study.date}</span>

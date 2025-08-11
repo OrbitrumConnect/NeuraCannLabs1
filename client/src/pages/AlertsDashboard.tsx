@@ -112,7 +112,7 @@ export default function AlertsDashboard() {
 
       {/* Search and Filters - Mobile Optimized */}
       <Card className="data-card rounded-xl mb-6 sm:mb-8">
-        <CardContent className="p-3 sm:p-6">
+        <CardContent className="p-3 sm:p-4">
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <div className="flex-1">
               <div className="relative">

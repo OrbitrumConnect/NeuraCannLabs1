@@ -240,42 +240,42 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
         {/* Submission Statistics - Mobile-optimized */}
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
           <Card className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
-            <CardContent className="p-3 sm:p-6">
-              <div className="flex items-center gap-2 sm:gap-4">
-                <div className="p-2 sm:p-3 bg-yellow-500/20 rounded-full">
-                  <Clock className="w-4 h-4 sm:w-6 sm:h-6 text-yellow-400" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-yellow-500/20 rounded-full">
+                  <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400" />
                 </div>
                 <div>
                   <p className="text-yellow-400 text-xs sm:text-sm font-medium">Em Análise</p>
-                  <p className="text-xl sm:text-3xl font-bold text-white">{globalStats.pendingCount}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-white">{globalStats.pendingCount}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
-            <CardContent className="p-3 sm:p-6">
-              <div className="flex items-center gap-2 sm:gap-4">
-                <div className="p-2 sm:p-3 bg-green-500/20 rounded-full">
-                  <CheckCircle className="w-4 h-4 sm:w-6 sm:h-6 text-green-400" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-green-500/20 rounded-full">
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 text-green-400" />
                 </div>
                 <div>
                   <p className="text-green-400 text-xs sm:text-sm font-medium">Base Científica</p>
-                  <p className="text-xl sm:text-3xl font-bold text-white">{globalStats.approvedCount}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-white">{globalStats.approvedCount}</p>
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-gradient-to-br from-red-500/10 to-red-600/5 border-red-500/20">
-            <CardContent className="p-3 sm:p-6">
-              <div className="flex items-center gap-2 sm:gap-4">
-                <div className="p-2 sm:p-3 bg-red-500/20 rounded-full">
-                  <XCircle className="w-4 h-4 sm:w-6 sm:h-6 text-red-400" />
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="p-1.5 sm:p-2 bg-red-500/20 rounded-full">
+                  <XCircle className="w-4 h-4 sm:w-5 sm:h-5 text-red-400" />
                 </div>
                 <div>
                   <p className="text-red-400 text-xs sm:text-sm font-medium">Rejeitados</p>
-                  <p className="text-xl sm:text-3xl font-bold text-white">{globalStats.rejectedCount}</p>
+                  <p className="text-lg sm:text-2xl font-bold text-white">{globalStats.rejectedCount}</p>
                 </div>
               </div>
             </CardContent>

@@ -66,14 +66,14 @@ export default function ClinicalDashboard() {
   };
 
   return (
-    <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8">
-      <div className="flex items-center mb-6 sm:mb-8">
+    <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8 pt-12 sm:pt-14">
+      <div className="flex items-center mb-3 sm:mb-4">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-400 to-indigo-600 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
           <i className="fas fa-user-md text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-lg sm:text-3xl font-bold text-white">Casos Clínicos</h1>
-          <p className="text-gray-400 text-xs sm:text-base">Registros médicos e experiências clínicas</p>
+          <h1 className="text-base sm:text-2xl font-bold text-white">Casos Clínicos</h1>
+          <p className="text-gray-400 text-xs sm:text-sm">Registros médicos e experiências clínicas</p>
         </div>
       </div>
 
@@ -123,7 +123,7 @@ export default function ClinicalDashboard() {
                 className="data-card rounded-xl hover:border-blue-400/50 transition-all"
                 data-testid={`case-card-${clinicalCase.id}`}
               >
-                <CardContent className="p-3 sm:p-6">
+                <CardContent className="p-3 sm:p-4">
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
@@ -139,7 +139,7 @@ export default function ClinicalDashboard() {
                           <p className="text-xs sm:text-sm text-gray-400">{clinicalCase.doctorName}</p>
                         </div>
                       </div>
-                      <p className="text-gray-300 mb-2 sm:mb-3 text-sm sm:text-base">{clinicalCase.description}</p>
+                      <p className="text-gray-300 mb-2 text-xs sm:text-sm">{clinicalCase.description}</p>
                       <div className="flex flex-wrap gap-2">
                         {clinicalCase.compound && (
                           <span className={`text-xs px-2 py-1 rounded ${getCompoundColor(clinicalCase.compound)}`}>

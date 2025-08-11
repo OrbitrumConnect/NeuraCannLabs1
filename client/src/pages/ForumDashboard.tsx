@@ -144,8 +144,8 @@ export default function ForumDashboard() {
     <div className="min-h-screen bg-cyber-dark text-gray-100 p-1 sm:p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header - Mobile Optimized */}
-        <div className="mb-6 sm:mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <div className="mb-3 sm:mb-4 pt-12 sm:pt-14">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 mb-3 sm:mb-4">
             <div>
               <h1 className="text-base sm:text-2xl md:text-3xl font-bold neon-text mb-1 sm:mb-2">
                 💬 Fórum de Discussão Científica
@@ -192,7 +192,7 @@ export default function ForumDashboard() {
             <CardHeader className="pb-3 sm:pb-6">
               <CardTitle className="text-neon-cyan text-lg sm:text-xl">Nova Discussão</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 sm:space-y-4">
+            <CardContent className="space-y-2 sm:space-y-3">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                   <Label htmlFor="post-title" className="text-gray-300 text-sm">Título da Discussão</Label>

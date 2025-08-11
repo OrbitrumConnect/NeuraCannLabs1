@@ -216,8 +216,8 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
           <i className="fas fa-brain text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-white">Sistema de Submissão de Estudos</h1>
-          <p className="text-sm sm:text-base text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Sistema de Submissão de Estudos</h1>
+          <p className="text-xs sm:text-sm text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
         </div>
       </div>
 
@@ -225,7 +225,7 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
       <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 mb-6 sm:mb-8">
         <Button
           onClick={() => setActiveTab('create')}
-          className={`px-6 py-3 rounded-lg transition-colors h-12 ${
+          className={`px-4 py-2 rounded-lg transition-colors h-10 text-sm ${
             activeTab === 'create' 
               ? 'bg-green-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -237,7 +237,7 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
         </Button>
         <Button
           onClick={() => setActiveTab('edit')}
-          className={`px-6 py-3 rounded-lg transition-colors h-12 ${
+          className={`px-4 py-2 rounded-lg transition-colors h-10 text-sm ${
             activeTab === 'edit' 
               ? 'bg-green-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -249,7 +249,7 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
         </Button>
         <Button
           onClick={() => setActiveTab('submissions')}
-          className={`px-6 py-3 rounded-lg transition-colors h-12 ${
+          className={`px-4 py-2 rounded-lg transition-colors h-10 text-sm ${
             activeTab === 'submissions' 
               ? 'bg-green-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -266,10 +266,10 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
         <div className="space-y-6">
           {/* Input Mode Selection */}
           <Card className="bg-gray-800/50 border border-green-500/20">
-            <CardHeader>
-              <CardTitle className="text-white text-lg">Como deseja criar seu estudo?</CardTitle>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-white text-base">Como deseja criar seu estudo?</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-3">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <Button
                   onClick={() => setInputMode('text')}

@@ -99,35 +99,7 @@ export default function DashboardLayout({
           </div>
           
           <div className="flex items-center space-x-4">
-          <nav className="hidden lg:flex items-center space-x-6">
-            {dashboardOptions.map((option) => (
-              <button
-                key={option.id}
-                onClick={() => handleDashboardClick(option.id)}
-                className={`px-4 py-2 rounded-lg transition-all ${
-                  activeDashboard === option.id
-                    ? "bg-green-500/20 text-green-500 border border-green-500/30"
-                    : "hover:bg-green-500/20 hover:text-green-500"
-                }`}
-                data-testid={`nav-${option.id}`}
-              >
-                <i className={`${option.icon} mr-2`} />
-                {option.name}
-                {option.id === "alerts" && (
-                  <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-1">3</span>
-                )}
-                {option.id === "my-study" && (
-                  <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1">NEW</span>
-                )}
-                {option.id === "forum" && (
-                  <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1">29</span>
-                )}
-                {option.id === "admin" && (
-                  <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1">🌍</span>
-                )}
-              </button>
-            ))}
-          </nav>
+
           
           {/* Logout & Theme Toggle - Desktop */}
           <div className="hidden lg:flex items-center space-x-3 ml-6">
