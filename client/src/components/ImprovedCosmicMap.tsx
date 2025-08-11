@@ -298,33 +298,73 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               showingHistory={showConversationHistory}
             />
             
-            {/* Search Bar or Conversation History */}
-            {!showConversationHistory ? (
-              <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-3">
-                <div className="flex-1 relative">
-                  <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder={currentConversation?.messages.length ? "Continue a conversa..." : "Digite sua consulta médica..."}
-                    className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
-                    disabled={isTyping}
-                  />
-                </div>
-                <button
-                  type="submit"
+            {/* Search Bar */}
+            <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-3">
+              <div className="flex-1 relative">
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder={currentConversation?.messages.length ? "Continue a conversa..." : "Digite sua consulta médica..."}
+                  className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
                   disabled={isTyping}
-                  className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
-                >
-                  {isTyping ? <div className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-4 h-4" />}
-                </button>
-              </form>
-            ) : (
-              <div className="mb-3 max-h-80 overflow-y-auto space-y-3 p-3 bg-gray-900/30 rounded-lg border border-gray-600/30">
-                <h4 className="text-sm font-medium text-blue-300 sticky top-0 bg-gray-900/80 backdrop-blur-sm p-2 rounded">
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isTyping}
+                className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
+              >
+                {isTyping ? <div className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-4 h-4" />}
+              </button>
+            </form>
+
+
+          </div>
+        </div>
+      )}
+
+      {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
+      {isDrAIActive && currentResult && (
+        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
+          <MainCard result={currentResult} />
+          {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
+          
+          {/* Suggestions for Sub-search - Responsive layout */}
+          {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
+            <div className="mt-3 p-2 sm:p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
+              <h4 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2">
+                {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSubSearch(suggestion)}
+                    className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all text-left sm:text-center"
+                  >
+                    {suggestion}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Conversation History - Appears after "Explore mais" */}
+          {showConversationHistory && (
+            <div className="mt-3 p-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="text-sm font-medium text-blue-300">
                   📜 Histórico da Conversa Atual
                 </h4>
+                <button
+                  onClick={() => setShowConversationHistory(false)}
+                  className="text-gray-400 hover:text-gray-300 p-1 rounded hover:bg-gray-800/50"
+                  title="Fechar histórico"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="max-h-80 overflow-y-auto space-y-3">
                 {currentConversation?.messages.map((message, index) => (
                   <div
                     key={index}
@@ -368,34 +408,6 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                     Nenhuma mensagem ainda nesta conversa
                   </p>
                 )}
-              </div>
-            )}
-
-
-          </div>
-        </div>
-      )}
-
-      {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
-      {isDrAIActive && currentResult && (
-        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
-          <MainCard result={currentResult} />
-          {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
-          
-          {/* Suggestions for Sub-search - Responsive layout */}
-          {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
-            <div className="mt-3 p-2 sm:p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
-              <h4 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2">
-                {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleSubSearch(suggestion)}
-                    className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all text-left sm:text-center"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
               </div>
             </div>
           )}
