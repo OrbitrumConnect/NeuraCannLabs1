@@ -9,7 +9,9 @@ import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
 import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
 import { VoiceCommandButton } from "./VoiceCommandButton";
 import { ConversationIndicator } from "./ConversationIndicator";
+import { ConversationManager } from "./ConversationManager";
 import { useVoiceGreeting } from "@/hooks/useVoiceGreeting";
+import { useConversations } from "@/hooks/useConversations";
 
 // Import the missing interface for proper typing
 interface ScientificStudy {
@@ -112,8 +114,18 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [searchTabs, setSearchTabs] = useState<SearchTab[]>([]);
   const [subSearchTerm, setSubSearchTerm] = useState("");
   const [isDrAIActive, setIsDrAIActive] = useState(false);
-  const [conversationHistory, setConversationHistory] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
   const { avatarScanning } = useScan();
+  const {
+    conversations,
+    currentConversation,
+    createNewConversation,
+    addMessage,
+    deleteConversation,
+    selectConversation,
+    mergeConversations,
+    createDocument,
+    clearCurrentConversation
+  } = useConversations();
 
   // Fetch real data from APIs with proper typing
   const { data: scientificData = [] } = useQuery<ScientificStudy[]>({ queryKey: ['/api/scientific'] });
@@ -130,9 +142,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     setSearchTerm("");
     setIsTyping(true);
 
-    // Adicionar mensagem do usuário ao histórico
-    const newHistory = [...conversationHistory, { role: 'user' as const, content: userMessage }];
-    setConversationHistory(newHistory);
+    // Adicionar mensagem do usuário
+    addMessage({ role: 'user', content: userMessage, timestamp: Date.now() });
 
     try {
       const response = await fetch('/api/ai-search', {
@@ -141,15 +152,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         body: JSON.stringify({ 
           query: userMessage, 
           filter: 'todos',
-          conversationHistory: newHistory // Enviar histórico para continuidade
+          conversationHistory: currentConversation?.messages || [] // Enviar histórico da conversa atual
         })
       });
 
       const data = await response.json();
       const assistantResponse = data.answer || 'Resposta não disponível';
 
-      // Adicionar resposta da IA ao histórico
-      setConversationHistory(prev => [...prev, { role: 'assistant', content: assistantResponse }]);
+      // Adicionar resposta da IA
+      addMessage({ role: 'assistant', content: assistantResponse, timestamp: Date.now() });
 
       const newTab: SearchTab = {
         id: `search-${Date.now()}`,
@@ -167,7 +178,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       const errorResponse = 'Erro ao processar consulta. Tente novamente.';
       
       // Adicionar erro ao histórico também
-      setConversationHistory(prev => [...prev, { role: 'assistant', content: errorResponse }]);
+      addMessage({ role: 'assistant', content: errorResponse, timestamp: Date.now() });
       
       const errorTab: SearchTab = {
         id: `search-${Date.now()}`,
@@ -278,8 +289,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             
             {/* Conversation Indicator */}
             <ConversationIndicator 
-              messageCount={conversationHistory.length}
-              onClear={() => setConversationHistory([])}
+              messageCount={currentConversation?.messages.length || 0}
+              onClear={() => createNewConversation()}
             />
             
             {/* Search Bar */}
@@ -290,7 +301,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder={conversationHistory.length > 0 ? "Continue a conversa..." : "Digite sua consulta médica..."}
+                  placeholder={currentConversation?.messages.length ? "Continue a conversa..." : "Digite sua consulta médica..."}
                   className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
                   disabled={isTyping}
                 />
@@ -380,6 +391,17 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {/* Voice Controls */}
       <VoiceGreetingIndicator />
       <VoiceCommandButton />
+
+      {/* Conversation Manager */}
+      <ConversationManager
+        currentConversation={currentConversation}
+        conversations={conversations}
+        onSelectConversation={selectConversation}
+        onCreateNew={() => createNewConversation()}
+        onDeleteConversation={deleteConversation}
+        onMergeConversations={mergeConversations}
+        onCreateDocument={createDocument}
+      />
 
 {/* Planets removed - clean area above search bar */}
     </div>
