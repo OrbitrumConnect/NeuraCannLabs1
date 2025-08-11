@@ -37,7 +37,9 @@
   }
 }
 
-:root {
+/* Night Mode (Padrão) */
+:root,
+.night {
   --background: hsl(0, 0%, 6%);
   --foreground: hsl(200, 6.6667%, 91.1765%);
   --card: hsl(0, 0%, 10%);
@@ -73,25 +75,75 @@
   --font-sans: 'Inter', sans-serif;
   --font-serif: Georgia, serif;
   --font-mono: Menlo, monospace;
-  --radius: 0.75rem;
+}
 
+/* Day Mode - Mantém cores verde/ciano originais, apenas fundo claro */
+.day {
+  --background: hsl(155, 25%, 96%); /* Verde muito claro médico para fundo */
+  --foreground: hsl(0, 0%, 10%); /* Texto escuro */
+  --card: hsl(0, 0%, 100%); /* Cards brancos */
+  --card-foreground: hsl(0, 0%, 15%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 10%);
+  --primary: hsl(180, 100%, 50%); /* MANTÉM ciano original */
+  --primary-foreground: hsl(0, 0%, 0%);
+  --secondary: hsl(210, 40%, 94%); /* Cinza claro neutro */
+  --secondary-foreground: hsl(210, 25%, 15%);
+  --muted: hsl(210, 40%, 90%);
+  --muted-foreground: hsl(215, 15%, 40%);
+  --accent: hsl(180, 100%, 25%); /* MANTÉM accent ciano */
+  --accent-foreground: hsl(180, 100%, 50%);
+  --destructive: hsl(356.3033, 90.5579%, 54.3137%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(214, 32%, 91%); /* Bordas neutras */
+  --input: hsl(214, 32%, 96%);
+  --ring: hsl(180, 100%, 50%); /* MANTÉM ring ciano */
+  --chart-1: hsl(180, 100%, 50%); /* MANTÉM cores dos charts */
+  --chart-2: hsl(159.7826, 100%, 36.0784%);
+  --chart-3: hsl(42.0290, 92.8251%, 56.2745%);
+  --chart-4: hsl(147.1429, 78.5047%, 41.9608%);
+  --chart-5: hsl(341.4894, 75.2000%, 50.9804%);
+  --sidebar: hsl(0, 0%, 100%);
+  --sidebar-foreground: hsl(0, 0%, 15%);
+  --sidebar-primary: hsl(180, 100%, 50%); /* MANTÉM ciano */
+  --sidebar-primary-foreground: hsl(0, 0%, 0%);
+  --sidebar-accent: hsl(180, 100%, 25%); /* MANTÉM accent ciano */
+  --sidebar-accent-foreground: hsl(180, 100%, 50%);
+  --sidebar-border: hsl(214, 32%, 91%);
+  --sidebar-ring: hsl(180, 100%, 50%); /* MANTÉM ciano */
+}
+
+/* Additional CSS Variables for both themes */
+:root,
+.night,
+.day {
+  --radius: 0.75rem;
+  
   /* Custom cyberpunk colors */
   --cyber-dark: hsl(0, 0%, 4%);
   --cyber-gray: hsl(0, 0%, 10%);
   --cyber-light: hsl(0, 0%, 16%);
-  --neon-cyan: hsl(100, 80%, 50%);
+  --neon-cyan: hsl(180, 100%, 50%);
   --neon-blue: hsl(220, 100%, 50%);
   --neon-purple: hsl(261, 83%, 58%);
   --neon-green: hsl(100, 80%, 50%);
 }
 
-/* Ensure full black background coverage */
+/* Dynamic background based on theme */
 html, body, #root {
-  background-color: black !important;
   min-height: 100vh;
   width: 100%;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease;
+}
+
+.night html, .night body, .night #root {
+  background-color: black !important;
+}
+
+.day html, .day body, .day #root {
+  background: linear-gradient(135deg, hsl(155, 25%, 96%) 0%, hsl(200, 20%, 98%) 50%, hsl(155, 25%, 96%) 100%) !important;
 }
 
 /* Neural connection animations */

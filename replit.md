@@ -60,6 +60,7 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **Final Trigger Adjustments**: Fixed floating triggers positioning and sizing - "Repetir Saudação" and "Planos" buttons adjusted to w-5 h-5 (20px) on mobile for better UX
 - **Grid Layout Fixes**: Scientific data cards now use proper responsive grid (grid-cols-1 mobile, lg:grid-cols-3 desktop) eliminating horizontal scroll issues
 - **Voice Command Integration**: Purple voice trigger removed from fixed position and integrated as small microphone icon inside search bar for intuitive voice search functionality
+- **Day/Night Mode System**: Implemented theme toggle system maintaining green/cyan medical colors, only changing background from night (black) to day (light green medical), preserving all original color scheme and visual identity
 
 ## System Architecture
 

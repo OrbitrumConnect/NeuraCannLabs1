@@ -4,6 +4,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ScanProvider } from "@/contexts/ScanContext";
+import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import Dashboard from "@/pages/Dashboard";
 import GlobalAdminDashboard from "@/pages/GlobalAdminDashboard";
 import PlansPage from "@/pages/PlansPage";
@@ -35,12 +37,15 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <ScanProvider>
-          <div className="dark">
-            <Toaster />
-            <Router />
-          </div>
-        </ScanProvider>
+        <ThemeProvider>
+          <ScanProvider>
+            <div>
+              <ThemeToggle />
+              <Toaster />
+              <Router />
+            </div>
+          </ScanProvider>
+        </ThemeProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
