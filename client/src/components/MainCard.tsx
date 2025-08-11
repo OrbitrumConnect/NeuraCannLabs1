@@ -1,12 +1,6 @@
 import React from "react";
-import { Microscope, Pill, AlertTriangle, MessageSquare, X } from "lucide-react";
+import { Microscope, Pill, AlertTriangle } from "lucide-react";
 import TextToSpeech from "./TextToSpeech";
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: number;
-}
 
 interface MainCardProps {
   result: {
@@ -42,17 +36,9 @@ interface MainCardProps {
       }>;
     };
   } | null;
-  showConversationHistory?: boolean;
-  messages?: Message[];
-  onToggleHistory?: () => void;
 }
 
-export default function MainCard({ 
-  result, 
-  showConversationHistory = false, 
-  messages = [], 
-  onToggleHistory 
-}: MainCardProps) {
+export default function MainCard({ result }: MainCardProps) {
   if (!result) {
     return (
       <div style={{ height: "400px", borderRadius: 8, padding: "12px 16px", background: "#0f172a", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }} className="sm:h-[480px] sm:p-4">
@@ -85,82 +71,8 @@ export default function MainCard({
       overflow: "auto"
     }} className="sm:h-[480px] sm:p-4">
       
-      {/* Chat History or Search Results */}
-      {showConversationHistory ? (
-        <div className="h-full flex flex-col">
-          {/* History Header */}
-          <div className="flex items-center justify-between mb-3 p-2 bg-blue-900/20 rounded border border-blue-500/30">
-            <div className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-blue-400" />
-              <span className="text-sm font-medium text-blue-300">
-                📜 Histórico da Conversa
-              </span>
-            </div>
-            {onToggleHistory && (
-              <button
-                onClick={onToggleHistory}
-                className="text-gray-400 hover:text-gray-300 p-1 rounded hover:bg-gray-800/50"
-                title="Voltar aos resultados"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-          
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto space-y-3">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`flex items-start gap-3 ${
-                  message.role === 'user' ? 'flex-row-reverse' : ''
-                }`}
-              >
-                <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                  message.role === 'user' 
-                    ? 'bg-blue-600/20 text-blue-400'
-                    : 'bg-green-600/20 text-green-400'
-                }`}>
-                  {message.role === 'user' ? '👤' : '🤖'}
-                </div>
-                
-                <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
-                  <div className={`inline-block p-3 rounded-lg max-w-[85%] text-sm ${
-                    message.role === 'user'
-                      ? 'bg-blue-600/20 text-blue-100 border border-blue-500/30'
-                      : 'bg-gray-800/50 text-gray-100 border border-gray-600/30'
-                  }`}>
-                    <div 
-                      className="leading-relaxed"
-                      dangerouslySetInnerHTML={{ 
-                        __html: message.content
-                          .replace(/\n/g, '<br/>')
-                          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                      }} 
-                    />
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {new Date(message.timestamp).toLocaleTimeString('pt-BR', {
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {messages.length === 0 && (
-              <div className="text-center py-8 text-gray-400">
-                <MessageSquare className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                <p className="text-sm">Nenhuma mensagem ainda nesta conversa</p>
-                <p className="text-xs mt-1">As mensagens aparecerão aqui conforme você interage</p>
-              </div>
-            )}
-          </div>
-        </div>
-      ) : (
-        <>
-          {/* Header */}
-          <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-blue-900/20 rounded border border-blue-500/30">
+      {/* Header */}
+      <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-blue-900/20 rounded border border-blue-500/30">
         <h3 className="text-base sm:text-lg font-semibold text-blue-300">📊 Consulta: {result.query}</h3>
         <p className="text-xs sm:text-sm text-blue-200 mt-1">
           Bases consultadas: {result.categories.scientific?.length || 0} estudos • {result.categories.clinical?.length || 0} casos clínicos • {result.categories.alerts?.length || 0} alertas
@@ -253,8 +165,6 @@ export default function MainCard({
           className="text-xs"
         />
       </div>
-        </>
-      )}
     </div>
   );
 }
