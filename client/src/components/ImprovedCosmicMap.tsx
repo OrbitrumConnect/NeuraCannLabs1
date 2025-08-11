@@ -666,7 +666,7 @@ ${studyNotes || 'Nenhuma anotação'}`;
                 {scientificData?.slice(0, 2).map((study, index) => (
                   <div key={index} className="border-l-2 border-green-500/50 pl-2">
                     <p className="font-medium truncate">{study.title}</p>
-                    <p className="text-green-300/70">{study.authors}</p>
+                    <p className="text-green-300/70">{study.authors || study.description}</p>
                   </div>
                 ))}
                 {(scientificData?.length || 0) > 2 && (
