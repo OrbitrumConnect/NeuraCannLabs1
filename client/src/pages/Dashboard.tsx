@@ -47,6 +47,11 @@ export default function Dashboard() {
       window.location.href = "/admin";
       return;
     }
+    if (dashboard === "critical-modules") {
+      // Redireciona para a página de módulos críticos
+      window.location.href = "/critical-modules";
+      return;
+    }
     setActiveDashboard(dashboard);
     window.history.pushState({}, '', `/dashboard/${dashboard}`);
   };
@@ -135,7 +140,7 @@ interface OverviewDashboardProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
-
+  searchTerm?: string;
 }
 
 function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {

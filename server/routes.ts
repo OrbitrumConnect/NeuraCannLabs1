@@ -667,6 +667,146 @@ export async function registerRoutes(app: Express): Promise<Server> {
     });
   });
 
+  // === NOVOS MÓDULOS CRÍTICOS ===
+
+  // Patient Referrals - Encaminhamento entre Especialistas
+  app.get("/api/patient-referrals", async (req, res) => {
+    try {
+      const doctorId = req.query.doctorId as string;
+      const referrals = await storage.getPatientReferrals(doctorId);
+      res.json(referrals);
+    } catch (error) {
+      console.error("Error fetching patient referrals:", error);
+      res.status(500).json({ error: "Failed to fetch patient referrals" });
+    }
+  });
+
+  app.post("/api/patient-referrals", async (req, res) => {
+    try {
+      const referral = await storage.createPatientReferral(req.body);
+      res.json(referral);
+    } catch (error) {
+      console.error("Error creating patient referral:", error);
+      res.status(500).json({ error: "Failed to create patient referral" });
+    }
+  });
+
+  app.patch("/api/patient-referrals/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status, notes } = req.body;
+      const updated = await storage.updateReferralStatus(id, status, notes);
+      if (!updated) {
+        return res.status(404).json({ error: "Referral not found" });
+      }
+      res.json(updated);
+    } catch (error) {
+      console.error("Error updating referral status:", error);
+      res.status(500).json({ error: "Failed to update referral status" });
+    }
+  });
+
+  // Digital Anamnesis - Anamnese Digital em Tempo Real
+  app.get("/api/digital-anamnesis", async (req, res) => {
+    try {
+      const patientId = req.query.patientId as string;
+      const doctorId = req.query.doctorId as string;
+      const anamnesis = await storage.getDigitalAnamnesis(patientId, doctorId);
+      res.json(anamnesis);
+    } catch (error) {
+      console.error("Error fetching digital anamnesis:", error);
+      res.status(500).json({ error: "Failed to fetch digital anamnesis" });
+    }
+  });
+
+  app.post("/api/digital-anamnesis", async (req, res) => {
+    try {
+      const anamnesis = await storage.createDigitalAnamnesis(req.body);
+      res.json(anamnesis);
+    } catch (error) {
+      console.error("Error creating digital anamnesis:", error);
+      res.status(500).json({ error: "Failed to create digital anamnesis" });
+    }
+  });
+
+  app.patch("/api/digital-anamnesis/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updated = await storage.updateDigitalAnamnesis(id, req.body);
+      if (!updated) {
+        return res.status(404).json({ error: "Digital anamnesis not found" });
+      }
+      res.json(updated);
+    } catch (error) {
+      console.error("Error updating digital anamnesis:", error);
+      res.status(500).json({ error: "Failed to update digital anamnesis" });
+    }
+  });
+
+  // Lab Integrations - Integração com Laboratórios
+  app.get("/api/lab-integrations", async (req, res) => {
+    try {
+      const integrations = await storage.getLabIntegrations();
+      res.json(integrations);
+    } catch (error) {
+      console.error("Error fetching lab integrations:", error);
+      res.status(500).json({ error: "Failed to fetch lab integrations" });
+    }
+  });
+
+  app.get("/api/lab-results", async (req, res) => {
+    try {
+      const patientId = req.query.patientId as string;
+      const results = await storage.getLabResults(patientId);
+      res.json(results);
+    } catch (error) {
+      console.error("Error fetching lab results:", error);
+      res.status(500).json({ error: "Failed to fetch lab results" });
+    }
+  });
+
+  app.post("/api/lab-results", async (req, res) => {
+    try {
+      const result = await storage.createLabResult(req.body);
+      res.json(result);
+    } catch (error) {
+      console.error("Error creating lab result:", error);
+      res.status(500).json({ error: "Failed to create lab result" });
+    }
+  });
+
+  // Medical Team - Equipe Multidisciplinar
+  app.get("/api/medical-team", async (req, res) => {
+    try {
+      const team = await storage.getMedicalTeam();
+      res.json(team);
+    } catch (error) {
+      console.error("Error fetching medical team:", error);
+      res.status(500).json({ error: "Failed to fetch medical team" });
+    }
+  });
+
+  // Compliance Audits - Auditoria e Compliance
+  app.get("/api/compliance-audits", async (req, res) => {
+    try {
+      const audits = await storage.getComplianceAudits();
+      res.json(audits);
+    } catch (error) {
+      console.error("Error fetching compliance audits:", error);
+      res.status(500).json({ error: "Failed to fetch compliance audits" });
+    }
+  });
+
+  app.post("/api/compliance-audits", async (req, res) => {
+    try {
+      const audit = await storage.createComplianceAudit(req.body);
+      res.json(audit);
+    } catch (error) {
+      console.error("Error creating compliance audit:", error);
+      res.status(500).json({ error: "Failed to create compliance audit" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

@@ -27,6 +27,7 @@ const dashboardOptions = [
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
+  { id: "critical-modules", name: "Módulos Críticos", icon: "fas fa-cogs" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
 ];
@@ -100,38 +101,41 @@ export default function DashboardLayout({
             <h1 className="text-sm sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
           </div>
           
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Analytics Button */}
-            <a href="/analytics" className="hidden lg:flex items-center space-x-2 px-3 py-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 transition-colors border border-green-500/30">
+            <a href="/analytics" className="hidden lg:flex items-center space-x-2 px-2 py-1.5 rounded-lg bg-green-500/20 hover:bg-green-500/30 transition-colors border border-green-500/30">
               <i className="fas fa-chart-line text-green-400 text-sm" />
-              <span className="text-green-400 text-sm font-medium">Analytics</span>
+              <span className="text-green-400 text-xs font-medium">Analytics</span>
             </a>
             
-          <nav className="hidden lg:flex items-center space-x-6">
+          <nav className="hidden lg:flex items-center space-x-3">
             {dashboardOptions.map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
-                className={`px-4 py-2 rounded-lg transition-all ${
+                className={`px-3 py-1.5 rounded-lg transition-all text-sm ${
                   activeDashboard === option.id
                     ? "bg-green-500/20 text-green-500 border border-green-500/30"
                     : "hover:bg-green-500/20 hover:text-green-500"
                 }`}
                 data-testid={`nav-${option.id}`}
               >
-                <i className={`${option.icon} mr-2`} />
-                {option.name}
+                <i className={`${option.icon} mr-1.5 text-xs`} />
+                <span className="text-xs">{option.name}</span>
                 {option.id === "alerts" && (
-                  <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-1">3</span>
+                  <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-1 py-0.5">3</span>
                 )}
                 {option.id === "my-study" && (
-                  <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1">NEW</span>
+                  <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1 py-0.5">NEW</span>
                 )}
                 {option.id === "forum" && (
-                  <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1">29</span>
+                  <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1 py-0.5">29</span>
+                )}
+                {option.id === "critical-modules" && (
+                  <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1 py-0.5">5</span>
                 )}
                 {option.id === "admin" && (
-                  <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1">🌍</span>
+                  <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1 py-0.5">🌍</span>
                 )}
               </button>
             ))}

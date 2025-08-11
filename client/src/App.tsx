@@ -10,6 +10,7 @@ import Dashboard from "@/pages/Dashboard";
 import GlobalAdminDashboard from "@/pages/GlobalAdminDashboard";
 import PlansPage from "@/pages/PlansPage";
 import AnalyticsDashboard from "@/pages/AnalyticsDashboard";
+import CriticalModulesDashboard from "@/pages/CriticalModulesDashboard";
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -30,6 +31,7 @@ function Router() {
       <Route path="/dashboard/:section?" component={Dashboard} />
       <Route path="/admin" component={() => <GlobalAdminDashboard onBackToOverview={() => {}} />} />
       <Route path="/analytics" component={AnalyticsDashboard} />
+      <Route path="/critical-modules" component={CriticalModulesDashboard} />
       <Route component={NotFound} />
     </Switch>
   );

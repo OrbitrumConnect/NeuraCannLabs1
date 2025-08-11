@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution } from "@shared/schema";
+import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution, type PatientReferral, type UpsertPatientReferral, type DigitalAnamnesis, type UpsertDigitalAnamnesis, type LabIntegration, type LabResult, type MedicalTeamMember, type ComplianceAudit } from "@shared/schema";
 import { comprehensiveStudies, comprehensiveClinicalCases, comprehensiveAlerts } from './comprehensive-medical-database';
 import { randomUUID } from "crypto";
 
@@ -45,6 +45,28 @@ export interface IStorage {
   // Patient Evolution
   getPatientEvolution(patientDataId: string): Promise<PatientEvolution[]>;
   createPatientEvolution(evolution: InsertPatientEvolution): Promise<PatientEvolution>;
+  
+  // Patient Referrals - Encaminhamento entre Especialistas
+  getPatientReferrals(doctorId?: string): Promise<PatientReferral[]>;
+  createPatientReferral(referral: UpsertPatientReferral): Promise<PatientReferral>;
+  updateReferralStatus(id: string, status: string, notes?: string): Promise<PatientReferral | undefined>;
+  
+  // Digital Anamnesis - Anamnese Digital em Tempo Real
+  getDigitalAnamnesis(patientId?: string, doctorId?: string): Promise<DigitalAnamnesis[]>;
+  createDigitalAnamnesis(anamnesis: UpsertDigitalAnamnesis): Promise<DigitalAnamnesis>;
+  updateDigitalAnamnesis(id: string, updates: Partial<DigitalAnamnesis>): Promise<DigitalAnamnesis | undefined>;
+  
+  // Lab Integrations - Integração com Laboratórios
+  getLabIntegrations(): Promise<LabIntegration[]>;
+  getLabResults(patientId?: string): Promise<LabResult[]>;
+  createLabResult(result: Omit<LabResult, 'id' | 'receivedAt'>): Promise<LabResult>;
+  
+  // Medical Team - Equipe Multidisciplinar
+  getMedicalTeam(): Promise<MedicalTeamMember[]>;
+  
+  // Compliance Audits - Auditoria e Compliance
+  getComplianceAudits(): Promise<ComplianceAudit[]>;
+  createComplianceAudit(audit: Omit<ComplianceAudit, 'id' | 'createdAt'>): Promise<ComplianceAudit>;
 }
 
 export class MemStorage implements IStorage {
@@ -55,6 +77,12 @@ export class MemStorage implements IStorage {
   private studySubmissions: Map<string, StudySubmission>;
   private patientData: Map<string, PatientData>;
   private patientEvolution: Map<string, PatientEvolution>;
+  private patientReferrals: Map<string, PatientReferral>;
+  private digitalAnamnesis: Map<string, DigitalAnamnesis>;
+  private labIntegrations: Map<string, LabIntegration>;
+  private labResults: Map<string, LabResult>;
+  private medicalTeam: Map<string, MedicalTeamMember>;
+  private complianceAudits: Map<string, ComplianceAudit>;
 
   constructor() {
     this.users = new Map();
@@ -64,11 +92,18 @@ export class MemStorage implements IStorage {
     this.studySubmissions = new Map();
     this.patientData = new Map();
     this.patientEvolution = new Map();
+    this.patientReferrals = new Map();
+    this.digitalAnamnesis = new Map();
+    this.labIntegrations = new Map();
+    this.labResults = new Map();
+    this.medicalTeam = new Map();
+    this.complianceAudits = new Map();
     
     // Inicializar com base de dados abrangente
     this.initializeSampleData();
     this.loadComprehensiveData();
     this.createSampleStudySubmissions();
+    this.initializeCriticalModules();
   }
 
   private initializeSampleData() {
@@ -651,6 +686,296 @@ export class MemStorage implements IStorage {
     sampleSubmissions.forEach(submission => {
       this.studySubmissions.set(submission.id, submission);
     });
+  }
+
+  // Novos módulos críticos identificados no memorando
+
+  // Patient Referrals - Encaminhamento entre Especialistas
+  async getPatientReferrals(doctorId?: string): Promise<PatientReferral[]> {
+    const allReferrals = Array.from(this.patientReferrals.values());
+    if (doctorId) {
+      return allReferrals.filter(r => r.fromDoctorId === doctorId || r.toDoctorId === doctorId);
+    }
+    return allReferrals.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+  }
+
+  async createPatientReferral(referral: UpsertPatientReferral): Promise<PatientReferral> {
+    const id = randomUUID();
+    const now = new Date();
+    const newReferral: PatientReferral = {
+      id,
+      ...referral,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.patientReferrals.set(id, newReferral);
+    return newReferral;
+  }
+
+  async updateReferralStatus(id: string, status: string, notes?: string): Promise<PatientReferral | undefined> {
+    const referral = this.patientReferrals.get(id);
+    if (!referral) return undefined;
+    
+    const updated: PatientReferral = {
+      ...referral,
+      status,
+      notes: notes || referral.notes,
+      updatedAt: new Date(),
+    };
+    this.patientReferrals.set(id, updated);
+    return updated;
+  }
+
+  // Digital Anamnesis - Anamnese Digital em Tempo Real
+  async getDigitalAnamnesis(patientId?: string, doctorId?: string): Promise<DigitalAnamnesis[]> {
+    const allAnamnesis = Array.from(this.digitalAnamnesis.values());
+    let filtered = allAnamnesis;
+    
+    if (patientId) {
+      filtered = filtered.filter(a => a.patientId === patientId);
+    }
+    if (doctorId) {
+      filtered = filtered.filter(a => a.doctorId === doctorId);
+    }
+    
+    return filtered.sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+  }
+
+  async createDigitalAnamnesis(anamnesis: UpsertDigitalAnamnesis): Promise<DigitalAnamnesis> {
+    const id = randomUUID();
+    const now = new Date();
+    const newAnamnesis: DigitalAnamnesis = {
+      id,
+      ...anamnesis,
+      createdAt: now,
+      updatedAt: now,
+    };
+    this.digitalAnamnesis.set(id, newAnamnesis);
+    return newAnamnesis;
+  }
+
+  async updateDigitalAnamnesis(id: string, updates: Partial<DigitalAnamnesis>): Promise<DigitalAnamnesis | undefined> {
+    const anamnesis = this.digitalAnamnesis.get(id);
+    if (!anamnesis) return undefined;
+    
+    const updated: DigitalAnamnesis = {
+      ...anamnesis,
+      ...updates,
+      updatedAt: new Date(),
+    };
+    this.digitalAnamnesis.set(id, updated);
+    return updated;
+  }
+
+  // Lab Integrations - Integração com Laboratórios
+  async getLabIntegrations(): Promise<LabIntegration[]> {
+    return Array.from(this.labIntegrations.values())
+      .sort((a, b) => new Date(b.createdAt!).getTime() - new Date(a.createdAt!).getTime());
+  }
+
+  async getLabResults(patientId?: string): Promise<LabResult[]> {
+    const allResults = Array.from(this.labResults.values());
+    if (patientId) {
+      return allResults.filter(r => r.patientId === patientId);
+    }
+    return allResults.sort((a, b) => new Date(b.examDate).getTime() - new Date(a.examDate).getTime());
+  }
+
+  async createLabResult(result: Omit<LabResult, 'id' | 'receivedAt'>): Promise<LabResult> {
+    const id = randomUUID();
+    const newResult: LabResult = {
+      id,
+      ...result,
+      receivedAt: new Date(),
+    };
+    this.labResults.set(id, newResult);
+    return newResult;
+  }
+
+  // Medical Team - Equipe Multidisciplinar
+  async getMedicalTeam(): Promise<MedicalTeamMember[]> {
+    return Array.from(this.medicalTeam.values())
+      .filter(member => member.isActive === 1)
+      .sort((a, b) => new Date(b.joinedAt!).getTime() - new Date(a.joinedAt!).getTime());
+  }
+
+  // Compliance Audits - Auditoria e Compliance
+  async getComplianceAudits(): Promise<ComplianceAudit[]> {
+    return Array.from(this.complianceAudits.values())
+      .sort((a, b) => new Date(b.auditDate).getTime() - new Date(a.auditDate).getTime());
+  }
+
+  async createComplianceAudit(audit: Omit<ComplianceAudit, 'id' | 'createdAt'>): Promise<ComplianceAudit> {
+    const id = randomUUID();
+    const newAudit: ComplianceAudit = {
+      id,
+      ...audit,
+      createdAt: new Date(),
+    };
+    this.complianceAudits.set(id, newAudit);
+    return newAudit;
+  }
+
+  // Inicializar módulos críticos com dados de demonstração
+  private initializeCriticalModules() {
+    // 1. Encaminhamentos entre especialistas
+    this.patientReferrals.set("ref-1", {
+      id: "ref-1",
+      patientId: "PAC-001",
+      fromDoctorId: "user-1",
+      toDoctorId: "user-2",
+      specialty: "Neurologia Pediátrica",
+      priority: "high",
+      reason: "Epilepsia refratária, necessário avaliação para protocolo cannabinóides",
+      clinicalHistory: "Paciente com síndrome de Dravet, 50+ crises/dia",
+      anamnesis: "Histórico familiar positivo, início aos 6 meses",
+      examResults: "EEG com descargas epileptiformes generalizadas",
+      status: "pending",
+      scheduledDate: new Date("2025-08-15"),
+      notes: "Prioridade alta - agendar em 72h",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    // 2. Anamnese digital
+    this.digitalAnamnesis.set("anam-1", {
+      id: "anam-1",
+      patientId: "PAC-001",
+      doctorId: "user-1",
+      sessionId: "SESS-001",
+      templateId: "epilepsia-pediatrica",
+      anamnesisData: JSON.stringify({
+        queixaPrincipal: "Crises epilépticas refratárias",
+        historiaDoencaAtual: "Início aos 6 meses, progressão para 50+ crises/dia",
+        antecedentesPatologicos: "Síndrome de Dravet confirmada"
+      }),
+      symptoms: JSON.stringify(["crises tônico-clônicas", "mioclonias", "atraso desenvolvimento"]),
+      medications: JSON.stringify(["valproato", "levetiracetam", "clobazam"]),
+      allergies: JSON.stringify(["nenhuma conhecida"]),
+      familyHistory: JSON.stringify({"epilepsia": "avô paterno"}),
+      socialHistory: JSON.stringify({"escolaridade": "educação especial"}),
+      vitalSigns: JSON.stringify({"peso": "18kg", "altura": "95cm", "saturacao": "98%"}),
+      isComplete: 1,
+      aiSuggestions: JSON.stringify(["Considerar CBD", "Avaliar dieta cetogênica"]),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    // 3. Integração laboratorial
+    this.labIntegrations.set("lab-1", {
+      id: "lab-1",
+      labName: "Laboratório Einstein",
+      labCode: "LAB-EINSTEIN",
+      apiEndpoint: "https://api.einstein.br/v1",
+      apiKey: "encrypted_key_123",
+      isActive: 1,
+      supportedExams: JSON.stringify(["hemograma", "bioquimica", "toxicologia"]),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    this.labResults.set("result-1", {
+      id: "result-1",
+      patientId: "PAC-001",
+      labId: "lab-1",
+      doctorId: "user-1",
+      examType: "Dosagem CBD/THC",
+      examCode: "CANN-001",
+      resultData: JSON.stringify({
+        "CBD": "15.2 ng/ml",
+        "THC": "2.1 ng/ml",
+        "status": "dentro dos parâmetros terapêuticos"
+      }),
+      referenceValues: JSON.stringify({
+        "CBD": "10-25 ng/ml",
+        "THC": "0-5 ng/ml"
+      }),
+      interpretation: "Concentrações terapêuticas adequadas para controle epiléptico",
+      aiAnalysis: JSON.stringify({
+        "recomendacao": "Manter dosagem atual",
+        "observacoes": "Níveis otimizados para eficácia"
+      }),
+      status: "reviewed",
+      examDate: new Date("2025-08-10"),
+      receivedAt: new Date(),
+      reviewedAt: new Date(),
+    });
+
+    // 4. Equipe multidisciplinar
+    this.medicalTeam.set("team-1", {
+      id: "team-1",
+      userId: "user-1",
+      role: "physician",
+      specialty: "Neurologia",
+      crm: "12345-SP",
+      license: "CRM-SP-12345",
+      yearsExperience: 15,
+      expertise: JSON.stringify(["epilepsia", "cannabis medicinal", "neurologia pediátrica"]),
+      isActive: 1,
+      joinedAt: new Date("2024-01-01"),
+    });
+
+    this.medicalTeam.set("team-2", {
+      id: "team-2",
+      userId: "user-2",
+      role: "pharmacist",
+      specialty: "Farmácia Clínica",
+      crm: null,
+      license: "CRF-SP-67890",
+      yearsExperience: 10,
+      expertise: JSON.stringify(["farmacologia cannabinóides", "interações medicamentosas"]),
+      isActive: 1,
+      joinedAt: new Date("2024-02-01"),
+    });
+
+    // 5. Auditorias de compliance
+    this.complianceAudits.set("audit-1", {
+      id: "audit-1",
+      auditType: "lgpd",
+      auditorName: "Dra. Maria Santos",
+      auditorCredentials: "Advogada especialista em LGPD - OAB/SP 123456",
+      scope: JSON.stringify(["proteção dados pacientes", "consentimento", "anonimização"]),
+      findings: JSON.stringify([
+        "Conformidade total com LGPD Art. 11",
+        "Processos de anonimização adequados",
+        "Consentimento informado implementado"
+      ]),
+      recommendations: JSON.stringify([
+        "Manter auditorias trimestrais",
+        "Atualizar políticas de retenção"
+      ]),
+      status: "completed",
+      auditDate: new Date("2025-07-15"),
+      reportPath: "/compliance/reports/lgpd-2025-07.pdf",
+      certificatePath: "/compliance/certificates/lgpd-cert-2025.pdf",
+      expiresAt: new Date("2026-07-15"),
+      createdAt: new Date(),
+    });
+
+    this.complianceAudits.set("audit-2", {
+      id: "audit-2",
+      auditType: "cfm",
+      auditorName: "Dr. Roberto Lima",
+      auditorCredentials: "Conselheiro CFM - Especialista em ética médica",
+      scope: JSON.stringify(["prescrição cannabis", "protocolos médicos", "responsabilidade profissional"]),
+      findings: JSON.stringify([
+        "Protocolos alinhados com Resolução CFM 2.113/2014",
+        "Prescrições dentro das diretrizes éticas",
+        "Documentação médica adequada"
+      ]),
+      recommendations: JSON.stringify([
+        "Manter educação continuada",
+        "Revisar protocolos semestralmente"
+      ]),
+      status: "completed",
+      auditDate: new Date("2025-06-20"),
+      reportPath: "/compliance/reports/cfm-2025-06.pdf",
+      certificatePath: "/compliance/certificates/cfm-cert-2025.pdf",
+      expiresAt: new Date("2026-06-20"),
+      createdAt: new Date(),
+    });
+
+    console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
   }
 }
 

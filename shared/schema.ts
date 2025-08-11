@@ -157,3 +157,122 @@ export type PatientEvolution = typeof patientEvolution.$inferSelect;
 export type InsertPatientEvolution = z.infer<typeof insertPatientEvolutionSchema>;
 export type StudySubmission = typeof studySubmissions.$inferSelect;
 export type InsertStudySubmission = z.infer<typeof insertStudySubmissionSchema>;
+
+// Encaminhamento de Pacientes entre Especialistas
+export const patientReferrals = pgTable("patient_referrals", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  patientId: varchar("patient_id").notNull(),
+  fromDoctorId: varchar("from_doctor_id").notNull(),
+  toDoctorId: varchar("to_doctor_id").notNull(),
+  specialty: varchar("specialty").notNull(),
+  priority: varchar("priority").notNull().default("normal"),
+  reason: text("reason").notNull(),
+  clinicalHistory: text("clinical_history"),
+  anamnesis: text("anamnesis"),
+  examResults: text("exam_results"),
+  status: varchar("status").notNull().default("pending"),
+  scheduledDate: timestamp("scheduled_date"),
+  notes: text("notes"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Anamnese Digital em Tempo Real
+export const digitalAnamnesis = pgTable("digital_anamnesis", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  patientId: varchar("patient_id").notNull(),
+  doctorId: varchar("doctor_id").notNull(),
+  sessionId: varchar("session_id").notNull(),
+  templateId: varchar("template_id"),
+  anamnesisData: text("anamnesis_data").notNull(),
+  symptoms: text("symptoms"),
+  medications: text("medications"),
+  allergies: text("allergies"),
+  familyHistory: text("family_history"),
+  socialHistory: text("social_history"),
+  vitalSigns: text("vital_signs"),
+  isComplete: integer("is_complete").default(0),
+  aiSuggestions: text("ai_suggestions"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Integração com Laboratórios
+export const labIntegrations = pgTable("lab_integrations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  labName: varchar("lab_name").notNull(),
+  labCode: varchar("lab_code").notNull(),
+  apiEndpoint: varchar("api_endpoint"),
+  apiKey: varchar("api_key"),
+  isActive: integer("is_active").default(1),
+  supportedExams: text("supported_exams"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const labResults = pgTable("lab_results", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  patientId: varchar("patient_id").notNull(),
+  labId: varchar("lab_id").notNull(),
+  doctorId: varchar("doctor_id"),
+  examType: varchar("exam_type").notNull(),
+  examCode: varchar("exam_code").notNull(),
+  resultData: text("result_data").notNull(),
+  referenceValues: text("reference_values"),
+  interpretation: text("interpretation"),
+  aiAnalysis: text("ai_analysis"),
+  status: varchar("status").notNull().default("received"),
+  examDate: timestamp("exam_date").notNull(),
+  receivedAt: timestamp("received_at").defaultNow(),
+  reviewedAt: timestamp("reviewed_at"),
+});
+
+// Equipe Multidisciplinar
+export const medicalTeam = pgTable("medical_team", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  role: varchar("role").notNull(),
+  specialty: varchar("specialty"),
+  crm: varchar("crm"),
+  license: varchar("license"),
+  yearsExperience: integer("years_experience"),
+  expertise: text("expertise"),
+  isActive: integer("is_active").default(1),
+  joinedAt: timestamp("joined_at").defaultNow(),
+});
+
+export const advisoryCommittee = pgTable("advisory_committee", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  memberId: varchar("member_id").notNull(),
+  position: varchar("position").notNull(),
+  department: varchar("department"),
+  responsibilities: text("responsibilities"),
+  appointedAt: timestamp("appointed_at").defaultNow(),
+  termEndsAt: timestamp("term_ends_at"),
+});
+
+// Compliance e Auditoria
+export const complianceAudits = pgTable("compliance_audits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  auditType: varchar("audit_type").notNull(),
+  auditorName: varchar("auditor_name").notNull(),
+  auditorCredentials: varchar("auditor_credentials"),
+  scope: text("scope"),
+  findings: text("findings"),
+  recommendations: text("recommendations"),
+  status: varchar("status").notNull().default("in_progress"),
+  auditDate: timestamp("audit_date").notNull(),
+  reportPath: varchar("report_path"),
+  certificatePath: varchar("certificate_path"),
+  expiresAt: timestamp("expires_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export type PatientReferral = typeof patientReferrals.$inferSelect;
+export type UpsertPatientReferral = typeof patientReferrals.$inferInsert;
+export type DigitalAnamnesis = typeof digitalAnamnesis.$inferSelect;
+export type UpsertDigitalAnamnesis = typeof digitalAnamnesis.$inferInsert;
+export type LabIntegration = typeof labIntegrations.$inferSelect;
+export type LabResult = typeof labResults.$inferSelect;
+export type MedicalTeamMember = typeof medicalTeam.$inferSelect;
+export type ComplianceAudit = typeof complianceAudits.$inferSelect;
