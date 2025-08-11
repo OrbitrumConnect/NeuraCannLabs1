@@ -7,7 +7,7 @@ import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
 import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
-import { useVoiceCommands } from "@/hooks/useVoiceCommands";
+// Voice commands removido conforme solicitado
 import { ConversationIndicator } from "./ConversationIndicator";
 import { ConversationManager } from "./ConversationManager";
 import { useVoiceGreeting } from "@/hooks/useVoiceGreeting";
@@ -123,8 +123,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [mainCardMode, setMainCardMode] = useState<'search' | 'study'>('search'); // Controla se mostra pesquisa ou estudo
   const { avatarScanning } = useScan();
   
-  // Voice commands integration
-  const { isSupported: voiceSupported, isListening, startListening } = useVoiceCommands();
+  // Voice commands removido conforme solicitado
   const {
     conversations,
     currentConversation,
@@ -372,21 +371,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   disabled={isTyping}
                 />
                 {/* Voice Command Button integrado na barra de pesquisa */}
-                {voiceSupported && (
-                  <button
-                    type="button"
-                    onClick={startListening}
-                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center transition-all ${
-                      isListening 
-                        ? 'bg-red-500/20 text-red-400 animate-pulse' 
-                        : 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
-                    }`}
-                    title="Comando por Voz"
-                    disabled={isTyping}
-                  >
-                    <i className={`fas ${isListening ? 'fa-stop' : 'fa-microphone'} text-xs`} />
-                  </button>
-                )}
+                {/* Voice commands removido conforme solicitado */}
               </div>
               <button
                 type="submit"
