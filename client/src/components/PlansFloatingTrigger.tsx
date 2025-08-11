@@ -83,10 +83,10 @@ export function PlansFloatingTrigger() {
       {/* Trigger Button - Integrado no rodapé preto */}
       <Button
         onClick={() => setIsOpen(true)}
-        className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 rounded-full w-8 h-8 flex items-center justify-center"
+        className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white shadow-lg hover:shadow-xl transform hover:scale-110 transition-all duration-300 rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center"
         title="Ver Planos"
       >
-        <Crown className="w-4 h-4" />
+        <Crown className="w-3 h-3 sm:w-4 sm:h-4" />
       </Button>
 
       {/* Full Screen Modal */}
