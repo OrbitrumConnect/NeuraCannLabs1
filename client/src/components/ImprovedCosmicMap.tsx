@@ -105,7 +105,7 @@ const planets: CosmicPlanet[] = [
   },
 ];
 
-export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSearch, searchTerm: externalSearchTerm }: CosmicMapProps & { searchTerm?: string }) {
+export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSearch }: CosmicMapProps) {
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   // Filter state removido
@@ -158,20 +158,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     }
   }, []);
 
-  // React to external search term from voice commands
-  useEffect(() => {
-    if (externalSearchTerm && externalSearchTerm !== searchTerm) {
-      console.log('🎙️ Recebido searchTerm externo:', externalSearchTerm);
-      setSearchTerm(externalSearchTerm);
-      setIsDrAIActive(true);
-      
-      // Trigger the search
-      setTimeout(() => {
-        const fakeEvent = { preventDefault: () => {} };
-        handleChatSubmit(fakeEvent as any);
-      }, 500);
-    }
-  }, [externalSearchTerm]);
+  // Remover useEffect - voice commands agora é direto no input
 
   // Escuta evento para forçar abertura do card principal
   useEffect(() => {

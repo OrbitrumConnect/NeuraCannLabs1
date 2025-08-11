@@ -84,17 +84,78 @@ export function useVoiceCommands() {
       if (searchTerm) {
         console.log('🔍 Executando busca automatica:', searchTerm);
         
-        // Usar o callback do Dashboard.tsx para executar busca na aba principal
-        if (window.location.pathname.startsWith('/dashboard')) {
-          // Triggerar busca via evento customizado que o Dashboard escuta
-          const searchEvent = new CustomEvent('voiceSearch', { 
-            detail: { query: searchTerm } 
-          });
-          window.dispatchEvent(searchEvent);
-          console.log('🔍 Evento de busca disparado:', searchTerm);
+        // Simplesmente preencher o campo de pesquisa e executar busca
+        // Múltiplos seletores para encontrar o input de pesquisa
+        const searchSelectors = [
+          'input[data-testid="input-search"]',
+          'input[placeholder*="pesquis"]',
+          'input[placeholder*="Pesquis"]',
+          'input[placeholder*="Digite sua consulta"]',
+          'input[type="text"]',
+          '.search-input',
+          'input'
+        ];
+        
+        let searchInput: HTMLInputElement | null = null;
+        
+        for (const selector of searchSelectors) {
+          searchInput = document.querySelector(selector) as HTMLInputElement;
+          if (searchInput && searchInput.placeholder.includes('consulta')) break;
+        }
+        
+        if (searchInput) {
+          console.log('🔍 Input encontrado:', searchInput);
+          
+          // Ativar Dr. AI primeiro se não estiver ativo
+          const drAvatarElement = document.querySelector('[style*="filter: brightness"]')?.parentElement;
+          if (drAvatarElement && !drAvatarElement.style.filter.includes('brightness(0.75)')) {
+            (drAvatarElement as HTMLElement).click();
+            
+            // Aguardar ativação e então preencher
+            setTimeout(() => {
+              if (searchInput) {
+                searchInput.value = searchTerm;
+                searchInput.focus();
+                
+                // Disparar eventos
+                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                // Simular Enter após pequeno delay
+                setTimeout(() => {
+                  const enterEvent = new KeyboardEvent('keydown', { 
+                    key: 'Enter', 
+                    code: 'Enter',
+                    keyCode: 13,
+                    bubbles: true 
+                  });
+                  searchInput.dispatchEvent(enterEvent);
+                }, 100);
+              }
+            }, 800);
+          } else {
+            // Dr. AI já ativo, preencher diretamente
+            searchInput.value = searchTerm;
+            searchInput.focus();
+            
+            // Disparar eventos
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+            
+            // Simular Enter
+            setTimeout(() => {
+              const enterEvent = new KeyboardEvent('keydown', { 
+                key: 'Enter', 
+                code: 'Enter',
+                keyCode: 13,
+                bubbles: true 
+              });
+              searchInput.dispatchEvent(enterEvent);
+            }, 100);
+          }
         } else {
-          // Navegar para dashboard principal e fazer busca
-          window.location.href = `/?search=${encodeURIComponent(searchTerm)}`;
+          console.warn('🔍 Input de pesquisa não encontrado');
+          speak('Não consegui encontrar a caixa de pesquisa. Ative o Dr. Cannabis primeiro.');
         }
         
         speak(`Pesquisando por ${searchTerm}`);

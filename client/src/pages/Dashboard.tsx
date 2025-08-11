@@ -34,26 +34,7 @@ export default function Dashboard() {
     //   setShowFreePlanNotification(true);
     // }
 
-    // Listener para comandos de voz
-    const handleVoiceSearch = (event: CustomEvent) => {
-      const query = event.detail.query;
-      console.log('🎙️ Voice search recebido no Dashboard:', query);
-      
-      // Executar busca na aba principal (overview)
-      setGlobalSearchTerm(query);
-      
-      // Manter na aba overview para usar a pesquisa principal
-      setActiveDashboard('overview');
-      
-      // Atualizar URL
-      window.history.pushState({}, '', `/?search=${encodeURIComponent(query)}`);
-    };
-
-    window.addEventListener('voiceSearch', handleVoiceSearch as EventListener);
-    
-    return () => {
-      window.removeEventListener('voiceSearch', handleVoiceSearch as EventListener);
-    };
+    // Voice commands agora funcionam diretamente no input - sem listeners
   }, [section, isFreePlan]);
 
   const handleMenuClick = () => {
@@ -154,10 +135,10 @@ interface OverviewDashboardProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
-  searchTerm?: string;
+
 }
 
-function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, searchTerm }: OverviewDashboardProps) {
+function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-1 sm:px-4 py-3 sm:py-8">
       {/* Cosmic Knowledge Map */}
@@ -166,7 +147,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, searchTer
           onPlanetClick={onPlanetClick} 
           activeDashboard={activeDashboard} 
           onSearch={onSearch}
-          searchTerm={searchTerm}
+
         />
       </div>
     </section>
