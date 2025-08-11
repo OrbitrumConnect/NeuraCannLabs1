@@ -214,8 +214,8 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: (() => {
-            // Avatar: antecipa 2 segundos, dura 1 segundo (12%-17%) quando linha fica amarela (32%-42%)
-            const isYellowZone = scanPosition >= 12 && scanPosition <= 17;
+            // Avatar: antecipa 2.5 segundos, dura 1 segundo (7%-12%) quando linha fica amarela (32%-42%)
+            const isYellowZone = scanPosition >= 7 && scanPosition <= 12;
             
             return isYellowZone
               ? 'drop-shadow(0 0 25px rgba(255,235,59,0.6)) drop-shadow(0 0 50px rgba(255,235,59,0.4)) brightness(1.2) saturate(1.1)' // Amarelo quando linha amarela
