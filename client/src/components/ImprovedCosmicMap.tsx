@@ -170,7 +170,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       const response = await fetch('/api/ai-search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: suggestion, filter: selectedFilter })
+        body: JSON.stringify({ query: suggestion, filter: 'todos' })
       });
 
       const data = await response.json();
