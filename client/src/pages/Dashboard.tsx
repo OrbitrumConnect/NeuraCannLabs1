@@ -125,10 +125,6 @@ export default function Dashboard() {
       )}
       </DashboardLayout>
       </div>
-      
-      {/* Triggers flutuantes sem faixa preta */}
-      <VoiceGreetingIndicator />
-      <PlansFloatingTrigger />
     </div>
   );
 }
