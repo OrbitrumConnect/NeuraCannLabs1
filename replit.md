@@ -17,11 +17,13 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 ## Recent Changes
 - **Voice AI System**: Dr. Cannabis IA greets users with personalized messages based on time of day
 - **Smart Voice Controls**: Voice greetings only on first daily login, preventing repetitive behavior
+- **Voice Commands System**: Interactive voice commands for navigation and search ("pesquisar CBD", "ir para estudos")
 - **Voice Settings**: Full configuration panel in user profile (volume, speed, pitch, enable/disable)
-- **Discrete UI Elements**: Voice button reduced to small circular icon (8x8px mobile, 10x10px desktop)
-- **Optimized Layout**: Voice controls positioned bottom-left, plans button bottom-right (no overlap)
+- **Discrete UI Elements**: Voice button (8x8px mobile, 10x10px desktop), Voice command button (purple microphone)
+- **Optimized Layout**: Voice controls bottom-left, plans button bottom-right, voice commands bottom-right
 - **ThoughtBubble Adjustment**: Repositioned closer to avatar for better mobile spacing
 - **Text-to-Speech**: Native browser API integration, Vercel-compatible deployment
+- **Vercel Deployment Ready**: 99% ready for Vercel with serverless architecture
 
 ## System Architecture
 

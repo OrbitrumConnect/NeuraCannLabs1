@@ -7,6 +7,7 @@ import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
 import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
+import { VoiceCommandButton } from "./VoiceCommandButton";
 import { useVoiceGreeting } from "@/hooks/useVoiceGreeting";
 
 // Import the missing interface for proper typing
@@ -373,8 +374,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       ))}
 
-      {/* Voice Greeting Indicator */}
+      {/* Voice Controls */}
       <VoiceGreetingIndicator />
+      <VoiceCommandButton />
 
 {/* Planets removed - clean area above search bar */}
     </div>
