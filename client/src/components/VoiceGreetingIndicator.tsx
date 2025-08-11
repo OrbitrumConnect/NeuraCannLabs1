@@ -15,7 +15,7 @@ export function VoiceGreetingIndicator() {
   if (!isSupported) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 left-4 z-50">
       {/* Indicador quando está falando */}
       {isPlaying && (
         <Card className="bg-cyber-dark/95 border-neon-cyan p-4 mb-2 max-w-sm">
@@ -43,16 +43,17 @@ export function VoiceGreetingIndicator() {
         </Card>
       )}
 
-      {/* Controles de voz */}
+      {/* Controles de voz - Botão menor e discreto */}
       {!isPlaying && (
         <div className="flex flex-col gap-2">
           <Button
             onClick={playGreeting}
-            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 text-xs px-3 py-2 h-auto"
+            size="sm"
+            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-8 h-8 md:w-10 md:h-10 p-0 rounded-full"
             data-testid="voice-greeting-button"
+            title={hasPlayedToday ? 'Repetir Saudação' : 'Saudação por Voz'}
           >
-            <i className="fas fa-volume-up mr-2 text-xs" />
-            {hasPlayedToday ? 'Repetir Saudação' : 'Saudação por Voz'}
+            <i className="fas fa-volume-up text-xs" />
           </Button>
         </div>
       )}

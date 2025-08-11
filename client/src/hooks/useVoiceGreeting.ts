@@ -129,15 +129,22 @@ export function useVoiceGreeting() {
     }
   }, [user]);
 
-  // Auto-reproduzir ao fazer login
+  // Auto-reproduzir APENAS na primeira entrada do dia
   useEffect(() => {
     if (isAuthenticated && user && config.enabled && !hasPlayedToday && !isPlaying) {
-      // Aguardar um pouco após o login para melhor experiência
-      const timer = setTimeout(() => {
-        playGreeting();
-      }, 2000);
+      // Verificar se é realmente o primeiro login do dia
+      const lastLoginDate = localStorage.getItem(`last_login_${user.id}`);
+      const today = new Date().toDateString();
       
-      return () => clearTimeout(timer);
+      if (lastLoginDate !== today) {
+        // Aguardar um pouco após o login para melhor experiência
+        const timer = setTimeout(() => {
+          playGreeting();
+          localStorage.setItem(`last_login_${user.id}`, today);
+        }, 2000);
+        
+        return () => clearTimeout(timer);
+      }
     }
   }, [isAuthenticated, user, config.enabled, hasPlayedToday, isPlaying, playGreeting]);
 

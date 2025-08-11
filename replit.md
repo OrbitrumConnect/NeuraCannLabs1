@@ -15,12 +15,13 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - Prioridade: organização visual harmônica que permite leitura simultânea
 
 ## Recent Changes
-- **Dedicated Plans Page**: Created /plans route with dedicated page, removed modal approach for better UX
-- **Header Navigation**: Added "Planos" button in header navigation with mobile-responsive design
-- **Smooth Line Animation**: Enhanced scan line with fluid fade transitions, eliminated visual stuttering
-- **Avatar Thought Bubble**: Contextual floating bubble positioned closer to Dr. Cannabis avatar
-- **Mobile Optimization**: Header buttons responsive with hidden text labels on small screens
-- **Upgrade Buttons**: Enhanced plan cards with emoji CTAs and hover effects
+- **Voice AI System**: Dr. Cannabis IA greets users with personalized messages based on time of day
+- **Smart Voice Controls**: Voice greetings only on first daily login, preventing repetitive behavior
+- **Voice Settings**: Full configuration panel in user profile (volume, speed, pitch, enable/disable)
+- **Discrete UI Elements**: Voice button reduced to small circular icon (8x8px mobile, 10x10px desktop)
+- **Optimized Layout**: Voice controls positioned bottom-left, plans button bottom-right (no overlap)
+- **ThoughtBubble Adjustment**: Repositioned closer to avatar for better mobile spacing
+- **Text-to-Speech**: Native browser API integration, Vercel-compatible deployment
 
 ## System Architecture
 
