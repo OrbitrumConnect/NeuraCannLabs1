@@ -373,52 +373,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               messageCount={currentConversation?.messages.length || 0}
               messages={currentConversation?.messages || []}
               onClear={() => createNewConversation()}
-              onToggleHistory={() => setShowConversationHistory(!showConversationHistory)}
-              showingHistory={showConversationHistory}
+              onToggleHistory={() => setIsMainCardMinimized(!isMainCardMinimized)}
+              showingHistory={!isMainCardMinimized}
               onMinimizeMainCard={() => setIsMainCardMinimized(true)}
             />
             
-            {/* Conversation History - Show when history toggle is active */}
-            {showConversationHistory && currentConversation?.messages.length > 0 && (
-              <div className="mb-4 max-h-64 overflow-y-auto bg-gray-800/50 rounded-lg p-3 border border-gray-600/30">
-                <h4 className="text-sm font-semibold text-blue-300 mb-2 flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" />
-                  Histórico da Conversa ({Math.floor(currentConversation.messages.length / 2)} trocas)
-                </h4>
-                <div className="space-y-2">
-                  {currentConversation.messages.map((message, index) => (
-                    <div
-                      key={index}
-                      className={`p-2 rounded-lg text-xs ${
-                        message.role === 'user'
-                          ? 'bg-blue-600/20 border-l-2 border-blue-400 text-blue-100'
-                          : 'bg-green-600/20 border-l-2 border-green-400 text-green-100'
-                      }`}
-                    >
-                      <div className="font-medium mb-1 flex items-center gap-1">
-                        {message.role === 'user' ? (
-                          <>👤 Você:</>
-                        ) : (
-                          <>🤖 Dr. Cannabis IA:</>
-                        )}
-                        <span className="text-xs text-gray-400">
-                          {new Date(message.timestamp).toLocaleTimeString('pt-BR', { 
-                            hour: '2-digit', 
-                            minute: '2-digit' 
-                          })}
-                        </span>
-                      </div>
-                      <div className="whitespace-pre-wrap">
-                        {message.content.length > 200 
-                          ? `${message.content.substring(0, 200)}...`
-                          : message.content
-                        }
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+
 
             {/* Search Bar */}
             <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-3">
