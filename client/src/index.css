@@ -130,6 +130,11 @@
   animation: bounce-subtle 2s ease-in-out infinite;
 }
 
+/* Scale utilities */
+.scale-85 {
+  transform: scale(0.85);
+}
+
 .dark {
   --background: hsl(0, 0%, 4%);
   --foreground: hsl(200, 6.6667%, 91.1765%);

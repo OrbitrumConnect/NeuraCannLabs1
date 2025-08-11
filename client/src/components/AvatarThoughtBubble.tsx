@@ -55,7 +55,7 @@ export function AvatarThoughtBubble({ isActive, context = 'overview', className 
   if (!isVisible) return null;
 
   return (
-    <div className={cn("absolute -top-6 left-1/2 transform -translate-x-1/2 z-20", className)}>
+    <div className={cn("absolute -top-6 left-1/2 transform -translate-x-1/2 scale-85 z-20", className)}>
       {/* Thought Bubble */}
       <div className="relative">
         {/* Main bubble */}
