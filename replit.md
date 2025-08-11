@@ -75,6 +75,8 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **Real-Time Analytics Dashboard**: Dashboard gráfico em tempo real implementado com recharts, mostrando discussões, casos clínicos, alertas e atividade por hora/especialidade/tipo
 - **Analytics Header Button**: Botão "Analytics" adicionado no cabeçalho para fácil acesso ao dashboard visual em tempo real
 - **Avatar-Scanner Sync Perfected**: Sincronização avatar-scanner corrigida para funcionar perfeitamente - avatar e linha amarela acendem simultaneamente na zona 32%-42%
+- **Lab Integration Interface Fixed**: "Módulos Críticos" renomeado para "Integração Laboratorial" e movido para página própria sem background neon inadequado
+- **Medical Modules Menu Updated**: Menu de navegação atualizado com nome correto "Integração Laboratorial" e descrição adequada para funcionalidades médicas hospitalares
 
 ## System Architecture
 
