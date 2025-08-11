@@ -1,6 +1,4 @@
 import { MessageCircle, Eye } from 'lucide-react';
-import { useState } from 'react';
-import { ConversationHistory } from './ConversationHistory';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -12,42 +10,44 @@ interface ConversationIndicatorProps {
   messageCount: number;
   messages: Message[];
   onClear: () => void;
+  onToggleHistory: () => void;
+  showingHistory: boolean;
 }
 
-export function ConversationIndicator({ messageCount, messages, onClear }: ConversationIndicatorProps) {
-  const [showHistory, setShowHistory] = useState(false);
-  
+export function ConversationIndicator({ 
+  messageCount, 
+  messages, 
+  onClear, 
+  onToggleHistory,
+  showingHistory 
+}: ConversationIndicatorProps) {
   if (messageCount === 0) return null;
 
   return (
-    <>
-      <div className="flex items-center gap-2 mb-2 p-2 bg-blue-900/20 rounded border border-blue-500/30">
-        <MessageCircle className="w-4 h-4 text-blue-400" />
-        <span className="text-xs text-blue-300">
-          Conversação ativa ({Math.floor(messageCount / 2)} trocas)
-        </span>
-        <button
-          onClick={() => setShowHistory(true)}
-          className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
-          title="Ver histórico completo"
-        >
-          <Eye className="w-3 h-3" />
-          Ver
-        </button>
-        <button
-          onClick={onClear}
-          className="text-xs text-red-400 hover:text-red-300"
-          title="Nova conversa"
-        >
-          Nova
-        </button>
-      </div>
-
-      <ConversationHistory
-        messages={messages}
-        isVisible={showHistory}
-        onClose={() => setShowHistory(false)}
-      />
-    </>
+    <div className="flex items-center gap-2 mb-2 p-2 bg-blue-900/20 rounded border border-blue-500/30">
+      <MessageCircle className="w-4 h-4 text-blue-400" />
+      <span className="text-xs text-blue-300">
+        Conversação ativa ({Math.floor(messageCount / 2)} trocas)
+      </span>
+      <button
+        onClick={onToggleHistory}
+        className={`text-xs flex items-center gap-1 ${
+          showingHistory 
+            ? 'text-orange-400 hover:text-orange-300' 
+            : 'text-blue-400 hover:text-blue-300'
+        }`}
+        title={showingHistory ? "Voltar à pesquisa" : "Ver histórico completo"}
+      >
+        <Eye className="w-3 h-3" />
+        {showingHistory ? 'Pesquisar' : 'Ver'}
+      </button>
+      <button
+        onClick={onClear}
+        className="text-xs text-red-400 hover:text-red-300"
+        title="Nova conversa"
+      >
+        Nova
+      </button>
+    </div>
   );
 }

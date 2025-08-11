@@ -114,6 +114,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [searchTabs, setSearchTabs] = useState<SearchTab[]>([]);
   const [subSearchTerm, setSubSearchTerm] = useState("");
   const [isDrAIActive, setIsDrAIActive] = useState(false);
+  const [showConversationHistory, setShowConversationHistory] = useState(false);
   const { avatarScanning } = useScan();
   const {
     conversations,
@@ -293,29 +294,82 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               messageCount={currentConversation?.messages.length || 0}
               messages={currentConversation?.messages || []}
               onClear={() => createNewConversation()}
+              onToggleHistory={() => setShowConversationHistory(!showConversationHistory)}
+              showingHistory={showConversationHistory}
             />
             
-            {/* Search Bar */}
-            <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-3">
-              <div className="flex-1 relative">
-                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  type="text"
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder={currentConversation?.messages.length ? "Continue a conversa..." : "Digite sua consulta médica..."}
-                  className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
+            {/* Search Bar or Conversation History */}
+            {!showConversationHistory ? (
+              <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-3">
+                <div className="flex-1 relative">
+                  <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder={currentConversation?.messages.length ? "Continue a conversa..." : "Digite sua consulta médica..."}
+                    className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
+                    disabled={isTyping}
+                  />
+                </div>
+                <button
+                  type="submit"
                   disabled={isTyping}
-                />
+                  className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
+                >
+                  {isTyping ? <div className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-4 h-4" />}
+                </button>
+              </form>
+            ) : (
+              <div className="mb-3 max-h-80 overflow-y-auto space-y-3 p-3 bg-gray-900/30 rounded-lg border border-gray-600/30">
+                <h4 className="text-sm font-medium text-blue-300 sticky top-0 bg-gray-900/80 backdrop-blur-sm p-2 rounded">
+                  📜 Histórico da Conversa Atual
+                </h4>
+                {currentConversation?.messages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-start gap-3 ${
+                      message.role === 'user' ? 'flex-row-reverse' : ''
+                    }`}
+                  >
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
+                      message.role === 'user' 
+                        ? 'bg-blue-600/20 text-blue-400'
+                        : 'bg-green-600/20 text-green-400'
+                    }`}>
+                      {message.role === 'user' ? '👤' : '🤖'}
+                    </div>
+                    
+                    <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
+                      <div className={`inline-block p-2 rounded-lg max-w-[85%] text-xs ${
+                        message.role === 'user'
+                          ? 'bg-blue-600/20 text-blue-100 border border-blue-500/30'
+                          : 'bg-gray-800/50 text-gray-100 border border-gray-600/30'
+                      }`}>
+                        <div 
+                          className="leading-relaxed"
+                          dangerouslySetInnerHTML={{ 
+                            __html: message.content
+                              .replace(/\n/g, '<br/>')
+                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                          }} 
+                        />
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">
+                        {new Date(message.timestamp).toLocaleTimeString('pt-BR', {
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )) || (
+                  <p className="text-gray-400 text-sm text-center py-4">
+                    Nenhuma mensagem ainda nesta conversa
+                  </p>
+                )}
               </div>
-              <button
-                type="submit"
-                disabled={isTyping}
-                className="px-4 py-2 sm:px-6 sm:py-3 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all disabled:opacity-50"
-              >
-                {isTyping ? <div className="animate-spin w-4 h-4 border-2 border-white/30 border-t-white rounded-full"></div> : <Send className="w-4 h-4" />}
-              </button>
-            </form>
+            )}
 
 
           </div>
