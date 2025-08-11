@@ -137,10 +137,17 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white">
-      <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8">
+    <div className="min-h-screen bg-black text-white relative overflow-hidden">
+      {/* Animated Background Elements - Same as Landing Page */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-green-500/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute top-40 right-20 w-96 h-96 bg-cyan-400/20 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute bottom-40 left-1/2 w-80 h-80 bg-green-400/15 rounded-full blur-3xl animate-pulse delay-2000" />
+      </div>
+      
+      <div className="relative z-10 container mx-auto px-1 sm:px-4 py-3 sm:py-8">
       <div className="flex items-center mb-6 sm:mb-8">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-green-500 to-cyan-400 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
           <i className="fas fa-user-shield text-white text-lg sm:text-2xl" />
         </div>
         <div>
@@ -155,7 +162,7 @@ export default function AdminDashboard() {
           onClick={() => setActiveTab('pending')}
           className={`mr-4 px-6 py-2 rounded-lg transition-colors ${
             activeTab === 'pending' 
-              ? 'bg-orange-600 text-white' 
+              ? 'bg-gradient-to-r from-green-600 to-cyan-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
           }`}
           data-testid="button-pending-tab"
@@ -167,7 +174,7 @@ export default function AdminDashboard() {
           onClick={() => setActiveTab('approved')}
           className={`mr-4 px-6 py-2 rounded-lg transition-colors ${
             activeTab === 'approved' 
-              ? 'bg-orange-600 text-white' 
+              ? 'bg-gradient-to-r from-green-600 to-cyan-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
           }`}
           data-testid="button-approved-tab"
@@ -179,7 +186,7 @@ export default function AdminDashboard() {
           onClick={() => setActiveTab('rejected')}
           className={`mr-4 px-6 py-2 rounded-lg transition-colors ${
             activeTab === 'rejected' 
-              ? 'bg-orange-600 text-white' 
+              ? 'bg-gradient-to-r from-green-600 to-cyan-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
           }`}
           data-testid="button-rejected-tab"
@@ -191,7 +198,7 @@ export default function AdminDashboard() {
           onClick={() => setActiveTab('analytics')}
           className={`px-6 py-2 rounded-lg transition-colors ${
             activeTab === 'analytics' 
-              ? 'bg-orange-600 text-white' 
+              ? 'bg-gradient-to-r from-green-600 to-cyan-600 text-white' 
               : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
           }`}
           data-testid="button-analytics-tab"
