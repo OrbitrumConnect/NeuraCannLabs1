@@ -8,7 +8,7 @@ import AlertsDashboard from "./AlertsDashboard";
 import MyStudyDashboard from "./MyStudyDashboard";
 import ForumDashboard from "./ForumDashboard";
 import ProfileDashboard from "./ProfileDashboard";
-import { AdminNavigation } from '@/components/AdminNavigation';
+
 import { FreePlanNotification } from '@/components/FreePlanNotification';
 import { PlansFloatingTrigger } from '@/components/PlansFloatingTrigger';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
@@ -65,7 +65,7 @@ export default function Dashboard() {
 
   return (
     <div className="relative">
-      <AdminNavigation />
+
       
       {/* Free Plan Notification */}
       {showFreePlanNotification && (
