@@ -67,6 +67,8 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **Mobile Header Icons Standardized**: All mobile header icons (menu, close, navigation) changed from cyan to green following platform color scheme
 - **Complete Dashboard Dimensioning**: All dashboards standardized with consistent padding (px-3 py-6 pt-12), title sizing (text-base sm:text-2xl), and spacing (mb-3 sm:mb-4) for perfect visual harmony
 - **Final Production Release**: Sistema 100% finalizado e testado - avatar sincronizado, IA contextual funcional, voice commands ativos, mobile otimizado, conformidade ANVISA, pronto para deploy
+- **Voice Commands Completely Removed**: Sistema de voice commands removido conforme solicitação do usuário devido a problemas de funcionamento em mobile/web
+- **Scanner Sync Universal Enhancement**: Sincronização avatar-scanner melhorada com logs de debug para funcionar consistentemente em Replit, mobile e web externa
 
 ## System Architecture
 

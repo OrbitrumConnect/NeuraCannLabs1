@@ -216,13 +216,13 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: (() => {
-            // Avatar: sincronização perfeita - linha amarela 32%-42%, avatar 33%-41%
+            // Avatar: sincronização UNIVERSAL - funciona em mobile, web e Replit
             const linePos = (scanPosition * 2) % 100;
-            const isYellowZone = linePos >= 33 && linePos <= 41;
+            const isYellowZone = linePos >= 32 && linePos <= 42; // Zona mais ampla para melhor detecção
             
             const isMobileView = (className?.includes('w-16') || (!className?.includes('w-40') && !className?.includes('w-24')));
             return isYellowZone
-              ? `drop-shadow(0 0 ${isMobileView ? '15px' : '25px'} rgba(255,235,59,0.8)) drop-shadow(0 0 ${isMobileView ? '30px' : '50px'} rgba(255,235,59,0.6)) brightness(1.3) saturate(1.2)` // Amarelo mais intenso no mobile
+              ? `drop-shadow(0 0 ${isMobileView ? '20px' : '30px'} rgba(255,235,59,1.0)) drop-shadow(0 0 ${isMobileView ? '40px' : '60px'} rgba(255,235,59,0.8)) brightness(1.4) saturate(1.3)` // Amarelo SUPER intenso
               : isActive 
               ? 'drop-shadow(0 0 30px rgba(34,197,94,0.9)) drop-shadow(0 0 60px rgba(16,185,129,0.6)) brightness(1.3) saturate(1.2)' // Verde ativo
               : 'drop-shadow(0 0 20px rgba(34,197,94,0.4)) drop-shadow(0 0 40px rgba(16,185,129,0.2)) brightness(1.0) saturate(1.1)'; // Verde normal

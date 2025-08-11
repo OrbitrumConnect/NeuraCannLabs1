@@ -239,11 +239,17 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
         style={{
           background: (() => {
             const currentPos = (currentPattern * 2) % 100;
-            // Zona amarela de 1 segundo: 32% a 42% (10% da tela = 1 segundo) - 1 segundo depois
+            // Zona amarela UNIVERSAL: 32% a 42% - sincronização melhorada para mobile/web
             const isYellowZone = currentPos >= 32 && currentPos <= 42;
             
+            // Log para verificar sincronização em diferentes dispositivos
+            if (isYellowZone) {
+              const isMobile = window.innerWidth < 640;
+              console.log(`🟡 AVATAR 33-41%! Linha: ${currentPos.toFixed(1)}% | Mobile: ${isMobile}`);
+            }
+            
             return isYellowZone
-              ? `linear-gradient(90deg, transparent, rgba(255,235,59,0.7), rgba(255,235,59,0.9), rgba(255,235,59,0.7), transparent)`
+              ? `linear-gradient(90deg, transparent, rgba(255,235,59,0.8), rgba(255,235,59,1.0), rgba(255,235,59,0.8), transparent)`
               : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`;
           })(),
           top: `${(currentPattern * 2) % 100}%`,
