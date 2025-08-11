@@ -372,7 +372,14 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             <ConversationIndicator 
               messageCount={currentConversation?.messages.length || 0}
               messages={currentConversation?.messages || []}
-              onClear={() => createNewConversation()}
+              onClear={() => {
+                createNewConversation();
+                // Limpar a pesquisa atual
+                setSearchTabs([]);
+                setCurrentResult(null);
+                setSearchTerm("");
+                setIsMainCardMinimized(false);
+              }}
               onToggleHistory={() => setIsMainCardMinimized(!isMainCardMinimized)}
               showingHistory={!isMainCardMinimized}
               onMinimizeMainCard={() => setIsMainCardMinimized(true)}
