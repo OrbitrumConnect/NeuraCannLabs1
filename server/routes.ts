@@ -306,9 +306,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'User notes are required' });
       }
 
-      // Get platform data for cross-referencing
-      const scientificData = storage.getScientificStudies();
-      const clinicalData = storage.getClinicalCases();
+      // Get platform data for cross-referencing - métodos são async
+      const scientificData = await storage.getScientificStudies();
+      const clinicalData = await storage.getClinicalCases();
       
       let generatedStudy;
       let wordCount;
@@ -331,11 +331,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         responseType,
         wordCount,
         dataUsed: {
-          studies: scientificData.length,
-          cases: clinicalData.length,
-          relevantStudies: scientificData.filter(s => 
+          studies: Array.isArray(scientificData) ? scientificData.length : 0,
+          cases: Array.isArray(clinicalData) ? clinicalData.length : 0,
+          relevantStudies: Array.isArray(scientificData) ? scientificData.filter(s => 
             researchTopic && s.title.toLowerCase().includes(researchTopic.toLowerCase())
-          ).length
+          ).length : 0
         }
       });
     } catch (error) {
@@ -571,8 +571,8 @@ function generateIntelligentSynthesis(conversations: any[], userPrompt: string, 
 
 // Dynamic Study Response Generator (300 words max)
 function generateDynamicStudyResponse(userNotes: string, studyTitle: string, researchTopic: string, searchHistory: any[], scientificData: any[], clinicalData: any[]): string {
-  // Filter relevant platform data
-  const relevantStudies = scientificData.filter(study => 
+  // Filter relevant platform data - garantir que são arrays
+  const relevantStudies = (Array.isArray(scientificData) ? scientificData : []).filter(study => 
     researchTopic && (
       study.title.toLowerCase().includes(researchTopic.toLowerCase()) ||
       study.compound.toLowerCase().includes(researchTopic.toLowerCase()) ||
@@ -580,7 +580,7 @@ function generateDynamicStudyResponse(userNotes: string, studyTitle: string, res
     )
   ).slice(0, 2);
 
-  const relevantCases = clinicalData.filter(case_ => 
+  const relevantCases = (Array.isArray(clinicalData) ? clinicalData : []).filter(case_ => 
     researchTopic && case_.indication.toLowerCase().includes(researchTopic.toLowerCase())
   ).slice(0, 2);
 
@@ -651,7 +651,7 @@ function generateDynamicStudyResponse(userNotes: string, studyTitle: string, res
 
 // Final Study Summary Generator (750 words max)
 function generateFinalStudySummary(userNotes: string, studyTitle: string, researchTopic: string, searchHistory: any[], scientificData: any[], clinicalData: any[]): string {
-  const relevantStudies = scientificData.filter(study => 
+  const relevantStudies = (Array.isArray(scientificData) ? scientificData : []).filter(study => 
     researchTopic && (
       study.title.toLowerCase().includes(researchTopic.toLowerCase()) ||
       study.compound.toLowerCase().includes(researchTopic.toLowerCase()) ||

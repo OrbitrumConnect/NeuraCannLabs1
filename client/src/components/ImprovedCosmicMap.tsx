@@ -448,7 +448,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
               <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
                 <h4 className="text-sm font-medium text-blue-300">
-                  📝 Rascunho de Estudo - {currentStudyTopic || "Novo Estudo"}
+                  📝 Rascunho de Estudo - {studyTitle || "Novo Estudo"}
                 </h4>
                 <button
                   onClick={() => setShowConversationHistory(false)}
@@ -479,14 +479,11 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 />
                 
                 {/* AI Study Generator - Dynamic conversation style - 30% menor */}
-                {studyNotes.trim() && (
+                {(
                   <div className="mb-2 space-y-1.5">
                     <button
                       onClick={async () => {
-                        if (!studyNotes.trim()) {
-                          alert('Escreva suas ideias primeiro!');
-                          return;
-                        }
+                        const notesToSend = studyNotes.trim() || 'Gerar sugestões para estudo sobre cannabis medicinal';
                         
                         try {
                           setIsTyping(true);
@@ -494,9 +491,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                              userNotes: studyNotes,
+                              userNotes: notesToSend,
                               studyTitle: studyTitle,
-                              researchTopic: currentStudyTopic,
+                              researchTopic: studyTitle || 'cannabis medicinal',
                               searchHistory: currentConversation?.messages || [],
                               conversationType: 'continuation'
                             })
