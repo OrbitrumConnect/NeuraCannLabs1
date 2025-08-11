@@ -250,7 +250,7 @@ export default function LabIntegrationModule() {
                   <Button
                     onClick={handleExecute}
                     disabled={executeFunction.isPending}
-                    className="bg-green-600 hover:bg-green-700 text-white"
+                    className="bg-cyber-dark hover:bg-gray-700 border border-gray-500 text-white"
                     size="sm"
                   >
                     {executeFunction.isPending ? (
