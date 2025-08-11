@@ -252,7 +252,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
             // Log para verificar sincronização em diferentes dispositivos
             if (isYellowZone) {
               const isMobile = window.innerWidth < 640;
-              console.log(`🟡 AVATAR 33-41%! Linha: ${currentPos.toFixed(1)}% | Mobile: ${isMobile}`);
+              console.log(`✅ SINCRONIZAÇÃO PERFEITA! Avatar + Linha: ${currentPos.toFixed(1)}% | Mobile: ${isMobile}`);
             }
             
             return isYellowZone

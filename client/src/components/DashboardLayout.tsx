@@ -74,17 +74,17 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Avatar: sincronização perfeita (33%-41%) - durante linha amarela (32%-42%)
+  // Avatar: sincronização perfeita - exatamente durante linha amarela (32%-42%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
     const linePos = (position * 2) % 100; // Mesma fórmula da linha
-    const isScanning = linePos >= 33 && linePos <= 41; // Durante linha amarela
+    const isScanning = linePos >= 32 && linePos <= 42; // Exatamente quando linha amarela aparece
     setAvatarScanning(isScanning);
     
     // Debug: Avatar sincronizado com linha amarela + detecção mobile
     const isMobile = window.innerWidth < 768;
     if (isScanning) {
-      console.log(`🟡 AVATAR 33-41%! Linha: ${linePos.toFixed(1)}% | Mobile: ${isMobile}`);
+      console.log(`🟡 AVATAR + LINHA SINCRONIZADOS! Linha: ${linePos.toFixed(1)}% | Mobile: ${isMobile}`);
     }
   };
 
