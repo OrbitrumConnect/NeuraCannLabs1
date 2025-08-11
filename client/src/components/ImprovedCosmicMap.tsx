@@ -335,11 +335,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             <MedicalAvatar3D className="w-16 sm:w-40" isScanning={avatarScanning} />
           </div>
           
-          {!isDrAIActive && (
-            <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-center sm:hidden">
-              <p className="text-xs text-cyan-400">Toque para ativar</p>
-            </div>
-          )}
+          {/* Texto "Toque para ativar" removido - interface limpa */}
         </div>
       </div>
 
