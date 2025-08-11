@@ -7,7 +7,7 @@ import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
 import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
-import { VoiceCommandButton } from "./VoiceCommandButton";
+import { useVoiceCommands } from "@/hooks/useVoiceCommands";
 import { ConversationIndicator } from "./ConversationIndicator";
 import { ConversationManager } from "./ConversationManager";
 import { useVoiceGreeting } from "@/hooks/useVoiceGreeting";
@@ -122,6 +122,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [currentResult, setCurrentResult] = useState<string | null>(null);
   const [mainCardMode, setMainCardMode] = useState<'search' | 'study'>('search'); // Controla se mostra pesquisa ou estudo
   const { avatarScanning } = useScan();
+  
+  // Voice commands integration
+  const { isSupported: voiceSupported, isListening, startListening } = useVoiceCommands();
   const {
     conversations,
     currentConversation,
@@ -363,9 +366,25 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder={currentConversation?.messages.length ? "Continue a conversa..." : "Digite sua consulta médica..."}
-                  className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
+                  className="w-full pl-8 pr-10 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
                   disabled={isTyping}
                 />
+                {/* Voice Command Button integrado na barra de pesquisa */}
+                {voiceSupported && (
+                  <button
+                    type="button"
+                    onClick={startListening}
+                    className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                      isListening 
+                        ? 'bg-red-500/20 text-red-400 animate-pulse' 
+                        : 'bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
+                    }`}
+                    title="Comando por Voz"
+                    disabled={isTyping}
+                  >
+                    <i className={`fas ${isListening ? 'fa-stop' : 'fa-microphone'} text-xs`} />
+                  </button>
+                )}
               </div>
               <button
                 type="submit"
@@ -697,7 +716,6 @@ ${studyNotes || 'Nenhuma anotação'}`;
 
       {/* Voice Controls */}
       <VoiceGreetingIndicator />
-      <VoiceCommandButton />
 
       {/* Conversation Manager - APENAS DESKTOP */}
       <div className="hidden lg:block">
