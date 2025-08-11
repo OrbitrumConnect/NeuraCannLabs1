@@ -296,14 +296,14 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     response: currentResult,
     meta: {
       counts: {
-        studies: scientificData?.length || 0,
-        trials: clinicalData?.length || 0
+        studies: searchTabs.find(tab => tab.type === 'main')?.results?.studies?.length || 0,
+        trials: searchTabs.find(tab => tab.type === 'main')?.results?.cases?.length || 0
       }
     },
     categories: {
-      scientific: scientificData || [],
-      clinical: clinicalData || [],
-      alerts: alertsData || []
+      scientific: searchTabs.find(tab => tab.type === 'main')?.results?.studies || [],
+      clinical: searchTabs.find(tab => tab.type === 'main')?.results?.cases || [],
+      alerts: searchTabs.find(tab => tab.type === 'main')?.results?.alerts || []
     }
   } : null;
 
