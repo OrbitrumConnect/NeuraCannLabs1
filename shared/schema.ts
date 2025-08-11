@@ -20,6 +20,7 @@ export const scientificStudies = pgTable("scientific_studies", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   title: text("title").notNull(),
   description: text("description"),
+  authors: text("authors"), // Autores do estudo
   compound: text("compound"), // CBD, THC, CBG, etc.
   indication: text("indication"), // Epilepsia, Dor crônica, etc.
   phase: text("phase"), // Fase I, II, III

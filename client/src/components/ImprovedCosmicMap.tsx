@@ -666,7 +666,7 @@ ${studyNotes || 'Nenhuma anotação'}`;
                 {scientificData?.slice(0, 2).map((study, index) => (
                   <div key={index} className="border-l-2 border-green-500/50 pl-2">
                     <p className="font-medium truncate">{study.title}</p>
-                    <p className="text-green-300/70">{study.journal}</p>
+                    <p className="text-green-300/70">{study.authors}</p>
                   </div>
                 ))}
                 {(scientificData?.length || 0) > 2 && (
@@ -702,7 +702,7 @@ ${studyNotes || 'Nenhuma anotação'}`;
                 {alertsData?.slice(0, 2).map((alert, index) => (
                   <div key={index} className="border-l-2 border-yellow-500/50 pl-2">
                     <p className="font-medium truncate">{alert.message}</p>
-                    <p className="text-yellow-300/70">{alert.source}</p>
+                    <p className="text-yellow-300/70">{new Date(alert.date).toLocaleDateString()}</p>
                   </div>
                 ))}
                 {(alertsData?.length || 0) > 2 && (
