@@ -105,8 +105,8 @@ export default function DashboardLayout({
                 onClick={() => handleDashboardClick(option.id)}
                 className={`px-4 py-2 rounded-lg transition-all ${
                   activeDashboard === option.id
-                    ? "bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/30"
-                    : "hover:bg-neon-cyan/20 hover:text-neon-cyan"
+                    ? "bg-green-500/20 text-green-500 border border-green-500/30"
+                    : "hover:bg-green-500/20 hover:text-green-500"
                 }`}
                 data-testid={`nav-${option.id}`}
               >

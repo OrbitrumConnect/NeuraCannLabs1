@@ -8,17 +8,17 @@ interface Avatar3DProps {
 export default function Avatar3D({ 
   className = "w-20 sm:w-32 h-20 sm:h-32", 
   size = 100,
-  color = "#00ffff",
+  color = "#00ff00",
   isScanning = false 
 }: Avatar3DProps) {
   return (
     <div className={`${className} avatar-glow relative flex items-center justify-center ${isScanning ? 'avatar-scanning' : ''}`} style={{ width: size, height: size }}>
       {/* Efeito de scan especial */}
       {isScanning && (
-        <div className="absolute inset-0 rounded-full animate-ping border-4 border-neon-cyan/60" />
+        <div className="absolute inset-0 rounded-full animate-ping border-4 border-green-500/60" />
       )}
       {isScanning && (
-        <div className="absolute inset-2 rounded-full animate-pulse bg-neon-cyan/10 border-2 border-neon-cyan/40" />
+        <div className="absolute inset-2 rounded-full animate-pulse bg-green-500/10 border-2 border-green-500/40" />
       )}
       
       {/* Holographic Avatar SVG */}
@@ -66,8 +66,8 @@ export default function Avatar3D({
         </svg>
       </div>
       
-      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-cyber-gray rounded-full border border-neon-cyan/30">
-        <span className="text-xs text-neon-cyan animate-pulse">Dr. AI Assistant</span>
+      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-cyber-gray rounded-full border border-green-500/30">
+        <span className="text-xs text-green-500 animate-pulse">Dr. AI Assistant</span>
       </div>
     </div>
   );
