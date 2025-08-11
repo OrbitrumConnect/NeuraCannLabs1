@@ -6,8 +6,8 @@ import MedicalAvatar3D from "./MedicalAvatar3D";
 import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
-
-
+import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
+import { VoiceCommandButton } from "./VoiceCommandButton";
 import { ConversationIndicator } from "./ConversationIndicator";
 import { ConversationManager } from "./ConversationManager";
 import { useVoiceGreeting } from "@/hooks/useVoiceGreeting";
@@ -695,7 +695,9 @@ ${studyNotes || 'Nenhuma anotação'}`;
         </div>
       ))}
 
-
+      {/* Voice Controls */}
+      <VoiceGreetingIndicator />
+      <VoiceCommandButton />
 
       {/* Conversation Manager - APENAS DESKTOP */}
       <div className="hidden lg:block">

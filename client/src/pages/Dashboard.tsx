@@ -11,7 +11,7 @@ import ProfileDashboard from "./ProfileDashboard";
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { FreePlanNotification } from '@/components/FreePlanNotification';
 import { PlansFloatingTrigger } from '@/components/PlansFloatingTrigger';
-
+import { VoiceCommandButton } from '@/components/VoiceCommandButton';
 import { VoiceGreetingIndicator } from '@/components/VoiceGreetingIndicator';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
 
@@ -134,6 +134,7 @@ export default function Dashboard() {
           {/* Triggers organizados no rodapé preto */}
           <div className="flex items-center gap-3">
             <VoiceGreetingIndicator />
+            <VoiceCommandButton />
             <PlansFloatingTrigger />
           </div>
         </div>
