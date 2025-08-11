@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "wouter";
+import { useParams, useLocation } from "wouter";
 import DashboardLayout from "@/components/DashboardLayout";
 import ImprovedCosmicMap from "@/components/ImprovedCosmicMap";
 import ScientificDashboard from "./ScientificDashboard";
@@ -15,6 +15,7 @@ import GlobalAdminDashboard from "./GlobalAdminDashboard";
 
 export default function Dashboard() {
   const { section } = useParams();
+  const [, setLocation] = useLocation();
   const [activeDashboard, setActiveDashboard] = useState(section || "overview");
   const [sideNavOpen, setSideNavOpen] = useState(false);
   const [globalSearchTerm, setGlobalSearchTerm] = useState("");
@@ -44,16 +45,16 @@ export default function Dashboard() {
   const handleDashboardChange = (dashboard: string) => {
     if (dashboard === "admin") {
       // Redireciona para a rota admin dedicada
-      window.location.href = "/admin";
+      setLocation("/admin");
       return;
     }
     if (dashboard === "critical-modules") {
       // Redireciona para a página de módulos críticos
-      window.location.href = "/critical-modules";
+      setLocation("/critical-modules");
       return;
     }
     setActiveDashboard(dashboard);
-    window.history.pushState({}, '', `/dashboard/${dashboard}`);
+    setLocation(`/dashboard/${dashboard}`);
   };
 
   const handleCosmicPlanetClick = (dashboardId: string) => {
