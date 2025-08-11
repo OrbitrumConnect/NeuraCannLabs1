@@ -244,18 +244,7 @@ export default function MedicalAvatar3D({
         />
       )}
 
-      {/* Medical Badge */}
-      <div className={`absolute -bottom-2 -right-2 bg-white rounded-full shadow-lg border border-gray-200 ${
-        className?.includes('w-40') ? 'p-2' : className?.includes('w-24') ? 'p-1.5' : 'p-1'
-      }`}>
-        <div className={`flex items-center justify-center ${
-          className?.includes('w-40') ? 'w-5 h-5' : className?.includes('w-24') ? 'w-4 h-4' : 'w-2.5 h-2.5'
-        }`}>
-          <i className={`fas fa-user-md text-blue-600 ${
-            className?.includes('w-40') ? 'text-sm' : className?.includes('w-24') ? 'text-xs' : 'text-[7px]'
-          }`} />
-        </div>
-      </div>
+      {/* Medical Badge - Escondido para interface limpa */}
 
       {/* Speech Indicator */}
       {message && (
