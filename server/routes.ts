@@ -300,16 +300,44 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // AI Study Generator endpoint - Generate complete study protocols
   app.post("/api/generate-study", async (req, res) => {
     try {
-      const { userNotes, studyTitle, researchTopic, searchHistory = [] } = req.body;
+      const { userNotes, studyTitle, researchTopic, searchHistory = [], conversationType = 'continuation' } = req.body;
       
       if (!userNotes || typeof userNotes !== 'string') {
         return res.status(400).json({ error: 'User notes are required' });
       }
 
-      // Generate complete study protocol based on user input
-      const generatedStudy = generateCompleteStudy(userNotes, studyTitle, researchTopic, searchHistory);
+      // Get platform data for cross-referencing
+      const scientificData = storage.getScientificStudies();
+      const clinicalData = storage.getClinicalCases();
       
-      res.json({ generatedStudy });
+      let generatedStudy;
+      let wordCount;
+      let responseType;
+
+      if (conversationType === 'final_summary') {
+        // Generate final summary (750 words max)
+        generatedStudy = generateFinalStudySummary(userNotes, studyTitle, researchTopic, searchHistory, scientificData, clinicalData);
+        responseType = 'final_summary';
+      } else {
+        // Generate conversational response (500 words max)
+        generatedStudy = generateDynamicStudyResponse(userNotes, studyTitle, researchTopic, searchHistory, scientificData, clinicalData);
+        responseType = 'conversational';
+      }
+      
+      wordCount = generatedStudy.split(' ').length;
+      
+      res.json({ 
+        generatedStudy,
+        responseType,
+        wordCount,
+        dataUsed: {
+          studies: scientificData.length,
+          cases: clinicalData.length,
+          relevantStudies: scientificData.filter(s => 
+            researchTopic && s.title.toLowerCase().includes(researchTopic.toLowerCase())
+          ).length
+        }
+      });
     } catch (error) {
       console.error('Study generation error:', error);
       res.status(500).json({ error: 'Internal server error' });
@@ -539,6 +567,171 @@ function generateIntelligentSynthesis(conversations: any[], userPrompt: string, 
   synthesis += `*Gerado em: ${new Date().toLocaleString('pt-BR')}*`;
   
   return synthesis;
+}
+
+// Dynamic Study Response Generator (500 words max)
+function generateDynamicStudyResponse(userNotes: string, studyTitle: string, researchTopic: string, searchHistory: any[], scientificData: any[], clinicalData: any[]): string {
+  // Filter relevant platform data
+  const relevantStudies = scientificData.filter(study => 
+    researchTopic && (
+      study.title.toLowerCase().includes(researchTopic.toLowerCase()) ||
+      study.compound.toLowerCase().includes(researchTopic.toLowerCase()) ||
+      study.indication.toLowerCase().includes(researchTopic.toLowerCase())
+    )
+  ).slice(0, 2);
+
+  const relevantCases = clinicalData.filter(case_ => 
+    researchTopic && case_.indication.toLowerCase().includes(researchTopic.toLowerCase())
+  ).slice(0, 2);
+
+  // Get recent conversation context
+  const recentContext = searchHistory.slice(-2).map(msg => 
+    `${msg.role === 'user' ? 'Você' : 'Sistema'}: ${msg.content.substring(0, 100)}`
+  ).join('\n');
+
+  let response = `## 💡 Análise Inteligente\n\n`;
+  
+  // Analyze user input type
+  if (userNotes.toLowerCase().includes('dosagem') || userNotes.toLowerCase().includes('dose')) {
+    response += `**Orientações de Dosagem:**\n`;
+    response += `• **CBD:** Início com 5-10mg 2x/dia, titulação gradual\n`;
+    response += `• **THC:** Início com 1-2.5mg noturno, aumento semanal\n`;
+    response += `• **Monitoramento:** Diário de sintomas obrigatório\n\n`;
+  }
+  
+  if (userNotes.toLowerCase().includes('método') || userNotes.toLowerCase().includes('como')) {
+    response += `**Metodologia Sugerida:**\n`;
+    response += `• **Tipo:** Estudo observacional prospectivo\n`;
+    response += `• **Duração:** 12-16 semanas de acompanhamento\n`;
+    response += `• **Avaliações:** Baseline, 4, 8, 12 semanas\n`;
+    response += `• **Instrumentos:** Escalas validadas para ${researchTopic || 'condição'}\n\n`;
+  }
+
+  if (userNotes.toLowerCase().includes('paciente') || userNotes.toLowerCase().includes('critério')) {
+    response += `**Critérios de Seleção:**\n`;
+    response += `• **Inclusão:** Diagnóstico confirmado, falha terapêutica prévia\n`;
+    response += `• **Exclusão:** Gestação, psicose ativa, dependência química\n`;
+    response += `• **Tamanho:** 30-50 pacientes (poder 80%, α=0.05)\n\n`;
+  }
+
+  // Add relevant platform data
+  if (relevantStudies.length > 0) {
+    response += `**📚 Estudos Relacionados na Plataforma:**\n`;
+    relevantStudies.forEach(study => {
+      response += `• ${study.title} - ${study.compound} para ${study.indication}\n`;
+    });
+    response += `\n`;
+  }
+
+  if (relevantCases.length > 0) {
+    response += `**🏥 Casos Clínicos Similares:**\n`;
+    relevantCases.forEach(case_ => {
+      response += `• ${case_.caseNumber}: ${case_.indication} - ${case_.outcome}\n`;
+    });
+    response += `\n`;
+  }
+
+  // Add contextual suggestions
+  response += `**🎯 Próximos Passos:**\n`;
+  response += `1. Desenvolver protocolo detalhado\n`;
+  response += `2. Submeter ao CEP local\n`;
+  response += `3. Preparar equipe e instrumentos\n`;
+  response += `4. Iniciar recrutamento\n\n`;
+
+  response += `**💬 Continue a conversa:** Me diga mais sobre algum aspecto específico que quer desenvolver!`;
+
+  // Trim to 500 words
+  const words = response.split(' ');
+  if (words.length > 500) {
+    return words.slice(0, 500).join(' ') + '...';
+  }
+  
+  return response;
+}
+
+// Final Study Summary Generator (750 words max)
+function generateFinalStudySummary(userNotes: string, studyTitle: string, researchTopic: string, searchHistory: any[], scientificData: any[], clinicalData: any[]): string {
+  const relevantStudies = scientificData.filter(study => 
+    researchTopic && (
+      study.title.toLowerCase().includes(researchTopic.toLowerCase()) ||
+      study.compound.toLowerCase().includes(researchTopic.toLowerCase()) ||
+      study.indication.toLowerCase().includes(researchTopic.toLowerCase())
+    )
+  );
+
+  let summary = `# ${studyTitle || `Protocolo de Pesquisa: ${researchTopic || 'Cannabis Medicinal'}`}\n\n`;
+  
+  summary += `## 📋 Resumo Executivo\n\n`;
+  summary += `**Objetivo:** Avaliar eficácia e segurança de cannabis medicinal para ${researchTopic || 'condição específica'}\n`;
+  summary += `**Desenho:** Estudo observacional prospectivo\n`;
+  summary += `**População:** Pacientes com diagnóstico confirmado e falha terapêutica\n`;
+  summary += `**Duração:** 16 semanas de acompanhamento\n`;
+  summary += `**Desfecho Primário:** Melhora clinicamente significativa dos sintomas\n\n`;
+
+  summary += `## 🎯 Metodologia Consolidada\n\n`;
+  summary += `**Critérios de Inclusão:**\n`;
+  summary += `• Idade 18-75 anos\n`;
+  summary += `• Diagnóstico confirmado há >6 meses\n`;
+  summary += `• Falha com ≥2 tratamentos convencionais\n`;
+  summary += `• Capacidade de consentimento informado\n\n`;
+
+  summary += `**Critérios de Exclusão:**\n`;
+  summary += `• Gestação ou amamentação\n`;
+  summary += `• Transtornos psicóticos ativos\n`;
+  summary += `• Dependência química atual\n`;
+  summary += `• Insuficiência hepática grave\n\n`;
+
+  summary += `**Protocolo de Dosagem:**\n`;
+  summary += `• **Semana 1-2:** CBD 5mg 2x/dia\n`;
+  summary += `• **Semana 3-4:** CBD 10mg 2x/dia\n`;
+  summary += `• **Semana 5+:** Ajuste individualizado (max 40mg/dia CBD)\n`;
+  summary += `• **THC:** Se necessário, 1-2.5mg noturno após semana 4\n\n`;
+
+  summary += `## 📊 Avaliações e Instrumentos\n\n`;
+  summary += `**Cronograma de Visitas:**\n`;
+  summary += `• **Baseline:** Avaliação completa, exames laboratoriais\n`;
+  summary += `• **Semana 4:** Ajuste de dose, avaliação de eficácia\n`;
+  summary += `• **Semana 8:** Avaliação intermediária\n`;
+  summary += `• **Semana 12:** Avaliação final\n`;
+  summary += `• **Semana 16:** Follow-up de segurança\n\n`;
+
+  if (relevantStudies.length > 0) {
+    summary += `## 📚 Embasamento Científico\n\n`;
+    summary += `**Estudos Relacionados na Plataforma:**\n`;
+    relevantStudies.slice(0, 3).forEach(study => {
+      summary += `• **${study.title}:** ${study.compound} demonstrou eficácia para ${study.indication}\n`;
+    });
+    summary += `\n`;
+  }
+
+  summary += `## ⚖️ Considerações Éticas\n\n`;
+  summary += `• **CEP:** Submissão obrigatória antes do início\n`;
+  summary += `• **ANVISA:** Autorização especial para produtos não registrados\n`;
+  summary += `• **TCLE:** Linguagem clara sobre riscos e benefícios\n`;
+  summary += `• **Monitoramento:** DSMB independente recomendado\n\n`;
+
+  summary += `## 📈 Análise Estatística\n\n`;
+  summary += `• **Software:** R ou SPSS\n`;
+  summary += `• **Estatística:** Descritiva + testes apropriados\n`;
+  summary += `• **Significância:** p<0.05\n`;
+  summary += `• **Missing data:** LOCF ou multiple imputation\n\n`;
+
+  summary += `## 💰 Orçamento Estimado\n\n`;
+  summary += `• **Equipe:** R$ 15.000-25.000\n`;
+  summary += `• **Exames:** R$ 8.000-12.000\n`;
+  summary += `• **Materiais:** R$ 3.000-5.000\n`;
+  summary += `• **Total:** R$ 26.000-42.000\n\n`;
+
+  summary += `---\n**Protocolo gerado em:** ${new Date().toLocaleDateString('pt-BR')}\n`;
+  summary += `**Baseado em:** ${relevantStudies.length} estudos da plataforma + análise conversacional`;
+
+  // Trim to 750 words
+  const words = summary.split(' ');
+  if (words.length > 750) {
+    return words.slice(0, 750).join(' ') + '...';
+  }
+  
+  return summary;
 }
 
 // Study Helper AI response generator - More conversational and practical

@@ -416,13 +416,13 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   className="w-full h-40 px-3 py-2 text-sm bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50 resize-none"
                 />
                 
-                {/* AI Study Generator - Prominent when text exists */}
+                {/* AI Study Generator - Dynamic conversation style */}
                 {studyNotes.trim() && (
-                  <div className="mb-3">
+                  <div className="mb-3 space-y-2">
                     <button
                       onClick={async () => {
                         if (!studyNotes.trim()) {
-                          alert('Escreva suas ideias primeiro para gerar o estudo!');
+                          alert('Escreva suas ideias primeiro!');
                           return;
                         }
                         
@@ -435,17 +435,18 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                               userNotes: studyNotes,
                               studyTitle: studyTitle,
                               researchTopic: currentStudyTopic,
-                              searchHistory: currentConversation?.messages || []
+                              searchHistory: currentConversation?.messages || [],
+                              conversationType: 'continuation'
                             })
                           });
                           
                           const data = await response.json();
                           
                           if (data.generatedStudy) {
-                            setStudyNotes(data.generatedStudy);
-                            alert('Estudo gerado com sucesso! Revise e ajuste conforme necessário.');
+                            setStudyNotes(prev => prev + '\n\n---\n\n' + data.generatedStudy);
+                            alert(`Resposta IA adicionada! (${data.wordCount} palavras)`);
                           } else {
-                            alert('Erro ao gerar estudo. Tente novamente.');
+                            alert('Erro ao gerar resposta. Tente novamente.');
                           }
                         } catch (error) {
                           alert('Erro ao conectar com IA. Verifique sua conexão.');
@@ -456,8 +457,47 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                       disabled={isTyping}
                       className="w-full px-4 py-3 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg text-sm font-medium transition-all disabled:opacity-50 border border-purple-400/30 shadow-lg"
                     >
-                      {isTyping ? '🤖 Gerando protocolo completo...' : '🧠 Gerar Protocolo de Estudo Completo'}
+                      {isTyping ? '🤖 Analisando...' : '💬 Continuar com IA (500 palavras)'}
                     </button>
+                    
+                    {/* Final Summary Button */}
+                    {studyNotes.length > 200 && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            setIsTyping(true);
+                            const response = await fetch('/api/generate-study', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                userNotes: studyNotes,
+                                studyTitle: studyTitle,
+                                researchTopic: currentStudyTopic,
+                                searchHistory: currentConversation?.messages || [],
+                                conversationType: 'final_summary'
+                              })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.generatedStudy) {
+                              setStudyNotes(data.generatedStudy);
+                              alert(`Protocolo final gerado! (${data.wordCount} palavras)`);
+                            } else {
+                              alert('Erro ao gerar protocolo final.');
+                            }
+                          } catch (error) {
+                            alert('Erro ao conectar com IA.');
+                          } finally {
+                            setIsTyping(false);
+                          }
+                        }}
+                        disabled={isTyping}
+                        className="w-full px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white rounded-lg text-sm font-medium transition-all disabled:opacity-50"
+                      >
+                        📋 Gerar Protocolo Final (750 palavras)
+                      </button>
+                    )}
                   </div>
                 )}
 

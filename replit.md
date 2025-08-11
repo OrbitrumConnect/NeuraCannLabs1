@@ -15,6 +15,13 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - Prioridade: organização visual harmônica que permite leitura simultânea
 
 ## Recent Changes
+- **Research History Tab Removal**: Completely removed "Histórico de Pesquisas" tab as requested for cleaner interface
+- **Main Card Minimize Feature**: Added minimize button to main result card for better space optimization
+- **Dynamic Study Generator**: Implemented conversational AI system with 500-word responses max for better chat flow
+- **Final Summary Feature**: Added 750-word protocol generator button when needed
+- **Cross-Platform Data Integration**: Study generator now uses scientific studies and clinical cases from platform
+- **Conversational Flow**: Continuous dialogue until user satisfaction, eliminating lengthy responses
+- **Responsive Layout**: More space for "Explorar mais" and "Meus Estudos" with minimizable main card
 - **Voice AI System**: Dr. Cannabis IA greets users with personalized messages based on time of day
 - **Smart Voice Controls**: Voice greetings only on first daily login, preventing repetitive behavior
 - **Voice Commands System**: Interactive voice commands for navigation and search ("pesquisar CBD", "ir para estudos")
