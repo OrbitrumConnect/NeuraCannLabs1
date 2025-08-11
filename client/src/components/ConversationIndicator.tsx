@@ -32,13 +32,16 @@ export function ConversationIndicator({
         Conversação ativa ({Math.floor(messageCount / 2)} trocas)
       </span>
       <button
-        onClick={onToggleHistory}
+        onClick={() => {
+          onToggleHistory(); // Abre o rascunho de estudo
+          onMinimizeMainCard?.(); // Minimiza o card principal para mostrar botões
+        }}
         className={`text-xs flex items-center gap-1 ${
           showingHistory 
             ? 'text-orange-400 hover:text-orange-300' 
             : 'text-blue-400 hover:text-blue-300'
         }`}
-        title={showingHistory ? "Voltar à pesquisa" : "Ver histórico completo"}
+        title={showingHistory ? "Voltar à pesquisa" : "Abrir Explorar mais e Rascunho"}
       >
         <Eye className="w-3 h-3" />
         {showingHistory ? 'Pesquisar' : 'Ver'}
