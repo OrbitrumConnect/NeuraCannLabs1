@@ -216,8 +216,8 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
           <i className="fas fa-brain text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-base sm:text-2xl font-bold text-white">Sistema de Submissão de Estudos</h1>
-          <p className="text-xs sm:text-sm text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
+          <h1 className="text-base sm:text-2xl font-bold text-white">Meu Estudo - NEUROCANN LAB</h1>
+          <p className="text-xs sm:text-sm text-gray-400">Espaço onde o prescritor cria, acompanha e publica estudos científicos</p>
         </div>
       </div>
 
@@ -257,7 +257,7 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
           data-testid="button-my-submissions"
         >
           <i className="fas fa-list mr-2" />
-          Meus Estudos ({submissions?.length || 0})
+          Estudos & Status ({submissions?.length || 0})
         </Button>
       </div>
 
@@ -417,9 +417,9 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
                 {createSubmissionMutation.isPending ? (
                   <i className="fas fa-spinner fa-spin mr-2" />
                 ) : (
-                  <i className="fas fa-save mr-2" />
+                  <i className="fas fa-brain mr-2" />
                 )}
-                Criar Estudo (Rascunho)
+                Gerar Estudo com IA + PMIDs
               </Button>
             </CardContent>
           </Card>

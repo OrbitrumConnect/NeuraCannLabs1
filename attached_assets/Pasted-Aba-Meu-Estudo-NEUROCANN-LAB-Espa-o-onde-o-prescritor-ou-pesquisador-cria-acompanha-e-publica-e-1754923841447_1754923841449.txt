@@ -1,0 +1,92 @@
+Aba “Meu Estudo” – NEUROCANN LAB
+Espaço onde o prescritor ou pesquisador cria, acompanha e publica estudos científicos dentro do app.
+
+1. Estrutura Principal
+Botão “Criar Estudo”
+
+Inicia o fluxo de geração de estudo a partir de:
+
+📄 Texto livre
+
+🎤 Comando de voz (“criar estudo sobre epilepsia e CBD”)
+
+📑 Importação de PDF ou link de artigo existente
+
+Lista de Estudos Criados
+
+Status de cada estudo:
+
+🟡 Em Análise pela Comunidade
+
+🟢 Aprovado por Especialista
+
+🔵 Publicado no App
+
+🔴 Revisão Solicitada
+
+Filtros e Busca
+
+Por status, especialidade médica, data de criação, tags (ex.: “dor crônica”, “THC”, “neurologia”).
+
+2. Etapas do Fluxo de Estudo
+Criação
+
+Usuário inicia com dados iniciais (título, resumo, objetivos).
+
+IA sugere referências científicas (PMIDs, Scielo, Anvisa).
+
+Discussão Comunitária
+
+Fórum interno exclusivo para médicos e pesquisadores.
+
+Comentários e sugestões ficam registrados.
+
+Revisão por Especialista
+
+Médico como Dr. Eduardo Faveret revisa e dá parecer.
+
+Pode aprovar, solicitar ajustes ou rejeitar.
+
+Publicação no App
+
+Estudo fica visível para a comunidade médica ou público geral (dependendo da permissão).
+
+Possibilidade de gerar PDF com DOI e citação formal.
+
+Registro Externo (opcional)
+
+Integração com ORCID / DOI.
+
+Submissão para periódicos ou congressos.
+
+3. Recursos Extras
+Ranking de Contribuidores
+
+Lista dos médicos/pesquisadores que mais colaboraram em estudos.
+
+Estudos Relacionados
+
+IA sugere outros trabalhos semelhantes ou complementares.
+
+Alertas Regulatórios
+
+Se o estudo entrar em conflito com RDCs ou normas ANVISA, sistema alerta automaticamente.
+
+Anonimização Automática
+
+Todos os dados de casos clínicos têm dados pessoais removidos antes da publicação.
+
+4. Benefícios Estratégicos
+Transforma o app em plataforma científica viva.
+
+Gera credibilidade com produção de conteúdo original.
+
+Cria um acervo próprio de estudos NEUROCANN.
+
+Atrai prescritores e pesquisadores para dentro do ecossistema.
+
+Abre portas para parcerias com universidades e órgãos de fomento.
+
+Se quiser, posso já montar o layout visual dessa aba “Meu Estudo”, com botões, status e fluxo, para você ver exatamente como ficaria no app e já integrar no NEUROCANN LAB v3.0.
+
+Quer que eu faça esse mockup agora?
