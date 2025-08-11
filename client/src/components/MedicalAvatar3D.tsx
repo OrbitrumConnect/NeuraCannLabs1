@@ -214,9 +214,9 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: (() => {
-            // Avatar: usa mesma fórmula da linha - sempre que linha passar (2x por ciclo)
+            // Avatar: posição correta 15%-30% - sincronizado com linha amarela 32%-42%
             const linePos = (scanPosition * 2) % 100;
-            const isYellowZone = linePos >= 15 && linePos <= 25;
+            const isYellowZone = linePos >= 15 && linePos <= 30;
             
             return isYellowZone
               ? 'drop-shadow(0 0 25px rgba(255,235,59,0.6)) drop-shadow(0 0 50px rgba(255,235,59,0.4)) brightness(1.2) saturate(1.1)' // Amarelo quando linha amarela
