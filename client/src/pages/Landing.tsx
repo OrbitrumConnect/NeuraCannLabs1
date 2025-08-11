@@ -120,7 +120,7 @@ export default function Landing() {
 
       {/* Header - Mobile Optimized */}
       <header className="relative z-50 bg-background/40 backdrop-blur-md border-b border-primary/30 sticky top-0 transition-all duration-300">
-        <div className="container mx-auto px-2 sm:px-3 py-2 sm:py-3">
+        <div className="container mx-auto px-2 sm:px-3 py-1 sm:py-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-1.5 sm:space-x-2 group cursor-pointer">
               <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3">

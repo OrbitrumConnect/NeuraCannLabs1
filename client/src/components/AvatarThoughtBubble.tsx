@@ -59,21 +59,21 @@ export function AvatarThoughtBubble({ isActive, context = 'overview', className 
       {/* Thought Bubble */}
       <div className="relative">
         {/* Main bubble */}
-        <div className="bg-gradient-to-br from-cyber-gray/95 to-cyber-light/95 backdrop-blur-md rounded-lg px-2 py-1 border border-neon-cyan/40 shadow-lg shadow-neon-cyan/20 max-w-40 animate-bounce-subtle">
-          <p className="text-xs text-center text-neon-cyan font-medium leading-tight">
+        <div className="bg-gradient-to-br from-cyber-gray/95 to-cyber-light/95 backdrop-blur-md rounded-lg px-2 py-1 border border-green-500/40 shadow-lg shadow-green-500/20 max-w-40 animate-bounce-subtle">
+          <p className="text-xs text-center text-green-400 font-medium leading-tight">
             {currentMessage}
           </p>
         </div>
         
         {/* Bubble tail - muito pequeno e colado */}
         <div className="absolute top-full left-1/2 transform -translate-x-1/2">
-          <div className="w-2 h-2 bg-cyber-gray/95 rotate-45 border-r border-b border-neon-cyan/40"></div>
+          <div className="w-2 h-2 bg-cyber-gray/95 rotate-45 border-r border-b border-green-500/40"></div>
         </div>
         
         {/* Small floating dots for thought effect - bem próximos */}
         <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1">
-          <div className="w-0.5 h-0.5 bg-neon-cyan/60 rounded-full animate-pulse"></div>
-          <div className="w-1 h-1 bg-neon-cyan/40 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
+          <div className="w-0.5 h-0.5 bg-green-500/60 rounded-full animate-pulse"></div>
+          <div className="w-1 h-1 bg-green-500/40 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
         </div>
       </div>
     </div>
