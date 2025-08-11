@@ -129,9 +129,8 @@ export default function DashboardLayout({
             ))}
           </nav>
           
-          {/* Logout & Theme Toggle - Desktop */}
+          {/* Logout - Desktop */}
           <div className="hidden lg:flex items-center space-x-3 ml-6">
-            <ThemeToggle />
             <Button
               onClick={handleLogout}
               variant="ghost"
@@ -145,7 +144,6 @@ export default function DashboardLayout({
           </div>
           
           <div className="lg:hidden flex items-center space-x-2">
-            <ThemeToggle />
             <button
               id="menuToggle"
               onClick={onMenuClick}

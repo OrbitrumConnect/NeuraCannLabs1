@@ -210,13 +210,13 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
   };
 
   return (
-    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-6">
-      <div className="flex items-center mb-6 sm:mb-8">
+    <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8 pt-12 sm:pt-14">
+      <div className="flex items-center mb-3 sm:mb-4">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
           <i className="fas fa-brain text-white text-lg sm:text-2xl" />
         </div>
         <div>
-          <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-white">Sistema de Submissão de Estudos</h1>
+          <h1 className="text-base sm:text-2xl font-bold text-white">Sistema de Submissão de Estudos</h1>
           <p className="text-xs sm:text-sm text-gray-400">Crie, edite e submeta estudos científicos para análise profissional</p>
         </div>
       </div>

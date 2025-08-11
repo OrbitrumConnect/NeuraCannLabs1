@@ -141,16 +141,16 @@ export default function ForumDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-dark text-gray-100 p-1 sm:p-4">
+    <div className="min-h-screen bg-cyber-dark text-gray-100 p-3 sm:p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header - Mobile Optimized */}
         <div className="mb-3 sm:mb-4 pt-12 sm:pt-14">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 mb-3 sm:mb-4">
             <div>
-              <h1 className="text-base sm:text-2xl md:text-3xl font-bold neon-text mb-1 sm:mb-2">
+              <h1 className="text-base sm:text-2xl font-bold neon-text mb-1 sm:mb-2">
                 💬 Fórum de Discussão Científica
               </h1>
-              <p className="text-xs sm:text-base text-gray-400">
+              <p className="text-xs sm:text-sm text-gray-400">
                 Espaço colaborativo para médicos discutirem cannabis medicinal
               </p>
             </div>

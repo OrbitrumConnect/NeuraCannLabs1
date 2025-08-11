@@ -33,14 +33,14 @@ export default function ProfileDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <div className="flex items-center mb-8">
+    <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8 pt-12 sm:pt-14">
+      <div className="flex items-center mb-3 sm:mb-4">
         <div className="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center mr-4">
           <i className="fas fa-user-circle text-white text-2xl" />
         </div>
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">Perfil do Usuário</h1>
-          <p className="text-base text-gray-400">Configurações e preferências profissionais</p>
+          <h1 className="text-base sm:text-2xl font-bold text-white">Perfil do Usuário</h1>
+          <p className="text-xs sm:text-sm text-gray-400">Configurações e preferências profissionais</p>
         </div>
       </div>
 

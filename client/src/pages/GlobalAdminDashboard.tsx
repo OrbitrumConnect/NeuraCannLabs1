@@ -150,20 +150,20 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 p-3 sm:p-4 pt-12 sm:pt-14">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-2xl sm:text-4xl font-bold text-white mb-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+              <h1 className="text-base sm:text-2xl font-bold text-white mb-2 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
                 🧠 Central de Inteligência Cannabis Global
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30 w-fit">
                   <Activity className="w-4 h-4 mr-1" />
                   TEMPO REAL
                 </span>
               </h1>
-              <p className="text-base text-slate-300">
+              <p className="text-xs sm:text-sm text-slate-300">
                 Monitoramento científico mundial • Dados da ANVISA, PubMed, ClinicalTrials.gov • Alimentando Dr. Cannabis IA
               </p>
             </div>
