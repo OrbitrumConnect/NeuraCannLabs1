@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useLocation } from "wouter";
 import DashboardLayout from "@/components/DashboardLayout";
 import ImprovedCosmicMap from "@/components/ImprovedCosmicMap";
+import LabIntegrationModule from "@/components/LabIntegrationModule";
 import ScientificDashboard from "./ScientificDashboard";
 import ClinicalDashboard from "./ClinicalDashboard";
 import AlertsDashboard from "./AlertsDashboard";
@@ -147,13 +148,15 @@ interface OverviewDashboardProps {
 function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-1 sm:px-4 py-3 sm:py-8">
+      {/* Integração Laboratorial - Moved to top position */}
+      <LabIntegrationModule />
+      
       {/* Cosmic Knowledge Map */}
       <div className="mb-8">
         <ImprovedCosmicMap 
           onPlanetClick={onPlanetClick} 
           activeDashboard={activeDashboard} 
           onSearch={onSearch}
-
         />
       </div>
     </section>
