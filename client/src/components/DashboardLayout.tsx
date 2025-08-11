@@ -101,6 +101,12 @@ export default function DashboardLayout({
           </div>
           
           <div className="flex items-center space-x-4">
+            {/* Analytics Button */}
+            <a href="/analytics" className="hidden lg:flex items-center space-x-2 px-3 py-2 rounded-lg bg-green-500/20 hover:bg-green-500/30 transition-colors border border-green-500/30">
+              <i className="fas fa-chart-line text-green-400 text-sm" />
+              <span className="text-green-400 text-sm font-medium">Analytics</span>
+            </a>
+            
           <nav className="hidden lg:flex items-center space-x-6">
             {dashboardOptions.map((option) => (
               <button
