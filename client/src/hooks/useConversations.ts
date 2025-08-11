@@ -176,6 +176,30 @@ export function useConversations() {
     setCurrentConversation(docConv);
   };
 
+  const createSynthesis = (synthesis: string, userPrompt: string) => {
+    const synthesisConv: Conversation = {
+      id: `synthesis-${Date.now()}`,
+      title: `🧠 Síntese: ${userPrompt.length > 30 ? userPrompt.substring(0, 30) + '...' : userPrompt}`,
+      messages: [
+        {
+          role: 'user',
+          content: userPrompt,
+          timestamp: Date.now() - 1000
+        },
+        {
+          role: 'assistant',
+          content: synthesis,
+          timestamp: Date.now()
+        }
+      ],
+      createdAt: Date.now(),
+      lastActivity: Date.now()
+    };
+
+    setConversations(prev => [synthesisConv, ...prev]);
+    setCurrentConversation(synthesisConv);
+  };
+
   return {
     conversations,
     currentConversation,
@@ -185,6 +209,7 @@ export function useConversations() {
     selectConversation,
     mergeConversations,
     createDocument,
+    createSynthesis,
     clearCurrentConversation: () => setCurrentConversation(null)
   };
 }

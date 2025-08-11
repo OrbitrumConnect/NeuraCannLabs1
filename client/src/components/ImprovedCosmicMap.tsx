@@ -124,6 +124,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     selectConversation,
     mergeConversations,
     createDocument,
+    createSynthesis,
     clearCurrentConversation
   } = useConversations();
 
@@ -290,6 +291,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             {/* Conversation Indicator */}
             <ConversationIndicator 
               messageCount={currentConversation?.messages.length || 0}
+              messages={currentConversation?.messages || []}
               onClear={() => createNewConversation()}
             />
             
@@ -401,6 +403,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         onDeleteConversation={deleteConversation}
         onMergeConversations={mergeConversations}
         onCreateDocument={createDocument}
+        onCreateSynthesis={createSynthesis}
       />
 
 {/* Planets removed - clean area above search bar */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { MessageCircle, Plus, Trash2, Merge, FileText, X } from 'lucide-react';
+import { MessageCircle, Plus, Trash2, Merge, FileText, X, Brain } from 'lucide-react';
+import { ConversationSynthesis } from './ConversationSynthesis';
 
 interface Conversation {
   id: string;
@@ -17,6 +18,7 @@ interface ConversationManagerProps {
   onDeleteConversation: (id: string) => void;
   onMergeConversations: (ids: string[]) => void;
   onCreateDocument: (conversations: string[]) => void;
+  onCreateSynthesis: (synthesis: string, userPrompt: string) => void;
 }
 
 export function ConversationManager({
@@ -26,11 +28,13 @@ export function ConversationManager({
   onCreateNew,
   onDeleteConversation,
   onMergeConversations,
-  onCreateDocument
+  onCreateDocument,
+  onCreateSynthesis
 }: ConversationManagerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedForMerge, setSelectedForMerge] = useState<string[]>([]);
   const [mergeMode, setMergeMode] = useState(false);
+  const [showSynthesis, setShowSynthesis] = useState(false);
 
   const handleMerge = () => {
     if (selectedForMerge.length >= 2) {
@@ -48,6 +52,19 @@ export function ConversationManager({
     }
   };
 
+  const handleShowSynthesis = () => {
+    if (selectedForMerge.length >= 1) {
+      setShowSynthesis(true);
+    }
+  };
+
+  const handleCreateSynthesis = (synthesis: string, userPrompt: string) => {
+    onCreateSynthesis(synthesis, userPrompt);
+    setSelectedForMerge([]);
+    setMergeMode(false);
+    setIsOpen(false);
+  };
+
   const toggleSelection = (id: string) => {
     setSelectedForMerge(prev => 
       prev.includes(id) 
@@ -61,12 +78,12 @@ export function ConversationManager({
       <div className="fixed top-4 right-4 z-50">
         <button
           onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-3 py-2 bg-purple-600/80 hover:bg-purple-600 text-white rounded-lg transition-all"
-          title="Gerenciar Conversas"
+          className="flex items-center gap-2 px-3 py-2 bg-purple-600/90 hover:bg-purple-600 text-white rounded-lg transition-all shadow-lg border border-purple-400/30"
+          title="Gerenciar Conversas - Clique para ver todas as conversas"
         >
-          <MessageCircle className="w-4 h-4" />
-          <span className="text-sm hidden sm:inline">
-            {conversations.length} conversas
+          <MessageCircle className="w-5 h-5" />
+          <span className="text-sm font-medium">
+            {conversations.length > 0 ? `${conversations.length} conversas` : 'Conversas'}
           </span>
         </button>
       </div>
@@ -74,7 +91,7 @@ export function ConversationManager({
   }
 
   return (
-    <div className="fixed top-4 right-4 w-80 max-h-96 bg-black/90 backdrop-blur-xl rounded-xl border border-purple-500/30 z-50 overflow-hidden">
+    <div className="fixed top-4 right-4 w-80 max-h-96 bg-black/95 backdrop-blur-xl rounded-xl border border-purple-500/50 z-50 overflow-hidden shadow-2xl">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-purple-500/20">
         <h3 className="text-lg font-semibold text-purple-300">Conversas</h3>
@@ -83,15 +100,15 @@ export function ConversationManager({
             <>
               <button
                 onClick={onCreateNew}
-                className="p-1 text-green-400 hover:text-green-300"
+                className="px-2 py-1 text-green-400 hover:text-green-300 hover:bg-green-400/10 rounded text-xs"
                 title="Nova Conversa"
               >
                 <Plus className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setMergeMode(true)}
-                className="p-1 text-blue-400 hover:text-blue-300"
-                title="Mesclar/Exportar"
+                className="px-2 py-1 text-blue-400 hover:text-blue-300 hover:bg-blue-400/10 rounded text-xs"
+                title="Mesclar/Exportar Conversas"
               >
                 <Merge className="w-4 h-4" />
               </button>
@@ -113,6 +130,14 @@ export function ConversationManager({
                 title="Criar Documento"
               >
                 <FileText className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleShowSynthesis}
+                disabled={selectedForMerge.length === 0}
+                className="p-1 text-cyan-400 hover:text-cyan-300 disabled:opacity-50"
+                title="Síntese Inteligente"
+              >
+                <Brain className="w-4 h-4" />
               </button>
               <button
                 onClick={() => {
@@ -194,6 +219,9 @@ export function ConversationManager({
           <div className="p-6 text-center text-gray-400">
             <MessageCircle className="w-8 h-8 mx-auto mb-2 opacity-50" />
             <p className="text-sm">Nenhuma conversa ainda</p>
+            <p className="text-xs text-gray-500 mt-2">
+              Faça uma pergunta ao Dr. Cannabis IA para começar
+            </p>
           </div>
         )}
       </div>
@@ -206,9 +234,20 @@ export function ConversationManager({
           </p>
           <p className="text-xs text-gray-400 mt-1">
             Mesclar: combina em uma nova conversa<br/>
-            Documento: cria texto estruturado
+            Documento: cria texto estruturado<br/>
+            Síntese: análise inteligente personalizada
           </p>
         </div>
+      )}
+
+      {/* Synthesis Modal */}
+      {showSynthesis && (
+        <ConversationSynthesis
+          conversations={conversations}
+          selectedConversationIds={selectedForMerge}
+          onCreateSynthesis={handleCreateSynthesis}
+          onClose={() => setShowSynthesis(false)}
+        />
       )}
     </div>
   );
