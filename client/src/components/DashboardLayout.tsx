@@ -6,6 +6,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { ThemeToggle } from "./ThemeToggle";
 
 
 interface DashboardLayoutProps {
@@ -128,8 +129,9 @@ export default function DashboardLayout({
             ))}
           </nav>
           
-          {/* Logout - Desktop */}
+          {/* Logout & Theme Toggle - Desktop */}
           <div className="hidden lg:flex items-center space-x-3 ml-6">
+            <ThemeToggle />
             <Button
               onClick={handleLogout}
               variant="ghost"
@@ -142,15 +144,18 @@ export default function DashboardLayout({
             </Button>
           </div>
           
-          <button
-            id="menuToggle"
-            onClick={onMenuClick}
-            className="lg:hidden w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
-            data-testid="mobile-menu-toggle"
-            aria-label="Menu"
-          >
-            <i className="fas fa-bars text-neon-cyan text-base" />
-          </button>
+          <div className="lg:hidden flex items-center space-x-2">
+            <ThemeToggle />
+            <button
+              id="menuToggle"
+              onClick={onMenuClick}
+              className="w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
+              data-testid="mobile-menu-toggle"
+              aria-label="Menu"
+            >
+              <i className="fas fa-bars text-neon-cyan text-base" />
+            </button>
+          </div>
           </div>
         </div>
       </header>

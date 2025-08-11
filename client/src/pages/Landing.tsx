@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { 
   Brain, 
   Shield, 
@@ -135,6 +136,7 @@ export default function Landing() {
               </div>
             </div>
             <div className="flex items-center space-x-1.5 sm:space-x-2">
+              <ThemeToggle />
               <Button 
                 variant="ghost" 
                 className="text-foreground hover:bg-foreground/10 hover:scale-105 transition-all duration-300 group h-7 sm:h-8 px-2 sm:px-3 text-xs sm:text-sm" 

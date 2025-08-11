@@ -40,7 +40,6 @@ function App() {
         <ThemeProvider>
           <ScanProvider>
             <div>
-              <ThemeToggle />
               <Toaster />
               <Router />
             </div>
