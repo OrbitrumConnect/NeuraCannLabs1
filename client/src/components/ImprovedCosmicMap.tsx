@@ -341,7 +341,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Search Interface - Clean mobile flow, Desktop overlay - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="mt-8 mx-3 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl sm:px-0">
+        <div className="mt-8 mx-3 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-[60] w-full max-w-2xl sm:px-0">
           <div className="bg-black/40 backdrop-blur-lg rounded-xl border border-white/10 p-3 sm:p-6">
             
             {/* Conversation Indicator */}
@@ -383,7 +383,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
       {isDrAIActive && formattedResult && (
-        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
+        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-[60] sm:px-0">
           <MainCard 
             result={formattedResult} 
             isMinimized={isMainCardMinimized}
