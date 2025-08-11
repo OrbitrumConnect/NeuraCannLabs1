@@ -74,15 +74,15 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Avatar: 22% a 32% (1 segundo mais rápido que linha amarela 32%-42%)
+  // Avatar: amarelo quando linha vertical está amarela (32%-42%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 22 && position <= 32;
+    const isScanning = position >= 32 && position <= 42;
     setAvatarScanning(isScanning);
     
-    // Debug visual para confirmar detecção - ativa toda vez que linha passar
+    // Debug: Avatar amarelo quando linha amarela - sempre juntos
     if (isScanning) {
-      console.log(`🟡 AVATAR AMARELO! Posição: ${position.toFixed(1)}%`);
+      console.log(`🟡 AVATAR + LINHA AMARELOS! Posição: ${position.toFixed(1)}%`);
     }
   };
 
