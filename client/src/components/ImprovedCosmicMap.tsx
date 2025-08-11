@@ -443,8 +443,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             </div>
           )}
 
-          {/* Study Notes - Focused on drafting studies - Mostrar apenas no modo estudos */}
-          {mainCardMode === 'study' && showConversationHistory && (
+          {/* Study Notes - Focused on drafting studies - Mostrar sempre que showConversationHistory estiver ativo */}
+          {showConversationHistory && (
             <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
               <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
                 <h4 className="text-sm font-medium text-blue-300">
