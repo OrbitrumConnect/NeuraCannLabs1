@@ -421,9 +421,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   <div className="max-h-40 overflow-y-auto space-y-2 bg-purple-900/20 rounded p-2">
                     {studyHelperMessages.length === 0 ? (
                       <div className="text-center py-4">
-                        <div className="text-purple-400 text-xs mb-2">👋 Olá! Sou seu assistente para criar estudos médicos</div>
+                        <div className="text-purple-400 text-xs mb-2">👋 Dr. Cannabis IA aqui!</div>
                         <div className="text-gray-400 text-xs">
-                          Pergunte sobre metodologia, estrutura de estudos, análise estatística, etc.
+                          Vamos conversar sobre seu estudo? Pode perguntar qualquer coisa!
                         </div>
                       </div>
                     ) : (
@@ -515,7 +515,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                       type="text"
                       value={studyHelperInput}
                       onChange={(e) => setStudyHelperInput(e.target.value)}
-                      placeholder="Como posso ajudar com seu estudo?"
+                      placeholder="Digite sua pergunta..."
                       className="flex-1 px-2 py-1 text-xs bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50"
                       disabled={studyHelperTyping}
                     />

@@ -541,192 +541,185 @@ function generateIntelligentSynthesis(conversations: any[], userPrompt: string, 
   return synthesis;
 }
 
-// Study Helper AI response generator
+// Study Helper AI response generator - More conversational and practical
 function generateStudyHelperResponse(query: string, conversationHistory: any[]): string {
   const queryLower = query.toLowerCase();
   
-  // Detect intent and provide specialized responses
-  if (queryLower.includes('metodologia') || queryLower.includes('desenho') || queryLower.includes('estudo')) {
-    return `## Metodologia de Estudo 📊
+  // More natural, conversational responses
+  if (queryLower.includes('olá') || queryLower.includes('oi') || conversationHistory.length === 0) {
+    return `Olá! Sou Dr. Cannabis IA, seu assistente médico para estudos.
 
-**Para cannabis medicinal, recomendo:**
+Como posso te ajudar hoje? Você pode me perguntar sobre qualquer aspecto do seu estudo:
 
-### Desenho do Estudo
-- **Ensaio Clínico Randomizado** (padrão ouro)
-- **Duplo-cego placebo-controlado**
-- **Crossover** (para estudos de dosagem)
+• Planejamento e metodologia
+• Questões éticas e regulamentares  
+• Análise de dados
+• Redação científica
+• Financiamento
 
-### Critérios de Inclusão
-- Pacientes com diagnóstico confirmado
-- Idade entre 18-65 anos
-- Consentimento informado assinado
-- Falha terapêutica com tratamentos convencionais
+O que você tem em mente?`;
+  }
 
-### Critérios de Exclusão
-- Gestantes/lactantes
-- Histórico de abuso de substâncias
-- Doenças psiquiátricas graves não controladas
-- Interações medicamentosas significativas
+  if (queryLower.includes('metodologia') || queryLower.includes('como fazer') || queryLower.includes('desenho')) {
+    return `Ótima pergunta! Para um estudo bem estruturado de cannabis medicinal, vamos pensar juntos:
 
-### Desfechos Primários
-- Redução da dor (escala EVA 0-10)
-- Melhora da qualidade de vida (SF-36)
-- Redução de convulsões (frequência/intensidade)
+**Que tipo de estudo você quer fazer?**
+- Observacional (mais simples, acompanha pacientes)
+- Experimental (testa intervenções, mais complexo)
 
-**Precisa de detalhes específicos sobre algum aspecto?**`;
+**Qual sua população alvo?**
+- Pacientes com dor crônica?
+- Epilepsia refratária?
+- Câncer?
+
+**Recursos disponíveis?**
+- Orçamento estimado
+- Tempo para conclusão
+- Equipe envolvida
+
+Me conte mais sobre sua ideia que posso te orientar melhor!`;
+  }
+
+  if (queryLower.includes('pacientes') || queryLower.includes('critérios') || queryLower.includes('seleção')) {
+    return `Perfeito! A seleção de pacientes é crucial para um bom estudo.
+
+**Critérios básicos que recomendo:**
+
+✅ **Incluir:**
+- Diagnóstico confirmado da condição
+- Falha com tratamentos convencionais
+- Idade apropriada (geralmente 18+ anos)
+- Capacidade de consentimento
+
+❌ **Excluir:**
+- Gestantes
+- Problemas psiquiátricos graves descontrolados
+- Uso de drogas ilícitas
+- Medicações que interagem
+
+**Quantos pacientes você consegue recrutar?** Isso vai definir o poder estatístico do seu estudo.`;
+  }
+
+  if (queryLower.includes('ética') || queryLower.includes('cep') || queryLower.includes('comitê')) {
+    return `Ah, a parte burocrática! É chata mas essencial. Vou te dar o caminho das pedras:
+
+**Primeira etapa - CEP:**
+1. Protocolo completo na Plataforma Brasil
+2. TCLE em linguagem simples
+3. Currículo da equipe atualizado
+4. Orçamento detalhado
+
+**Segunda etapa - ANVISA (se usar produtos):**
+- Autorização especial para cannabis
+- Documentação do produto
+- Protocolo de segurança
+
+**Dica importante:** Comece o CEP ANTES de tudo. Demora 2-3 meses!
+
+Já tem o protocolo escrito ou precisa de ajuda para estruturar?`;
   }
 
   if (queryLower.includes('estatística') || queryLower.includes('análise') || queryLower.includes('dados')) {
-    return `## Análise Estatística 📈
+    return `Estatística não precisa ser um bicho de sete cabeças!
 
-**Planejamento Estatístico:**
+**Vamos por partes:**
 
-### Cálculo Amostral
-- **Poder:** 80% (β = 0.20)
-- **Alfa:** 5% (α = 0.05)
-- **Diferença clinicamente relevante:** 30% na escala principal
-- **Margem de erro:** ±5%
+📊 **Quantos pacientes precisa?**
+Depende do efeito que você espera ver. Para cannabis, geralmente:
+- Dor: 30-50 por grupo (diferença de 30% na escala)
+- Convulsões: 20-40 por grupo (redução de 50%)
 
-### Testes Estatísticos
-- **Dados contínuos:** Teste t-Student ou Mann-Whitney
-- **Dados categóricos:** Qui-quadrado ou Fisher
-- **Comparação antes/depois:** Teste t pareado
-- **Múltiplas variáveis:** ANOVA ou Kruskal-Wallis
+📈 **Testes simples:**
+- Antes vs Depois: teste t pareado
+- Dois grupos: teste t independente
+- Categorias: qui-quadrado
 
-### Software Recomendado
-- **R Studio** (gratuito, mais completo)
-- **SPSS** (pago, interface amigável)
-- **GraphPad Prism** (ideal para gráficos)
+**Software gratuito:** R Studio ou jamovi (mais fácil)
 
-### Análise de Segurança
-- **ITT** (Intention-to-treat)
-- **Per protocol** (análise de eficácia)
-- **Análise de eventos adversos**
-
-**Qual tipo de análise específica você precisa?**`;
+Que tipo de desfecho você quer medir? Dor, qualidade de vida, frequência de sintomas?`;
   }
 
-  if (queryLower.includes('ética') || queryLower.includes('cep') || queryLower.includes('aprovação')) {
-    return `## Aspectos Éticos e Regulatórios ⚖️
+  if (queryLower.includes('artigo') || queryLower.includes('publicar') || queryLower.includes('redação')) {
+    return `Publicar é o objetivo final! Vamos planejar desde agora:
 
-**Aprovações Necessárias:**
+**Estrutura básica:**
+1. **Introdução** - Por que seu estudo é importante?
+2. **Métodos** - Como você fez (seja bem detalhado)
+3. **Resultados** - O que encontrou (números e gráficos)
+4. **Discussão** - O que isso significa na prática?
 
-### CEP (Comitê de Ética em Pesquisa)
-- **Plataforma Brasil** - submissão obrigatória
-- **TCLE** detalhado e compreensível
-- **Protocolo completo** em português
-- **Currículo Lattes** da equipe atualizado
+**Revistas recomendadas:**
+- Revista Brasileira de Anestesiologia
+- Einstein (São Paulo)
+- Clinics
+- Cannabis and Cannabinoid Research
 
-### ANVISA (RDC 327/2019)
-- **Autorização especial** para cannabis medicinal
-- **Certificado de Boas Práticas de Fabricação**
-- **Comprovação de origem** dos produtos
-- **Protocolos de segurança** estabelecidos
+**Dica:** Escreva o método ANTES de começar o estudo. Vai te economizar muito tempo depois!
 
-### Documentação Obrigatória
-- **Protocolo de pesquisa** completo
-- **Brochura do investigador**
-- **Seguro de responsabilidade civil**
-- **Acordo de confidencialidade**
-
-### Prazo Médio
-- **CEP:** 30-60 dias
-- **ANVISA:** 60-120 dias
-- **Iniciação:** 4-6 meses após submissão
-
-**Precisa de ajuda com algum documento específico?**`;
+Em que fase está seu estudo?`;
   }
 
-  if (queryLower.includes('redação') || queryLower.includes('artigo') || queryLower.includes('publicação')) {
-    return `## Redação Científica 📝
+  if (queryLower.includes('dinheiro') || queryLower.includes('financiamento') || queryLower.includes('verba')) {
+    return `Dinheiro sempre é uma preocupação! Vamos ver as opções:
 
-**Estrutura do Artigo (IMRAD):**
+**Quanto você precisa?**
+- Estudo pequeno: R$ 50-100 mil
+- Estudo médio: R$ 200-300 mil  
+- Estudo grande: R$ 500 mil+
 
-### Introdução
-- **Background** da condição médica
-- **Gap** na literatura atual
-- **Justificativa** para cannabis medicinal
-- **Objetivo** claro e específico
+**Onde conseguir:**
+• **CNPq** - Chamadas anuais (março/abril)
+• **FAPESP** - Se for em SP, excelente opção
+• **Fundações locais** - Cada estado tem
+• **Indústria** - Parcerias com laboratórios
 
-### Metodologia
-- **Desenho** detalhado do estudo
-- **População** e critérios de seleção
-- **Intervenção** (doses, formulações)
-- **Desfechos** primários e secundários
-- **Análise estatística** planejada
+**Dica importante:** Comece a escrever o projeto 6 meses antes do edital!
 
-### Resultados
-- **Fluxograma** de participantes
-- **Tabela baseline** das características
-- **Análise primária** com IC 95%
-- **Eventos adversos** detalhados
-
-### Discussão
-- **Interpretação** dos resultados
-- **Comparação** com literatura
-- **Limitações** do estudo
-- **Implicações clínicas**
-
-**Revistas Recomendadas:**
-- Pain Medicine (IF: 4.4)
-- Cannabis Research (IF: 3.2)
-- Brazilian Journal of Pain
-
-**Em que seção você precisa de ajuda?**`;
+Você já tem algum financiamento parcial ou precisa de tudo?`;
   }
 
-  if (queryLower.includes('financiamento') || queryLower.includes('verba') || queryLower.includes('orçamento')) {
-    return `## Financiamento e Orçamento 💰
+  if (queryLower.includes('cronograma') || queryLower.includes('tempo') || queryLower.includes('quanto demora')) {
+    return `Bom planejamento é meio caminho andado!
 
-**Fontes de Financiamento:**
+**Timeline típico:**
 
-### Órgãos Públicos
-- **CNPq** - Chamadas universais
-- **FAPESP** - Auxílio regular à pesquisa
-- **CAPES** - Bolsas de pós-graduação
-- **FINEP** - Inovação tecnológica
+🗓️ **Preparação (4-6 meses):**
+- Protocolo e documentação
+- Aprovação CEP/ANVISA
+- Treinamento da equipe
 
-### Indústria Farmacêutica
-- **Parcerias público-privadas**
-- **Estudos fase II/III**
-- **Fornecimento de medicamentos**
+👥 **Recrutamento (6-12 meses):**
+- Seleção de pacientes
+- Aplicação dos critérios
+- Coleta baseline
 
-### Organizações Internacionais
-- **NIH** (EUA) - para colaborações
-- **European Consortium** - cannabis research
-- **Medical Cannabis Research** (Canadá)
+📊 **Seguimento (6-24 meses):**
+- Acompanhamento dos pacientes
+- Coleta de dados
+- Monitoramento de segurança
 
-### Itens do Orçamento
-- **Pessoal:** 40-50% do total
-- **Material de consumo:** 20-30%
-- **Equipamentos:** 15-25%
-- **Serviços terceirizados:** 10-15%
-- **Passagens e diárias:** 5-10%
+📝 **Análise e redação (3-6 meses):**
+- Análise estatística
+- Redação do artigo
+- Submissão
 
-**Orçamento médio:** R$ 200.000 - R$ 500.000 (24 meses)
+**Total:** 18-48 meses dependendo da complexidade.
 
-**Precisa de detalhamento de alguma fonte específica?**`;
+Que prazo você tem em mente?`;
   }
 
-  // Default response for general questions
-  return `## Assistente para Estudos Médicos 🧠
+  // Default conversational response
+  return `Estou aqui para te ajudar com seu estudo médico!
 
-Olá! Sou especializado em ajudar com **estudos de cannabis medicinal**.
+Pode me perguntar qualquer coisa sobre:
+• Como planejar a pesquisa
+• Seleção de pacientes  
+• Questões éticas e legais
+• Análise de dados
+• Como publicar os resultados
+• Onde conseguir financiamento
 
-**Posso te ajudar com:**
+**Exemplo:** "Como faço para estudar CBD em pacientes com dor?"
 
-🔬 **Metodologia** - Desenho do estudo, critérios, desfechos
-📊 **Estatística** - Cálculo amostral, testes, análises
-⚖️ **Ética** - CEP, ANVISA, documentação regulatória
-📝 **Redação** - Estrutura de artigos, submissão de periódicos
-💰 **Financiamento** - Fontes de verba, orçamento, editais
-🏥 **Logística** - Cronograma, equipe, infraestrutura
-
-**Exemplos de perguntas:**
-- "Como calcular o tamanho da amostra?"
-- "Quais documentos preciso para o CEP?"
-- "Como estruturar a metodologia?"
-- "Onde posso conseguir financiamento?"
-
-**O que você gostaria de saber sobre seu estudo?**`;
+O que você gostaria de saber?`;
 }
