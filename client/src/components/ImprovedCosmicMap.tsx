@@ -378,7 +378,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 setSearchTabs([]);
                 setCurrentResult(null);
                 setSearchTerm("");
-                setIsMainCardMinimized(false);
+                // Card principal abre normal, não minimizado
               }}
               onToggleHistory={() => setIsMainCardMinimized(!isMainCardMinimized)}
               showingHistory={!isMainCardMinimized}
