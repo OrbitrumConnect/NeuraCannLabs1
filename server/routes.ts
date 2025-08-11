@@ -512,6 +512,107 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // AI Search Route - CRITICAL for "Visão Geral" functionality
+  app.post("/api/ai-search", async (req, res) => {
+    try {
+      const { query, filter = 'todos' } = req.body;
+      
+      if (!query) {
+        return res.status(400).json({ error: "Query é obrigatória" });
+      }
+
+      // Get real data from storage
+      const [studies, cases, alerts] = await Promise.all([
+        storage.getScientificStudies(),
+        storage.getClinicalCases(), 
+        storage.getAlerts()
+      ]);
+
+      // Filter data based on query (case-insensitive search)
+      const searchTerm = query.toLowerCase();
+      
+      const filteredStudies = studies.filter(study => 
+        study.title.toLowerCase().includes(searchTerm) ||
+        study.description.toLowerCase().includes(searchTerm) ||
+        study.compound.toLowerCase().includes(searchTerm) ||
+        study.indication.toLowerCase().includes(searchTerm)
+      );
+
+      const filteredCases = cases.filter(case_ => 
+        case_.description.toLowerCase().includes(searchTerm) ||
+        case_.indication.toLowerCase().includes(searchTerm) ||
+        case_.outcome.toLowerCase().includes(searchTerm)
+      );
+
+      const filteredAlerts = alerts.filter(alert => 
+        alert.message.toLowerCase().includes(searchTerm) ||
+        alert.type.toLowerCase().includes(searchTerm)
+      );
+
+      // Generate contextual AI response based on found data
+      let aiResponse = `🔬 **Análise Cruzada para: "${query}"**\n\n`;
+      
+      if (filteredStudies.length > 0) {
+        aiResponse += `**📊 Estudos Científicos (${filteredStudies.length}):**\n`;
+        filteredStudies.slice(0, 2).forEach(study => {
+          aiResponse += `• **${study.title}**: ${study.description.substring(0, 100)}...\n`;
+          aiResponse += `  📍 Composto: ${study.compound} | Indicação: ${study.indication}\n\n`;
+        });
+      }
+      
+      if (filteredCases.length > 0) {
+        aiResponse += `**🏥 Casos Clínicos (${filteredCases.length}):**\n`;
+        filteredCases.slice(0, 2).forEach(case_ => {
+          aiResponse += `• **${case_.caseNumber}**: ${case_.indication}\n`;
+          aiResponse += `  📋 Resultado: ${case_.outcome}\n\n`;
+        });
+      }
+      
+      if (filteredAlerts.length > 0) {
+        aiResponse += `**⚠️ Alertas Regulatórios (${filteredAlerts.length}):**\n`;
+        filteredAlerts.slice(0, 2).forEach(alert => {
+          aiResponse += `• **${alert.type}**: ${alert.message.substring(0, 80)}...\n`;
+          aiResponse += `  🎯 Prioridade: ${alert.priority}\n\n`;
+        });
+      }
+
+      // Generate suggestions for sub-searches
+      const suggestions = [
+        `${query} dosagem`,
+        `${query} efeitos colaterais`, 
+        `${query} protocolo médico`,
+        `${query} interações medicamentosas`,
+        `${query} pediatria`,
+        `${query} estudos clínicos`
+      ];
+
+      const response = {
+        answer: aiResponse || `Nenhum resultado encontrado para "${query}". Tente termos como "epilepsia", "CBD", "cannabis medicinal", "dor crônica".`,
+        suggestions: suggestions.slice(0, 4),
+        results: {
+          studies: filteredStudies,
+          cases: filteredCases, 
+          alerts: filteredAlerts
+        },
+        meta: {
+          total: filteredStudies.length + filteredCases.length + filteredAlerts.length,
+          query: query,
+          timestamp: new Date().toISOString()
+        }
+      };
+
+      res.json(response);
+    } catch (error) {
+      console.error('Erro na busca AI:', error);
+      res.status(500).json({ 
+        error: "Erro interno do servidor",
+        answer: "Ocorreu um erro na busca. Tente novamente.",
+        suggestions: [],
+        results: { studies: [], cases: [], alerts: [] }
+      });
+    }
+  });
+
   // Critical modules endpoints
   console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
 
