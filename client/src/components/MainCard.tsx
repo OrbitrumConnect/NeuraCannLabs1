@@ -134,7 +134,15 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
             <div 
               className="text-xs sm:text-sm text-gray-300 leading-relaxed"
               dangerouslySetInnerHTML={{ 
-                __html: (typeof result.response === 'string' ? result.response : result.response?.response || '').replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>') 
+                __html: (() => {
+                  let text = '';
+                  if (typeof result.response === 'string') {
+                    text = result.response;
+                  } else if (result.response?.response && typeof result.response.response === 'string') {
+                    text = result.response.response;
+                  }
+                  return text.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>');
+                })()
               }} 
             />
           </div>
