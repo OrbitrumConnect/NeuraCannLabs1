@@ -458,6 +458,51 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                     className="w-full h-32 px-2 py-1 text-xs bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50 resize-none"
                   />
                   
+                  {/* AI Study Generator - New Feature */}
+                  {studyNotes.trim() && (
+                    <div className="mb-2">
+                      <button
+                        onClick={async () => {
+                          if (!studyNotes.trim()) {
+                            alert('Escreva suas ideias primeiro para gerar o estudo!');
+                            return;
+                          }
+                          
+                          try {
+                            setIsTyping(true);
+                            const response = await fetch('/api/generate-study', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                userNotes: studyNotes,
+                                studyTitle: studyTitle,
+                                researchTopic: currentStudyTopic,
+                                searchHistory: currentConversation?.messages || []
+                              })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.generatedStudy) {
+                              setStudyNotes(data.generatedStudy);
+                              alert('Estudo gerado com sucesso! Revise e ajuste conforme necessário.');
+                            } else {
+                              alert('Erro ao gerar estudo. Tente novamente.');
+                            }
+                          } catch (error) {
+                            alert('Erro ao conectar com IA. Verifique sua conexão.');
+                          } finally {
+                            setIsTyping(false);
+                          }
+                        }}
+                        disabled={isTyping}
+                        className="w-full px-2 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded text-xs font-medium transition-all disabled:opacity-50 border border-purple-400/30"
+                      >
+                        {isTyping ? '🤖 Gerando estudo...' : '🧠 Gerar Estudo Completo com IA'}
+                      </button>
+                    </div>
+                  )}
+
                   {/* Action Buttons */}
                   <div className="grid grid-cols-2 gap-2">
                     <button
@@ -511,7 +556,7 @@ ${currentConversation?.messages.map(m =>
                       }}
                       className="px-2 py-1 bg-blue-600/80 hover:bg-blue-600 text-white rounded text-xs transition-all"
                     >
-                      📄 Baixar PDF
+                      📄 Baixar
                     </button>
                     
                     <button

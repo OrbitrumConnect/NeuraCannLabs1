@@ -297,21 +297,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Study Helper endpoint - AI assistant for creating medical studies
-  app.post("/api/study-helper", async (req, res) => {
+  // AI Study Generator endpoint - Generate complete study protocols
+  app.post("/api/generate-study", async (req, res) => {
     try {
-      const { query, conversationHistory = [] } = req.body;
+      const { userNotes, studyTitle, researchTopic, searchHistory = [] } = req.body;
       
-      if (!query || typeof query !== 'string') {
-        return res.status(400).json({ error: 'Query is required' });
+      if (!userNotes || typeof userNotes !== 'string') {
+        return res.status(400).json({ error: 'User notes are required' });
       }
 
-      // Generate intelligent response for study creation
-      const response = generateStudyHelperResponse(query, conversationHistory);
+      // Generate complete study protocol based on user input
+      const generatedStudy = generateCompleteStudy(userNotes, studyTitle, researchTopic, searchHistory);
       
-      res.json({ response });
+      res.json({ generatedStudy });
     } catch (error) {
-      console.error('Study helper error:', error);
+      console.error('Study generation error:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
@@ -722,4 +722,236 @@ Pode me perguntar qualquer coisa sobre:
 **Exemplo:** "Como faço para estudar CBD em pacientes com dor?"
 
 O que você gostaria de saber?`;
+}
+
+// AI Study Generator - Creates complete study protocols
+function generateCompleteStudy(userNotes: string, studyTitle: string, researchTopic: string, searchHistory: any[]): string {
+  const notesLower = userNotes.toLowerCase();
+  const topic = researchTopic || studyTitle || 'Cannabis Medicinal';
+  
+  // Analyze user notes to understand study type and needs
+  let studyType = 'observacional';
+  let condition = 'dor crônica';
+  let intervention = 'CBD/THC';
+  let population = 'adultos';
+  
+  // Detect study characteristics from user notes
+  if (notesLower.includes('ensaio clínico') || notesLower.includes('randomizado') || notesLower.includes('controlado')) {
+    studyType = 'ensaio clínico randomizado';
+  } else if (notesLower.includes('caso-controle') || notesLower.includes('caso controle')) {
+    studyType = 'estudo caso-controle';
+  } else if (notesLower.includes('coorte') || notesLower.includes('longitudinal')) {
+    studyType = 'estudo de coorte';
+  }
+  
+  // Detect medical condition
+  if (notesLower.includes('epilepsia') || notesLower.includes('convuls')) {
+    condition = 'epilepsia refratária';
+  } else if (notesLower.includes('cancer') || notesLower.includes('câncer') || notesLower.includes('oncolog')) {
+    condition = 'câncer/dor oncológica';
+  } else if (notesLower.includes('ansiedade') || notesLower.includes('depres')) {
+    condition = 'transtornos de ansiedade';
+  } else if (notesLower.includes('parkinson') || notesLower.includes('alzheimer')) {
+    condition = 'doenças neurodegenerativas';
+  }
+  
+  // Detect intervention
+  if (notesLower.includes('thc')) {
+    intervention = 'THC';
+  } else if (notesLower.includes('cbd')) {
+    intervention = 'CBD';
+  } else if (notesLower.includes('óleo') || notesLower.includes('oleo')) {
+    intervention = 'óleo de cannabis';
+  }
+  
+  // Detect population
+  if (notesLower.includes('criança') || notesLower.includes('pediátr') || notesLower.includes('pediatr')) {
+    population = 'crianças e adolescentes';
+  } else if (notesLower.includes('idoso') || notesLower.includes('geriátr')) {
+    population = 'idosos';
+  }
+
+  return `# ${studyTitle || `Protocolo de Estudo: ${intervention} para ${condition}`}
+
+## 📋 RESUMO EXECUTIVO
+
+**Tipo de Estudo:** ${studyType}
+**População:** ${population} com ${condition}
+**Intervenção:** ${intervention}
+**Desfecho Principal:** Redução de sintomas e melhora da qualidade de vida
+
+**Suas ideias originais:**
+"${userNotes}"
+
+---
+
+## 🎯 OBJETIVOS
+
+### Objetivo Primário
+- Avaliar a eficácia e segurança de ${intervention} no tratamento de ${condition}
+- Quantificar a redução de sintomas através de escalas validadas
+
+### Objetivos Secundários
+- Determinar dosagem ótima e perfil de segurança
+- Avaliar impacto na qualidade de vida
+- Identificar fatores preditivos de resposta
+- Documentar eventos adversos
+
+---
+
+## 👥 METODOLOGIA
+
+### Desenho do Estudo
+- **Tipo:** ${studyType}
+- **Duração:** 12 semanas de tratamento + 4 semanas follow-up
+- **Cegamento:** ${studyType.includes('randomizado') ? 'Duplo-cego' : 'Observacional aberto'}
+
+### População do Estudo
+
+**Critérios de Inclusão:**
+- Idade: ${population.includes('crianças') ? '6-17 anos' : population.includes('idosos') ? '≥65 anos' : '18-65 anos'}
+- Diagnóstico confirmado de ${condition}
+- ${condition.includes('epilepsia') ? 'Falha com ≥2 anticonvulsivantes' : 'Falha com tratamentos convencionais'}
+- Consentimento informado assinado
+
+**Critérios de Exclusão:**
+- Gestantes ou lactantes
+- Histórico de abuso de substâncias
+- Doenças psiquiátricas graves descontroladas
+- Uso concomitante de medicações que interagem
+- Insuficiência hepática ou renal grave
+
+### Cálculo Amostral
+- **Poder:** 80% (β = 0.20)
+- **Alfa:** 5% (α = 0.05)
+- **Diferença esperada:** ${condition.includes('epilepsia') ? '50% redução nas convulsões' : '30% redução na escala de dor'}
+- **Tamanho estimado:** ${studyType.includes('randomizado') ? '40 pacientes por grupo (80 total)' : '60 pacientes'}
+
+---
+
+## 💊 PROTOCOLO DE INTERVENÇÃO
+
+### Dosagem e Administração
+**${intervention}:**
+- **Dose inicial:** ${intervention.includes('CBD') ? '5mg/kg/dia' : '2.5mg 2x/dia'}
+- **Titulação:** Aumento gradual até dose eficaz ou máxima tolerada
+- **Dose máxima:** ${intervention.includes('CBD') ? '20mg/kg/dia' : '30mg/dia'}
+- **Via:** Oral (${intervention.includes('óleo') ? 'óleo sublingual' : 'cápsulas'})
+
+### Cronograma de Visitas
+- **Baseline:** Avaliação inicial completa
+- **Semana 2, 4, 8:** Ajuste de dose e segurança
+- **Semana 12:** Avaliação final de eficácia
+- **Semana 16:** Follow-up de segurança
+
+---
+
+## 📊 DESFECHOS E AVALIAÇÕES
+
+### Desfecho Primário
+${condition.includes('epilepsia') 
+  ? '- Redução ≥50% na frequência de convulsões (diário de convulsões)'
+  : condition.includes('dor')
+  ? '- Redução ≥30% na Escala Visual Analógica de Dor (EVA 0-10)'
+  : '- Melhora nos scores de escalas específicas da condição'
+}
+
+### Desfechos Secundários
+- Qualidade de vida (SF-36)
+- Escalas de funcionalidade específicas
+- Análise farmacocinética (níveis séricos)
+- Eventos adversos (classificação WHO-ART)
+- Adesão ao tratamento
+
+### Segurança
+- Exames laboratoriais (hepatograma, hemograma)
+- Sinais vitais e peso corporal
+- Eletrocardiograma
+- Avaliação neuropsiquiátrica
+
+---
+
+## ⚖️ ASPECTOS ÉTICOS E REGULATÓRIOS
+
+### Aprovações Necessárias
+- **CEP:** Submissão via Plataforma Brasil
+- **ANVISA:** Autorização especial para cannabis (RDC 327/2019)
+- **Seguro:** Cobertura de responsabilidade civil
+
+### Documentação
+- TCLE em linguagem acessível
+- Protocolo detalhado
+- Brochura do investigador
+- Currículo da equipe
+
+---
+
+## 💰 ORÇAMENTO ESTIMADO
+
+### Custos Principais
+- **Medicação:** R$ 150.000 (${intervention} para 80 pacientes)
+- **Exames laboratoriais:** R$ 80.000
+- **Equipe de pesquisa:** R$ 120.000
+- **Material e equipamentos:** R$ 30.000
+- **Documentação regulatória:** R$ 20.000
+
+**TOTAL ESTIMADO:** R$ 400.000
+
+### Fontes de Financiamento
+- CNPq (Chamada Universal)
+- FAPESP (Auxílio Regular à Pesquisa)
+- Parcerias com indústria farmacêutica
+
+---
+
+## 📈 ANÁLISE ESTATÍSTICA
+
+### Plano de Análise
+- **População ITT:** Intention-to-treat (todos randomizados)
+- **População PP:** Per-protocol (completaram estudo)
+- **Análise interina:** Após 50% dos pacientes
+
+### Testes Estatísticos
+- **Desfecho primário:** ${studyType.includes('randomizado') ? 'Teste t-Student ou Mann-Whitney' : 'Teste t pareado'}
+- **Desfechos categóricos:** Qui-quadrado ou Fisher
+- **Análise multivariada:** Regressão logística
+
+---
+
+## ⏱️ CRONOGRAMA
+
+### Fase Preparatória (6 meses)
+- Mês 1-2: Elaboração de documentos
+- Mês 3-4: Submissão CEP/ANVISA
+- Mês 5-6: Aprovações e treinamento da equipe
+
+### Fase de Execução (18 meses)
+- Mês 7-12: Recrutamento de pacientes
+- Mês 13-16: Seguimento e coleta de dados
+- Mês 17-18: Análise preliminar
+
+### Fase de Análise (6 meses)
+- Mês 19-22: Análise estatística completa
+- Mês 23-24: Redação e submissão de artigo
+
+---
+
+## 📝 PUBLICAÇÃO E DISSEMINAÇÃO
+
+### Artigo Principal
+- **Revista alvo:** ${condition.includes('epilepsia') ? 'Epilepsia' : 'Pain Medicine'} (IF > 4.0)
+- **Autoria:** Equipe investigadora
+- **Timeline:** 6 meses pós-análise
+
+### Apresentações
+- Congresso Brasileiro de Neurologia
+- International Cannabis Research Society
+- Simpósio Brasileiro de Cannabis Medicinal
+
+---
+
+**PROTOCOLO GERADO COM BASE EM SUAS IDEIAS ORIGINAIS**
+*Revise, ajuste e personalize conforme sua necessidade específica*
+
+*Gerado por Dr. Cannabis IA - ${new Date().toLocaleDateString('pt-BR')}*`;
 }
