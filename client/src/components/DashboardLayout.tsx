@@ -78,12 +78,12 @@ export default function DashboardLayout({
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
     const linePos = (position * 2) % 100; // Mesma fórmula da linha
-    const isScanning = linePos >= 33 && linePos <= 39; // Durante linha amarela
+    const isScanning = linePos >= 33 && linePos <= 41; // Durante linha amarela
     setAvatarScanning(isScanning);
     
     // Debug: Avatar sincronizado com linha amarela
     if (isScanning) {
-      console.log(`🟡 AVATAR 33-39%! Linha: ${linePos.toFixed(1)}%`);
+      console.log(`🟡 AVATAR 33-41%! Linha: ${linePos.toFixed(1)}%`);
     }
   };
 
