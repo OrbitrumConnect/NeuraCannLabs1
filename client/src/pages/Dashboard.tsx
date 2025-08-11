@@ -122,8 +122,19 @@ export default function Dashboard() {
       )}
       </DashboardLayout>
       
-      {/* Floating Plans Trigger */}
-      <PlansFloatingTrigger />
+      {/* Footer preto com triggers integrados */}
+      <footer className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800/50 px-4 py-2 z-40">
+        <div className="flex items-center justify-between max-w-screen-xl mx-auto">
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-gray-400 hidden sm:block">NeuroCann Lab v3.0</span>
+          </div>
+          
+          {/* Triggers no rodapé */}
+          <div className="flex items-center gap-2">
+            <PlansFloatingTrigger />
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
