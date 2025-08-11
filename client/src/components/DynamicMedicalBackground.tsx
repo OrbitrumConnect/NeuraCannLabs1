@@ -75,10 +75,17 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
 
   const config = contextConfigs[context] || contextConfigs.overview
 
+  // Sincronização UNIVERSAL - linha e avatar usam mesma posição exata
+  const { setScanPosition } = useScan();
+  
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPattern(prev => {
         const newPattern = (prev + 0.3) % 100 // Movimento bem mais lento
+        
+        // CRITICAL: Sincronizar posição exata entre linha e avatar
+        setScanPosition(newPattern);
+        
         return newPattern
       })
       // Variação sutil na intensidade para efeito "respiratório"
@@ -86,7 +93,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
     }, 50) // Movimento mais lento e suave
 
     return () => clearInterval(interval)
-  }, [config.speed])
+  }, [config.speed, setScanPosition])
 
   // Notifica a posição do scan em um useEffect separado para evitar warnings
   useEffect(() => {

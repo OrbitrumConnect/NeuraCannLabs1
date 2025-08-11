@@ -216,9 +216,9 @@ export default function MedicalAvatar3D({
         }`}
         style={{
           filter: (() => {
-            // Avatar: sincronização UNIVERSAL - funciona em mobile, web e Replit
-            const linePos = (scanPosition * 2) % 100;
-            const isYellowZone = linePos >= 32 && linePos <= 42; // Zona mais ampla para melhor detecção
+            // Avatar: sincronização UNIVERSAL - usa EXATA posição da linha
+            const linePos = scanPosition; // Usa diretamente a posição do scanner
+            const isYellowZone = linePos >= 32 && linePos <= 42; // Mesma zona da linha
             
             const isMobileView = (className?.includes('w-16') || (!className?.includes('w-40') && !className?.includes('w-24')));
             return isYellowZone
