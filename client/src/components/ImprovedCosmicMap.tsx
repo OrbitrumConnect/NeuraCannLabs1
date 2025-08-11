@@ -378,10 +378,24 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 setSearchTabs([]);
                 setCurrentResult(null);
                 setSearchTerm("");
-                // Card principal abre normal, não minimizado
+                setMainCardMode('search'); // Reset para pesquisa
+                setShowConversationHistory(false); // Fecha o chat de estudos
+                setIsMainCardMinimized(false); // Card principal abre normal
               }}
-              onToggleHistory={() => setIsMainCardMinimized(!isMainCardMinimized)}
-              showingHistory={!isMainCardMinimized}
+              onToggleHistory={() => {
+                if (!showConversationHistory) {
+                  // Quando clica "Ver": ativa o chat de estudos
+                  setMainCardMode('study');
+                  setShowConversationHistory(true);
+                  setIsMainCardMinimized(false); // Abre o card
+                } else {
+                  // Quando clica "Pesquisar": volta para o modo pesquisa
+                  setMainCardMode('search');
+                  setShowConversationHistory(false);
+                  setIsMainCardMinimized(false); // Mantém o card aberto
+                }
+              }}
+              showingHistory={showConversationHistory}
               onMinimizeMainCard={() => setIsMainCardMinimized(true)}
             />
             
