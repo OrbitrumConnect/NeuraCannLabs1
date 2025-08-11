@@ -48,7 +48,7 @@ export function VoiceGreetingIndicator() {
         <Button
             onClick={playGreeting}
             size="sm"
-            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-6 h-6 sm:w-8 sm:h-8 p-0 rounded-full"
+            className="bg-neon-cyan/20 border border-neon-cyan/50 text-neon-cyan hover:bg-neon-cyan/30 w-8 h-8 p-0 rounded-full"
             data-testid="voice-greeting-button"
             title={hasPlayedToday ? 'Repetir Saudação' : 'Saudação por Voz'}
           >

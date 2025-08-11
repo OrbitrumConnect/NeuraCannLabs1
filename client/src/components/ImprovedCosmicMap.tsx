@@ -341,8 +341,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Search Interface - Clean mobile flow, Desktop overlay - Only show when Dr AI is active */}
       {isDrAIActive && (
-        <div className="mt-8 mx-3 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-[60] w-full max-w-2xl sm:px-0">
-          <div className="bg-black/40 backdrop-blur-lg rounded-xl border border-white/10 p-3 sm:p-6 pb-20">
+        <div className="mt-8 mx-3 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl sm:px-0">
+          <div className="bg-black/40 backdrop-blur-lg rounded-xl border border-white/10 p-3 sm:p-6">
             
             {/* Conversation Indicator */}
             <ConversationIndicator 
@@ -383,7 +383,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
       {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
       {isDrAIActive && formattedResult && (
-        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-[60] sm:px-0">
+        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
           <MainCard 
             result={formattedResult} 
             isMinimized={isMainCardMinimized}
@@ -442,7 +442,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
           {/* Study Notes - Focused on drafting studies - Mostrar sempre que showConversationHistory estiver ativo */}
           {showConversationHistory && (
-            <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative mb-20">
+            <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
               <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
                 <h4 className="text-sm font-medium text-blue-300">
                   📝 Rascunho de Estudo - {studyTitle || "Novo Estudo"}
