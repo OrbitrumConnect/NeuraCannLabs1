@@ -94,23 +94,6 @@ html, body, #root {
   padding: 0;
 }
 
-/* Internal content scaling - keeps black background full, scales content */
-.app-content-container {
-  transform: scale(0.75);
-  transform-origin: top center;
-  width: 133.33%; /* Compensate for scale */
-  margin: 0 auto;
-  position: relative;
-}
-
-/* Ensure content stays within viewport */
-@media screen and (max-width: 768px) {
-  .app-content-container {
-    transform: scale(0.85);
-    width: 117.65%;
-  }
-}
-
 /* Neural connection animations */
 @keyframes fade-in {
   from {
