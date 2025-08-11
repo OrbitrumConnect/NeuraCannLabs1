@@ -148,9 +148,6 @@ interface OverviewDashboardProps {
 function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-1 sm:px-4 py-3 sm:py-8">
-      {/* Integração Laboratorial - Moved to top position */}
-      <LabIntegrationModule />
-      
       {/* Cosmic Knowledge Map */}
       <div className="mb-8">
         <ImprovedCosmicMap 
