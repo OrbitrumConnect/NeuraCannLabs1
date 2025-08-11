@@ -55,6 +55,24 @@ export function VoiceGreetingIndicator() {
           >
             <i className="fas fa-volume-up text-xs" />
           </Button>
+          
+          {/* Botão de debug temporário - apenas para testes */}
+          {process.env.NODE_ENV === 'development' && (
+            <Button
+              onClick={() => {
+                localStorage.removeItem('last_login_free-user');
+                localStorage.removeItem('greeting_played_free-user');
+                localStorage.removeItem('last_login_user-1');
+                localStorage.removeItem('greeting_played_user-1');
+                console.log('🎤 Cache limpo - próximo acesso tocará novamente');
+              }}
+              size="sm"
+              className="bg-red-500/20 border border-red-500/50 text-red-400 hover:bg-red-500/30 w-8 h-8 md:w-10 md:h-10 p-0 rounded-full"
+              title="Limpar cache de voz (dev)"
+            >
+              <i className="fas fa-trash text-xs" />
+            </Button>
+          )}
         </div>
       )}
     </div>
