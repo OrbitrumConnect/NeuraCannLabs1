@@ -29,6 +29,30 @@ export default function ProfileDashboard() {
   }
 
   if (error) {
+    // Verificar se é erro de autenticação
+    const isAuthError = error?.message?.includes('401') || error?.message?.includes('Não autenticado');
+    
+    if (isAuthError) {
+      return (
+        <div className="container mx-auto px-4 py-8 pt-16">
+          <div className="text-center">
+            <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+              <i className="fas fa-user-lock text-white text-2xl" />
+            </div>
+            <h2 className="text-xl font-semibold text-white mb-2">Perfil Profissional</h2>
+            <p className="text-gray-400 mb-6">Para acessar e personalizar seu perfil médico, faça login no sistema</p>
+            <Button 
+              onClick={() => window.location.href = '/api/login'}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2"
+            >
+              <i className="fas fa-sign-in-alt mr-2" />
+              Fazer Login
+            </Button>
+          </div>
+        </div>
+      );
+    }
+    
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center text-red-400">

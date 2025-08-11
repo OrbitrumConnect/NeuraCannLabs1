@@ -489,15 +489,18 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             </div>
           )}
 
-          {/* Study Notes - Focused on drafting studies - Mostrar sempre que showConversationHistory estiver ativo */}
-          {showConversationHistory && (
+          {/* Study Notes - Focused on drafting studies - Mostrar quando no modo study OU quando showConversationHistory está ativo */}
+          {(mainCardMode === 'study' || showConversationHistory) && (
             <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
               <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
                 <h4 className="text-sm font-medium text-blue-300">
                   📝 Rascunho de Estudo - {studyTitle || "Novo Estudo"}
                 </h4>
                 <button
-                  onClick={() => setShowConversationHistory(false)}
+                  onClick={() => {
+                    setShowConversationHistory(false);
+                    setMainCardMode('search'); // Volta para o modo pesquisa
+                  }}
                   className="text-gray-400 hover:text-gray-300 p-1 rounded hover:bg-gray-800/50"
                   title="Fechar rascunho"
                 >

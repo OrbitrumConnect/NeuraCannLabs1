@@ -124,6 +124,19 @@
   --cyber-gray: hsl(0, 0%, 10%);
   --cyber-light: hsl(0, 0%, 16%);
   --neon-cyan: hsl(180, 100%, 50%);
+  
+  /* Adicionar classes neon que estão sendo usadas nos componentes */
+  .bg-neon-cyan {
+    background-color: var(--neon-cyan);
+  }
+  
+  .border-neon-cyan {
+    border-color: var(--neon-cyan);
+  }
+  
+  .text-neon-cyan {
+    color: var(--neon-cyan);
+  }
   --neon-blue: hsl(220, 100%, 50%);
   --neon-purple: hsl(261, 83%, 58%);
   --neon-green: hsl(100, 80%, 50%);
