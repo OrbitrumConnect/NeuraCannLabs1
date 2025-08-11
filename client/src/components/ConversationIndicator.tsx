@@ -33,8 +33,14 @@ export function ConversationIndicator({
       </span>
       <button
         onClick={() => {
-          onToggleHistory(); // Abre o rascunho de estudo
-          onMinimizeMainCard?.(); // Minimiza o card principal para mostrar botões
+          if (!showingHistory) {
+            // Força abrir o rascunho de estudo
+            onToggleHistory(); // Abre o rascunho de estudo
+            onMinimizeMainCard?.(); // Minimiza o card principal para mostrar botões
+          } else {
+            // Se já está mostrando, volta para pesquisa
+            onToggleHistory();
+          }
         }}
         className={`text-xs flex items-center gap-1 ${
           showingHistory 
