@@ -605,6 +605,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Real-time analytics endpoint for graphics dashboard
+  app.get('/api/analytics/realtime', (req, res) => {
+    res.json({
+      summary: {
+        totalDiscussions: 847,
+        newDiscussionsToday: 23,
+        totalClinicalCases: 1523,
+        newCasesToday: 18,
+        totalAlerts: 156,
+        newAlertsToday: 4,
+        activeUsersNow: 247,
+        peakHour: '14:00-15:00',
+        avgResponseTime: 2.3
+      },
+      hourlyActivity: [
+        { hour: '00:00', discussions: 12, cases: 8, alerts: 2 },
+        { hour: '02:00', discussions: 8, cases: 5, alerts: 1 },
+        { hour: '04:00', discussions: 6, cases: 3, alerts: 0 },
+        { hour: '06:00', discussions: 15, cases: 12, alerts: 3 },
+        { hour: '08:00', discussions: 45, cases: 28, alerts: 5 },
+        { hour: '10:00', discussions: 67, cases: 42, alerts: 8 },
+        { hour: '12:00', discussions: 83, cases: 55, alerts: 12 },
+        { hour: '14:00', discussions: 92, cases: 63, alerts: 15 },
+        { hour: '16:00', discussions: 76, cases: 48, alerts: 9 },
+        { hour: '18:00', discussions: 54, cases: 35, alerts: 6 },
+        { hour: '20:00', discussions: 38, cases: 22, alerts: 4 },
+        { hour: '22:00', discussions: 25, cases: 15, alerts: 2 }
+      ],
+      discussionTypes: [
+        { name: 'Epilepsia', value: 35, color: '#10B981' },
+        { name: 'Dor Crônica', value: 28, color: '#3B82F6' },
+        { name: 'Ansiedade', value: 18, color: '#8B5CF6' },
+        { name: 'Câncer', value: 12, color: '#F59E0B' },
+        { name: 'Outros', value: 7, color: '#EF4444' }
+      ],
+      casesBySpecialty: [
+        { specialty: 'Neurologia', cases: 342 },
+        { specialty: 'Oncologia', cases: 289 },
+        { specialty: 'Psiquiatria', cases: 245 },
+        { specialty: 'Reumatologia', cases: 198 },
+        { specialty: 'Pediatria', cases: 156 },
+        { specialty: 'Geriatria', cases: 134 }
+      ],
+      alertsByType: [
+        { type: 'ANVISA', count: 45, urgency: 'high' },
+        { type: 'Health Canada', count: 32, urgency: 'medium' },
+        { type: 'FDA', count: 28, urgency: 'medium' },
+        { type: 'EMA', count: 23, urgency: 'low' },
+        { type: 'Outros', count: 18, urgency: 'low' }
+      ],
+      weeklyTrends: [
+        { day: 'Seg', discussions: 156, cases: 89, alerts: 12 },
+        { day: 'Ter', discussions: 178, cases: 95, alerts: 15 },
+        { day: 'Qua', discussions: 198, cases: 112, alerts: 18 },
+        { day: 'Qui', discussions: 223, cases: 125, alerts: 22 },
+        { day: 'Sex', discussions: 245, cases: 134, alerts: 19 },
+        { day: 'Sáb', discussions: 189, cases: 98, alerts: 8 },
+        { day: 'Dom', discussions: 167, cases: 76, alerts: 6 }
+      ]
+    });
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
