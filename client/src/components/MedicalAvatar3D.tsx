@@ -20,7 +20,6 @@ export default function MedicalAvatar3D({
 }: MedicalAvatar3DProps) {
   const { avatarScanning, scanPosition } = useScan();
   
-  console.log("Avatar scanning state:", avatarScanning); // Debug
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -53,8 +52,14 @@ export default function MedicalAvatar3D({
       premultipliedAlpha: false,
       powerPreference: "high-performance"
     });
-    // Dynamic size based on className - web +8%, mobile optimized
+    // Dynamic size based on className - mobile otimizado para melhor sincronização
     const size = className?.includes('w-40') ? 162 : className?.includes('w-24') ? 92 : 65;
+    const isMobile = size <= 65;
+    
+    // Debug mais detalhado para mobile
+    if (avatarScanning) {
+      console.log("🟡 AVATAR AMARELO!", "Mobile:", isMobile, "Size:", size, "Position:", scanPosition);
+    }
     renderer.setSize(size, size);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0); // Transparent background
@@ -65,19 +70,19 @@ export default function MedicalAvatar3D({
 
     mountRef.current.appendChild(renderer.domElement);
 
-    // Lighting - natural professional
-    const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+    // Lighting - otimizado para mobile e desktop
+    const ambientLight = new THREE.AmbientLight(0x404040, isMobile ? 0.8 : 0.6);
     scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, isMobile ? 1.2 : 1);
     directionalLight.position.set(2, 4, 2);
     directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 1024;
-    directionalLight.shadow.mapSize.height = 1024;
+    directionalLight.shadow.mapSize.width = isMobile ? 512 : 1024;
+    directionalLight.shadow.mapSize.height = isMobile ? 512 : 1024;
     scene.add(directionalLight);
 
-    // Medical professional lighting (neutral fill)
-    const fillLight = new THREE.DirectionalLight(0xf0f0f0, 0.3);
+    // Medical professional lighting - mais intenso no mobile
+    const fillLight = new THREE.DirectionalLight(0xf0f0f0, isMobile ? 0.5 : 0.3);
     fillLight.position.set(-2, 2, 1);
     scene.add(fillLight);
 
@@ -218,8 +223,9 @@ export default function MedicalAvatar3D({
             const linePos = (scanPosition * 2) % 100;
             const isYellowZone = linePos >= 33 && linePos <= 41;
             
+            const isMobileView = (className?.includes('w-16') || (!className?.includes('w-40') && !className?.includes('w-24')));
             return isYellowZone
-              ? 'drop-shadow(0 0 25px rgba(255,235,59,0.6)) drop-shadow(0 0 50px rgba(255,235,59,0.4)) brightness(1.2) saturate(1.1)' // Amarelo quando linha amarela
+              ? `drop-shadow(0 0 ${isMobileView ? '15px' : '25px'} rgba(255,235,59,0.8)) drop-shadow(0 0 ${isMobileView ? '30px' : '50px'} rgba(255,235,59,0.6)) brightness(1.3) saturate(1.2)` // Amarelo mais intenso no mobile
               : isActive 
               ? 'drop-shadow(0 0 30px rgba(34,197,94,0.9)) drop-shadow(0 0 60px rgba(16,185,129,0.6)) brightness(1.3) saturate(1.2)' // Verde ativo
               : 'drop-shadow(0 0 20px rgba(34,197,94,0.4)) drop-shadow(0 0 40px rgba(16,185,129,0.2)) brightness(1.0) saturate(1.1)'; // Verde normal
