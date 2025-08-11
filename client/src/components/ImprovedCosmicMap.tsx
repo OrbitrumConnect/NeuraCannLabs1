@@ -653,7 +653,66 @@ ${studyNotes || 'Nenhuma anotação'}`;
         </div>
       )}
 
-      {/* Tela principal limpa - sem cards de dados que devem ficar no dashboard */}
+      {/* Dados Científicos - Posicionados abaixo do Rascunho de Estudo para harmonia visual */}
+      {isDrAIActive && (
+        <div className="mt-8 mx-3 sm:mt-4 sm:mx-8 z-20">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            {/* Estudos Científicos */}
+            <div className="bg-green-900/20 backdrop-blur-md rounded-lg border border-green-500/30 p-3">
+              <h3 className="text-sm font-semibold text-green-300 mb-2 flex items-center">
+                🧬 Estudos Científicos ({scientificData?.length || 0})
+              </h3>
+              <div className="text-xs text-green-200 space-y-1">
+                {scientificData?.slice(0, 2).map((study, index) => (
+                  <div key={index} className="border-l-2 border-green-500/50 pl-2">
+                    <p className="font-medium truncate">{study.title}</p>
+                    <p className="text-green-300/70">{study.journal}</p>
+                  </div>
+                ))}
+                {(scientificData?.length || 0) > 2 && (
+                  <p className="text-green-300/60 text-center">+{(scientificData?.length || 0) - 2} mais...</p>
+                )}
+              </div>
+            </div>
+
+            {/* Casos Clínicos */}
+            <div className="bg-blue-900/20 backdrop-blur-md rounded-lg border border-blue-500/30 p-3">
+              <h3 className="text-sm font-semibold text-blue-300 mb-2 flex items-center">
+                🏥 Casos Clínicos ({clinicalData?.length || 0})
+              </h3>
+              <div className="text-xs text-blue-200 space-y-1">
+                {clinicalData?.slice(0, 2).map((case_, index) => (
+                  <div key={index} className="border-l-2 border-blue-500/50 pl-2">
+                    <p className="font-medium truncate">{case_.description}</p>
+                    <p className="text-blue-300/70">Caso {case_.caseNumber}</p>
+                  </div>
+                ))}
+                {(clinicalData?.length || 0) > 2 && (
+                  <p className="text-blue-300/60 text-center">+{(clinicalData?.length || 0) - 2} mais...</p>
+                )}
+              </div>
+            </div>
+
+            {/* Alertas */}
+            <div className="bg-yellow-900/20 backdrop-blur-md rounded-lg border border-yellow-500/30 p-3">
+              <h3 className="text-sm font-semibold text-yellow-300 mb-2 flex items-center">
+                ⚠️ Alertas ({alertsData?.length || 0})
+              </h3>
+              <div className="text-xs text-yellow-200 space-y-1">
+                {alertsData?.slice(0, 2).map((alert, index) => (
+                  <div key={index} className="border-l-2 border-yellow-500/50 pl-2">
+                    <p className="font-medium truncate">{alert.message}</p>
+                    <p className="text-yellow-300/70">{alert.source}</p>
+                  </div>
+                ))}
+                {(alertsData?.length || 0) > 2 && (
+                  <p className="text-yellow-300/60 text-center">+{(alertsData?.length || 0) - 2} mais...</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Sub-search Results - Responsive positioning com mais espaçamento - Only show when Dr AI is active */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
