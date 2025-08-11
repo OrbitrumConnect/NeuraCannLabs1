@@ -74,15 +74,15 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Avatar: sincronizado com linha amarela (32%-37%) quando linha fica amarela (32%-42%)
+  // Avatar: timing ajustado (18%-36%) quando linha fica amarela (32%-42%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 32 && position <= 37;
+    const isScanning = position >= 18 && position <= 36;
     setAvatarScanning(isScanning);
     
-    // Debug: Avatar sincronizado com linha - timing encaixado
+    // Debug: Avatar timing ajustado
     if (isScanning) {
-      console.log(`🟡 SINCRONIZADO! Posição: ${position.toFixed(1)}%`);
+      console.log(`🟡 TIMING 18-36%! Posição: ${position.toFixed(1)}%`);
     }
   };
 
