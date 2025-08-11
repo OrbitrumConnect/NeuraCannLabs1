@@ -703,17 +703,19 @@ ${studyNotes || 'Nenhuma anotação'}`;
       <VoiceGreetingIndicator />
       <VoiceCommandButton />
 
-      {/* Conversation Manager */}
-      <ConversationManager
-        currentConversation={currentConversation}
-        conversations={conversations}
-        onSelectConversation={selectConversation}
-        onCreateNew={() => createNewConversation()}
-        onDeleteConversation={deleteConversation}
-        onMergeConversations={mergeConversations}
-        onCreateDocument={createDocument}
-        onCreateSynthesis={createSynthesis}
-      />
+      {/* Conversation Manager - APENAS DESKTOP */}
+      <div className="hidden lg:block">
+        <ConversationManager
+          currentConversation={currentConversation}
+          conversations={conversations}
+          onSelectConversation={selectConversation}
+          onCreateNew={() => createNewConversation()}
+          onDeleteConversation={deleteConversation}
+          onMergeConversations={mergeConversations}
+          onCreateDocument={createDocument}
+          onCreateSynthesis={createSynthesis}
+        />
+      </div>
 
 {/* Planets removed - clean area above search bar */}
     </div>
