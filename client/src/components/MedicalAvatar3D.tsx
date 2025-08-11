@@ -53,8 +53,8 @@ export default function MedicalAvatar3D({
       premultipliedAlpha: false,
       powerPreference: "high-performance"
     });
-    // Dynamic size based on className - mobile optimized with 15% reduction
-    const size = className?.includes('w-40') ? 150 : className?.includes('w-24') ? 85 : 60;
+    // Dynamic size based on className - web +20%, mobile optimized
+    const size = className?.includes('w-40') ? 180 : className?.includes('w-24') ? 102 : 72;
     renderer.setSize(size, size);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0); // Transparent background
