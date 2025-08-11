@@ -71,8 +71,8 @@ export default function AlertsDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8">
-      <div className="flex items-center mb-6 sm:mb-8">
+    <div className="container mx-auto px-1 sm:px-4 py-3 sm:py-8 pt-12 sm:pt-14">
+      <div className="flex items-center mb-3 sm:mb-4">
         <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-400 to-red-600 rounded-xl flex items-center justify-center mr-3 sm:mr-4">
           <i className="fas fa-exclamation-triangle text-white text-lg sm:text-2xl" />
         </div>
