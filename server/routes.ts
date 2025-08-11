@@ -319,7 +319,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         generatedStudy = generateFinalStudySummary(userNotes, studyTitle, researchTopic, searchHistory, scientificData, clinicalData);
         responseType = 'final_summary';
       } else {
-        // Generate conversational response (500 words max)
+        // Generate conversational response (300 words max)
         generatedStudy = generateDynamicStudyResponse(userNotes, studyTitle, researchTopic, searchHistory, scientificData, clinicalData);
         responseType = 'conversational';
       }
@@ -569,7 +569,7 @@ function generateIntelligentSynthesis(conversations: any[], userPrompt: string, 
   return synthesis;
 }
 
-// Dynamic Study Response Generator (500 words max)
+// Dynamic Study Response Generator (300 words max)
 function generateDynamicStudyResponse(userNotes: string, studyTitle: string, researchTopic: string, searchHistory: any[], scientificData: any[], clinicalData: any[]): string {
   // Filter relevant platform data
   const relevantStudies = scientificData.filter(study => 
@@ -640,10 +640,10 @@ function generateDynamicStudyResponse(userNotes: string, studyTitle: string, res
 
   response += `**💬 Continue a conversa:** Me diga mais sobre algum aspecto específico que quer desenvolver!`;
 
-  // Trim to 500 words
+  // Trim to 300 words
   const words = response.split(' ');
-  if (words.length > 500) {
-    return words.slice(0, 500).join(' ') + '...';
+  if (words.length > 300) {
+    return words.slice(0, 300).join(' ') + '...';
   }
   
   return response;

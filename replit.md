@@ -17,7 +17,7 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 ## Recent Changes
 - **Research History Tab Removal**: Completely removed "Histórico de Pesquisas" tab as requested for cleaner interface
 - **Main Card Minimize Feature**: Added minimize button to main result card for better space optimization
-- **Dynamic Study Generator**: Implemented conversational AI system with 500-word responses max for better chat flow
+- **Dynamic Study Generator**: Implemented conversational AI system with 300-word responses max for better chat flow
 - **Final Summary Feature**: Added 750-word protocol generator button when needed
 - **Cross-Platform Data Integration**: Study generator now uses scientific studies and clinical cases from platform
 - **Conversational Flow**: Continuous dialogue until user satisfaction, eliminating lengthy responses
