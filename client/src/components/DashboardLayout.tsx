@@ -74,15 +74,15 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Avatar: antecipa 2 segundos (12%-22%) quando linha fica amarela (32%-42%) - super antecipação
+  // Avatar: antecipa 2 segundos, dura 1 segundo (12%-17%) quando linha fica amarela (32%-42%)
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 12 && position <= 22;
+    const isScanning = position >= 12 && position <= 17;
     setAvatarScanning(isScanning);
     
-    // Debug: Avatar antecipa 2 segundos antes da linha amarela
+    // Debug: Avatar rápido - 1 segundo de duração
     if (isScanning) {
-      console.log(`🟡 AVATAR 2s ANTES! Posição: ${position.toFixed(1)}%`);
+      console.log(`🟡 AVATAR 1s! Posição: ${position.toFixed(1)}%`);
     }
   };
 
