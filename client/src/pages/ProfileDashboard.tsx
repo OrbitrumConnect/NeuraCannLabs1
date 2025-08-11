@@ -10,7 +10,7 @@ import { useState } from "react";
 export default function ProfileDashboard() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState<'add' | 'evolution' | 'analysis' | 'reports'>('add');
-  const [personalInfoExpanded, setPersonalInfoExpanded] = useState(true);
+  const [personalInfoExpanded, setPersonalInfoExpanded] = useState(false);
   const [preferencesExpanded, setPreferencesExpanded] = useState(false);
   
   const { data: profile, isLoading, error } = useQuery({
@@ -149,81 +149,6 @@ export default function ProfileDashboard() {
             </CardContent>
           </Card>
 
-          <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-white">Preferências da Plataforma</h2>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setPreferencesExpanded(!preferencesExpanded)}
-                  className="text-gray-400 hover:text-white"
-                  data-testid="toggle-preferences"
-                >
-                  <i className={`fas ${preferencesExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}`} />
-                </Button>
-              </div>
-              {preferencesExpanded && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Dr. Cannabis IA - Consultas por voz</span>
-                  <input 
-                    type="checkbox" 
-                    defaultChecked 
-                    className="rounded bg-gray-700 border-gray-500"
-                    data-testid="voice-consultation-toggle"
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Alertas regulatórios ANVISA/Health Canada</span>
-                  <input 
-                    type="checkbox" 
-                    defaultChecked 
-                    className="rounded bg-gray-700 border-gray-500"
-                    data-testid="regulatory-alerts-toggle"
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Notificações de estudos científicos</span>
-                  <input 
-                    type="checkbox" 
-                    defaultChecked 
-                    className="rounded bg-gray-700 border-gray-500"
-                    data-testid="scientific-notifications-toggle"
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Análise automática de submissões</span>
-                  <input 
-                    type="checkbox" 
-                    defaultChecked 
-                    className="rounded bg-gray-700 border-gray-500"
-                    data-testid="auto-analysis-toggle"
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Correção automática de termos médicos</span>
-                  <input 
-                    type="checkbox" 
-                    defaultChecked 
-                    className="rounded bg-gray-700 border-gray-500"
-                    data-testid="medical-correction-toggle"
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-300">Integração com fórum colaborativo</span>
-                  <input 
-                    type="checkbox" 
-                    defaultChecked 
-                    className="rounded bg-gray-700 border-gray-500"
-                    data-testid="forum-integration-toggle"
-                  />
-                </div>
-              </div>
-              )}
-            </CardContent>
-          </Card>
-
           {/* POTÊNCIA DE DADOS - Sistema de Coleta Médica */}
           <Card className="bg-gray-800/50 border border-green-600 rounded-xl">
             <CardContent className="p-6">
@@ -328,6 +253,81 @@ export default function ProfileDashboard() {
                   </div>
                 </div>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl font-semibold text-white">Preferências da Plataforma</h2>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setPreferencesExpanded(!preferencesExpanded)}
+                  className="text-gray-400 hover:text-white"
+                  data-testid="toggle-preferences"
+                >
+                  <i className={`fas ${preferencesExpanded ? 'fa-chevron-up' : 'fa-chevron-down'}`} />
+                </Button>
+              </div>
+              {preferencesExpanded && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Dr. Cannabis IA - Consultas por voz</span>
+                  <input 
+                    type="checkbox" 
+                    defaultChecked 
+                    className="rounded bg-gray-700 border-gray-500"
+                    data-testid="voice-consultation-toggle"
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Alertas regulatórios ANVISA/Health Canada</span>
+                  <input 
+                    type="checkbox" 
+                    defaultChecked 
+                    className="rounded bg-gray-700 border-gray-500"
+                    data-testid="regulatory-alerts-toggle"
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Notificações de estudos científicos</span>
+                  <input 
+                    type="checkbox" 
+                    defaultChecked 
+                    className="rounded bg-gray-700 border-gray-500"
+                    data-testid="scientific-notifications-toggle"
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Análise automática de submissões</span>
+                  <input 
+                    type="checkbox" 
+                    defaultChecked 
+                    className="rounded bg-gray-700 border-gray-500"
+                    data-testid="auto-analysis-toggle"
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Correção automática de termos médicos</span>
+                  <input 
+                    type="checkbox" 
+                    defaultChecked 
+                    className="rounded bg-gray-700 border-gray-500"
+                    data-testid="medical-correction-toggle"
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-300">Integração com fórum colaborativo</span>
+                  <input 
+                    type="checkbox" 
+                    defaultChecked 
+                    className="rounded bg-gray-700 border-gray-500"
+                    data-testid="forum-integration-toggle"
+                  />
+                </div>
+              </div>
+              )}
             </CardContent>
           </Card>
         </div>
