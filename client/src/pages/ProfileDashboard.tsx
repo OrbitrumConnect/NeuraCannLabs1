@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
+import VoiceSettings from "@/components/VoiceSettings";
 
 export default function ProfileDashboard() {
   const { data: profile, isLoading, error } = useQuery({
@@ -189,6 +190,9 @@ export default function ProfileDashboard() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Voice Settings Section */}
+          <VoiceSettings />
         </div>
 
         {/* Profile Stats */}

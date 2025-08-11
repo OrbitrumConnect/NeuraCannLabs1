@@ -6,6 +6,8 @@ import MedicalAvatar3D from "./MedicalAvatar3D";
 import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
+import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
+import { useVoiceGreeting } from "@/hooks/useVoiceGreeting";
 
 // Import the missing interface for proper typing
 interface ScientificStudy {
@@ -370,6 +372,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           </div>
         </div>
       ))}
+
+      {/* Voice Greeting Indicator */}
+      <VoiceGreetingIndicator />
 
 {/* Planets removed - clean area above search bar */}
     </div>

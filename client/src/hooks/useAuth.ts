@@ -4,7 +4,10 @@ interface User {
   id: string;
   email: string;
   name: string;
-  role: string;
+  role?: string;
+  username?: string;
+  specialty?: string;
+  crm?: string;
 }
 
 export function useAuth() {
@@ -17,6 +20,6 @@ export function useAuth() {
     user: user as User | undefined,
     isLoading,
     isAuthenticated: !!user && !error,
-    isAdmin: user?.role === 'admin'
+    isAdmin: (user as User)?.role === 'admin'
   };
 }

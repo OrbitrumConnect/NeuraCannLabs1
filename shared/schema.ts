@@ -11,6 +11,8 @@ export const users = pgTable("users", {
   email: text("email").notNull(),
   specialty: text("specialty").notNull(),
   crm: text("crm"),
+  voiceGreetingsEnabled: integer("voice_greetings_enabled").default(1), // 1 = enabled, 0 = disabled
+  lastLoginGreeting: timestamp("last_login_greeting"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
