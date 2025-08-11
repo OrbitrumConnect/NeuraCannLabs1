@@ -58,31 +58,46 @@ export function useVoiceCommands() {
     console.log('🎙️ Comando recebido:', command);
     setLastCommand(command);
 
-    // Comandos de pesquisa
-    if (VOICE_COMMANDS.search.some(cmd => command.includes(cmd))) {
-      // Extrair termo de pesquisa após palavra-chave
+    // Detectar pesquisas médicas diretas (sem palavra-chave)
+    const medicalKeywords = ['cannabis', 'cbd', 'thc', 'ansiedade', 'epilepsia', 'dor', 'esclerose', 'dravet', 'autismo'];
+    const containsMedicalTerms = medicalKeywords.some(term => command.includes(term));
+    
+    // Comandos de pesquisa explícitos ou termos médicos diretos
+    const isSearchCommand = VOICE_COMMANDS.search.some(cmd => command.includes(cmd)) || containsMedicalTerms;
+    
+    if (isSearchCommand) {
       let searchTerm = '';
-      for (const searchCmd of VOICE_COMMANDS.search) {
-        if (command.includes(searchCmd)) {
-          searchTerm = command.split(searchCmd)[1]?.trim() || '';
-          break;
+      
+      // Se tem palavra-chave de pesquisa, extrair termo após ela
+      if (VOICE_COMMANDS.search.some(cmd => command.includes(cmd))) {
+        for (const searchCmd of VOICE_COMMANDS.search) {
+          if (command.includes(searchCmd)) {
+            searchTerm = command.split(searchCmd)[1]?.trim() || '';
+            break;
+          }
         }
+      } else {
+        // Se não tem palavra-chave, usar o comando todo como termo de pesquisa
+        searchTerm = command;
       }
       
       if (searchTerm) {
-        // Simular busca no sistema
-        const searchInput = document.querySelector('input[placeholder*="pesquisa"]') as HTMLInputElement;
-        if (searchInput) {
-          searchInput.value = searchTerm;
-          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-          
-          // Simular Enter para buscar
-          setTimeout(() => {
-            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-          }, 500);
+        console.log('🔍 Executando busca automatica:', searchTerm);
+        
+        // Usar o callback do Dashboard.tsx para executar busca
+        if (window.location.pathname.startsWith('/dashboard')) {
+          // Triggerar busca via evento customizado que o Dashboard escuta
+          const searchEvent = new CustomEvent('voiceSearch', { 
+            detail: { query: searchTerm } 
+          });
+          window.dispatchEvent(searchEvent);
+          console.log('🔍 Evento de busca disparado:', searchTerm);
+        } else {
+          // Navegar para dashboard e fazer busca
+          window.location.href = `/dashboard/scientific?search=${encodeURIComponent(searchTerm)}`;
         }
         
-        speak(`Pesquisando por ${searchTerm}`);
+        speak(`Pesquisando por ${searchTerm} na base científica`);
         return true;
       }
     }

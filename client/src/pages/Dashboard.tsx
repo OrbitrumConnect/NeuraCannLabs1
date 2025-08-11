@@ -33,6 +33,27 @@ export default function Dashboard() {
     // if (isFreePlan && !localStorage.getItem('freePlanNotificationShown')) {
     //   setShowFreePlanNotification(true);
     // }
+
+    // Listener para comandos de voz
+    const handleVoiceSearch = (event: CustomEvent) => {
+      const query = event.detail.query;
+      console.log('🎙️ Voice search recebido no Dashboard:', query);
+      
+      // Executar busca
+      setGlobalSearchTerm(query);
+      
+      // Auto-switch para scientific dashboard
+      setActiveDashboard('scientific');
+      
+      // Atualizar URL
+      window.history.pushState({}, '', `/dashboard/scientific?search=${encodeURIComponent(query)}`);
+    };
+
+    window.addEventListener('voiceSearch', handleVoiceSearch as EventListener);
+    
+    return () => {
+      window.removeEventListener('voiceSearch', handleVoiceSearch as EventListener);
+    };
   }, [section, isFreePlan]);
 
   const handleMenuClick = () => {
