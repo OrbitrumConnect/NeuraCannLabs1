@@ -115,9 +115,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [subSearchTerm, setSubSearchTerm] = useState("");
   const [isDrAIActive, setIsDrAIActive] = useState(false);
   const [showConversationHistory, setShowConversationHistory] = useState(false);
-  const [studyHelperMessages, setStudyHelperMessages] = useState<Array<{role: 'user' | 'assistant', content: string, timestamp: number}>>([]);
-  const [studyHelperInput, setStudyHelperInput] = useState("");
-  const [studyHelperTyping, setStudyHelperTyping] = useState(false);
+  const [studyNotes, setStudyNotes] = useState("");
+  const [studyTitle, setStudyTitle] = useState("");
+  const [currentStudyTopic, setCurrentStudyTopic] = useState("");
   const { avatarScanning } = useScan();
   const {
     conversations,
@@ -137,6 +137,21 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const { data: clinicalData = [] } = useQuery<ClinicalCase[]>({ queryKey: ['/api/clinical'] });
   const { data: alertsData = [] } = useQuery<Alert[]>({ queryKey: ['/api/alerts'] });
 
+  // Load saved draft on component mount
+  useEffect(() => {
+    const saved = localStorage.getItem('study_draft');
+    if (saved) {
+      try {
+        const draft = JSON.parse(saved);
+        setStudyTitle(draft.title || '');
+        setStudyNotes(draft.notes || '');
+        setCurrentStudyTopic(draft.topic || '');
+      } catch (error) {
+        console.error('Error loading saved draft:', error);
+      }
+    }
+  }, []);
+
   // Filtros removidos para economizar espaço na interface
 
   const handleChatSubmit = async (e: React.FormEvent) => {
@@ -144,6 +159,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     if (!searchTerm.trim() || isTyping) return;
 
     const userMessage = searchTerm;
+    
+    // Update current study topic when searching
+    setCurrentStudyTopic(userMessage);
+    
+    // Auto-set study title if empty
+    if (!studyTitle.trim()) {
+      setStudyTitle(`Estudo sobre ${userMessage}`);
+    }
+    
     setSearchTerm("");
     setIsTyping(true);
 
@@ -352,17 +376,17 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             </div>
           )}
 
-          {/* Conversation History with Study Helper - Appears after "Explore mais" */}
+          {/* Study Notes & Actions - Appears after "Explore mais" */}
           {showConversationHistory && (
             <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
               <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
                 <h4 className="text-sm font-medium text-blue-300">
-                  📜 Histórico & Assistente de Estudos
+                  📝 Meus Estudos - {currentStudyTopic || "Visão Geral"}
                 </h4>
                 <button
                   onClick={() => setShowConversationHistory(false)}
                   className="text-gray-400 hover:text-gray-300 p-1 rounded hover:bg-gray-800/50"
-                  title="Fechar histórico"
+                  title="Fechar rascunho"
                 >
                   ✕
                 </button>
@@ -413,120 +437,120 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   </div>
                 </div>
 
-                {/* Right side: Study Helper Chat */}
+                {/* Right side: Study Notes & Actions */}
                 <div className="space-y-2">
-                  <h5 className="text-xs font-medium text-purple-400 mb-2">🧠 Assistente para Criar Estudos</h5>
+                  <h5 className="text-xs font-medium text-purple-400 mb-2">📝 Rascunho do Estudo</h5>
                   
-                  {/* Study Helper Messages */}
-                  <div className="max-h-40 overflow-y-auto space-y-2 bg-purple-900/20 rounded p-2">
-                    {studyHelperMessages.length === 0 ? (
-                      <div className="text-center py-4">
-                        <div className="text-purple-400 text-xs mb-2">👋 Dr. Cannabis IA aqui!</div>
-                        <div className="text-gray-400 text-xs">
-                          Vamos conversar sobre seu estudo? Pode perguntar qualquer coisa!
-                        </div>
-                      </div>
-                    ) : (
-                      studyHelperMessages.map((message, index) => (
-                        <div
-                          key={index}
-                          className={`flex items-start gap-2 ${
-                            message.role === 'user' ? 'flex-row-reverse' : ''
-                          }`}
-                        >
-                          <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
-                            message.role === 'user' 
-                              ? 'bg-purple-600/20 text-purple-400'
-                              : 'bg-green-600/20 text-green-400'
-                          }`}>
-                            {message.role === 'user' ? '👤' : '🧠'}
-                          </div>
-                          
-                          <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
-                            <div className={`inline-block p-2 rounded text-xs max-w-[90%] ${
-                              message.role === 'user'
-                                ? 'bg-purple-600/20 text-purple-100'
-                                : 'bg-gray-700/50 text-gray-200'
-                            }`}>
-                              <div 
-                                className="leading-relaxed"
-                                dangerouslySetInnerHTML={{ 
-                                  __html: message.content
-                                    .replace(/\n/g, '<br/>')
-                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                                }} 
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  {/* Study Helper Input */}
-                  <form 
-                    onSubmit={async (e) => {
-                      e.preventDefault();
-                      if (!studyHelperInput.trim() || studyHelperTyping) return;
-
-                      const userMessage = {
-                        role: 'user' as const,
-                        content: studyHelperInput,
-                        timestamp: Date.now()
-                      };
-
-                      setStudyHelperMessages(prev => [...prev, userMessage]);
-                      setStudyHelperInput("");
-                      setStudyHelperTyping(true);
-
-                      try {
-                        const response = await fetch('/api/study-helper', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ 
-                            query: studyHelperInput,
-                            conversationHistory: studyHelperMessages
-                          })
-                        });
-                        
-                        const data = await response.json();
-                        
-                        const assistantMessage = {
-                          role: 'assistant' as const,
-                          content: data.response || 'Desculpe, houve um erro. Tente novamente.',
-                          timestamp: Date.now()
-                        };
-
-                        setStudyHelperMessages(prev => [...prev, assistantMessage]);
-                      } catch (error) {
-                        const errorMessage = {
-                          role: 'assistant' as const,
-                          content: 'Erro ao conectar com o assistente. Tente novamente.',
-                          timestamp: Date.now()
-                        };
-                        setStudyHelperMessages(prev => [...prev, errorMessage]);
-                      } finally {
-                        setStudyHelperTyping(false);
-                      }
-                    }}
-                    className="flex gap-2"
-                  >
-                    <input
-                      type="text"
-                      value={studyHelperInput}
-                      onChange={(e) => setStudyHelperInput(e.target.value)}
-                      placeholder="Digite sua pergunta..."
-                      className="flex-1 px-2 py-1 text-xs bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50"
-                      disabled={studyHelperTyping}
-                    />
+                  {/* Study Title */}
+                  <input
+                    type="text"
+                    value={studyTitle}
+                    onChange={(e) => setStudyTitle(e.target.value)}
+                    placeholder="Título do estudo..."
+                    className="w-full px-2 py-1 text-xs bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50"
+                  />
+                  
+                  {/* Study Notes */}
+                  <textarea
+                    value={studyNotes}
+                    onChange={(e) => setStudyNotes(e.target.value)}
+                    placeholder="Escreva suas anotações, metodologia, objetivos, observações..."
+                    className="w-full h-32 px-2 py-1 text-xs bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50 resize-none"
+                  />
+                  
+                  {/* Action Buttons */}
+                  <div className="grid grid-cols-2 gap-2">
                     <button
-                      type="submit"
-                      disabled={studyHelperTyping || !studyHelperInput.trim()}
-                      className="px-3 py-1 bg-purple-600/80 hover:bg-purple-600 text-white rounded text-xs transition-all disabled:opacity-50"
+                      onClick={() => {
+                        localStorage.setItem('study_draft', JSON.stringify({
+                          title: studyTitle,
+                          notes: studyNotes,
+                          topic: currentStudyTopic,
+                          timestamp: Date.now()
+                        }));
+                        alert('Rascunho salvo localmente!');
+                      }}
+                      className="px-2 py-1 bg-green-600/80 hover:bg-green-600 text-white rounded text-xs transition-all"
                     >
-                      {studyHelperTyping ? '⏳' : '📤'}
+                      💾 Salvar
                     </button>
-                  </form>
+                    
+                    <button
+                      onClick={() => {
+                        if (confirm('Excluir rascunho atual?')) {
+                          setStudyTitle('');
+                          setStudyNotes('');
+                          localStorage.removeItem('study_draft');
+                        }
+                      }}
+                      className="px-2 py-1 bg-red-600/80 hover:bg-red-600 text-white rounded text-xs transition-all"
+                    >
+                      🗑️ Excluir
+                    </button>
+                    
+                    <button
+                      onClick={() => {
+                        const content = `TÍTULO: ${studyTitle || 'Estudo sem título'}
+
+TÓPICO: ${currentStudyTopic || 'Não especificado'}
+
+ANOTAÇÕES:
+${studyNotes || 'Nenhuma anotação'}
+
+HISTÓRICO DE PESQUISAS:
+${currentConversation?.messages.map(m => 
+  `${m.role === 'user' ? 'PERGUNTA' : 'RESPOSTA'}: ${m.content}`
+).join('\n\n') || 'Nenhuma pesquisa'}`;
+                        
+                        const blob = new Blob([content], { type: 'text/plain' });
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = url;
+                        a.download = `${studyTitle || 'estudo'}.txt`;
+                        a.click();
+                      }}
+                      className="px-2 py-1 bg-blue-600/80 hover:bg-blue-600 text-white rounded text-xs transition-all"
+                    >
+                      📄 Baixar PDF
+                    </button>
+                    
+                    <button
+                      onClick={async () => {
+                        try {
+                          const response = await fetch('/api/study-submissions', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              title: studyTitle || 'Estudo sem título',
+                              content: studyNotes,
+                              topic: currentStudyTopic,
+                              status: 'draft'
+                            })
+                          });
+                          
+                          if (response.ok) {
+                            alert('Enviado para "Meus Estudos" com sucesso!');
+                            setStudyTitle('');
+                            setStudyNotes('');
+                          } else {
+                            alert('Erro ao enviar. Tente novamente.');
+                          }
+                        } catch (error) {
+                          alert('Erro ao enviar. Verifique sua conexão.');
+                        }
+                      }}
+                      className="px-2 py-1 bg-purple-600/80 hover:bg-purple-600 text-white rounded text-xs transition-all"
+                    >
+                      📤 Enviar p/ Meus Estudos
+                    </button>
+                  </div>
+                  
+                  {/* Status Info */}
+                  <div className="text-xs text-gray-400 mt-2 p-2 bg-gray-800/30 rounded">
+                    <div>📊 Tópico atual: <span className="text-blue-300">{currentStudyTopic || "Nenhum"}</span></div>
+                    <div>💬 Pesquisas: <span className="text-green-300">{currentConversation?.messages.length || 0}</span></div>
+                    <div>📝 Caracteres: <span className="text-purple-300">{studyNotes.length}</span></div>
+                  </div>
                 </div>
               </div>
             </div>
