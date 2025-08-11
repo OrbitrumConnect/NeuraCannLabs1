@@ -126,20 +126,9 @@ export default function Dashboard() {
       </DashboardLayout>
       </div>
       
-      {/* Rodapé preto que segue o conteúdo */}
-      <footer className="relative bg-black border-t border-gray-800/30 px-3 py-2 z-50 h-12 mt-auto">
-        <div className="flex items-center justify-between h-full max-w-full mx-auto">
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-500 hidden sm:block font-medium">NeuroCann Lab v3.0</span>
-          </div>
-          
-          {/* Triggers organizados no rodapé preto */}
-          <div className="flex items-center gap-3">
-            <VoiceGreetingIndicator />
-            <PlansFloatingTrigger />
-          </div>
-        </div>
-      </footer>
+      {/* Triggers flutuantes sem faixa preta */}
+      <VoiceGreetingIndicator />
+      <PlansFloatingTrigger />
     </div>
   );
 }
