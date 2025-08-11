@@ -8,6 +8,7 @@ import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
 import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
 import { VoiceCommandButton } from "./VoiceCommandButton";
+import { ConversationIndicator } from "./ConversationIndicator";
 import { useVoiceGreeting } from "@/hooks/useVoiceGreeting";
 
 // Import the missing interface for proper typing
@@ -111,6 +112,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [searchTabs, setSearchTabs] = useState<SearchTab[]>([]);
   const [subSearchTerm, setSubSearchTerm] = useState("");
   const [isDrAIActive, setIsDrAIActive] = useState(false);
+  const [conversationHistory, setConversationHistory] = useState<Array<{role: 'user' | 'assistant', content: string}>>([]);
   const { avatarScanning } = useScan();
 
   // Fetch real data from APIs with proper typing
@@ -128,19 +130,31 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     setSearchTerm("");
     setIsTyping(true);
 
+    // Adicionar mensagem do usuário ao histórico
+    const newHistory = [...conversationHistory, { role: 'user' as const, content: userMessage }];
+    setConversationHistory(newHistory);
+
     try {
       const response = await fetch('/api/ai-search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: userMessage, filter: 'todos' })
+        body: JSON.stringify({ 
+          query: userMessage, 
+          filter: 'todos',
+          conversationHistory: newHistory // Enviar histórico para continuidade
+        })
       });
 
       const data = await response.json();
+      const assistantResponse = data.answer || 'Resposta não disponível';
+
+      // Adicionar resposta da IA ao histórico
+      setConversationHistory(prev => [...prev, { role: 'assistant', content: assistantResponse }]);
 
       const newTab: SearchTab = {
         id: `search-${Date.now()}`,
         query: userMessage,
-        response: data.answer || 'Resposta não disponível',
+        response: assistantResponse,
         suggestions: data.suggestions || [],
         results: data.results || [],
         timestamp: Date.now(),
@@ -150,10 +164,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       setSearchTabs([newTab]);
     } catch (error) {
       console.error('Erro na busca:', error);
+      const errorResponse = 'Erro ao processar consulta. Tente novamente.';
+      
+      // Adicionar erro ao histórico também
+      setConversationHistory(prev => [...prev, { role: 'assistant', content: errorResponse }]);
+      
       const errorTab: SearchTab = {
         id: `search-${Date.now()}`,
         query: userMessage,
-        response: 'Erro ao processar consulta. Tente novamente.',
+        response: errorResponse,
         suggestions: [],
         results: [],
         timestamp: Date.now(),
@@ -257,6 +276,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         <div className="mt-8 mx-3 sm:absolute sm:top-8 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-30 w-full max-w-2xl sm:px-0">
           <div className="bg-black/40 backdrop-blur-lg rounded-xl border border-white/10 p-3 sm:p-6">
             
+            {/* Conversation Indicator */}
+            <ConversationIndicator 
+              messageCount={conversationHistory.length}
+              onClear={() => setConversationHistory([])}
+            />
+            
             {/* Search Bar */}
             <form onSubmit={handleChatSubmit} className="flex items-center space-x-2 mb-3">
               <div className="flex-1 relative">
@@ -265,7 +290,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Digite sua consulta médica..."
+                  placeholder={conversationHistory.length > 0 ? "Continue a conversa..." : "Digite sua consulta médica..."}
                   className="w-full pl-8 pr-3 py-2 sm:py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-blue-400/50 text-sm"
                   disabled={isTyping}
                 />

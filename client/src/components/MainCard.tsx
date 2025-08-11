@@ -52,11 +52,12 @@ export default function MainCard({ result }: MainCardProps) {
   }
 
   const cleanTextForTTS = (text: string) => {
+    // Remove emojis mas mantém todo o conteúdo para leitura completa
     return text
       .replace(/[🔬📊🏥⚠️🧠💊🎯]/g, '')
       .replace(/\*\*/g, '')
       .replace(/\n/g, ' ')
-      .substring(0, 200);
+      .trim();
   };
 
   return (
