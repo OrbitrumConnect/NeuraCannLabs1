@@ -391,19 +391,19 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           />
           {/* Mode Toggle Buttons - Mostrar apenas quando o card está minimizado */}
           {isMainCardMinimized && (
-            <div className="mt-3 flex gap-2 justify-center">
+            <div className="mt-2 flex gap-1.5 sm:gap-2 justify-center">
               <button
                 onClick={() => {
                   setMainCardMode('search');
                   setIsMainCardMinimized(false); // Abre o card
                 }}
-                className={`px-3 py-1.5 text-xs rounded transition-all ${
+                className={`px-2 py-1 sm:px-3 sm:py-1.5 text-xs rounded transition-all ${
                   mainCardMode === 'search' 
                     ? 'bg-blue-600/80 text-white border border-blue-400/50' 
                     : 'bg-gray-800/50 text-gray-300 border border-gray-600/30 hover:bg-gray-700/50'
                 }`}
               >
-                🔍 Explorar mais
+                <span className="hidden sm:inline">🔍 </span>Explorar mais
               </button>
               <button
                 onClick={() => {
@@ -411,13 +411,13 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   setShowConversationHistory(true); // Abre o rascunho de estudo
                   setIsMainCardMinimized(false); // Abre o card
                 }}
-                className={`px-3 py-1.5 text-xs rounded transition-all ${
+                className={`px-2 py-1 sm:px-3 sm:py-1.5 text-xs rounded transition-all ${
                   mainCardMode === 'study' 
                     ? 'bg-purple-600/80 text-white border border-purple-400/50' 
                     : 'bg-gray-800/50 text-gray-300 border border-gray-600/30 hover:bg-gray-700/50'
                 }`}
               >
-                📝 Estudos
+                <span className="hidden sm:inline">📝 </span>Estudos
               </button>
             </div>
           )}
