@@ -149,11 +149,11 @@ export default function DashboardLayout({
             <button
               id="menuToggle"
               onClick={onMenuClick}
-              className="w-10 h-10 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
+              className="w-10 h-10 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
               data-testid="mobile-menu-toggle"
               aria-label="Menu"
             >
-              <i className="fas fa-bars text-neon-cyan text-base" />
+              <i className="fas fa-bars text-green-500 text-base" />
             </button>
           </div>
           </div>
@@ -169,13 +169,13 @@ export default function DashboardLayout({
           >
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-neon-cyan neon-text">Menu</h2>
+            <h2 className="text-lg font-semibold text-green-500 neon-text">Menu</h2>
             <button
               onClick={() => setSideNavOpen(false)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg border border-neon-cyan/30 hover:bg-neon-cyan/20 transition-all active:scale-95 touch-manipulation"
+              className="w-8 h-8 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
               aria-label="Fechar menu"
             >
-              <i className="fas fa-times text-neon-cyan text-sm" />
+              <i className="fas fa-times text-green-500 text-sm" />
             </button>
           </div>
           
@@ -186,8 +186,8 @@ export default function DashboardLayout({
                 onClick={() => handleDashboardClick(option.id)}
                 className={`w-full text-left p-3 rounded-lg transition-all data-card touch-manipulation min-h-14 ${
                   activeDashboard === option.id
-                    ? "bg-neon-cyan/20 text-neon-cyan border-neon-cyan/30"
-                    : "hover:bg-neon-cyan/10"
+                    ? "bg-green-500/20 text-green-500 border-green-500/30"
+                    : "hover:bg-green-500/10"
                 }`}
                 data-testid={`side-nav-${option.id}`}
               >
