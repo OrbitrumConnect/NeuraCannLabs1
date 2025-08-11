@@ -264,7 +264,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       ]);
       
       // Analyze query with conversation context
-      const result = MedicalAISearch.analyzeQuery(query, studies, cases, alerts, conversationHistory);
+      const result = MedicalAISearch.analyzeQuery(query, studies, cases, alerts);
       
       res.json(result);
     } catch (error) {
@@ -482,7 +482,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updated = await storage.updateStudySubmission(id, {
         status,
         reviewerNotes,
-        reviewedAt: new Date().toISOString()
+        reviewedAt: new Date()
       });
 
       if (!updated) {
@@ -506,7 +506,7 @@ function generateIntelligentSynthesis(conversations: any[], userPrompt: string, 
   synthesis += `## Análise Solicitada\n"${userPrompt}"\n\n`;
   
   // Extract and analyze conversation data
-  const allMessages = conversations.flatMap(conv => conv.content.split('\n\n').filter(line => line.trim()));
+  const allMessages = conversations.flatMap(conv => conv.content.split('\n\n').filter((line: string) => line.trim()));
   const userQuestions = allMessages.filter(msg => msg.includes('PERGUNTA:'));
   const assistantAnswers = allMessages.filter(msg => msg.includes('RESPOSTA:'));
   

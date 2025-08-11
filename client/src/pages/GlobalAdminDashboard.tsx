@@ -510,7 +510,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
                                   <h3 className="font-semibold text-white text-sm">
                                     {submission.title}
                                   </h3>
-                                  {getStatusBadge(submission.status)}
+                                  {getStatusBadge(submission.status || 'draft')}
                                 </div>
                                 <p className="text-slate-300 text-xs mb-2">
                                   {submission.originalContent.substring(0, 100)}...

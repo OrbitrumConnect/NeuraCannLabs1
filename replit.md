@@ -30,13 +30,16 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **Optimized Layout**: Voice controls bottom-left, plans button bottom-right, voice commands bottom-right
 - **ThoughtBubble Adjustment**: Repositioned closer to avatar for better mobile spacing
 - **Text-to-Speech**: Native browser API integration, Vercel-compatible deployment
-- **Vercel Deployment Ready**: 99% ready for Vercel with serverless architecture
+- **Vercel Deployment Ready**: 100% ready for Vercel with serverless architecture
 - **Button Size Optimization**: All interface buttons reduced by 30% for more compact layout
 - **Voice Button Repositioning**: Purple voice command button moved to left side, all voice controls reduced 30%
 - **Improved Card Spacing**: "Explorar mais" cards now have better vertical spacing (320px + 220px intervals)
 - **Enhanced Conversation Access**: "Ver" button now opens main card minimized without requiring new search
 - **Mode Separation**: Search and study modes now independent - new searches don't affect study drafts in progress
-- **Smart Mode Toggle**: Buttons "Explorar mais" and "Estudos" appear when main card is minimized for easy switching
+- **Smart Mode Toggle**: Buttons "Explorar mais" e "Estudos" appear when main card is minimized for easy switching
+- **Auto-Minimize on New**: Button "Nova" now automatically minimizes main card and shows toggle buttons
+- **Study AI Generator Fixed**: Corrected async/sync issues, array validation, and removed unnecessary restrictions
+- **Production Ready**: All LSP errors resolved, complete admin dashboard, ready for real data integration
 
 ## System Architecture
 

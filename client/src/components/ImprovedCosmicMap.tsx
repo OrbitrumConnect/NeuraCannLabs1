@@ -355,6 +355,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               onClear={() => createNewConversation()}
               onToggleHistory={() => setShowConversationHistory(!showConversationHistory)}
               showingHistory={showConversationHistory}
+              onMinimizeMainCard={() => setIsMainCardMinimized(true)}
             />
             
             {/* Search Bar */}

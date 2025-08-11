@@ -12,6 +12,7 @@ interface ConversationIndicatorProps {
   onClear: () => void;
   onToggleHistory: () => void;
   showingHistory: boolean;
+  onMinimizeMainCard?: () => void;
 }
 
 export function ConversationIndicator({ 
@@ -19,7 +20,8 @@ export function ConversationIndicator({
   messages, 
   onClear, 
   onToggleHistory,
-  showingHistory 
+  showingHistory,
+  onMinimizeMainCard
 }: ConversationIndicatorProps) {
   if (messageCount === 0) return null;
 
@@ -42,7 +44,10 @@ export function ConversationIndicator({
         {showingHistory ? 'Pesquisar' : 'Ver'}
       </button>
       <button
-        onClick={onClear}
+        onClick={() => {
+          onClear();
+          onMinimizeMainCard?.(); // Minimiza o card principal automaticamente
+        }}
         className="text-xs text-red-400 hover:text-red-300"
         title="Nova conversa"
       >
