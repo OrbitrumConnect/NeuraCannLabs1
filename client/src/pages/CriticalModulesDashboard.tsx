@@ -14,8 +14,16 @@ import {
   Activity,
   FileText,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Send,
+  MessageSquare,
+  TestTube,
+  UserPlus,
+  AlertTriangle
 } from "lucide-react";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export default function CriticalModulesDashboard() {
   const [activeModule, setActiveModule] = useState("referrals");
@@ -163,7 +171,7 @@ export default function CriticalModulesDashboard() {
               <Tabs defaultValue="overview" className="w-full">
                 <TabsList className="grid w-full grid-cols-4 bg-gray-800">
                   <TabsTrigger value="overview" className="text-gray-300">Visão Geral</TabsTrigger>
-                  <TabsTrigger value="features" className="text-gray-300">Funcionalidades</TabsTrigger>
+                  <TabsTrigger value="functionality" className="text-gray-300">Funcionalidades</TabsTrigger>
                   <TabsTrigger value="compliance" className="text-gray-300">Compliance</TabsTrigger>
                   <TabsTrigger value="integration" className="text-gray-300">Integração</TabsTrigger>
                 </TabsList>
@@ -209,8 +217,8 @@ export default function CriticalModulesDashboard() {
                   </div>
                 </TabsContent>
 
-                <TabsContent value="features" className="space-y-4 mt-6">
-                  <ModuleFeatures moduleId={selectedModule.id} />
+                <TabsContent value="functionality" className="space-y-4 mt-6">
+                  <ModuleFunctionality moduleId={selectedModule.id} />
                 </TabsContent>
 
                 <TabsContent value="compliance" className="space-y-4 mt-6">
@@ -307,6 +315,179 @@ function ComplianceDetails({ compliance }: { compliance: string[] }) {
           </p>
         </div>
       ))}
+    </div>
+  );
+}
+
+function ModuleFunctionality({ moduleId }: { moduleId: string }) {
+  const { toast } = useToast();
+
+  // Buscar dados reais dos módulos
+  const { data: moduleData, isLoading } = useQuery({
+    queryKey: [`/api/${moduleId.replace('-', '-')}`],
+    enabled: !!moduleId
+  });
+
+  // Mutations para ações dos módulos
+  const createReferralMutation = useMutation({
+    mutationFn: (data: any) => apiRequest(`/api/patient-referrals`, 'POST', data),
+    onSuccess: () => toast({ title: "Encaminhamento criado com sucesso!" })
+  });
+
+  const startAnamnesisSessionMutation = useMutation({
+    mutationFn: (data: any) => apiRequest(`/api/anamnesis-sessions`, 'POST', data),
+    onSuccess: () => toast({ title: "Sessão de anamnese iniciada!" })
+  });
+
+  const requestLabResultMutation = useMutation({
+    mutationFn: (data: any) => apiRequest(`/api/lab-results`, 'POST', data),
+    onSuccess: () => toast({ title: "Solicitação de exame enviada!" })
+  });
+
+  const addTeamMemberMutation = useMutation({
+    mutationFn: (data: any) => apiRequest(`/api/medical-team`, 'POST', data),
+    onSuccess: () => toast({ title: "Membro adicionado à equipe!" })
+  });
+
+  const runComplianceAuditMutation = useMutation({
+    mutationFn: () => apiRequest(`/api/compliance-audits`, 'POST', {}),
+    onSuccess: () => toast({ title: "Auditoria de compliance iniciada!" })
+  });
+
+  if (isLoading) {
+    return <div className="text-center text-gray-400">Carregando funcionalidades...</div>;
+  }
+
+  const renderModuleActions = () => {
+    switch (moduleId) {
+      case 'referrals':
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Ações Disponíveis</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                onClick={() => createReferralMutation.mutate({ 
+                  patientId: 'demo-patient', 
+                  specialistType: 'neurologista',
+                  reason: 'Avaliação para cannabis medicinal'
+                })}
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                disabled={createReferralMutation.isPending}
+              >
+                <Send className="w-4 h-4 mr-2" />
+                Criar Encaminhamento
+              </Button>
+              <Button variant="outline" className="w-full border-blue-500 text-blue-400">
+                <FileText className="w-4 h-4 mr-2" />
+                Ver Histórico
+              </Button>
+            </div>
+          </div>
+        );
+      
+      case 'anamnesis':
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Assistente de Anamnese</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                onClick={() => startAnamnesisSessionMutation.mutate({ 
+                  patientId: 'demo-patient',
+                  type: 'cannabis-evaluation'
+                })}
+                className="w-full bg-green-600 hover:bg-green-700"
+                disabled={startAnamnesisSessionMutation.isPending}
+              >
+                <Stethoscope className="w-4 h-4 mr-2" />
+                Iniciar Anamnese IA
+              </Button>
+              <Button variant="outline" className="w-full border-green-500 text-green-400">
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Templates Personalizados
+              </Button>
+            </div>
+          </div>
+        );
+      
+      case 'lab-integration':
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Integração Laboratorial</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                onClick={() => requestLabResultMutation.mutate({ 
+                  patientId: 'demo-patient',
+                  testType: 'cannabinoids-blood',
+                  lab: 'fleury'
+                })}
+                className="w-full bg-purple-600 hover:bg-purple-700"
+                disabled={requestLabResultMutation.isPending}
+              >
+                <TestTube className="w-4 h-4 mr-2" />
+                Solicitar Exame
+              </Button>
+              <Button variant="outline" className="w-full border-purple-500 text-purple-400">
+                <Activity className="w-4 h-4 mr-2" />
+                Resultados Recentes
+              </Button>
+            </div>
+          </div>
+        );
+      
+      case 'medical-team':
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Gestão de Equipe</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                onClick={() => addTeamMemberMutation.mutate({ 
+                  name: 'Dr. Silva',
+                  specialty: 'Psiquiatria',
+                  crm: '12345-SP'
+                })}
+                className="w-full bg-orange-600 hover:bg-orange-700"
+                disabled={addTeamMemberMutation.isPending}
+              >
+                <UserPlus className="w-4 h-4 mr-2" />
+                Adicionar Membro
+              </Button>
+              <Button variant="outline" className="w-full border-orange-500 text-orange-400">
+                <Users className="w-4 h-4 mr-2" />
+                Gerenciar Equipe
+              </Button>
+            </div>
+          </div>
+        );
+      
+      case 'compliance':
+        return (
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Auditoria & Compliance</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Button 
+                onClick={() => runComplianceAuditMutation.mutate()}
+                className="w-full bg-red-600 hover:bg-red-700"
+                disabled={runComplianceAuditMutation.isPending}
+              >
+                <Shield className="w-4 h-4 mr-2" />
+                Executar Auditoria
+              </Button>
+              <Button variant="outline" className="w-full border-red-500 text-red-400">
+                <AlertTriangle className="w-4 h-4 mr-2" />
+                Relatórios de Compliance
+              </Button>
+            </div>
+          </div>
+        );
+      
+      default:
+        return <div className="text-gray-400">Selecione um módulo para ver as funcionalidades.</div>;
+    }
+  };
+
+  return (
+    <div className="bg-gray-800/30 rounded-lg p-6">
+      {renderModuleActions()}
     </div>
   );
 }
