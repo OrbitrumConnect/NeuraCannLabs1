@@ -57,6 +57,8 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **Revenue Tracking**: Sistema completo de tracking de receita com crescimento mensal (+8.1%), taxa de conversão (32.5%) e churn rate (4.2%)
 - **Activity Monitoring**: Monitoramento de atividade com buscas (8923), interações de voz (3241), API calls (15647) e horários de pico identificados
 - **Study Submission Analytics**: Métricas completas de submissões de estudos com taxa de aprovação (57.1%) e tempo médio de revisão (2.4 dias)
+- **Final Trigger Adjustments**: Fixed floating triggers positioning and sizing - "Repetir Saudação" and "Planos" buttons adjusted to w-5 h-5 (20px) on mobile for better UX
+- **Grid Layout Fixes**: Scientific data cards now use proper responsive grid (grid-cols-1 mobile, lg:grid-cols-3 desktop) eliminating horizontal scroll issues
 
 ## System Architecture
 
