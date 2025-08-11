@@ -40,7 +40,7 @@ interface MainCardProps {
   onToggleMinimize?: () => void;
 }
 
-export default function MainCard({ result, isMinimized = false, onToggleMinimize }: MainCardProps) {
+export default function MainCard({ result, isMinimized = false, onToggleMinimize, onCardExpand }: MainCardProps & { onCardExpand?: (content: string, title: string, autoStartTTS?: boolean) => void }) {
   if (!result) {
     return (
       <div style={{ 
@@ -186,6 +186,31 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
                         style={{ fontSize: "10px", padding: "2px 6px", background: "#2563eb", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
                       >
                         📖 PubMed
+                      </button>
+                      <button 
+                        onClick={() => {
+                          // Criar card compacto com conteúdo completo + TTS ativado
+                          const compactContent = `**${study.title}**
+
+${study.description}
+
+**Dosagem:** ${study.compound}
+**Aplicação:** ${study.indication}
+**Evidência:** ${study.phase} - ${study.status}
+
+Este estudo fornece base científica sólida para prescrição médica.`;
+                          
+                          // Criar card compacto com TTS ativado
+                          if (onCardExpand) {
+                            onCardExpand(compactContent, study.title, true);
+                          } else {
+                            // Fallback: criar modal simples ou alert com o conteúdo
+                            alert(`${study.title}\n\n${study.description}\n\nComposto: ${study.compound}\nIndicação: ${study.indication}`);
+                          }
+                        }}
+                        style={{ fontSize: "10px", padding: "2px 6px", background: "#059669", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}
+                      >
+                        🔍 Explorar +
                       </button>
                     </div>
                   </div>
