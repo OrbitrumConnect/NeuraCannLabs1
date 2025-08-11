@@ -538,23 +538,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Filter data based on query (case-insensitive search)
       const searchTerm = query.toLowerCase();
       
-      const filteredStudies = studies.filter(study => 
-        study.title.toLowerCase().includes(searchTerm) ||
-        (study.description?.toLowerCase() || '').includes(searchTerm) ||
-        (study.compound?.toLowerCase() || '').includes(searchTerm) ||
-        (study.indication?.toLowerCase() || '').includes(searchTerm)
-      );
+      console.log('🔍 Termo de busca:', searchTerm);
+      console.log('📚 Total de estudos:', studies.length);
+      console.log('🏥 Total de casos:', cases.length); 
+      console.log('📢 Total de alertas:', alerts.length);
 
-      const filteredCases = cases.filter(case_ => 
-        case_.description.toLowerCase().includes(searchTerm) ||
-        (case_.indication?.toLowerCase() || '').includes(searchTerm) ||
-        (case_.outcome?.toLowerCase() || '').includes(searchTerm)
-      );
+      const filteredStudies = studies.filter(study => {
+        const matches = study.title.toLowerCase().includes(searchTerm) ||
+          (study.description?.toLowerCase() || '').includes(searchTerm) ||
+          (study.compound?.toLowerCase() || '').includes(searchTerm) ||
+          (study.indication?.toLowerCase() || '').includes(searchTerm);
+        if (matches) console.log('✅ Estudo encontrado:', study.title);
+        return matches;
+      });
 
-      const filteredAlerts = alerts.filter(alert => 
-        alert.message.toLowerCase().includes(searchTerm) ||
-        alert.type.toLowerCase().includes(searchTerm)
-      );
+      const filteredCases = cases.filter(case_ => {
+        const matches = case_.description.toLowerCase().includes(searchTerm) ||
+          (case_.indication?.toLowerCase() || '').includes(searchTerm) ||
+          (case_.outcome?.toLowerCase() || '').includes(searchTerm) ||
+          case_.caseNumber.toLowerCase().includes(searchTerm) ||
+          (case_.compound?.toLowerCase() || '').includes(searchTerm);
+        if (matches) console.log('✅ Caso encontrado:', case_.caseNumber);
+        return matches;
+      });
+
+      const filteredAlerts = alerts.filter(alert => {
+        const matches = alert.message.toLowerCase().includes(searchTerm) ||
+          alert.type.toLowerCase().includes(searchTerm) ||
+          (alert.description?.toLowerCase() || '').includes(searchTerm);
+        if (matches) console.log('✅ Alerta encontrado:', alert.message);
+        return matches;
+      });
 
       // Generate contextual AI response based on found data
       let aiResponse = `🔬 **Análise Cruzada para: "${query}"**\n\n`;

@@ -226,8 +226,25 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       // Adicionar resposta da IA
       addMessage({ role: 'assistant', content: assistantResponse, timestamp: Date.now() });
 
-      // Atualizar resultado atual para mostrar no MainCard APENAS se estiver no modo pesquisa
-      setCurrentResult(assistantResponse);
+      // Estruturar dados completos para o MainCard
+      const structuredResult = {
+        query: userMessage,
+        response: assistantResponse,
+        meta: {
+          counts: {
+            studies: data.results?.studies?.length || 0,
+            trials: data.results?.cases?.length || 0
+          }
+        },
+        categories: {
+          scientific: data.results?.studies || [],
+          clinical: data.results?.cases || [], 
+          alerts: data.results?.alerts || []
+        }
+      };
+
+      // Atualizar resultado atual com dados estruturados
+      setCurrentResult(structuredResult);
       setMainCardMode('search'); // Força modo pesquisa ao fazer nova pesquisa
 
       const newTab: SearchTab = {
