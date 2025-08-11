@@ -77,9 +77,18 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
     );
   }
 
-  const cleanTextForTTS = (text: string) => {
+  const cleanTextForTTS = (text: any) => {
     // Remove emojis mas mantém todo o conteúdo para leitura completa
-    return text
+    let cleanText = '';
+    if (typeof text === 'string') {
+      cleanText = text;
+    } else if (text?.response && typeof text.response === 'string') {
+      cleanText = text.response;
+    } else if (text && typeof text === 'object') {
+      cleanText = JSON.stringify(text);
+    }
+    
+    return cleanText
       .replace(/[🔬📊🏥⚠️🧠💊🎯]/g, '')
       .replace(/\*\*/g, '')
       .replace(/\n/g, ' ')
