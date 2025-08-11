@@ -105,7 +105,7 @@ const planets: CosmicPlanet[] = [
 export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSearch }: CosmicMapProps) {
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("todos");
+  // Filter state removido
   const [chatMode, setChatMode] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [searchTabs, setSearchTabs] = useState<SearchTab[]>([]);
@@ -118,13 +118,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const { data: clinicalData = [] } = useQuery<ClinicalCase[]>({ queryKey: ['/api/clinical'] });
   const { data: alertsData = [] } = useQuery<Alert[]>({ queryKey: ['/api/alerts'] });
 
-  const filters = [
-    { id: "todos", label: "Todos", icon: Brain },
-    { id: "cbd", label: "CBD", icon: Pill },
-    { id: "thc", label: "THC", icon: Pill },
-    { id: "epilepsia", label: "Epilepsia", icon: Microscope },
-    { id: "dor", label: "Dor", icon: AlertTriangle },
-  ];
+  // Filtros removidos para economizar espaço na interface
 
   const handleChatSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,7 +132,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       const response = await fetch('/api/ai-search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query: userMessage, filter: selectedFilter })
+        body: JSON.stringify({ query: userMessage, filter: 'todos' })
       });
 
       const data = await response.json();
@@ -285,23 +279,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               </button>
             </form>
 
-            {/* Filters */}
-            <div className="flex flex-wrap gap-1 sm:gap-2">
-              {filters.map((filter) => (
-                <button
-                  key={filter.id}
-                  onClick={() => setSelectedFilter(filter.id)}
-                  className={`px-2 py-1 rounded-full text-xs transition-all flex items-center space-x-1 ${
-                    selectedFilter === filter.id
-                      ? "bg-blue-600/80 text-white"
-                      : "bg-white/10 text-gray-300 hover:bg-white/20"
-                  }`}
-                >
-                  <filter.icon className="w-3 h-3" />
-                  <span className="hidden sm:inline">{filter.label}</span>
-                </button>
-              ))}
-            </div>
+
           </div>
         </div>
       )}
