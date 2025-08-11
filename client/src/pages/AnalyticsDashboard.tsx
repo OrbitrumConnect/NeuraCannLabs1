@@ -131,75 +131,81 @@ export default function AnalyticsDashboard() {
         <div className="absolute bottom-40 left-1/2 w-80 h-80 bg-green-400/15 rounded-full blur-3xl animate-pulse delay-2000" />
       </div>
       
-      <div className="relative z-10 container mx-auto px-3 py-6 pt-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-3 py-4 pt-8">
         {/* Header */}
-        <div className="flex items-center mb-6">
-          <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-cyan-400 rounded-xl flex items-center justify-center mr-4">
-            <i className="fas fa-chart-line text-white text-2xl" />
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-cyan-400 rounded-lg flex items-center justify-center mr-3">
+              <i className="fas fa-chart-line text-white text-lg" />
+            </div>
+            <div>
+              <h1 className="text-lg sm:text-xl font-bold text-white">Analytics em Tempo Real</h1>
+              <p className="text-xs text-gray-400">Visualização da atividade da plataforma</p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-base sm:text-2xl font-bold text-white">Analytics em Tempo Real</h1>
-            <p className="text-xs sm:text-sm text-gray-400">Visualização completa da atividade da plataforma</p>
-          </div>
+          <a href="/" className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gray-700/50 hover:bg-gray-600/50 transition-colors border border-gray-600">
+            <i className="fas fa-arrow-left text-gray-300 text-sm" />
+            <span className="text-gray-300 text-sm">Voltar</span>
+          </a>
         </div>
 
         {/* Real-time Metrics Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
           <Card className="bg-gray-800/50 border border-green-500/20">
-            <CardContent className="p-4">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-400">Discussões</p>
-                  <p className="text-xl font-bold text-green-400">{realTimeData.totalDiscussions}</p>
+                  <p className="text-lg font-bold text-green-400">{realTimeData.totalDiscussions}</p>
                   <p className="text-xs text-green-300">+{realTimeData.newDiscussionsToday} hoje</p>
                 </div>
-                <i className="fas fa-comments text-green-400 text-2xl" />
+                <i className="fas fa-comments text-green-400 text-xl" />
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-gray-800/50 border border-blue-500/20">
-            <CardContent className="p-4">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-400">Casos Clínicos</p>
-                  <p className="text-xl font-bold text-blue-400">{realTimeData.totalClinicalCases}</p>
+                  <p className="text-lg font-bold text-blue-400">{realTimeData.totalClinicalCases}</p>
                   <p className="text-xs text-blue-300">+{realTimeData.newCasesToday} hoje</p>
                 </div>
-                <i className="fas fa-file-medical text-blue-400 text-2xl" />
+                <i className="fas fa-file-medical text-blue-400 text-xl" />
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-gray-800/50 border border-orange-500/20">
-            <CardContent className="p-4">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-400">Alertas</p>
-                  <p className="text-xl font-bold text-orange-400">{realTimeData.totalAlerts}</p>
+                  <p className="text-lg font-bold text-orange-400">{realTimeData.totalAlerts}</p>
                   <p className="text-xs text-orange-300">+{realTimeData.newAlertsToday} hoje</p>
                 </div>
-                <i className="fas fa-bell text-orange-400 text-2xl" />
+                <i className="fas fa-bell text-orange-400 text-xl" />
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-gray-800/50 border border-purple-500/20">
-            <CardContent className="p-4">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs text-gray-400">Usuários Ativos</p>
-                  <p className="text-xl font-bold text-purple-400">{realTimeData.activeUsersNow}</p>
+                  <p className="text-lg font-bold text-purple-400">{realTimeData.activeUsersNow}</p>
                   <p className="text-xs text-purple-300">Agora</p>
                 </div>
-                <i className="fas fa-users text-purple-400 text-2xl" />
+                <i className="fas fa-users text-purple-400 text-xl" />
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Charts Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
           {/* Atividade por Hora */}
           <Card className="bg-gray-800/50 border border-gray-600">
             <CardHeader>
@@ -209,7 +215,7 @@ export default function AnalyticsDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={220}>
                 <LineChart data={chartData.hourlyActivity}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="hour" stroke="#9CA3AF" />
@@ -236,7 +242,7 @@ export default function AnalyticsDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={220}>
                 <PieChart>
                   <Pie
                     data={chartData.discussionTypes}
@@ -269,7 +275,7 @@ export default function AnalyticsDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={chartData.casesBySpecialty}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="specialty" stroke="#9CA3AF" angle={-45} textAnchor="end" height={100} />
@@ -293,7 +299,7 @@ export default function AnalyticsDashboard() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
+              <ResponsiveContainer width="100%" height={220}>
                 <AreaChart data={chartData.weeklyTrends}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="day" stroke="#9CA3AF" />
@@ -313,7 +319,7 @@ export default function AnalyticsDashboard() {
         </div>
 
         {/* Alertas por Tipo */}
-        <Card className="bg-gray-800/50 border border-gray-600 mb-8">
+        <Card className="bg-gray-800/50 border border-gray-600 mb-6">
           <CardHeader>
             <CardTitle className="text-white flex items-center">
               <i className="fas fa-exclamation-triangle mr-2 text-orange-400" />
@@ -323,7 +329,7 @@ export default function AnalyticsDashboard() {
           <CardContent>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
               {chartData.alertsByType.map((alert, index) => (
-                <div key={index} className="text-center p-4 bg-gray-700/50 rounded-lg">
+                <div key={index} className="text-center p-3 bg-gray-700/50 rounded-lg">
                   <div className={`text-2xl font-bold ${
                     alert.urgency === 'high' ? 'text-red-400' :
                     alert.urgency === 'medium' ? 'text-orange-400' : 'text-green-400'
@@ -352,24 +358,24 @@ export default function AnalyticsDashboard() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="text-center">
-                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                <div className="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
                   <i className="fas fa-tachometer-alt text-green-400 text-xl" />
                 </div>
                 <div className="text-sm text-gray-400">Tempo de Resposta</div>
                 <div className="text-lg font-bold text-green-400">{realTimeData.avgResponseTime}s</div>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <i className="fas fa-clock text-blue-400 text-xl" />
+                <div className="w-12 h-12 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <i className="fas fa-clock text-blue-400 text-lg" />
                 </div>
                 <div className="text-sm text-gray-400">Pico de Atividade</div>
                 <div className="text-lg font-bold text-blue-400">{realTimeData.peakHour}</div>
               </div>
               <div className="text-center">
-                <div className="w-16 h-16 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <i className="fas fa-database text-purple-400 text-xl" />
+                <div className="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <i className="fas fa-database text-purple-400 text-lg" />
                 </div>
                 <div className="text-sm text-gray-400">Sistema</div>
                 <div className="text-lg font-bold text-green-400">Online</div>
