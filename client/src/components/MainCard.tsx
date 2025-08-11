@@ -140,10 +140,10 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
           </div>
 
           {/* Data Categories Grid */}
-          <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-3">
             
             {/* Scientific Studies */}
-            <div style={{ flex: 1, background: "#071033", padding: 8, borderRadius: 6, border: "1px solid rgba(59, 130, 246, 0.3)" }}>
+            <div style={{ background: "#071033", padding: 8, borderRadius: 6, border: "1px solid rgba(59, 130, 246, 0.3)" }}>
               <h4 style={{ color: "#60a5fa", fontSize: "14px", fontWeight: "600", marginBottom: "8px", display: "flex", alignItems: "center" }}>
                 <Microscope className="w-4 h-4 mr-2" />
                 Estudos Científicos ({result.categories.scientific?.length || 0})
@@ -176,7 +176,7 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
             </div>
 
             {/* Clinical Cases */}
-            <div style={{ width: 180, background: "#071a0b", padding: 8, borderRadius: 6, border: "1px solid rgba(34, 197, 94, 0.3)" }}>
+            <div style={{ background: "#071a0b", padding: 8, borderRadius: 6, border: "1px solid rgba(34, 197, 94, 0.3)" }}>
               <h4 style={{ color: "#34d399", fontSize: "14px", fontWeight: "600", marginBottom: "8px", display: "flex", alignItems: "center" }}>
                 <Pill className="w-4 h-4 mr-2" />
                 Casos Clínicos ({result.categories.clinical?.length || 0})
@@ -192,7 +192,7 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
             </div>
 
             {/* Regulatory Alerts */}
-            <div style={{ width: 180, background: "#1a0b07", padding: 8, borderRadius: 6, border: "1px solid rgba(239, 68, 68, 0.3)" }}>
+            <div style={{ background: "#1a0b07", padding: 8, borderRadius: 6, border: "1px solid rgba(239, 68, 68, 0.3)" }}>
               <h4 style={{ color: "#f87171", fontSize: "14px", fontWeight: "600", marginBottom: "8px", display: "flex", alignItems: "center" }}>
                 <AlertTriangle className="w-4 h-4 mr-2" />
                 Alertas ({result.categories.alerts?.length || 0})
