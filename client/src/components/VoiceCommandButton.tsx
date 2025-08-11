@@ -8,7 +8,7 @@ export function VoiceCommandButton() {
   if (!isSupported) return null;
 
   return (
-    <div className="fixed bottom-4 left-16 z-50">
+    <div className="hidden md:block fixed bottom-4 left-16 z-50">
       {/* Indicador quando está escutando */}
       {isListening && (
         <Card className="bg-cyber-dark/95 border-neon-cyan p-2 mb-1 max-w-xs">
@@ -33,7 +33,7 @@ export function VoiceCommandButton() {
         </Card>
       )}
 
-      {/* Botão de comando por voz - 30% menor e reposicionado à esquerda */}
+      {/* Botão de comando por voz - APENAS DESKTOP */}
       {!isListening && (
         <Button
           onClick={startListening}

@@ -15,7 +15,7 @@ export function VoiceGreetingIndicator() {
   if (!isSupported) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-50">
+    <div className="fixed bottom-12 left-4 sm:bottom-4 sm:left-4 z-50">
       {/* Indicador quando está falando */}
       {isPlaying && (
         <Card className="bg-cyber-dark/95 border-neon-cyan p-4 mb-2 max-w-sm">
@@ -43,9 +43,10 @@ export function VoiceGreetingIndicator() {
         </Card>
       )}
 
-      {/* Controles de voz - Botão menor e discreto */}
+      {/* Controles de voz - Mobile: apenas IA trigger, Desktop: todos */}
       {!isPlaying && (
         <div className="flex flex-col gap-2">
+          {/* Trigger IA - Reposicionado para onde estava o limpa cache no mobile */}
           <Button
             onClick={playGreeting}
             size="sm"
@@ -56,7 +57,7 @@ export function VoiceGreetingIndicator() {
             <i className="fas fa-volume-up text-xs" />
           </Button>
           
-          {/* Botão de debug temporário - 30% menor */}
+          {/* Botão de debug - APENAS DESKTOP */}
           {process.env.NODE_ENV === 'development' && (
             <Button
               onClick={() => {
@@ -67,7 +68,7 @@ export function VoiceGreetingIndicator() {
                 console.log('🎤 Cache limpo - próximo acesso tocará novamente');
               }}
               size="sm"
-              className="bg-red-500/20 border border-red-500/50 text-red-400 hover:bg-red-500/30 w-6 h-6 md:w-7 md:h-7 p-0 rounded-full"
+              className="hidden md:block bg-red-500/20 border border-red-500/50 text-red-400 hover:bg-red-500/30 w-6 h-6 md:w-7 md:h-7 p-0 rounded-full"
               title="Limpar cache de voz (dev)"
             >
               <i className="fas fa-trash text-xs" />
