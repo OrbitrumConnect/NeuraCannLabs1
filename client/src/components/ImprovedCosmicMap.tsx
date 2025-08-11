@@ -120,6 +120,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [studyTitle, setStudyTitle] = useState("");
   const [currentStudyTopic, setCurrentStudyTopic] = useState("");
   const [currentResult, setCurrentResult] = useState<string | null>(null);
+  const [mainCardMode, setMainCardMode] = useState<'search' | 'study'>('search'); // Controla se mostra pesquisa ou estudo
   const { avatarScanning } = useScan();
   const {
     conversations,
@@ -218,8 +219,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       // Adicionar resposta da IA
       addMessage({ role: 'assistant', content: assistantResponse, timestamp: Date.now() });
 
-      // Atualizar resultado atual para mostrar no MainCard
+      // Atualizar resultado atual para mostrar no MainCard APENAS se estiver no modo pesquisa
       setCurrentResult(assistantResponse);
+      setMainCardMode('search'); // Força modo pesquisa ao fazer nova pesquisa
 
       const newTab: SearchTab = {
         id: `search-${Date.now()}`,
@@ -390,10 +392,41 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             isMinimized={isMainCardMinimized}
             onToggleMinimize={() => setIsMainCardMinimized(!isMainCardMinimized)}
           />
-          {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
+          {/* Mode Toggle Buttons - Mostrar apenas quando o card está minimizado */}
+          {isMainCardMinimized && (
+            <div className="mt-3 flex gap-2 justify-center">
+              <button
+                onClick={() => {
+                  setMainCardMode('search');
+                  setIsMainCardMinimized(false); // Abre o card
+                }}
+                className={`px-3 py-1.5 text-xs rounded transition-all ${
+                  mainCardMode === 'search' 
+                    ? 'bg-blue-600/80 text-white border border-blue-400/50' 
+                    : 'bg-gray-800/50 text-gray-300 border border-gray-600/30 hover:bg-gray-700/50'
+                }`}
+              >
+                🔍 Explorar mais
+              </button>
+              <button
+                onClick={() => {
+                  setMainCardMode('study');
+                  setShowConversationHistory(true); // Abre o rascunho de estudo
+                  setIsMainCardMinimized(false); // Abre o card
+                }}
+                className={`px-3 py-1.5 text-xs rounded transition-all ${
+                  mainCardMode === 'study' 
+                    ? 'bg-purple-600/80 text-white border border-purple-400/50' 
+                    : 'bg-gray-800/50 text-gray-300 border border-gray-600/30 hover:bg-gray-700/50'
+                }`}
+              >
+                📝 Estudos
+              </button>
+            </div>
+          )}
           
-          {/* Suggestions for Sub-search - Responsive layout */}
-          {searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
+          {/* Suggestions for Sub-search - Responsive layout - Mostrar apenas no modo pesquisa */}
+          {mainCardMode === 'search' && searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
             <div className="mt-3 p-2 sm:p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
               <h4 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2">
@@ -410,8 +443,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             </div>
           )}
 
-          {/* Study Notes - Focused on drafting studies */}
-          {showConversationHistory && (
+          {/* Study Notes - Focused on drafting studies - Mostrar apenas no modo estudos */}
+          {mainCardMode === 'study' && showConversationHistory && (
             <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
               <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
                 <h4 className="text-sm font-medium text-blue-300">
@@ -486,7 +519,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                       disabled={isTyping}
                       className="w-full px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg text-xs font-medium transition-all disabled:opacity-50 border border-purple-400/30 shadow-lg"
                     >
-                      {isTyping ? '🤖 Analisando...' : '💬 Continuar com IA (500 palavras)'}
+                      {isTyping ? '🤖 Analisando...' : '💬 Continuar com IA (300 palavras)'}
                     </button>
                     
                     {/* Final Summary Button */}

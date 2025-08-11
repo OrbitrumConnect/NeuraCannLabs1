@@ -35,6 +35,8 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **Voice Button Repositioning**: Purple voice command button moved to left side, all voice controls reduced 30%
 - **Improved Card Spacing**: "Explorar mais" cards now have better vertical spacing (320px + 220px intervals)
 - **Enhanced Conversation Access**: "Ver" button now opens main card minimized without requiring new search
+- **Mode Separation**: Search and study modes now independent - new searches don't affect study drafts in progress
+- **Smart Mode Toggle**: Buttons "Explorar mais" and "Estudos" appear when main card is minimized for easy switching
 
 ## System Architecture
 
