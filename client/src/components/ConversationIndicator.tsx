@@ -43,12 +43,13 @@ export function ConversationIndicator({
         <Eye className="w-3 h-3" />
         {showingHistory ? 'Pesquisar' : 'Ver'}
       </button>
+      {/* Botão Nova - Escondido no mobile para não atrapalhar o avatar */}
       <button
         onClick={() => {
           onClear();
           onMinimizeMainCard?.(); // Minimiza o card principal automaticamente
         }}
-        className="text-xs text-red-400 hover:text-red-300"
+        className="hidden sm:block text-xs text-red-400 hover:text-red-300"
         title="Nova conversa"
       >
         Nova

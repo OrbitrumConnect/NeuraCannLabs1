@@ -40,6 +40,8 @@ NeuroCann Lab is an advanced medical platform integrating artificial intelligenc
 - **Auto-Minimize on New**: Button "Nova" now automatically minimizes main card and shows toggle buttons
 - **Study AI Generator Fixed**: Corrected async/sync issues, array validation, and removed unnecessary restrictions
 - **Production Ready**: All LSP errors resolved, complete admin dashboard, ready for real data integration
+- **Mobile Triggers Optimized**: Planos trigger reduced to 6x6px, IA trigger repositioned, purple/red triggers hidden on mobile
+- **Clean Mobile Interface**: Removed "Nova" button from mobile to prevent avatar obstruction, desktop retains all functions
 
 ## System Architecture
 
