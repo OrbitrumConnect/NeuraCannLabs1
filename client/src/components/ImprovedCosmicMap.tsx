@@ -192,6 +192,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
 
     const userMessage = searchTerm;
     
+    // Ativar Dr AI quando fazer pesquisa (correção para mostrar opções)
+    setIsDrAIActive(true);
+    
     // Update current study topic when searching
     setCurrentStudyTopic(userMessage);
     

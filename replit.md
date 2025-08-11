@@ -44,6 +44,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Collaborative Review**: An administrative "Revisão" tab allows approving, rejecting, or requesting revisions. Features a collaborative feedback cycle where admins provide notes, and users correct with AI assistance.
 - **Discussion Forum**: A "Fórum de Discussão" with categories, medical posts, and statistics, integrated with the "Meus Estudos" section for discussion based on approved studies. Supports attachments (PDF, DOC, DOCX, JPG, PNG).
 - **Audio Features**: Optimized Text-to-Speech for reading search results and medical content.
+- **Search Interface Auto-Activation**: Correção crítica aplicada - pesquisas agora ativam automaticamente o Dr AI (isDrAIActive) mostrando todas as opções de chat, exploração e estudos conforme funcionamento normal do sistema.
 
 ## External Dependencies
 - **Database**: Neon serverless PostgreSQL (configured via Drizzle ORM).
