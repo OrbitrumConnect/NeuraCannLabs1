@@ -8,7 +8,7 @@ export function VoiceCommandButton() {
   if (!isSupported) return null;
 
   return (
-    <div className="hidden md:block relative">
+    <div className="hidden md:block fixed bottom-4 left-16 z-50">
       {/* Indicador quando está escutando */}
       {isListening && (
         <Card className="bg-cyber-dark/95 border-neon-cyan p-2 mb-1 max-w-xs">
@@ -38,7 +38,7 @@ export function VoiceCommandButton() {
         <Button
           onClick={startListening}
           size="sm"
-          className="bg-purple-500/20 border border-purple-500/50 text-purple-400 hover:bg-purple-500/30 w-8 h-8 p-0 rounded-full"
+          className="bg-purple-500/20 border border-purple-500/50 text-purple-400 hover:bg-purple-500/30 w-7 h-7 p-0 rounded-full"
           data-testid="voice-command-button"
           title="Comandos por Voz - Dr. Cannabis IA"
         >

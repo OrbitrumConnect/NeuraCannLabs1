@@ -11,8 +11,6 @@ import ProfileDashboard from "./ProfileDashboard";
 import { AdminNavigation } from '@/components/AdminNavigation';
 import { FreePlanNotification } from '@/components/FreePlanNotification';
 import { PlansFloatingTrigger } from '@/components/PlansFloatingTrigger';
-import { VoiceCommandButton } from '@/components/VoiceCommandButton';
-import { VoiceGreetingIndicator } from '@/components/VoiceGreetingIndicator';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
 
 export default function Dashboard() {
@@ -66,7 +64,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black pb-12">
+    <div className="relative">
       <AdminNavigation />
       
       {/* Free Plan Notification */}
@@ -124,21 +122,8 @@ export default function Dashboard() {
       )}
       </DashboardLayout>
       
-      {/* Rodapé preto fixo no limite inferior absoluto da viewport */}
-      <footer className="fixed inset-x-0 bottom-0 bg-black border-t border-gray-800/30 px-3 py-2 z-50 h-12">
-        <div className="flex items-center justify-between h-full max-w-full mx-auto">
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-500 hidden sm:block font-medium">NeuroCann Lab v3.0</span>
-          </div>
-          
-          {/* Triggers organizados no rodapé preto */}
-          <div className="flex items-center gap-3">
-            <VoiceGreetingIndicator />
-            <VoiceCommandButton />
-            <PlansFloatingTrigger />
-          </div>
-        </div>
-      </footer>
+      {/* Floating Plans Trigger */}
+      <PlansFloatingTrigger />
     </div>
   );
 }

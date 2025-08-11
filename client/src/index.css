@@ -87,17 +87,17 @@
 
 /* Global scale optimization for better visual proportions */
 #root {
-  zoom: 0.825;
+  zoom: 0.75;
   transform-origin: 0 0;
 }
 
 /* Alternative approach for better browser compatibility */
 @media screen and (min-width: 768px) {
   #root {
-    transform: scale(0.825);
+    transform: scale(0.75);
     transform-origin: 0 0;
-    width: 121.21%; /* Compensate for the scale */
-    height: 121.21%;
+    width: 133.33%; /* Compensate for the scale */
+    height: 133.33%;
   }
 }
 
