@@ -56,10 +56,7 @@ export default function MedicalAvatar3D({
     const size = className?.includes('w-40') ? 162 : className?.includes('w-24') ? 92 : 65;
     const isMobile = size <= 65;
     
-    // Debug mais detalhado para mobile
-    if (avatarScanning) {
-      console.log("🟡 AVATAR AMARELO!", "Mobile:", isMobile, "Size:", size, "Position:", scanPosition);
-    }
+
     renderer.setSize(size, size);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setClearColor(0x000000, 0); // Transparent background
