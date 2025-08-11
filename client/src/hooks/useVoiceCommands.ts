@@ -84,7 +84,7 @@ export function useVoiceCommands() {
       if (searchTerm) {
         console.log('🔍 Executando busca automatica:', searchTerm);
         
-        // Usar o callback do Dashboard.tsx para executar busca
+        // Usar o callback do Dashboard.tsx para executar busca na aba principal
         if (window.location.pathname.startsWith('/dashboard')) {
           // Triggerar busca via evento customizado que o Dashboard escuta
           const searchEvent = new CustomEvent('voiceSearch', { 
@@ -93,11 +93,11 @@ export function useVoiceCommands() {
           window.dispatchEvent(searchEvent);
           console.log('🔍 Evento de busca disparado:', searchTerm);
         } else {
-          // Navegar para dashboard e fazer busca
-          window.location.href = `/dashboard/scientific?search=${encodeURIComponent(searchTerm)}`;
+          // Navegar para dashboard principal e fazer busca
+          window.location.href = `/?search=${encodeURIComponent(searchTerm)}`;
         }
         
-        speak(`Pesquisando por ${searchTerm} na base científica`);
+        speak(`Pesquisando por ${searchTerm}`);
         return true;
       }
     }

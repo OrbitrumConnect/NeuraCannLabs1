@@ -39,14 +39,14 @@ export default function Dashboard() {
       const query = event.detail.query;
       console.log('🎙️ Voice search recebido no Dashboard:', query);
       
-      // Executar busca
+      // Executar busca na aba principal (overview)
       setGlobalSearchTerm(query);
       
-      // Auto-switch para scientific dashboard
-      setActiveDashboard('scientific');
+      // Manter na aba overview para usar a pesquisa principal
+      setActiveDashboard('overview');
       
       // Atualizar URL
-      window.history.pushState({}, '', `/dashboard/scientific?search=${encodeURIComponent(query)}`);
+      window.history.pushState({}, '', `/?search=${encodeURIComponent(query)}`);
     };
 
     window.addEventListener('voiceSearch', handleVoiceSearch as EventListener);
@@ -117,6 +117,7 @@ export default function Dashboard() {
           onPlanetClick={handleCosmicPlanetClick}
           activeDashboard={activeDashboard}
           onSearch={handleGlobalSearch}
+          searchTerm={globalSearchTerm}
           // avatarScanning agora vem do Context useScan
         />
       )}
@@ -153,15 +154,10 @@ interface OverviewDashboardProps {
   onPlanetClick: (dashboardId: string) => void;
   activeDashboard: string;
   onSearch?: (term: string, filter: string) => void;
+  searchTerm?: string;
 }
 
-interface OverviewDashboardProps {
-  onPlanetClick: (dashboardId: string) => void;
-  activeDashboard: string;
-  onSearch?: (term: string, filter: string) => void;
-}
-
-function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
+function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch, searchTerm }: OverviewDashboardProps) {
   return (
     <section className="relative container mx-auto px-1 sm:px-4 py-3 sm:py-8">
       {/* Cosmic Knowledge Map */}
@@ -170,6 +166,7 @@ function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: Overvie
           onPlanetClick={onPlanetClick} 
           activeDashboard={activeDashboard} 
           onSearch={onSearch}
+          searchTerm={searchTerm}
         />
       </div>
     </section>
