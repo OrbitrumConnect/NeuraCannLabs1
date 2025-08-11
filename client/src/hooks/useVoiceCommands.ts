@@ -58,111 +58,34 @@ export function useVoiceCommands() {
     console.log('🎙️ Comando recebido:', command);
     setLastCommand(command);
 
-    // Detectar pesquisas médicas diretas (sem palavra-chave)
-    const medicalKeywords = ['cannabis', 'cbd', 'thc', 'ansiedade', 'epilepsia', 'dor', 'esclerose', 'dravet', 'autismo'];
-    const containsMedicalTerms = medicalKeywords.some(term => command.includes(term));
+    // SUPER SIMPLES: apenas preencher o campo de pesquisa com o que foi falado
+    console.log('🎙️ Texto falado:', command);
     
-    // Comandos de pesquisa explícitos ou termos médicos diretos
-    const isSearchCommand = VOICE_COMMANDS.search.some(cmd => command.includes(cmd)) || containsMedicalTerms;
+    // Encontrar input de pesquisa
+    const searchInput = document.querySelector('input[placeholder*="consulta"]') as HTMLInputElement;
     
-    if (isSearchCommand) {
-      let searchTerm = '';
-      
-      // Se tem palavra-chave de pesquisa, extrair termo após ela
-      if (VOICE_COMMANDS.search.some(cmd => command.includes(cmd))) {
-        for (const searchCmd of VOICE_COMMANDS.search) {
-          if (command.includes(searchCmd)) {
-            searchTerm = command.split(searchCmd)[1]?.trim() || '';
-            break;
-          }
-        }
+    if (searchInput) {
+      // Ativar Dr. AI se necessário
+      const drAvatar = document.querySelector('[style*="filter: brightness"]');
+      if (drAvatar && !drAvatar.style.filter.includes('brightness(0.75)')) {
+        (drAvatar as HTMLElement).click();
+        
+        setTimeout(() => {
+          searchInput.value = command;
+          searchInput.focus();
+          searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+          speak('Texto inserido no campo de pesquisa');
+        }, 500);
       } else {
-        // Se não tem palavra-chave, usar o comando todo como termo de pesquisa
-        searchTerm = command;
+        // Dr. AI já ativo
+        searchInput.value = command;
+        searchInput.focus();
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        speak('Texto inserido no campo de pesquisa');
       }
-      
-      if (searchTerm) {
-        console.log('🔍 Executando busca automatica:', searchTerm);
-        
-        // Simplesmente preencher o campo de pesquisa e executar busca
-        // Múltiplos seletores para encontrar o input de pesquisa
-        const searchSelectors = [
-          'input[data-testid="input-search"]',
-          'input[placeholder*="pesquis"]',
-          'input[placeholder*="Pesquis"]',
-          'input[placeholder*="Digite sua consulta"]',
-          'input[type="text"]',
-          '.search-input',
-          'input'
-        ];
-        
-        let searchInput: HTMLInputElement | null = null;
-        
-        for (const selector of searchSelectors) {
-          searchInput = document.querySelector(selector) as HTMLInputElement;
-          if (searchInput && searchInput.placeholder.includes('consulta')) break;
-        }
-        
-        if (searchInput) {
-          console.log('🔍 Input encontrado:', searchInput);
-          
-          // Ativar Dr. AI primeiro se não estiver ativo
-          const drAvatarElement = document.querySelector('[style*="filter: brightness"]')?.parentElement;
-          if (drAvatarElement && !drAvatarElement.style.filter.includes('brightness(0.75)')) {
-            (drAvatarElement as HTMLElement).click();
-            
-            // Aguardar ativação e então preencher
-            setTimeout(() => {
-              if (searchInput) {
-                searchInput.value = searchTerm;
-                searchInput.focus();
-                
-                // Disparar eventos
-                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-                
-                // Simular Enter após pequeno delay
-                setTimeout(() => {
-                  const enterEvent = new KeyboardEvent('keydown', { 
-                    key: 'Enter', 
-                    code: 'Enter',
-                    keyCode: 13,
-                    bubbles: true 
-                  });
-                  searchInput.dispatchEvent(enterEvent);
-                }, 100);
-              }
-            }, 800);
-          } else {
-            // Dr. AI já ativo, preencher diretamente
-            searchInput.value = searchTerm;
-            searchInput.focus();
-            
-            // Disparar eventos
-            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-            
-            // Simular Enter
-            setTimeout(() => {
-              const enterEvent = new KeyboardEvent('keydown', { 
-                key: 'Enter', 
-                code: 'Enter',
-                keyCode: 13,
-                bubbles: true 
-              });
-              searchInput.dispatchEvent(enterEvent);
-            }, 100);
-          }
-        } else {
-          console.warn('🔍 Input de pesquisa não encontrado');
-          speak('Não consegui encontrar a caixa de pesquisa. Ative o Dr. Cannabis primeiro.');
-        }
-        
-        speak(`Pesquisando por ${searchTerm}`);
-        return true;
-      }
+      return true;
     }
-
+    
     // Comandos de navegação
     for (const [section, keywords] of Object.entries(VOICE_COMMANDS.navigate)) {
       if (keywords.some(keyword => command.includes(keyword))) {
