@@ -115,6 +115,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   const [subSearchTerm, setSubSearchTerm] = useState("");
   const [isDrAIActive, setIsDrAIActive] = useState(false);
   const [showConversationHistory, setShowConversationHistory] = useState(false);
+  const [studyHelperMessages, setStudyHelperMessages] = useState<Array<{role: 'user' | 'assistant', content: string, timestamp: number}>>([]);
+  const [studyHelperInput, setStudyHelperInput] = useState("");
+  const [studyHelperTyping, setStudyHelperTyping] = useState(false);
   const { avatarScanning } = useScan();
   const {
     conversations,
@@ -349,12 +352,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             </div>
           )}
 
-          {/* Conversation History - Appears after "Explore mais" */}
+          {/* Conversation History with Study Helper - Appears after "Explore mais" */}
           {showConversationHistory && (
-            <div className="mt-3 p-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
-              <div className="flex items-center justify-between mb-3">
+            <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
+              <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
                 <h4 className="text-sm font-medium text-blue-300">
-                  📜 Histórico da Conversa Atual
+                  📜 Histórico & Assistente de Estudos
                 </h4>
                 <button
                   onClick={() => setShowConversationHistory(false)}
@@ -364,50 +367,167 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   ✕
                 </button>
               </div>
-              <div className="max-h-80 overflow-y-auto space-y-3">
-                {currentConversation?.messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex items-start gap-3 ${
-                      message.role === 'user' ? 'flex-row-reverse' : ''
-                    }`}
-                  >
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                      message.role === 'user' 
-                        ? 'bg-blue-600/20 text-blue-400'
-                        : 'bg-green-600/20 text-green-400'
-                    }`}>
-                      {message.role === 'user' ? '👤' : '🤖'}
-                    </div>
-                    
-                    <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
-                      <div className={`inline-block p-2 rounded-lg max-w-[85%] text-xs ${
-                        message.role === 'user'
-                          ? 'bg-blue-600/20 text-blue-100 border border-blue-500/30'
-                          : 'bg-gray-800/50 text-gray-100 border border-gray-600/30'
-                      }`}>
-                        <div 
-                          className="leading-relaxed"
-                          dangerouslySetInnerHTML={{ 
-                            __html: message.content
-                              .replace(/\n/g, '<br/>')
-                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                          }} 
-                        />
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 p-3">
+                {/* Left side: Conversation History */}
+                <div className="space-y-2">
+                  <h5 className="text-xs font-medium text-gray-400 mb-2">Histórico de Pesquisas</h5>
+                  <div className="max-h-60 overflow-y-auto space-y-2 bg-gray-800/30 rounded p-2">
+                    {currentConversation?.messages.map((message, index) => (
+                      <div
+                        key={index}
+                        className={`flex items-start gap-2 ${
+                          message.role === 'user' ? 'flex-row-reverse' : ''
+                        }`}
+                      >
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
+                          message.role === 'user' 
+                            ? 'bg-blue-600/20 text-blue-400'
+                            : 'bg-green-600/20 text-green-400'
+                        }`}>
+                          {message.role === 'user' ? '👤' : '🔬'}
+                        </div>
+                        
+                        <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
+                          <div className={`inline-block p-2 rounded text-xs max-w-[90%] ${
+                            message.role === 'user'
+                              ? 'bg-blue-600/20 text-blue-100'
+                              : 'bg-gray-700/50 text-gray-200'
+                          }`}>
+                            <div 
+                              className="leading-relaxed"
+                              dangerouslySetInnerHTML={{ 
+                                __html: message.content.substring(0, 100) + (message.content.length > 100 ? '...' : '')
+                                  .replace(/\n/g, '<br/>')
+                                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                              }} 
+                            />
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        {new Date(message.timestamp).toLocaleTimeString('pt-BR', {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </div>
-                    </div>
+                    )) || (
+                      <p className="text-gray-500 text-xs text-center py-4">
+                        Nenhuma pesquisa ainda
+                      </p>
+                    )}
                   </div>
-                )) || (
-                  <p className="text-gray-400 text-sm text-center py-4">
-                    Nenhuma mensagem ainda nesta conversa
-                  </p>
-                )}
+                </div>
+
+                {/* Right side: Study Helper Chat */}
+                <div className="space-y-2">
+                  <h5 className="text-xs font-medium text-purple-400 mb-2">🧠 Assistente para Criar Estudos</h5>
+                  
+                  {/* Study Helper Messages */}
+                  <div className="max-h-40 overflow-y-auto space-y-2 bg-purple-900/20 rounded p-2">
+                    {studyHelperMessages.length === 0 ? (
+                      <div className="text-center py-4">
+                        <div className="text-purple-400 text-xs mb-2">👋 Olá! Sou seu assistente para criar estudos médicos</div>
+                        <div className="text-gray-400 text-xs">
+                          Pergunte sobre metodologia, estrutura de estudos, análise estatística, etc.
+                        </div>
+                      </div>
+                    ) : (
+                      studyHelperMessages.map((message, index) => (
+                        <div
+                          key={index}
+                          className={`flex items-start gap-2 ${
+                            message.role === 'user' ? 'flex-row-reverse' : ''
+                          }`}
+                        >
+                          <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${
+                            message.role === 'user' 
+                              ? 'bg-purple-600/20 text-purple-400'
+                              : 'bg-green-600/20 text-green-400'
+                          }`}>
+                            {message.role === 'user' ? '👤' : '🧠'}
+                          </div>
+                          
+                          <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
+                            <div className={`inline-block p-2 rounded text-xs max-w-[90%] ${
+                              message.role === 'user'
+                                ? 'bg-purple-600/20 text-purple-100'
+                                : 'bg-gray-700/50 text-gray-200'
+                            }`}>
+                              <div 
+                                className="leading-relaxed"
+                                dangerouslySetInnerHTML={{ 
+                                  __html: message.content
+                                    .replace(/\n/g, '<br/>')
+                                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                }} 
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  {/* Study Helper Input */}
+                  <form 
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      if (!studyHelperInput.trim() || studyHelperTyping) return;
+
+                      const userMessage = {
+                        role: 'user' as const,
+                        content: studyHelperInput,
+                        timestamp: Date.now()
+                      };
+
+                      setStudyHelperMessages(prev => [...prev, userMessage]);
+                      setStudyHelperInput("");
+                      setStudyHelperTyping(true);
+
+                      try {
+                        const response = await fetch('/api/study-helper', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ 
+                            query: studyHelperInput,
+                            conversationHistory: studyHelperMessages
+                          })
+                        });
+                        
+                        const data = await response.json();
+                        
+                        const assistantMessage = {
+                          role: 'assistant' as const,
+                          content: data.response || 'Desculpe, houve um erro. Tente novamente.',
+                          timestamp: Date.now()
+                        };
+
+                        setStudyHelperMessages(prev => [...prev, assistantMessage]);
+                      } catch (error) {
+                        const errorMessage = {
+                          role: 'assistant' as const,
+                          content: 'Erro ao conectar com o assistente. Tente novamente.',
+                          timestamp: Date.now()
+                        };
+                        setStudyHelperMessages(prev => [...prev, errorMessage]);
+                      } finally {
+                        setStudyHelperTyping(false);
+                      }
+                    }}
+                    className="flex gap-2"
+                  >
+                    <input
+                      type="text"
+                      value={studyHelperInput}
+                      onChange={(e) => setStudyHelperInput(e.target.value)}
+                      placeholder="Como posso ajudar com seu estudo?"
+                      className="flex-1 px-2 py-1 text-xs bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50"
+                      disabled={studyHelperTyping}
+                    />
+                    <button
+                      type="submit"
+                      disabled={studyHelperTyping || !studyHelperInput.trim()}
+                      className="px-3 py-1 bg-purple-600/80 hover:bg-purple-600 text-white rounded text-xs transition-all disabled:opacity-50"
+                    >
+                      {studyHelperTyping ? '⏳' : '📤'}
+                    </button>
+                  </form>
+                </div>
               </div>
             </div>
           )}

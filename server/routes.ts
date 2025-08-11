@@ -297,6 +297,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Study Helper endpoint - AI assistant for creating medical studies
+  app.post("/api/study-helper", async (req, res) => {
+    try {
+      const { query, conversationHistory = [] } = req.body;
+      
+      if (!query || typeof query !== 'string') {
+        return res.status(400).json({ error: 'Query is required' });
+      }
+
+      // Generate intelligent response for study creation
+      const response = generateStudyHelperResponse(query, conversationHistory);
+      
+      res.json({ response });
+    } catch (error) {
+      console.error('Study helper error:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
   // Study Submissions routes
   // Admin endpoints for study review
   app.get("/api/admin/study-submissions", async (req, res) => {
@@ -520,4 +539,194 @@ function generateIntelligentSynthesis(conversations: any[], userPrompt: string, 
   synthesis += `*Gerado em: ${new Date().toLocaleString('pt-BR')}*`;
   
   return synthesis;
+}
+
+// Study Helper AI response generator
+function generateStudyHelperResponse(query: string, conversationHistory: any[]): string {
+  const queryLower = query.toLowerCase();
+  
+  // Detect intent and provide specialized responses
+  if (queryLower.includes('metodologia') || queryLower.includes('desenho') || queryLower.includes('estudo')) {
+    return `## Metodologia de Estudo 📊
+
+**Para cannabis medicinal, recomendo:**
+
+### Desenho do Estudo
+- **Ensaio Clínico Randomizado** (padrão ouro)
+- **Duplo-cego placebo-controlado**
+- **Crossover** (para estudos de dosagem)
+
+### Critérios de Inclusão
+- Pacientes com diagnóstico confirmado
+- Idade entre 18-65 anos
+- Consentimento informado assinado
+- Falha terapêutica com tratamentos convencionais
+
+### Critérios de Exclusão
+- Gestantes/lactantes
+- Histórico de abuso de substâncias
+- Doenças psiquiátricas graves não controladas
+- Interações medicamentosas significativas
+
+### Desfechos Primários
+- Redução da dor (escala EVA 0-10)
+- Melhora da qualidade de vida (SF-36)
+- Redução de convulsões (frequência/intensidade)
+
+**Precisa de detalhes específicos sobre algum aspecto?**`;
+  }
+
+  if (queryLower.includes('estatística') || queryLower.includes('análise') || queryLower.includes('dados')) {
+    return `## Análise Estatística 📈
+
+**Planejamento Estatístico:**
+
+### Cálculo Amostral
+- **Poder:** 80% (β = 0.20)
+- **Alfa:** 5% (α = 0.05)
+- **Diferença clinicamente relevante:** 30% na escala principal
+- **Margem de erro:** ±5%
+
+### Testes Estatísticos
+- **Dados contínuos:** Teste t-Student ou Mann-Whitney
+- **Dados categóricos:** Qui-quadrado ou Fisher
+- **Comparação antes/depois:** Teste t pareado
+- **Múltiplas variáveis:** ANOVA ou Kruskal-Wallis
+
+### Software Recomendado
+- **R Studio** (gratuito, mais completo)
+- **SPSS** (pago, interface amigável)
+- **GraphPad Prism** (ideal para gráficos)
+
+### Análise de Segurança
+- **ITT** (Intention-to-treat)
+- **Per protocol** (análise de eficácia)
+- **Análise de eventos adversos**
+
+**Qual tipo de análise específica você precisa?**`;
+  }
+
+  if (queryLower.includes('ética') || queryLower.includes('cep') || queryLower.includes('aprovação')) {
+    return `## Aspectos Éticos e Regulatórios ⚖️
+
+**Aprovações Necessárias:**
+
+### CEP (Comitê de Ética em Pesquisa)
+- **Plataforma Brasil** - submissão obrigatória
+- **TCLE** detalhado e compreensível
+- **Protocolo completo** em português
+- **Currículo Lattes** da equipe atualizado
+
+### ANVISA (RDC 327/2019)
+- **Autorização especial** para cannabis medicinal
+- **Certificado de Boas Práticas de Fabricação**
+- **Comprovação de origem** dos produtos
+- **Protocolos de segurança** estabelecidos
+
+### Documentação Obrigatória
+- **Protocolo de pesquisa** completo
+- **Brochura do investigador**
+- **Seguro de responsabilidade civil**
+- **Acordo de confidencialidade**
+
+### Prazo Médio
+- **CEP:** 30-60 dias
+- **ANVISA:** 60-120 dias
+- **Iniciação:** 4-6 meses após submissão
+
+**Precisa de ajuda com algum documento específico?**`;
+  }
+
+  if (queryLower.includes('redação') || queryLower.includes('artigo') || queryLower.includes('publicação')) {
+    return `## Redação Científica 📝
+
+**Estrutura do Artigo (IMRAD):**
+
+### Introdução
+- **Background** da condição médica
+- **Gap** na literatura atual
+- **Justificativa** para cannabis medicinal
+- **Objetivo** claro e específico
+
+### Metodologia
+- **Desenho** detalhado do estudo
+- **População** e critérios de seleção
+- **Intervenção** (doses, formulações)
+- **Desfechos** primários e secundários
+- **Análise estatística** planejada
+
+### Resultados
+- **Fluxograma** de participantes
+- **Tabela baseline** das características
+- **Análise primária** com IC 95%
+- **Eventos adversos** detalhados
+
+### Discussão
+- **Interpretação** dos resultados
+- **Comparação** com literatura
+- **Limitações** do estudo
+- **Implicações clínicas**
+
+**Revistas Recomendadas:**
+- Pain Medicine (IF: 4.4)
+- Cannabis Research (IF: 3.2)
+- Brazilian Journal of Pain
+
+**Em que seção você precisa de ajuda?**`;
+  }
+
+  if (queryLower.includes('financiamento') || queryLower.includes('verba') || queryLower.includes('orçamento')) {
+    return `## Financiamento e Orçamento 💰
+
+**Fontes de Financiamento:**
+
+### Órgãos Públicos
+- **CNPq** - Chamadas universais
+- **FAPESP** - Auxílio regular à pesquisa
+- **CAPES** - Bolsas de pós-graduação
+- **FINEP** - Inovação tecnológica
+
+### Indústria Farmacêutica
+- **Parcerias público-privadas**
+- **Estudos fase II/III**
+- **Fornecimento de medicamentos**
+
+### Organizações Internacionais
+- **NIH** (EUA) - para colaborações
+- **European Consortium** - cannabis research
+- **Medical Cannabis Research** (Canadá)
+
+### Itens do Orçamento
+- **Pessoal:** 40-50% do total
+- **Material de consumo:** 20-30%
+- **Equipamentos:** 15-25%
+- **Serviços terceirizados:** 10-15%
+- **Passagens e diárias:** 5-10%
+
+**Orçamento médio:** R$ 200.000 - R$ 500.000 (24 meses)
+
+**Precisa de detalhamento de alguma fonte específica?**`;
+  }
+
+  // Default response for general questions
+  return `## Assistente para Estudos Médicos 🧠
+
+Olá! Sou especializado em ajudar com **estudos de cannabis medicinal**.
+
+**Posso te ajudar com:**
+
+🔬 **Metodologia** - Desenho do estudo, critérios, desfechos
+📊 **Estatística** - Cálculo amostral, testes, análises
+⚖️ **Ética** - CEP, ANVISA, documentação regulatória
+📝 **Redação** - Estrutura de artigos, submissão de periódicos
+💰 **Financiamento** - Fontes de verba, orçamento, editais
+🏥 **Logística** - Cronograma, equipe, infraestrutura
+
+**Exemplos de perguntas:**
+- "Como calcular o tamanho da amostra?"
+- "Quais documentos preciso para o CEP?"
+- "Como estruturar a metodologia?"
+- "Onde posso conseguir financiamento?"
+
+**O que você gostaria de saber sobre seu estudo?**`;
 }
