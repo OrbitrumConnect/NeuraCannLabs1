@@ -131,20 +131,21 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
 
           {/* AI Response */}
           <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gray-800/30 rounded">
-            <div 
-              className="text-xs sm:text-sm text-gray-300 leading-relaxed"
-              dangerouslySetInnerHTML={{ 
-                __html: (() => {
-                  let text = '';
-                  if (typeof result.response === 'string') {
-                    text = result.response;
-                  } else if (result.response?.response && typeof result.response.response === 'string') {
-                    text = result.response.response;
-                  }
-                  return text.replace(/\n/g, '<br/>').replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>');
-                })()
-              }} 
-            />
+            <div className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+              {(() => {
+                let text = '';
+                if (typeof result.response === 'string') {
+                  text = result.response;
+                } else if (result.response?.response && typeof result.response.response === 'string') {
+                  text = result.response.response;
+                }
+                return text.split('\n').map((line, i) => (
+                  <div key={i} dangerouslySetInnerHTML={{
+                    __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>')
+                  }} />
+                ));
+              })()}
+            </div>
           </div>
 
           {/* Data Categories Grid */}
