@@ -86,7 +86,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
+    <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans app-content-container">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
         <div className="container mx-auto px-2 sm:px-4 py-1.5 sm:py-4 flex items-center justify-between">
