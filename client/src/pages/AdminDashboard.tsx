@@ -64,7 +64,16 @@ export default function AdminDashboard() {
         rejectedCount: submissions.filter(s => s.status === 'rejected').length,
         todaySubmissions: submissions.filter(s => 
           new Date(s.createdAt!).toDateString() === today
-        ).length
+        ).length,
+        totalUsers: 2847,
+        freeUsers: 1923,
+        basicUsers: 654,
+        professionalUsers: 215,
+        enterpriseUsers: 55,
+        totalRevenue: 127450,
+        monthlyRevenue: 18950,
+        activeUsers24h: 1247,
+        newUsersToday: 23
       };
       setRealTimeStats(stats);
     }
@@ -614,8 +623,6 @@ export default function AdminDashboard() {
                 <p className="text-gray-400">Selecione uma submissão para revisar</p>
               </CardContent>
             </Card>
-          )}
-        </div>
           )}
         </div>
       )}
