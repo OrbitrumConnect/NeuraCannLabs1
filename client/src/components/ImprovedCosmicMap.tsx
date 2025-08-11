@@ -328,7 +328,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
       {isDrAIActive && currentResult && (
         <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
-          <MainCard result={currentResult} />
+          <MainCard 
+            result={currentResult} 
+            showConversationHistory={showConversationHistory}
+            messages={currentConversation?.messages || []}
+            onToggleHistory={() => setShowConversationHistory(!showConversationHistory)}
+          />
           {/* TextToSpeech já está integrado no MainCard, não precisa duplicar aqui */}
           
           {/* Suggestions for Sub-search - Responsive layout */}
@@ -349,68 +354,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             </div>
           )}
 
-          {/* Conversation History - Appears after "Explore mais" */}
-          {showConversationHistory && (
-            <div className="mt-3 p-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
-              <div className="flex items-center justify-between mb-3">
-                <h4 className="text-sm font-medium text-blue-300">
-                  📜 Histórico da Conversa Atual
-                </h4>
-                <button
-                  onClick={() => setShowConversationHistory(false)}
-                  className="text-gray-400 hover:text-gray-300 p-1 rounded hover:bg-gray-800/50"
-                  title="Fechar histórico"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="max-h-80 overflow-y-auto space-y-3">
-                {currentConversation?.messages.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`flex items-start gap-3 ${
-                      message.role === 'user' ? 'flex-row-reverse' : ''
-                    }`}
-                  >
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                      message.role === 'user' 
-                        ? 'bg-blue-600/20 text-blue-400'
-                        : 'bg-green-600/20 text-green-400'
-                    }`}>
-                      {message.role === 'user' ? '👤' : '🤖'}
-                    </div>
-                    
-                    <div className={`flex-1 ${message.role === 'user' ? 'text-right' : ''}`}>
-                      <div className={`inline-block p-2 rounded-lg max-w-[85%] text-xs ${
-                        message.role === 'user'
-                          ? 'bg-blue-600/20 text-blue-100 border border-blue-500/30'
-                          : 'bg-gray-800/50 text-gray-100 border border-gray-600/30'
-                      }`}>
-                        <div 
-                          className="leading-relaxed"
-                          dangerouslySetInnerHTML={{ 
-                            __html: message.content
-                              .replace(/\n/g, '<br/>')
-                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                          }} 
-                        />
-                      </div>
-                      <div className="text-xs text-gray-500 mt-1">
-                        {new Date(message.timestamp).toLocaleTimeString('pt-BR', {
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                )) || (
-                  <p className="text-gray-400 text-sm text-center py-4">
-                    Nenhuma mensagem ainda nesta conversa
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
+
         </div>
       )}
 
