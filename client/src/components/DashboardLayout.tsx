@@ -92,13 +92,13 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-neon-cyan/30 backdrop-blur-md">
+      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-green-500/30 backdrop-blur-md">
         <div className="container mx-auto px-2 sm:px-4 py-0 sm:py-0.5 flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-3">
             <div className="w-6 h-6 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
               <i className="fas fa-cannabis text-white text-xs sm:text-lg" />
             </div>
-            <h1 className="text-sm sm:text-2xl font-bold neon-text">NeuroCann Lab</h1>
+            <h1 className="text-sm sm:text-2xl font-bold text-green-400">NeuroCann Lab</h1>
           </div>
           
           <div className="flex items-center space-x-2 sm:space-x-4">
@@ -179,7 +179,7 @@ export default function DashboardLayout({
           >
         <div className="p-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-green-500 neon-text">Menu</h2>
+            <h2 className="text-lg font-semibold text-green-500">Menu</h2>
             <button
               onClick={() => setSideNavOpen(false)}
               className="w-8 h-8 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
@@ -241,9 +241,9 @@ export default function DashboardLayout({
           </div>
 
           {/* User Info & Logout - Mobile */}
-          <div className="mt-4 pt-4 border-t border-neon-cyan/20">
+          <div className="mt-4 pt-4 border-t border-green-500/20">
             <div className="flex items-center space-x-2 mb-3">
-              <User className="w-4 h-4 text-neon-cyan" />
+              <User className="w-4 h-4 text-green-500" />
               <div>
                 <div className="text-white font-medium text-sm">{user?.name || 'Administrador'}</div>
                 <div className="text-xs text-gray-400">{user?.email || 'Phpg69@gmail.com'}</div>
