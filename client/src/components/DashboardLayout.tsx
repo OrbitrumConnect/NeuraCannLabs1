@@ -74,16 +74,16 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Avatar: timing correto (15%-30%) - sincronizado com linha amarela
+  // Avatar: timing ajustado 1,5s depois (47%-62%) - linha amarela em 32%-42%
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
     const linePos = (position * 2) % 100; // Mesma fórmula da linha
-    const isScanning = linePos >= 15 && linePos <= 30;
+    const isScanning = linePos >= 47 && linePos <= 62; // 1,5s depois da linha amarela
     setAvatarScanning(isScanning);
     
-    // Debug: Avatar 15%-30% sempre que linha passar
+    // Debug: Avatar 1,5s depois da linha amarela
     if (isScanning) {
-      console.log(`🟡 AVATAR 15-30%! Linha: ${linePos.toFixed(1)}%`);
+      console.log(`🟡 AVATAR 47-62%! Linha: ${linePos.toFixed(1)}%`);
     }
   };
 
