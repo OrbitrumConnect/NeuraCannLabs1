@@ -550,6 +550,61 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // POTÊNCIA DE DADOS - Patient Data Routes
+  app.post('/api/patient-data', async (req, res) => {
+    try {
+      const patientData = await storage.createPatientData(req.body);
+      res.json(patientData);
+    } catch (error) {
+      console.error('Error creating patient data:', error);
+      res.status(500).json({ error: 'Failed to create patient data' });
+    }
+  });
+
+  app.get('/api/patient-data', async (req, res) => {
+    try {
+      const doctorId = req.query.doctorId as string;
+      const patientData = await storage.getPatientData(doctorId);
+      res.json(patientData);
+    } catch (error) {
+      console.error('Error fetching patient data:', error);
+      res.status(500).json({ error: 'Failed to fetch patient data' });
+    }
+  });
+
+  app.get('/api/patient-data/:id', async (req, res) => {
+    try {
+      const patientData = await storage.getPatientDataById(req.params.id);
+      if (!patientData) {
+        return res.status(404).json({ error: 'Patient data not found' });
+      }
+      res.json(patientData);
+    } catch (error) {
+      console.error('Error fetching patient data:', error);
+      res.status(500).json({ error: 'Failed to fetch patient data' });
+    }
+  });
+
+  app.post('/api/patient-evolution', async (req, res) => {
+    try {
+      const evolution = await storage.createPatientEvolution(req.body);
+      res.json(evolution);
+    } catch (error) {
+      console.error('Error creating patient evolution:', error);
+      res.status(500).json({ error: 'Failed to create patient evolution' });
+    }
+  });
+
+  app.get('/api/patient-evolution/:patientDataId', async (req, res) => {
+    try {
+      const evolution = await storage.getPatientEvolution(req.params.patientDataId);
+      res.json(evolution);
+    } catch (error) {
+      console.error('Error fetching patient evolution:', error);
+      res.status(500).json({ error: 'Failed to fetch patient evolution' });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

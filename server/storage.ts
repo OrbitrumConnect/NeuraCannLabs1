@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission } from "@shared/schema";
+import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution } from "@shared/schema";
 import { comprehensiveStudies, comprehensiveClinicalCases, comprehensiveAlerts } from './comprehensive-medical-database';
 import { randomUUID } from "crypto";
 
@@ -36,6 +36,15 @@ export interface IStorage {
   updateStudySubmission(id: string, updates: Partial<StudySubmission>): Promise<StudySubmission | undefined>;
   submitStudyForReview(id: string): Promise<StudySubmission | undefined>;
   addApprovedStudyToDatabase(submission: StudySubmission): Promise<void>;
+  
+  // Patient Data - POTÊNCIA DE DADOS
+  getPatientData(doctorId?: string): Promise<PatientData[]>;
+  getPatientDataById(id: string): Promise<PatientData | undefined>;
+  createPatientData(data: InsertPatientData): Promise<PatientData>;
+  
+  // Patient Evolution
+  getPatientEvolution(patientDataId: string): Promise<PatientEvolution[]>;
+  createPatientEvolution(evolution: InsertPatientEvolution): Promise<PatientEvolution>;
 }
 
 export class MemStorage implements IStorage {
@@ -44,6 +53,8 @@ export class MemStorage implements IStorage {
   private clinicalCases: Map<string, ClinicalCase>;
   private alerts: Map<string, Alert>;
   private studySubmissions: Map<string, StudySubmission>;
+  private patientData: Map<string, PatientData>;
+  private patientEvolution: Map<string, PatientEvolution>;
 
   constructor() {
     this.users = new Map();
@@ -51,6 +62,8 @@ export class MemStorage implements IStorage {
     this.clinicalCases = new Map();
     this.alerts = new Map();
     this.studySubmissions = new Map();
+    this.patientData = new Map();
+    this.patientEvolution = new Map();
     
     // Inicializar com base de dados abrangente
     this.initializeSampleData();
@@ -520,6 +533,47 @@ export class MemStorage implements IStorage {
     if (content.toLowerCase().includes('parkinson')) return 'Doença de Parkinson';
     if (content.toLowerCase().includes('alzheimer')) return 'Doença de Alzheimer';
     return 'Uso medicinal';
+  }
+
+  // Patient Data Methods - POTÊNCIA DE DADOS
+  async getPatientData(doctorId?: string): Promise<PatientData[]> {
+    const allData = Array.from(this.patientData.values());
+    if (doctorId) {
+      return allData.filter(data => data.doctorId === doctorId);
+    }
+    return allData;
+  }
+
+  async getPatientDataById(id: string): Promise<PatientData | undefined> {
+    return this.patientData.get(id);
+  }
+
+  async createPatientData(insertData: InsertPatientData): Promise<PatientData> {
+    const id = randomUUID();
+    const patientData: PatientData = {
+      ...insertData,
+      id,
+      createdAt: new Date(),
+    };
+    this.patientData.set(id, patientData);
+    return patientData;
+  }
+
+  // Patient Evolution Methods
+  async getPatientEvolution(patientDataId: string): Promise<PatientEvolution[]> {
+    return Array.from(this.patientEvolution.values())
+      .filter(evolution => evolution.patientDataId === patientDataId);
+  }
+
+  async createPatientEvolution(insertEvolution: InsertPatientEvolution): Promise<PatientEvolution> {
+    const id = randomUUID();
+    const evolution: PatientEvolution = {
+      ...insertEvolution,
+      id,
+      createdAt: new Date(),
+    };
+    this.patientEvolution.set(id, evolution);
+    return evolution;
   }
 
   // Create sample study submissions for testing collaborative review system
