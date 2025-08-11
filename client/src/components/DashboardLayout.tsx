@@ -74,15 +74,15 @@ export default function DashboardLayout({
     setSideNavOpen(false);
   };
 
-  // Avatar: timing ajustado (15%-30%) quando linha fica amarela (32%-42%)
+  // Avatar: timing final (15%-25%) - ascende sempre que linha passar
   const handleScanUpdate = (position: number) => {
     setScanPosition(position);
-    const isScanning = position >= 15 && position <= 30;
+    const isScanning = position >= 15 && position <= 25;
     setAvatarScanning(isScanning);
     
-    // Debug: Avatar timing ajustado
+    // Debug: Avatar ascende sempre que linha passar
     if (isScanning) {
-      console.log(`🟡 TIMING 15-30%! Posição: ${position.toFixed(1)}%`);
+      console.log(`🟡 AVATAR SEMPRE! Posição: ${position.toFixed(1)}%`);
     }
   };
 
