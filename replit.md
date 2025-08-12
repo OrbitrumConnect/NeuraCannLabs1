@@ -13,6 +13,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - Cada funcionalidade deve se integrar naturalmente com as existentes
 - Interface deve ser intuitiva: cards principais fixos, sub-pesquisas móveis
 - Prioridade: organização visual harmônica que permite leitura simultânea
+- Interface limpa: avatar Dra. Cannabis IA reduzido (w-24 h-24), apenas botão "Ativar Dra.", sem textos descritivos laterais
 
 ## System Architecture
 
