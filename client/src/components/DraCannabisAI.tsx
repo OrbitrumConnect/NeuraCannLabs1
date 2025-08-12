@@ -98,7 +98,7 @@ export function DraCannabisAI() {
   // Upload da imagem da médica para D-ID
   const uploadImageMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest('/api/doctor/upload-image', 'POST');
+      const response = await apiRequest('/api/doctor/upload-image', 'POST', {});
       return response;
     },
     onSuccess: (data: any) => {
@@ -461,7 +461,7 @@ export function DraCannabisAI() {
             </div>
           </div>
           
-          <div className="flex justify-between items-center">
+          <div className="flex flex-wrap gap-3 items-center">
             <Button 
               onClick={handleSubmitQuestion}
               disabled={consultMutation.isPending || !question.trim()}
@@ -478,42 +478,38 @@ export function DraCannabisAI() {
               )}
             </Button>
 
-            {/* Triggers de Resumo e Encaminhamento Médico */}
-            {chatHistory.length > 0 && (
-              <div className="flex space-x-2">
-                <Button
-                  onClick={() => generateSummaryMutation.mutate()}
-                  disabled={generateSummaryMutation.isPending}
-                  size="sm"
-                  variant="outline"
-                  className="text-blue-600 border-blue-600 hover:bg-blue-50"
-                  data-testid="button-generate-summary-quick"
-                >
-                  {generateSummaryMutation.isPending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <FileText className="w-4 h-4 mr-2" />
-                  )}
-                  Resumo da Conversa
-                </Button>
-                
-                <Button
-                  onClick={() => referToMedicalMutation.mutate()}
-                  disabled={referToMedicalMutation.isPending}
-                  size="sm"
-                  variant="outline"
-                  className="text-orange-600 border-orange-600 hover:bg-orange-50"
-                  data-testid="button-refer-medical-quick"
-                >
-                  {referToMedicalMutation.isPending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <UserPlus className="w-4 h-4 mr-2" />
-                  )}
-                  Solicitar Profissional
-                </Button>
-              </div>
-            )}
+            {/* Triggers de Resumo e Encaminhamento Médico - Sempre visíveis */}
+            <Button
+              onClick={() => generateSummaryMutation.mutate()}
+              disabled={generateSummaryMutation.isPending || chatHistory.length === 0}
+              size="sm"
+              variant="outline"
+              className="text-blue-600 border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950"
+              data-testid="button-generate-summary-quick"
+            >
+              {generateSummaryMutation.isPending ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <FileText className="w-4 h-4 mr-2" />
+              )}
+              Resumo da Conversa
+            </Button>
+            
+            <Button
+              onClick={() => referToMedicalMutation.mutate()}
+              disabled={referToMedicalMutation.isPending || chatHistory.length === 0}
+              size="sm"
+              variant="outline"
+              className="text-orange-600 border-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
+              data-testid="button-refer-medical-quick"
+            >
+              {referToMedicalMutation.isPending ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                <UserPlus className="w-4 h-4 mr-2" />
+              )}
+              Solicitar Profissional
+            </Button>
           </div>
         </CardContent>
       </Card>
