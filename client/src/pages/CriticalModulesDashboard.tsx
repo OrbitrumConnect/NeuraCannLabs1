@@ -112,9 +112,10 @@ export default function CriticalModulesDashboard() {
                       size="sm"
                       variant="outline"
                       className="h-6 px-2 text-xs"
+                      onClick={() => setLocation(`/dashboard/module/${module.id}`)}
                     >
                       <Plus className="w-3 h-3 mr-1" />
-                      Executar
+                      Ver Dados
                     </Button>
                   </div>
                 </CardContent>
