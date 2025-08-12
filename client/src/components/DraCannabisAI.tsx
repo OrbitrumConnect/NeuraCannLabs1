@@ -257,27 +257,11 @@ export function DraCannabisAI() {
               <img 
                 src={draCannabisImage} 
                 alt="Dra. Cannabis IA" 
-                className="w-48 h-48 rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
+                className="w-58 h-58 rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
               />
               <Badge className="absolute -bottom-3 -right-3 bg-green-500 text-white text-sm px-3 py-1">
                 IA
               </Badge>
-            </div>
-            <div className="text-center space-y-2">
-              <CardTitle className="text-xl text-green-400 font-bold">
-                Dra. Cannabis IA
-              </CardTitle>
-              <p className="text-green-200 text-xs max-w-lg">
-                Assistente Médico Especializado em Cannabis Medicinal
-              </p>
-              <div className="flex items-center justify-center space-x-2 mt-3">
-                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-2 py-1">
-                  Cannabis Medicinal
-                </Badge>
-                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-2 py-1">
-                  Inteligência Artificial
-                </Badge>
-              </div>
             </div>
           </div>
         </CardHeader>
@@ -298,7 +282,7 @@ export function DraCannabisAI() {
               ) : (
                 <>
                   <Upload className="w-4 h-4 mr-2" />
-                  Ativar Dra. Cannabis IA
+                  Ativar Dra.
                 </>
               )}
             </Button>
