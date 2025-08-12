@@ -663,6 +663,188 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Critical modules endpoints
   console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
 
+  // ========================================
+  // DRA. CANNABIS IA - ASSISTENTE MÉDICO
+  // ========================================
+  
+  // Import D-ID service at the top level
+  let didService: any = null;
+  try {
+    const { DIDService } = require('./didService');
+    didService = new DIDService();
+    console.log("🎭 Dra. Cannabis IA - Serviço D-ID inicializado");
+  } catch (error) {
+    console.log("⚠️ D-ID service não disponível:", error.message);
+  }
+
+  // Upload da imagem da médica para D-ID
+  app.post("/api/doctor/upload-image", async (req, res) => {
+    try {
+      if (!didService) {
+        return res.status(500).json({ 
+          error: "Serviço D-ID não disponível" 
+        });
+      }
+
+      // Para usar a imagem anexada pelo usuário
+      const fs = require('fs');
+      const path = require('path');
+      
+      const imagePath = path.join(process.cwd(), 'attached_assets', '20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png');
+      
+      if (!fs.existsSync(imagePath)) {
+        return res.status(404).json({ 
+          error: "Imagem da Dra. Cannabis não encontrada" 
+        });
+      }
+
+      const imageBuffer = fs.readFileSync(imagePath);
+      const uploadResult = await didService.uploadImage(imageBuffer);
+      
+      console.log("🎭 Imagem da Dra. Cannabis enviada para D-ID:", uploadResult.url);
+      
+      res.json({
+        success: true,
+        imageUrl: uploadResult.url,
+        message: "Dra. Cannabis IA configurada com sucesso!"
+      });
+    } catch (error) {
+      console.error('Erro ao enviar imagem:', error);
+      res.status(500).json({ 
+        error: "Erro ao configurar Dra. Cannabis IA",
+        details: error.message 
+      });
+    }
+  });
+
+  // Criar vídeo da Dra. Cannabis falando
+  app.post("/api/doctor/speak", async (req, res) => {
+    try {
+      if (!didService) {
+        return res.status(500).json({ 
+          error: "Serviço D-ID não disponível" 
+        });
+      }
+
+      const { text, imageUrl } = req.body;
+      
+      if (!text) {
+        return res.status(400).json({ 
+          error: "Texto é obrigatório" 
+        });
+      }
+
+      console.log("🎭 Criando fala da Dra. Cannabis:", text.substring(0, 50) + "...");
+      
+      const talkResult = await didService.createMedicalAssistantTalk(text, imageUrl);
+      
+      res.json({
+        success: true,
+        talkId: talkResult.id,
+        status: talkResult.status,
+        message: "Dra. Cannabis está preparando sua resposta..."
+      });
+    } catch (error) {
+      console.error('Erro ao criar fala:', error);
+      res.status(500).json({ 
+        error: "Erro ao criar resposta da Dra. Cannabis",
+        details: error.message 
+      });
+    }
+  });
+
+  // Verificar status do vídeo
+  app.get("/api/doctor/talk/:talkId", async (req, res) => {
+    try {
+      if (!didService) {
+        return res.status(500).json({ 
+          error: "Serviço D-ID não disponível" 
+        });
+      }
+
+      const { talkId } = req.params;
+      const status = await didService.getTalkStatus(talkId);
+      
+      console.log("🎭 Status da Dra. Cannabis:", status.status, talkId);
+      
+      res.json({
+        success: true,
+        status: status.status,
+        resultUrl: status.result_url,
+        error: status.error
+      });
+    } catch (error) {
+      console.error('Erro ao verificar status:', error);
+      res.status(500).json({ 
+        error: "Erro ao verificar status da Dra. Cannabis",
+        details: error.message 
+      });
+    }
+  });
+
+  // Consulta médica com IA - Integração com conhecimento médico
+  app.post("/api/doctor/consult", async (req, res) => {
+    try {
+      const { question, patientData } = req.body;
+      
+      if (!question) {
+        return res.status(400).json({ 
+          error: "Pergunta é obrigatória" 
+        });
+      }
+
+      // Simular resposta médica baseada em conhecimento sobre cannabis medicinal
+      const medicalResponses = {
+        'epilepsia': `Como especialista em cannabis medicinal, posso informar que o CBD tem mostrado eficácia no tratamento de epilepsia refratária. Estudos clínicos demonstram redução significativa nas convulsões, especialmente em síndromes como Dravet e Lennox-Gastaut. O protocolo usual inicia com 5mg/kg/dia de CBD, podendo ser ajustado conforme resposta clínica.`,
+        
+        'dor': `Para dor crônica, a cannabis medicinal oferece uma abordagem multimodal. O CBD possui propriedades anti-inflamatórias, enquanto doses baixas de THC (1-2.5mg) podem potencializar o efeito analgésico. Recomendo iniciar com ratio 20:1 CBD:THC, monitorando efeitos adversos e ajustando conforme necessário.`,
+        
+        'ansiedade': `O CBD tem perfil ansiolítico comprovado em estudos clínicos. Para transtornos de ansiedade, doses de 25-50mg de CBD podem ser eficazes. É importante avaliar interações medicamentosas, especialmente com benzodiazepínicos, e monitorar função hepática durante o tratamento.`,
+        
+        'cancer': `Em oncologia, a cannabis medicinal pode auxiliar no controle de náuseas, vômitos induzidos por quimioterapia e estimular o apetite. O THC é mais eficaz para esses sintomas, enquanto o CBD pode ter propriedades anti-tumorais em pesquisa pré-clínica. Sempre coordenar com equipe oncológica.`
+      };
+
+      // Buscar resposta baseada em palavras-chave
+      let response = "Como Dra. Cannabis, especialista em medicina canabinoide, posso orientá-lo sobre o uso terapêutico da cannabis. ";
+      
+      const questionLower = question.toLowerCase();
+      for (const [condition, advice] of Object.entries(medicalResponses)) {
+        if (questionLower.includes(condition)) {
+          response = advice;
+          break;
+        }
+      }
+      
+      if (response === "Como Dra. Cannabis, especialista em medicina canabinoide, posso orientá-lo sobre o uso terapêutico da cannabis. ") {
+        response += "Para uma orientação mais específica, preciso de mais detalhes sobre a condição clínica e histórico médico do paciente. A cannabis medicinal deve sempre ser prescrita com base em evidências científicas e acompanhamento médico adequado.";
+      }
+
+      console.log("🎭 Consulta da Dra. Cannabis:", question.substring(0, 30) + "...");
+      
+      res.json({
+        success: true,
+        response,
+        doctor: "Dra. Cannabis",
+        specialty: "Cannabis Medicinal",
+        timestamp: new Date().toISOString(),
+        recommendations: [
+          "Consulta médica presencial recomendada",
+          "Monitoramento de efeitos adversos",
+          "Acompanhamento laboratorial quando necessário",
+          "Ajuste de dosagem conforme resposta clínica"
+        ]
+      });
+    } catch (error) {
+      console.error('Erro na consulta:', error);
+      res.status(500).json({ 
+        error: "Erro na consulta médica",
+        details: error.message 
+      });
+    }
+  });
+
+  console.log("🎭 Dra. Cannabis IA - Assistente médico inicializado com sucesso!");
+
   const httpServer = createServer(app);
 
   return httpServer;
