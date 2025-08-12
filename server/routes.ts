@@ -690,16 +690,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           method: 'POST',
           headers: {
             'xi-api-key': elevenApiKey,
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept': 'audio/mpeg'
           },
           body: JSON.stringify({
             text,
             model_id: 'eleven_multilingual_v2',
             voice_settings: voice_settings || {
               stability: 0.75,
-              similarity_boost: 0.9,
-              style: 0.0,
-              use_speaker_boost: true
+              similarity_boost: 0.9
             }
           })
         }

@@ -48,10 +48,16 @@ class WelcomeService {
     const welcomeMessage = "Olá! Bem-vindo ao NeuroCann Lab! Eu sou a Dra. Cannabis IA, sua assistente médica especializada em cannabis medicinal. Como posso ajudá-lo hoje?";
     
     try {
-      // Usar sistema nativo otimizado como principal
-      console.log('🎭 Usando sistema nativo otimizado da Dra. Cannabis...');
-      await nativeAvatarService.makeAvatarSpeak(welcomeMessage, 'professional');
-      console.log('✅ Saudação reproduzida com sucesso');
+      // Sistema híbrido: ElevenLabs primeiro, fallback para nativo
+      try {
+        console.log('🎭 Ativando sistema profissional ElevenLabs...');
+        await professionalAvatarService.speakWelcome();
+        console.log('✅ Saudação ElevenLabs reproduzida com qualidade superior');
+      } catch (error) {
+        console.log('⚠️ Fallback para sistema nativo otimizado');
+        await nativeAvatarService.makeAvatarSpeak(welcomeMessage, 'professional');
+        console.log('✅ Saudação nativa reproduzida');
+      }
       
       // Marcar como executada
       this.markWelcomePlayed();
