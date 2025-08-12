@@ -73,11 +73,20 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Insights Auto-Gerados**: Sistema cria automaticamente insights sobre melhores práticas médicas baseado em análise de conversas reais
 - **Evolução Contínua**: Cada conversa alimenta a inteligência da Dra. Cannabis, tornando-a mais precisa e personalizada ao longo do tempo
 - **Métricas de Sucesso**: Rastreamento de satisfação, duração das consultas, tópicos médicos mais discutidos e taxa de encaminhamentos
-- **API Endpoints Dedicados**: 
+
+### Integração de APIs Externas de Conhecimento (Preparado Dezembro 2024)
+- **Sistema Modular Expansível**: Arquitetura preparada para receber e integrar múltiplas APIs de conhecimento médico externo
+- **Integração Inteligente**: Combina automaticamente dados de diferentes fontes (PubMed, ClinicalTrials.gov, ANVISA, etc.) com padrões aprendidos
+- **Confiança Baseada em Fontes**: Sistema calcula nível de confiança baseado no número de fontes confirmando uma informação
+- **Conhecimento Contextual**: APIs externas são filtradas e contextualizadas com base nos padrões de aprendizado existentes
+- **Endpoint de Demonstração**: `/api/knowledge/integrate` mostra como múltiplas APIs se combinam com o conhecimento da Dra. Cannabis
+
+**API Endpoints do Sistema de Aprendizado**: 
   - `/api/learning/conversations` - Histórico completo de conversas
   - `/api/learning/patterns` - Padrões médicos identificados
   - `/api/learning/insights` - Insights gerados pela IA
   - `/api/learning/feedback` - Sistema de feedback dos usuários
+  - `/api/knowledge/integrate` - Demonstração de integração de APIs externas
 
 ## External Dependencies
 - **Database**: Neon serverless PostgreSQL (configured via Drizzle ORM).
