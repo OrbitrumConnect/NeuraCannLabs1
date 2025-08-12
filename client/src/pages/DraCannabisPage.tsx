@@ -1,11 +1,50 @@
 import { DraCannabisAI } from '@/components/DraCannabisAI';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Brain, Stethoscope, BookOpen, Shield, AlertCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Brain, Stethoscope, BookOpen, Shield, AlertCircle, ArrowLeft } from 'lucide-react';
+import { useLocation } from 'wouter';
 
 export default function DraCannabisPage() {
+  const [, setLocation] = useLocation();
+
   return (
     <div className="min-h-screen bg-gray-900">
+      
+      {/* Cabeçalho Principal */}
+      <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 border-b border-green-500/30">
+        <div className="p-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <Button 
+                onClick={() => setLocation('/')}
+                variant="ghost"
+                size="sm"
+                className="text-green-400 hover:text-green-300 hover:bg-green-900/20"
+                data-testid="button-back-home"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Voltar ao Dashboard
+              </Button>
+              
+              <div className="flex items-center space-x-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <Brain className="w-4 h-4 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-green-400">Dra. Cannabis IA</h1>
+                  <p className="text-xs text-green-200">Assistente Médico Inteligente</p>
+                </div>
+              </div>
+            </div>
+            
+            <Badge className="bg-green-600 text-white text-sm">
+              D-ID + ElevenLabs + ChatGPT
+            </Badge>
+          </div>
+        </div>
+      </div>
+
       <div className="p-6">
         {/* Layout principal focado na Dra. Cannabis IA */}
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
