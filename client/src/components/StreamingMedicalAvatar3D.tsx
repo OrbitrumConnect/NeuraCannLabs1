@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Mic, MicOff, Volume2, VolumeX, Brain, Stethoscope, Play, Pause } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import VoiceEnabledAvatar from './VoiceEnabledAvatar';
 
 interface AvatarStreamingProps {
   audioPlaying: boolean;
@@ -40,7 +41,7 @@ function MedicalAvatarStreaming({ audioPlaying, isListening, mood }: AvatarStrea
   };
 
   return (
-    <div className="relative w-96 h-96 mx-auto">
+    <div className="relative w-80 h-80 mx-auto mt-20">
       {/* Background holográfico principal */}
       <div className={`
         absolute inset-0 rounded-full bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900
@@ -298,12 +299,11 @@ export function StreamingMedicalAvatar3D() {
         )}
       </div>
 
-      {/* Avatar Médico Streaming */}
+      {/* Avatar Médico com Funcionalidades de Voz */}
       <div className="h-full w-full flex items-center justify-center">
-        <MedicalAvatarStreaming 
-          audioPlaying={audioPlaying}
-          isListening={isListening}
-          mood={mood}
+        <VoiceEnabledAvatar 
+          onVoiceMessage={(message) => console.log('Mensagem recebida:', message)}
+          onStartConsultation={() => console.log('Consulta iniciada')}
         />
       </div>
 
