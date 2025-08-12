@@ -9,6 +9,7 @@ import AlertsDashboard from "./AlertsDashboard";
 import MyStudyDashboard from "./MyStudyDashboard";
 import ForumDashboard from "./ForumDashboard";
 import ProfileDashboard from "./ProfileDashboard";
+import HeyGenAvatarPage from "./HeyGenAvatarPage";
 
 import { FreePlanNotification } from '@/components/FreePlanNotification';
 import { PlansFloatingTrigger } from '@/components/PlansFloatingTrigger';
@@ -129,6 +130,9 @@ export default function Dashboard() {
       )}
       {activeDashboard === "profile" && (
         <ProfileDashboard />
+      )}
+      {activeDashboard === "heygen-avatar" && (
+        <HeyGenAvatarPage />
       )}
       </DashboardLayout>
       

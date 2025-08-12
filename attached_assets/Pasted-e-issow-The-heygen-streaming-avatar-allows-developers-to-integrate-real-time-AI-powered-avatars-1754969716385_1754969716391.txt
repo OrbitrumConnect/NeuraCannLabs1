@@ -1,0 +1,284 @@
+e issow? 
+
+The @heygen/streaming-avatar allows developers to integrate real-time, AI-powered avatars into their applications. Using HeyGen's platform, you can control avatars through live streaming sessions, allowing them to speak, respond to commands, and interact with users via WebSockets. This SDK simplifies the process of connecting to HeyGen’s streaming services and handling avatar interactions programmatically.
+
+Learn more about AI Avatars
+
+Key Features
+Real-time Streaming: Connect and control avatars in live sessions using WebSockets for seamless communication.
+Text-to-Speech Integration: Send text commands to avatars, allowing them to speak in real-time with customizable voices.
+Event-Driven Architecture: Capture key events, such as when the avatar starts or stops speaking, and use them to trigger updates in your application.
+Session Management: Easily create, manage, and terminate avatar sessions programmatically.
+Choose Avatars: Choose avatars, adjust their quality, and customize their voice settings.
+For a practical demonstration of how to use the Streaming Avatar SDK, check out our Next.js demo. This demo showcases the capabilities of the SDK in a Next.js environment, providing a comprehensive example of avatar integration.
+
+Getting Started
+To get started with the Streaming Avatar SDK, install the TypeScript package from npm and add your HeyGen API Token to your project.
+
+Installation
+To install the Streaming Avatar SDK, use npm:
+
+Shell
+
+npm install @heygen/streaming-avatar livekit-client
+Basic Usage
+Here’s a simple example of how to create a streaming session and send a task to an avatar:
+
+TypeScript
+
+import { StreamingAvatar } from '@heygen/streaming-avatar';
+
+const avatar = new StreamingAvatar({ token: 'your-access-token' });
+
+const startSession = async () => {
+  const sessionData = await avatar.createStartAvatar({
+    avatarName: 'MyAvatar',
+    quality: 'high',
+  });
+  
+  console.log('Session started:', sessionData.session_id);
+
+  await avatar.speak({
+    sessionId: sessionData.session_id,
+    text: 'Hello, world!',
+    task_type: TaskType.REPEAT
+  });
+};
+
+startSession();
+Managing Sessions
+The SDK provides comprehensive session management features, including starting, stopping, and controlling avatar sessions. You can handle session details, such as checking if the session is active, tracking the session duration, and managing multiple avatars simultaneously.
+
+Event Handling
+The SDK uses an event-driven architecture to handle various avatar interactions. You can listen for key events such as when an avatar starts talking, stops talking, or when the stream is ready for display. This allows you to dynamically update your application based on real-time avatar behavior.
+
+SDK API Reference
+For API reference, you can refer to this page: Streaming API SDK Reference.
+
+Learn more about AI Video Avatar
+
+Conclusion
+The Streaming Avatar SDK empowers developers to integrate real-time, AI-driven avatars into their applications with ease. By leveraging HeyGen's platform, you can create interactive, engaging experiences with customizable avatars, real-time text-to-speech, and seamless session management.
+
+
+
+O ChatGPT disse:
+Sim, isso aí que você colou é a documentação do HeyGen Streaming Avatar SDK — ele é diferente do exemplo de curl que você mandou antes.
+
+O que muda é:
+
+O curl que você mostrou primeiro gera vídeos prontos (processados e depois baixados).
+
+O Streaming Avatar SDK que você colou agora é para controle ao vivo em tempo real via WebSocket (o avatar fala e responde instantaneamente, tipo live).
+
+Se você colocar isso no Replit:
+
+Dá para instalar com
+
+bash
+Copiar
+Editar
+npm install @heygen/streaming-avatar livekit-client
+Depois criar um script Node.js (ou Next.js) que se conecta ao HeyGen usando seu token de API.
+
+Você poderia mandar texto e ele falar no momento, capturar eventos, mudar a voz e até trocar o avatar durante a sessão.
+
+💡 Só que para funcionar no Replit, você precisa:
+
+Criar uma conta HeyGen e gerar um API Token (no painel deles).
+
+Configurar no seu código usando process.env.HEYGEN_API_KEY (nunca deixar exposto direto).
+
+Se quiser mostrar no navegador, teria que integrar com livekit-client para renderizar o vídeo do avatar.
+
+Se quiser, eu posso te montar um código pronto para Replit que abre um streaming avatar e você manda texto para ele falar na hora.
+Quer que eu já faça isso no formato pronto para rodar?
+
+
+
+
+
+
+
+
+Você disse:
+coalr isso no replit ele entendera? For demo of this SDK and how it is used when installed in an app, please refer to the following: https://github.com/HeyGen-Official/InteractiveAvatarNextJSDemo.
+
+import StreamingAvatar, { AvatarQuality, StreamingEvents } from '@heygen/streaming-avatar';
+
+let streamingAvatar;
+async function startChatCreation(){
+    streamingAvatar = new StreamingAvatar({token: 'ENTER_ACCESS_TOKEN_HERE'});
+
+    // some events
+    streamingAvatar.on(StreamingEvents.AVATAR_START_TALKING, (e) => {});
+    streamingAvatar.on(StreamingEvents.STREAM_DISCONNECTED, () => {});
+    streamingAvatar.on(StreamingEvents.STREAM_READY, (event) => {});
+
+    const sessionInfo = await streamingAvatar.createStartAvatar({
+        quality: AvatarQuality.Low,
+        avatarName: avatarId,
+        knowledgeId: knowledgeId, // from labs.heygen.com
+        // knowledgeBase: knowledgeBase, // your customized prompt content
+        voice: {
+          voiceId: voiceId,
+          rate: 1.5, // 0.5 ~ 1.5
+          emotion: VoiceEmotion.EXCITED,
+          // elevenlabsSettings: {} // https://docs.heygen.com/reference/new-session#voicesetting
+          // model: ElevenLabsModel.MULTILINGUAL, elevenlabs audio model
+        },
+        sttSettings: {
+          provider: STTProvider.DEEPGRAM, // STT provider to use. The default is DEEPGRAM.
+          confidence: 0.55, // The default is 0.55.
+        },
+        language: language,
+        // disableIdleTimeout: false, // Default is false; enable cautiously.
+        voiceChatTransport?: VoiceChatTransport.WEBSOCKET, // user input transport. The default is WEBSOCKET
+        // number of seconds that avatar will wait before closing session after last activity, 
+        // expects value from 30 to 3600 (1h)
+        activityIdleTimeout?: number, // The default is 120 (2 minutes)
+    });
+    
+    // switch to voice chat. in this mode, we will record your voice and keep chatting with avatar in real time.
+    await streamingAvatar.startVoiceChat({
+      useSilencePrompt: true, // the default is false. true means you will receive silence prompts.
+      isInputAudioMuted: true, // the default is false. you can also handle mute by using streamingAvatar.muteInputAudio(), streamingAvatar.unmuteInputAudio().
+    });
+}
+
+// In text mode, please use the speak method (Default TALK type).
+streamingAvatar.speak({ text: text, task_type: TaskType.REPEAT, taskMode: TaskMode.SYNC });
+
+// Please note, you can use the speak method in voice chat, but only the TALK type is supported in voice chat mode.
+streamingAvatar.speak({ text: text })
+
+// close voice chat, will stop recording your voice.
+streamingAvatar.closeVoiceChat();
+
+// close the session
+streamingAvatar.stopAvatar();
+
+// keep session alive, will be count as an activity to keep session for additional activityIdleTimeout seconds
+// after last activity.
+streamingAvatar.keepAlive();
+
+// interrupt the avatar's talking
+streamingAvatar.interrupt();
+
+// it's helpful in text mode. startListening will let the avatar switch to listening state.
+streamingAvatar.startListening();
+streamingAvatar.stopListening();
+Troubleshooting FAQ
+How do I get an Access token Key?
+To generate your access token you must first have access to your API key. API Keys are reserved for Enterprise customers. You can retrieve either the API Key or Trial Token by logging in to HeyGen and navigating to this page in your settings: https://app.heygen.com/settings?nav=API. Afterwards you can run the following to obtain your access token.
+
+Please note the tokens are one time use.
+
+curl -X POST https://api.heygen.com/v1/streaming.create_token -H "x-api-key: <api-key>"
+Which Avatars can I use with this project?
+By default, there are several Public Interactive Avatars that can be used. You can find the Avatar IDs for these Avatars by navigating to labs.heygen.com/interactive-avatar and clicking 'Select Avatar'.
+
+You can create your own Interactive Avatar to use with this API by visiting labs.heygen.com/interactive-avatar and clicking 'Create Interactive Avatar' at the bottom of the screen.
+
+Why am I encountering issues with testing?
+Most likely, you are hitting your concurrent session limit. While testing this API with your Trial Token, only 3 concurrent sessions can be created. Please endeavor to close unused sessions with the Close Session endpoint when they are no longer being used; they will automatically close after some minutes.
+
+You can check how many active sessions you have open with the List Sessions endpoint: https://docs.heygen.com/reference/list-sessions
+
+
+O ChatGPT disse:
+Sim, o Replit entende esse código, mas tem alguns pontos importantes:
+
+Esse exemplo não é pronto para rodar direto — ele está mais no formato de “trecho de uso” da SDK, não um script funcional completo.
+
+No Replit você vai precisar:
+
+Instalar as dependências:
+
+bash
+Copiar
+Editar
+npm install @heygen/streaming-avatar livekit-client
+Criar um arquivo index.js (ou index.ts se for TypeScript).
+
+Substituir ENTER_ACCESS_TOKEN_HERE por um token válido do HeyGen (que você gera via API Key).
+
+Alguns parâmetros (avatarId, knowledgeId, voiceId, language) precisam estar definidos no seu código antes de chamar createStartAvatar. No exemplo que você colou eles não estão definidos, então você teria que colocar valores reais.
+
+O SDK do HeyGen é para Node.js e Next.js, então no Replit funciona bem, mas se quiser mostrar o avatar no navegador, tem que integrar o vídeo via LiveKit, que também exige configuração de front-end.
+
+💡 Em resumo:
+
+Dá pra rodar no Replit.
+
+Precisa ajustar o código para ser um script executável e preencher as variáveis certas.
+
+Se quiser ver o avatar “ao vivo” no navegador, tem que combinar esse backend com um frontend (HTML/JS) que receba e mostre o stream.
+
+Se quiser, posso te reescrever esse exemplo em versão completa para rodar no Replit já com variáveis organizadas e pronto para testar.
+Quer que eu já te mande esse código pronto?
+
+
+
+
+
+
+
+
+Você disse:
+aonde gero api key no heygen?
+
+
+O ChatGPT disse:
+Você gera a API Key do HeyGen dentro do painel da sua conta:
+
+Entre no site: https://app.heygen.com
+
+Faça login (pode ser com Google, e-mail etc.).
+
+No canto superior direito, clique no seu avatar/foto de perfil.
+
+Vá em "API Key" ou "Developer" → "API Keys" (dependendo do layout).
+
+Clique em "Generate API Key".
+
+Copie a chave gerada — ela vai ser algo como:
+
+nginx
+Copiar
+Editar
+sk_live_xxxxxxxxxxxxxxxxx
+Guarde essa chave com cuidado, pois quem tiver acesso pode usar sua conta.
+
+Se quiser, já posso te mandar o código para usar essa API Key no Replit e gerar seu primeiro avatar falando em tempo real.
+
+
+
+
+
+
+
+
+Você disse:
+MTJmMWE5YzQxZGY2NDAzNzk3MWNkMGFjNTVhOWIyYjMtMTc1NDk2OTU1MA==
+
+
+O ChatGPT disse:
+Pedro, isso que você me mandou parece ser uma API Key do HeyGen codificada em Base64, não a chave final legível.
+Provavelmente o HeyGen te mostrou ela assim por segurança.
+
+Você tem duas opções:
+
+Usar diretamente como está (alguns SDKs aceitam em Base64).
+
+Decodificar para obter a chave real (mas cuidado para não expor publicamente).
+
+No HeyGen, quando você gera a chave, normalmente ela vem no formato:
+
+nginx
+Copiar
+Editar
+sk_live_xxxxxxxxxxxxxxxxxxxxx
+📌 Importante: nunca poste a chave em público, porque qualquer pessoa pode usar sua conta e gastar seus créditos.
+
+Se quiser, posso te guiar para decodificar e já integrar no seu código para começar o teste de um avatar falando em tempo real. Quer que eu já faça isso agora?

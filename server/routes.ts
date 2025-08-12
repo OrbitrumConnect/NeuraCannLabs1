@@ -6,6 +6,7 @@ import { z } from "zod";
 import session from "express-session";
 import MemoryStore from "memorystore";
 import "./types";
+import { createHeyGenService, getHeyGenService } from "./heygen-service.js";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Session setup
@@ -660,8 +661,205 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // HeyGen Streaming Avatar routes
+  app.post("/api/heygen/start", async (req, res) => {
+    try {
+      const { accessToken } = req.body;
+      
+      if (!accessToken) {
+        return res.status(400).json({ error: "Token de acesso necessário" });
+      }
+
+      const heygenService = createHeyGenService(accessToken);
+      const result = await heygenService.startSession({
+        quality: 'low',
+        avatarName: 'angela_public_3_20240108',
+        voiceId: 'pt-BR-AntonioNeural',
+        language: 'pt'
+      });
+
+      res.json({
+        success: true,
+        sessionId: result.sessionId,
+        message: "Avatar streaming iniciado com sucesso"
+      });
+    } catch (error) {
+      console.error('❌ Erro ao iniciar HeyGen:', error);
+      res.status(500).json({ 
+        error: "Erro ao iniciar avatar streaming", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/heygen/speak", async (req, res) => {
+    try {
+      const { text } = req.body;
+      
+      if (!text) {
+        return res.status(400).json({ error: "Texto é obrigatório" });
+      }
+
+      const heygenService = getHeyGenService();
+      if (!heygenService) {
+        return res.status(400).json({ error: "Sessão não iniciada. Inicie primeiro." });
+      }
+
+      await heygenService.speak(text);
+      
+      res.json({
+        success: true,
+        message: `Avatar falando: "${text}"`
+      });
+    } catch (error) {
+      console.error('❌ Erro ao fazer avatar falar:', error);
+      res.status(500).json({ 
+        error: "Erro ao fazer avatar falar", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/heygen/voice-chat/start", async (req, res) => {
+    try {
+      const heygenService = getHeyGenService();
+      if (!heygenService) {
+        return res.status(400).json({ error: "Sessão não iniciada" });
+      }
+
+      await heygenService.startVoiceChat();
+      
+      res.json({
+        success: true,
+        message: "Chat por voz iniciado"
+      });
+    } catch (error) {
+      console.error('❌ Erro ao iniciar chat por voz:', error);
+      res.status(500).json({ 
+        error: "Erro ao iniciar chat por voz", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/heygen/voice-chat/stop", async (req, res) => {
+    try {
+      const heygenService = getHeyGenService();
+      if (!heygenService) {
+        return res.status(400).json({ error: "Sessão não iniciada" });
+      }
+
+      await heygenService.closeVoiceChat();
+      
+      res.json({
+        success: true,
+        message: "Chat por voz finalizado"
+      });
+    } catch (error) {
+      console.error('❌ Erro ao finalizar chat por voz:', error);
+      res.status(500).json({ 
+        error: "Erro ao finalizar chat por voz", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/heygen/interrupt", async (req, res) => {
+    try {
+      const heygenService = getHeyGenService();
+      if (!heygenService) {
+        return res.status(400).json({ error: "Sessão não iniciada" });
+      }
+
+      await heygenService.interrupt();
+      
+      res.json({
+        success: true,
+        message: "Avatar interrompido"
+      });
+    } catch (error) {
+      console.error('❌ Erro ao interromper avatar:', error);
+      res.status(500).json({ 
+        error: "Erro ao interromper avatar", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/heygen/keep-alive", async (req, res) => {
+    try {
+      const heygenService = getHeyGenService();
+      if (!heygenService) {
+        return res.status(400).json({ error: "Sessão não iniciada" });
+      }
+
+      await heygenService.keepAlive();
+      
+      res.json({
+        success: true,
+        message: "Sessão mantida ativa"
+      });
+    } catch (error) {
+      console.error('❌ Erro ao manter sessão ativa:', error);
+      res.status(500).json({ 
+        error: "Erro ao manter sessão ativa", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.post("/api/heygen/stop", async (req, res) => {
+    try {
+      const heygenService = getHeyGenService();
+      if (!heygenService) {
+        return res.status(400).json({ error: "Sessão não iniciada" });
+      }
+
+      await heygenService.stopSession();
+      
+      res.json({
+        success: true,
+        message: "Sessão avatar finalizada"
+      });
+    } catch (error) {
+      console.error('❌ Erro ao finalizar sessão:', error);
+      res.status(500).json({ 
+        error: "Erro ao finalizar sessão", 
+        details: error.message 
+      });
+    }
+  });
+
+  app.get("/api/heygen/status", async (req, res) => {
+    try {
+      const heygenService = getHeyGenService();
+      
+      if (!heygenService) {
+        return res.json({
+          isConnected: false,
+          sessionId: null,
+          message: "Nenhuma sessão ativa"
+        });
+      }
+
+      const status = heygenService.getSessionInfo();
+      
+      res.json({
+        ...status,
+        message: status.isConnected ? "Sessão ativa" : "Sessão inativa"
+      });
+    } catch (error) {
+      console.error('❌ Erro ao verificar status:', error);
+      res.status(500).json({ 
+        error: "Erro ao verificar status", 
+        details: error.message 
+      });
+    }
+  });
+
   // Critical modules endpoints
   console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
+  console.log("🎬 HeyGen Streaming Avatar API configurada");
 
   const httpServer = createServer(app);
 
