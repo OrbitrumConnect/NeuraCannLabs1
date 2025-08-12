@@ -140,17 +140,18 @@ export function DraCannabisAI() {
       return response as ConsultResponse;
     },
     onSuccess: (data: ConsultResponse) => {
+      const now = new Date().toISOString();
       setChatHistory(prev => [
         ...prev,
-        { type: 'user', message: question, timestamp: new Date().toISOString() },
-        { type: 'doctor', message: data.response, timestamp: data.timestamp }
+        { type: 'user', message: question, timestamp: now },
+        { type: 'doctor', message: data.response, timestamp: now }
       ]);
       setQuestion('');
       
       // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema híbrido)
       if (data.response) {
         setIsTalking(true);
-        // Tenta ElevenLabs primeiro, fallback para nativo
+        // Sistema híbrido: tenta ElevenLabs primeiro, fallback para nativo
         (async () => {
           try {
             console.log('🎭 Tentando ElevenLabs para resposta automática...');
@@ -162,18 +163,31 @@ export function DraCannabisAI() {
             
             if (response.ok) {
               const audioBlob = await response.blob();
-              const audioUrl = URL.createObjectURL(audioBlob);
-              const audio = new Audio(audioUrl);
-              await audio.play();
-              console.log('✅ ElevenLabs reproduzido automaticamente');
-            } else {
-              throw new Error('ElevenLabs falhou');
+              if (audioBlob.size > 0) {
+                const audioUrl = URL.createObjectURL(audioBlob);
+                const audio = new Audio(audioUrl);
+                
+                audio.onended = () => {
+                  URL.revokeObjectURL(audioUrl);
+                  setIsTalking(false);
+                };
+                
+                await audio.play();
+                console.log('✅ ElevenLabs reproduzido automaticamente');
+                return;
+              }
             }
+            throw new Error('ElevenLabs não disponível');
           } catch (error) {
-            console.log('⚠️ Fallback para sistema nativo');
-            await nativeAvatarService.makeAvatarSpeak(data.response, 'medical');
+            console.log('⚠️ Fallback para sistema nativo:', error.message);
+            try {
+              await nativeAvatarService.makeAvatarSpeak(data.response, 'medical');
+              console.log('✅ Sistema nativo reproduzido');
+            } catch (nativeError) {
+              console.error('❌ Erro no sistema nativo:', nativeError);
+            }
+            setIsTalking(false);
           }
-          setIsTalking(false);
         })();
       }
     },
@@ -429,7 +443,7 @@ export function DraCannabisAI() {
         <CardContent className="space-y-4">
           {/* Histórico da Conversa Integrado */}
           {chatHistory.length > 0 && (
-            <div className="max-h-64 overflow-y-auto space-y-3 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border">
+            <div className="max-h-64 overflow-y-auto space-y-3 p-4 bg-green-50 dark:bg-green-950/30 rounded-lg border border-green-200 dark:border-green-800/50">
               <h4 className="font-medium text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
               {chatHistory.map((entry, index) => (
                 <div
