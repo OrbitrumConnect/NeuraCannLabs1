@@ -17,14 +17,17 @@ export class HeyGenService {
 
   async createAccessToken(): Promise<string> {
     try {
-      // Decode base64 token if needed
-      const decodedToken = Buffer.from(this.accessToken, 'base64').toString('utf-8');
+      // Use API key directly from environment
+      const apiKey = process.env.HEYGEN_API_KEY;
+      if (!apiKey) {
+        throw new Error('HEYGEN_API_KEY not found in environment');
+      }
       
       // Create streaming token using the API key
       const response = await fetch('https://api.heygen.com/v1/streaming.create_token', {
         method: 'POST',
         headers: {
-          'x-api-key': decodedToken,
+          'x-api-key': apiKey,
           'Content-Type': 'application/json'
         }
       });
@@ -50,26 +53,31 @@ export class HeyGenService {
       }
       
       // Create avatar session using REST API
+      const requestBody = {
+        quality: config.quality || 'low',
+        avatar_name: config.avatarName || 'default',
+        voice: {
+          voice_id: config.voiceId || 'default'
+        }
+      };
+
+      console.log('🔍 HeyGen Request Body:', JSON.stringify(requestBody, null, 2));
+
       const response = await fetch('https://api.heygen.com/v1/streaming.new', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${this.streamingToken}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          quality: config.quality || 'low',
-          avatar_name: config.avatarName || 'angela_public_3_20240108',
-          voice: {
-            voice_id: config.voiceId || 'pt-BR-AntonioNeural',
-            rate: 1.0,
-            emotion: 'friendly'
-          },
-          language: config.language || 'pt'
-        })
+        body: JSON.stringify(requestBody)
       });
 
+      console.log('🔍 HeyGen Response Status:', response.status, response.statusText);
+
       if (!response.ok) {
-        throw new Error(`Failed to start session: ${response.statusText}`);
+        const errorBody = await response.text();
+        console.log('🔍 HeyGen Error Response:', errorBody);
+        throw new Error(`Failed to start session: ${response.statusText} - ${errorBody}`);
       }
 
       const data = await response.json();

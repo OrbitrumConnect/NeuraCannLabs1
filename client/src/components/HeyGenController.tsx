@@ -15,7 +15,6 @@ interface HeyGenStatus {
 
 export function HeyGenController() {
   const [textToSpeak, setTextToSpeak] = useState('');
-  const [accessToken] = useState('MTJmMWE5YzQxZGY2NDAzNzk3MWNkMGFjNTVhOWIyYjMtMTc1NDk2OTU1MA==');
   const queryClient = useQueryClient();
 
   // Get status
@@ -27,7 +26,7 @@ export function HeyGenController() {
   // Start session mutation
   const startSession = useMutation({
     mutationFn: async () => {
-      return await apiRequest('POST', '/api/heygen/start', { accessToken });
+      return await apiRequest('POST', '/api/heygen/start');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/heygen/status'] });

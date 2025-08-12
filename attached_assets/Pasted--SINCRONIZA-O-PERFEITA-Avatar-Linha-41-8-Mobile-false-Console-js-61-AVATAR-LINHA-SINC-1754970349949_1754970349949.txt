@@ -1,0 +1,88 @@
+✅ SINCRONIZAÇÃO PERFEITA! Avatar + Linha: 41.8% | Mobile: false
+Console.js:61 🟡 AVATAR + LINHA SINCRONIZADOS! Linha: 41.8% | Mobile: false
+injected.js:253  POST https://23fa6f5e-be86-43d1-930f-5c27e34fd638-00-2923dzhcbryzp.spock.replit.dev/api/heygen/start 500 (Internal Server Error)
+window.fetch @ Network.js:219
+apply @ injected.js:253
+apiRequest @ queryClient.ts:15
+mutationFn @ HeyGenController.tsx:30
+fn @ @tanstack_react-query.js?v=23dade3e:1189
+run @ @tanstack_react-query.js?v=23dade3e:494
+start @ @tanstack_react-query.js?v=23dade3e:536
+execute @ @tanstack_react-query.js?v=23dade3e:1225
+await in execute
+mutate @ @tanstack_react-query.js?v=23dade3e:2630
+(anonymous) @ @tanstack_react-query.js?v=23dade3e:3295
+onClick @ HeyGenController.tsx:141
+callCallback2 @ chunk-WERSD76P.js?v=23dade3e:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=23dade3e:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=23dade3e:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=23dade3e:3736
+executeDispatch @ chunk-WERSD76P.js?v=23dade3e:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=23dade3e:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=23dade3e:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=23dade3e:7051
+(anonymous) @ chunk-WERSD76P.js?v=23dade3e:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=23dade3e:18913
+batchedUpdates @ chunk-WERSD76P.js?v=23dade3e:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=23dade3e:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=23dade3e:5478
+dispatchEvent @ chunk-WERSD76P.js?v=23dade3e:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=23dade3e:5449Understand this error
+Console.js:61 Erro ao iniciar sessão: Error: 500: {"error":"Erro ao iniciar avatar streaming","details":"Failed to create token: UNAUTHORIZED"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async Object.mutationFn (HeyGenController.tsx:30:14)
+Mt.forEach.n.<computed> @ Console.js:61
+onError @ HeyGenController.tsx:36
+execute @ @tanstack_react-query.js?v=23dade3e:1254
+await in execute
+mutate @ @tanstack_react-query.js?v=23dade3e:2630
+(anonymous) @ @tanstack_react-query.js?v=23dade3e:3295
+onClick @ HeyGenController.tsx:141
+callCallback2 @ chunk-WERSD76P.js?v=23dade3e:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=23dade3e:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=23dade3e:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=23dade3e:3736
+executeDispatch @ chunk-WERSD76P.js?v=23dade3e:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=23dade3e:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=23dade3e:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=23dade3e:7051
+(anonymous) @ chunk-WERSD76P.js?v=23dade3e:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=23dade3e:18913
+batchedUpdates @ chunk-WERSD76P.js?v=23dade3e:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=23dade3e:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=23dade3e:5478
+dispatchEvent @ chunk-WERSD76P.js?v=23dade3e:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=23dade3e:5449Understand this error
+injected.js:253  POST https://23fa6f5e-be86-43d1-930f-5c27e34fd638-00-2923dzhcbryzp.spock.replit.dev/api/heygen/start 500 (Internal Server Error)
+window.fetch @ Network.js:219
+apply @ injected.js:253
+apiRequest @ queryClient.ts:15
+mutationFn @ HeyGenController.tsx:30
+fn @ @tanstack_react-query.js?v=23dade3e:1189
+run @ @tanstack_react-query.js?v=23dade3e:494
+start @ @tanstack_react-query.js?v=23dade3e:536
+execute @ @tanstack_react-query.js?v=23dade3e:1225
+await in execute
+mutate @ @tanstack_react-query.js?v=23dade3e:2630
+(anonymous) @ @tanstack_react-query.js?v=23dade3e:3295
+onClick @ HeyGenController.tsx:141
+callCallback2 @ chunk-WERSD76P.js?v=23dade3e:3674
+invokeGuardedCallbackDev @ chunk-WERSD76P.js?v=23dade3e:3699
+invokeGuardedCallback @ chunk-WERSD76P.js?v=23dade3e:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-WERSD76P.js?v=23dade3e:3736
+executeDispatch @ chunk-WERSD76P.js?v=23dade3e:7014
+processDispatchQueueItemsInOrder @ chunk-WERSD76P.js?v=23dade3e:7034
+processDispatchQueue @ chunk-WERSD76P.js?v=23dade3e:7043
+dispatchEventsForPlugins @ chunk-WERSD76P.js?v=23dade3e:7051
+(anonymous) @ chunk-WERSD76P.js?v=23dade3e:7174
+batchedUpdates$1 @ chunk-WERSD76P.js?v=23dade3e:18913
+batchedUpdates @ chunk-WERSD76P.js?v=23dade3e:3579
+dispatchEventForPluginEventSystem @ chunk-WERSD76P.js?v=23dade3e:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-WERSD76P.js?v=23dade3e:5478
+dispatchEvent @ chunk-WERSD76P.js?v=23dade3e:5472
+dispatchDiscreteEvent @ chunk-WERSD76P.js?v=23dade3e:5449Understand this error
+Console.js:61 Erro ao iniciar sessão: Error: 500: {"error":"Erro ao iniciar avatar streaming","details":"Failed to create token: UNAUTHORIZED"}
+    at throwIfResNotOk (queryClient.ts:6:11)
+    at async apiRequest (queryClient.ts:22:3)
+    at async Object.mutationFn (HeyGenController.tsx:30:14)

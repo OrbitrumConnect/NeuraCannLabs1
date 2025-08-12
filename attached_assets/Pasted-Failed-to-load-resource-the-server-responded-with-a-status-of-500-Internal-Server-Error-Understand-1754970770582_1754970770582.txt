@@ -1,0 +1,98 @@
+Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+eruda.js:2 Erro ao iniciar sessão: Error: 500: {"error":"Erro ao iniciar avatar streaming","details":"createHeyGenStreamingService is not defined"}
+    at throwIfResNotOk (queryClient.ts:5:11)
+    at async apiRequest (queryClient.ts:15:3)
+    at async Object.mutationFn (HeyGenController.tsx:37:14)
+Mt.forEach.n.<computed> @ VM509 eruda.js:2Understand this error
+23fa6f5e-be86-43d1-930f-5c27e34fd638-00-2923dzhcbryzp.spock.replit.dev/api/heygen/start:1  Failed to load resource: the server responded with a status of 500 (Internal Server Error)Understand this error
+eruda.js:2 Erro ao iniciar sessão: Error: 500: {"error":"Erro ao iniciar avatar streaming","details":"createHeyGenStreamingService is not defined"}
+    at throwIfResNotOk (queryClient.ts:5:11)
+    at async apiRequest (queryClient.ts:15:3)
+    at async Object.mutationFn (HeyGenController.tsx:37:14)
+Mt.forEach.n.<computed> @ VM509 eruda.js:2Understand this error
+eruda.js:2  POST https://23fa6f5e-be86-43d1-930f-5c27e34fd638-00-2923dzhcbryzp.spock.replit.dev/api/heygen/start 500 (Internal Server Error)
+window.fetch @ VM509 eruda.js:2
+apply @ VM752 injected.js:253
+apiRequest @ VM530 queryClient.ts:9
+mutationFn @ VM726 HeyGenController.tsx:37
+fn @ VM532 @tanstack_react-query.js:1189
+run @ VM532 @tanstack_react-query.js:494
+start @ VM532 @tanstack_react-query.js:536
+execute @ VM532 @tanstack_react-query.js:1225
+await in execute
+mutate @ VM532 @tanstack_react-query.js:2630
+(anonymous) @ VM532 @tanstack_react-query.js:3295
+onClick @ VM726 HeyGenController.tsx:172
+callCallback2 @ VM547 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM547 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM547 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM547 chunk-WERSD76P.js:3736
+executeDispatch @ VM547 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM547 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM547 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM547 chunk-WERSD76P.js:7051
+(anonymous) @ VM547 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM547 chunk-WERSD76P.js:18913
+batchedUpdates @ VM547 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM547 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM547 chunk-WERSD76P.js:5478
+dispatchEvent @ VM547 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM547 chunk-WERSD76P.js:5449Understand this error
+eruda.js:2 Erro ao iniciar sessão: Error: 500: {"error":"Erro ao iniciar avatar streaming","details":"createHeyGenStreamingService is not defined"}
+    at throwIfResNotOk (queryClient.ts:5:11)
+    at async apiRequest (queryClient.ts:15:3)
+    at async Object.mutationFn (HeyGenController.tsx:37:14)
+Mt.forEach.n.<computed> @ VM509 eruda.js:2
+onError @ VM726 HeyGenController.tsx:43
+execute @ VM532 @tanstack_react-query.js:1254
+await in execute
+mutate @ VM532 @tanstack_react-query.js:2630
+(anonymous) @ VM532 @tanstack_react-query.js:3295
+onClick @ VM726 HeyGenController.tsx:172
+callCallback2 @ VM547 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM547 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM547 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM547 chunk-WERSD76P.js:3736
+executeDispatch @ VM547 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM547 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM547 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM547 chunk-WERSD76P.js:7051
+(anonymous) @ VM547 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM547 chunk-WERSD76P.js:18913
+batchedUpdates @ VM547 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM547 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM547 chunk-WERSD76P.js:5478
+dispatchEvent @ VM547 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM547 chunk-WERSD76P.js:5449Understand this error
+eruda.js:2  POST https://23fa6f5e-be86-43d1-930f-5c27e34fd638-00-2923dzhcbryzp.spock.replit.dev/api/heygen/start 500 (Internal Server Error)
+window.fetch @ VM509 eruda.js:2
+apply @ VM752 injected.js:253
+apiRequest @ VM530 queryClient.ts:9
+mutationFn @ VM726 HeyGenController.tsx:37
+fn @ VM532 @tanstack_react-query.js:1189
+run @ VM532 @tanstack_react-query.js:494
+start @ VM532 @tanstack_react-query.js:536
+execute @ VM532 @tanstack_react-query.js:1225
+await in execute
+mutate @ VM532 @tanstack_react-query.js:2630
+(anonymous) @ VM532 @tanstack_react-query.js:3295
+onClick @ VM726 HeyGenController.tsx:172
+callCallback2 @ VM547 chunk-WERSD76P.js:3674
+invokeGuardedCallbackDev @ VM547 chunk-WERSD76P.js:3699
+invokeGuardedCallback @ VM547 chunk-WERSD76P.js:3733
+invokeGuardedCallbackAndCatchFirstError @ VM547 chunk-WERSD76P.js:3736
+executeDispatch @ VM547 chunk-WERSD76P.js:7014
+processDispatchQueueItemsInOrder @ VM547 chunk-WERSD76P.js:7034
+processDispatchQueue @ VM547 chunk-WERSD76P.js:7043
+dispatchEventsForPlugins @ VM547 chunk-WERSD76P.js:7051
+(anonymous) @ VM547 chunk-WERSD76P.js:7174
+batchedUpdates$1 @ VM547 chunk-WERSD76P.js:18913
+batchedUpdates @ VM547 chunk-WERSD76P.js:3579
+dispatchEventForPluginEventSystem @ VM547 chunk-WERSD76P.js:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ VM547 chunk-WERSD76P.js:5478
+dispatchEvent @ VM547 chunk-WERSD76P.js:5472
+dispatchDiscreteEvent @ VM547 chunk-WERSD76P.js:5449Understand this error
+eruda.js:2 Erro ao iniciar sessão: Error: 500: {"error":"Erro ao iniciar avatar streaming","details":"createHeyGenStreamingService is not defined"}
+    at throwIfResNotOk (queryClient.ts:5:11)
+    at async apiRequest (queryClient.ts:15:3)
+    at async Object.mutationFn (HeyGenController.tsx:37:14)

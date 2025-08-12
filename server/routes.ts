@@ -6,7 +6,7 @@ import { z } from "zod";
 import session from "express-session";
 import MemoryStore from "memorystore";
 import "./types";
-import { createHeyGenService, getHeyGenService } from "./heygen-service.js";
+import { createHeyGenRestService, getHeyGenRestService } from "./heygen-rest-service.js";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Session setup
@@ -664,23 +664,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // HeyGen Streaming Avatar routes
   app.post("/api/heygen/start", async (req, res) => {
     try {
-      const { accessToken } = req.body;
-      
-      if (!accessToken) {
-        return res.status(400).json({ error: "Token de acesso necessário" });
-      }
-
-      const heygenService = createHeyGenService(accessToken);
-      const result = await heygenService.startSession({
-        quality: 'low',
-        avatarName: 'angela_public_3_20240108',
-        voiceId: 'pt-BR-AntonioNeural',
-        language: 'pt'
+      const heygenService = createHeyGenRestService();
+      const result = await heygenService.createSession({
+        avatarName: 'anna_public_3_20240108',
+        quality: 'low'
       });
 
       res.json({
         success: true,
         sessionId: result.sessionId,
+        url: result.url,
         message: "Avatar streaming iniciado com sucesso"
       });
     } catch (error) {
@@ -700,7 +693,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: "Texto é obrigatório" });
       }
 
-      const heygenService = getHeyGenService();
+      const heygenService = getHeyGenRestService();
       if (!heygenService) {
         return res.status(400).json({ error: "Sessão não iniciada. Inicie primeiro." });
       }
@@ -832,7 +825,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get("/api/heygen/status", async (req, res) => {
     try {
-      const heygenService = getHeyGenService();
+      const heygenService = getHeyGenRestService();
       
       if (!heygenService) {
         return res.json({
@@ -842,7 +835,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      const status = heygenService.getSessionInfo();
+      const status = heygenService.getStatus();
       
       res.json({
         ...status,
