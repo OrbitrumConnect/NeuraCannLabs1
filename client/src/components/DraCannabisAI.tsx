@@ -10,6 +10,7 @@ import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
 import draCannabisImage from '@assets/20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png';
+import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 interface ConsultResponse {
   success: boolean;
@@ -60,13 +61,12 @@ export function DraCannabisAI() {
     timestamp: string;
   }>>([]);
   const [isListening, setIsListening] = useState(false);
-  const [currentTalkId, setCurrentTalkId] = useState<string | null>(null);
-  const [doctorImageUrl, setDoctorImageUrl] = useState<string | null>(null);
+  // Estados do D-ID removidos - sistema nativo não precisa deles
   const [consultationSummary, setConsultationSummary] = useState<ConsultationSummary | null>(null);
   const [showReferralDialog, setShowReferralDialog] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
   const [isAutoStarting, setIsAutoStarting] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  // videoRef removido - sistema nativo não precisa
   const audioRef = useRef<HTMLAudioElement>(null);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
@@ -77,8 +77,8 @@ export function DraCannabisAI() {
     if (shouldAutoStart && !isAutoStarting) {
       setIsAutoStarting(true);
       
-      // Auto-upload da imagem primeiro
-      uploadImageMutation.mutate();
+      // Configura sistema nativo primeiro
+      setupNativeDraMutation.mutate();
       
       setTimeout(() => {
         // Saudação automática após 2 segundos
@@ -89,20 +89,35 @@ export function DraCannabisAI() {
           { type: 'doctor', message: welcomeMessage, timestamp: new Date().toISOString() }
         ]);
         
+        // Fala automática da saudação
+        nativeAvatarService.makeAvatarSpeak(welcomeMessage, 'professional').catch(error => {
+          console.error('Erro na saudação automática:', error);
+        });
+        
         markAutoStarted();
         setIsAutoStarting(false);
       }, 2000);
     }
   }, [shouldAutoStart, isAutoStarting]);
 
-  // Upload da imagem da médica para D-ID
-  const uploadImageMutation = useMutation({
+  // Configuração nativa da Dra. Cannabis (sem D-ID)
+  const setupNativeDraMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest('/api/doctor/upload-image', 'POST', {});
-      return response;
+      // Configura callback de animação da boca
+      nativeAvatarService.setAnimationCallback((isActive, intensity) => {
+        setIsTalking(isActive);
+        // Adiciona variação na intensidade da animação
+        if (isActive) {
+          const avatar = document.querySelector('.avatar-talking');
+          if (avatar) {
+            (avatar as HTMLElement).style.setProperty('--talk-intensity', intensity.toString());
+          }
+        }
+      });
+      
+      return { success: true, message: "Sistema nativo configurado com sucesso!" };
     },
     onSuccess: (data: any) => {
-      setDoctorImageUrl(data.imageUrl);
       toast({
         title: "Dra. Cannabis IA Ativada!",
         description: data.message,
@@ -132,12 +147,11 @@ export function DraCannabisAI() {
       ]);
       setQuestion('');
       
-      // Automaticamente ativar resposta em voz da Dra. Cannabis
-      if (doctorImageUrl && data.response) {
-        setIsTalking(true);
-        speakMutation.mutate({ 
-          text: data.response, 
-          imageUrl: doctorImageUrl 
+      // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema nativo)
+      if (data.response) {
+        nativeAvatarService.makeAvatarSpeak(data.response, 'medical').catch(error => {
+          console.error('Erro ao fazer avatar falar:', error);
+          setIsTalking(false);
         });
       }
     },
@@ -150,65 +164,7 @@ export function DraCannabisAI() {
     },
   });
 
-  // Criar vídeo falado da Dra. Cannabis
-  const speakMutation = useMutation<TalkResponse, Error, { text: string; imageUrl?: string }>({
-    mutationFn: async (data: { text: string; imageUrl?: string }) => {
-      const response = await apiRequest('/api/doctor/speak', 'POST', data);
-      return response as TalkResponse;
-    },
-    onSuccess: (data: TalkResponse) => {
-      setCurrentTalkId(data.talkId);
-      setIsTalking(true);
-      toast({
-        title: "Dra. Cannabis Falando",
-        description: data.message,
-        variant: "default",
-      });
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Erro na Fala",
-        description: error.message || "Erro ao criar resposta falada",
-        variant: "destructive",
-      });
-    },
-  });
-
-  // Verificar status do vídeo
-  const { data: talkStatus } = useQuery({
-    queryKey: ['/api/doctor/talk', currentTalkId],
-    enabled: !!currentTalkId,
-    refetchInterval: (data) => {
-      const status = data as TalkStatus;
-      return status?.status === 'done' ? false : 2000;
-    },
-  });
-
-  // Controlar animação da boca baseada no status do vídeo
-  useEffect(() => {
-    if (talkStatus?.status === 'done' && currentTalkId) {
-      // Vídeo terminou, parar movimento da boca após 3 segundos
-      setTimeout(() => {
-        setIsTalking(false);
-      }, 3000);
-    }
-  }, [talkStatus?.status, currentTalkId]);
-
-  // Saudação automática quando o avatar estiver ativo
-  useEffect(() => {
-    if (doctorImageUrl && shouldAutoStart) {
-      const welcomeMessage = "Olá! Eu sou a Dra. Cannabis IA. Seja bem-vindo ao NeuroCann Lab! Como posso ajudá-lo hoje com suas questões sobre cannabis medicinal?";
-      
-      // Ativar fala automática
-      setTimeout(() => {
-        setIsTalking(true);
-        speakMutation.mutate({ 
-          text: welcomeMessage, 
-          imageUrl: doctorImageUrl 
-        });
-      }, 1000);
-    }
-  }, [doctorImageUrl, shouldAutoStart]);
+  // Sistema de fala nativo - gerenciado automaticamente
 
   // Gerar resumo da consulta
   const generateSummaryMutation = useMutation<ConsultationSummary, Error>({
@@ -259,11 +215,7 @@ export function DraCannabisAI() {
     },
   });
 
-  // Quando vídeo estiver pronto, reproduzir
-  if (talkStatus?.status === 'done' && talkStatus.resultUrl && videoRef.current) {
-    videoRef.current.src = talkStatus.resultUrl;
-    videoRef.current.play();
-  }
+  // Sistema nativo não precisa de reprodução de vídeo D-ID
 
   const handleSubmitQuestion = () => {
     if (!question.trim()) return;
@@ -271,7 +223,8 @@ export function DraCannabisAI() {
   };
 
   const handleSpeakResponse = (text: string) => {
-    speakMutation.mutate({ text, imageUrl: doctorImageUrl || undefined });
+    // Sistema nativo - fala automática já integrada
+    nativeAvatarService.makeAvatarSpeak(text, 'medical');
   };
 
   const startVoiceRecognition = () => {
@@ -350,14 +303,14 @@ export function DraCannabisAI() {
         </CardHeader>
         
         <CardContent className="text-center space-y-4">
-          {!uploadImageMutation.data && (
+          {!setupNativeDraMutation.data && (
             <Button 
-              onClick={() => uploadImageMutation.mutate()}
-              disabled={uploadImageMutation.isPending}
+              onClick={() => setupNativeDraMutation.mutate()}
+              disabled={setupNativeDraMutation.isPending}
               className="bg-green-600 hover:bg-green-700"
               data-testid="button-activate-doctor"
             >
-              {uploadImageMutation.isPending ? (
+              {setupNativeDraMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Ativando Dra. Cannabis...
@@ -371,7 +324,7 @@ export function DraCannabisAI() {
             </Button>
           )}
           
-          {uploadImageMutation.data && (
+          {setupNativeDraMutation.data && (
             <div className="space-y-4">
               <div className="flex items-center justify-center space-x-2 text-green-400">
                 <CheckCircle className="w-5 h-5" />
@@ -514,40 +467,7 @@ export function DraCannabisAI() {
         </CardContent>
       </Card>
 
-      {/* Vídeo da Dra. Cannabis Falando */}
-      {currentTalkId && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Video className="w-5 h-5 text-green-500" />
-              <span>Dra. Cannabis Respondendo</span>
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="relative">
-              <video
-                ref={videoRef}
-                controls
-                className="w-full max-w-md mx-auto rounded-lg shadow-lg"
-                data-testid="video-doctor-response"
-              >
-                <source type="video/mp4" />
-                Seu navegador não suporta reprodução de vídeo.
-              </video>
-              
-              {currentTalkId && talkStatus?.status !== 'done' && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-                  <div className="text-center text-white">
-                    <Loader2 className="w-8 h-8 mx-auto animate-spin mb-2" />
-                    <p>Dra. Cannabis preparando resposta...</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* Sistema nativo não precisa de vídeo separado - avatar integrado */}
 
       {/* Histórico do Chat */}
       {chatHistory.length > 0 && (
