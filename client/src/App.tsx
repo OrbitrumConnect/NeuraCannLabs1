@@ -12,6 +12,7 @@ import PlansPage from "@/pages/PlansPage";
 import AnalyticsDashboard from "@/pages/AnalyticsDashboard";
 import CriticalModulesDashboard from "@/pages/CriticalModulesDashboard";
 import ModuleDetailView from "@/pages/ModuleDetailView";
+import DraCannabisPage from "@/pages/DraCannabisPage";
 import Landing from "@/pages/Landing";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
@@ -31,6 +32,7 @@ function Router() {
       <Route path="/" component={isLoggedIn ? Dashboard : Landing} />
       <Route path="/dashboard/:section?" component={Dashboard} />
       <Route path="/dashboard/module/:moduleId" component={ModuleDetailView} />
+      <Route path="/dra-cannabis" component={DraCannabisPage} />
       <Route path="/admin" component={() => <GlobalAdminDashboard onBackToOverview={() => {}} />} />
       <Route path="/analytics" component={AnalyticsDashboard} />
       <Route path="/critical-modules" component={CriticalModulesDashboard} />

@@ -21,6 +21,7 @@ interface DashboardLayoutProps {
 }
 
 const dashboardOptions = [
+  { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
   { id: "overview", name: "Visão Geral", icon: "fas fa-chart-line" },
   { id: "scientific", name: "Dados Científicos", icon: "fas fa-microscope" },
   { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
@@ -102,6 +103,17 @@ export default function DashboardLayout({
           </div>
           
           <div className="flex items-center space-x-2 sm:space-x-4">
+            {/* Dra. Cannabis IA - Botão Especial */}
+            <button 
+              onClick={() => handleDashboardClick("dra-cannabis")}
+              className="hidden md:flex items-center space-x-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 transition-all border border-purple-400/30 hover:border-purple-400/50"
+              data-testid="nav-dra-cannabis-header"
+            >
+              <i className="fas fa-robot text-purple-400 text-sm" />
+              <span className="text-purple-400 text-xs font-medium">Dra. Cannabis IA</span>
+              <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs rounded-full px-1.5 py-0.5 ml-1">IA</span>
+            </button>
+            
             {/* Analytics Button */}
             <a href="/analytics" className="hidden lg:flex items-center space-x-2 px-2 py-1.5 rounded-lg bg-green-500/20 hover:bg-green-500/30 transition-colors border border-green-500/30">
               <i className="fas fa-chart-line text-green-400 text-sm" />
@@ -136,6 +148,9 @@ export default function DashboardLayout({
                 )}
                 {option.id === "admin" && (
                   <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1 py-0.5">🌍</span>
+                )}
+                {option.id === "dra-cannabis" && (
+                  <span className="ml-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs rounded-full px-1 py-0.5">IA</span>
                 )}
               </button>
             ))}

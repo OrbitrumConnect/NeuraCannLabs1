@@ -54,6 +54,11 @@ export default function Dashboard() {
       setLocation("/critical-modules");
       return;
     }
+    if (dashboard === "dra-cannabis") {
+      // Redireciona para a página da Dra. Cannabis IA
+      setLocation("/dra-cannabis");
+      return;
+    }
     setActiveDashboard(dashboard);
     setLocation(`/dashboard/${dashboard}`);
   };
