@@ -9,11 +9,13 @@ export default function DraCannabisPage() {
     <DashboardLayout>
       <div className="p-6">
         {/* Layout principal focado na Dra. Cannabis IA */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
           
-          {/* Componente Principal da Dra. Cannabis - Ocupa 3 colunas */}
-          <div className="lg:col-span-3">
-            <DraCannabisAI />
+          {/* Componente Principal da Dra. Cannabis - Ocupa 4 colunas (80% da tela) */}
+          <div className="lg:col-span-4">
+            <div className="min-h-[700px]">
+              <DraCannabisAI />
+            </div>
           </div>
           
           {/* Sidebar compacta com informações - Ocupa 1 coluna */}
