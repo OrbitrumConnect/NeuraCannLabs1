@@ -219,8 +219,8 @@ export function DraCannabisAI() {
     onSuccess: (data: ConsultationSummary) => {
       setConsultationSummary(data);
       toast({
-        title: "Resumo da Consulta Gerado",
-        description: "O resumo foi gerado com sucesso",
+        title: "Resumo Médico Completo",
+        description: "Prontuário digital criado com sintomas, recomendações e medicações para encaminhamento profissional",
         variant: "default",
       });
     },
@@ -245,8 +245,8 @@ export function DraCannabisAI() {
     onSuccess: (data: MedicalReferral) => {
       setShowReferralDialog(true);
       toast({
-        title: "Encaminhamento Solicitado",
-        description: data.message,
+        title: "Profissional Médico Solicitado",
+        description: "Prontuário completo enviado para médico parceiro. Aguarde contato em até 24h",
         variant: "default",
       });
     },
@@ -461,7 +461,7 @@ export function DraCannabisAI() {
             </div>
           </div>
           
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <Button 
               onClick={handleSubmitQuestion}
               disabled={consultMutation.isPending || !question.trim()}
@@ -477,6 +477,43 @@ export function DraCannabisAI() {
                 'Consultar Dra. Cannabis'
               )}
             </Button>
+
+            {/* Triggers de Resumo e Encaminhamento Médico */}
+            {chatHistory.length > 0 && (
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => generateSummaryMutation.mutate()}
+                  disabled={generateSummaryMutation.isPending}
+                  size="sm"
+                  variant="outline"
+                  className="text-blue-600 border-blue-600 hover:bg-blue-50"
+                  data-testid="button-generate-summary-quick"
+                >
+                  {generateSummaryMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <FileText className="w-4 h-4 mr-2" />
+                  )}
+                  Resumo da Conversa
+                </Button>
+                
+                <Button
+                  onClick={() => referToMedicalMutation.mutate()}
+                  disabled={referToMedicalMutation.isPending}
+                  size="sm"
+                  variant="outline"
+                  className="text-orange-600 border-orange-600 hover:bg-orange-50"
+                  data-testid="button-refer-medical-quick"
+                >
+                  {referToMedicalMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <UserPlus className="w-4 h-4 mr-2" />
+                  )}
+                  Solicitar Profissional
+                </Button>
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
