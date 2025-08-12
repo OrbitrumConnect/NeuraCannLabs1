@@ -6,6 +6,7 @@ import { useScan } from "@/contexts/ScanContext";
 interface MedicalAvatar3DProps {
   isActive?: boolean;
   isListening?: boolean;
+  isSpeaking?: boolean;
   message?: string;
   className?: string;
   isScanning?: boolean;
@@ -14,6 +15,7 @@ interface MedicalAvatar3DProps {
 export default function MedicalAvatar3D({ 
   isActive = false, 
   isListening = false, 
+  isSpeaking = false,
   message = '', 
   className = '',
   isScanning = false
@@ -25,6 +27,7 @@ export default function MedicalAvatar3D({
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const mixerRef = useRef<THREE.AnimationMixer | null>(null);
   const clockRef = useRef<THREE.Clock>(new THREE.Clock());
+  const mouthAnimationRef = useRef<NodeJS.Timeout | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -176,27 +179,27 @@ export default function MedicalAvatar3D({
     const lights = scene.children.filter(child => child instanceof THREE.Light);
     
     if (isListening) {
-      // Green glow when listening - reduzido 70%
+      // Green glow when listening - ultra sutil
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.0, 0.7, 0.28); // Verde mais suave
-          light.intensity = 1.0; // Reduzido de 2.5 para 1.0
+          light.color.setRGB(0.0, 0.5, 0.2); // Verde bem suave
+          light.intensity = 0.5; // Ultra reduzido
         }
       });
     } else if (isActive) {
-      // Green when active - reduzido 70%
+      // Green when active - quase imperceptível
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.09, 0.68, 0.4); // Verde menos intenso
-          light.intensity = 0.8; // Reduzido de 2.0 para 0.8
+          light.color.setRGB(0.05, 0.5, 0.3); // Verde muito sutil
+          light.intensity = 0.4; // Muito baixo
         }
       });
     } else {
-      // Soft green when idle - mantido suave
+      // Soft green when idle - mínimo
       lights.forEach(light => {
         if (light instanceof THREE.DirectionalLight) {
-          light.color.setRGB(0.2, 0.7, 0.4); // Verde suave
-          light.intensity = 0.6; // Reduzido de 1.2 para 0.6
+          light.color.setRGB(0.15, 0.5, 0.3); // Verde mínimo
+          light.intensity = 0.3; // Bem baixo
         }
       });
     }
@@ -222,10 +225,10 @@ export default function MedicalAvatar3D({
             
             const isMobileView = (className?.includes('w-16') || (!className?.includes('w-40') && !className?.includes('w-24')));
             return isYellowZone
-              ? `drop-shadow(0 0 ${isMobileView ? '6px' : '9px'} rgba(255,235,59,0.3)) drop-shadow(0 0 ${isMobileView ? '12px' : '18px'} rgba(255,235,59,0.24)) brightness(1.12) saturate(1.09)` // Amarelo suave (70% redução)
+              ? `drop-shadow(0 0 ${isMobileView ? '3px' : '5px'} rgba(255,235,59,0.15)) drop-shadow(0 0 ${isMobileView ? '6px' : '10px'} rgba(255,235,59,0.12)) brightness(1.06) saturate(1.03)` // Amarelo ultra sutil
               : isActive 
-              ? 'drop-shadow(0 0 9px rgba(34,197,94,0.27)) drop-shadow(0 0 18px rgba(16,185,129,0.18)) brightness(1.09) saturate(1.06)' // Verde ativo suave
-              : 'drop-shadow(0 0 6px rgba(34,197,94,0.12)) drop-shadow(0 0 12px rgba(16,185,129,0.06)) brightness(1.0) saturate(1.03)'; // Verde normal suave
+              ? 'drop-shadow(0 0 4px rgba(34,197,94,0.15)) drop-shadow(0 0 8px rgba(16,185,129,0.10)) brightness(1.03) saturate(1.02)' // Verde ativo muito sutil
+              : 'drop-shadow(0 0 2px rgba(34,197,94,0.08)) drop-shadow(0 0 4px rgba(16,185,129,0.04)) brightness(1.0) saturate(1.01)'; // Verde normal quase imperceptível
           })(),
           transition: 'all 0.2s ease-out'
         }}
@@ -249,6 +252,20 @@ export default function MedicalAvatar3D({
       )}
 
       {/* Medical Badge - Escondido para interface limpa */}
+
+      {/* Simulação de Movimento da Boca - Overlay sutil durante fala */}
+      {isSpeaking && (
+        <div className={`absolute bottom-1/3 left-1/2 transform -translate-x-1/2 ${
+          className?.includes('w-40') ? 'w-4 h-2' : className?.includes('w-24') ? 'w-3 h-1.5' : 'w-2 h-1'
+        }`}>
+          <div 
+            className="bg-gradient-to-r from-pink-300/20 via-red-300/30 to-pink-300/20 rounded-full animate-pulse"
+            style={{
+              animation: 'mouthMovement 0.3s ease-in-out infinite alternate',
+            }}
+          />
+        </div>
+      )}
 
       {/* Speech Indicator */}
       {message && (

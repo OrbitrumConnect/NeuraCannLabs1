@@ -137,6 +137,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     clearCurrentConversation
   } = useConversations();
 
+  // Voice greeting para detectar quando o avatar está falando
+  const { isPlaying: isAvatarSpeaking } = useVoiceGreeting();
+
   // Fetch real data from APIs with proper typing
   const { data: scientificData = [] } = useQuery<ScientificStudy[]>({ queryKey: ['/api/scientific'] });
   const { data: clinicalData = [] } = useQuery<ClinicalCase[]>({ queryKey: ['/api/clinical'] });
@@ -356,7 +359,12 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <MedicalAvatar3D className="w-16 sm:w-40" isScanning={avatarScanning} />
+            <MedicalAvatar3D 
+              className="w-16 sm:w-40" 
+              isScanning={avatarScanning} 
+              isSpeaking={isAvatarSpeaking}
+              isActive={isDrAIActive}
+            />
           </div>
           
           {/* Texto "Toque para ativar" removido - interface limpa */}
