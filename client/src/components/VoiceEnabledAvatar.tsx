@@ -155,7 +155,7 @@ export default function VoiceEnabledAvatar({ onVoiceMessage, onStartConsultation
   };
 
   return (
-    <div className="relative w-80 h-80 mx-auto mt-20">
+    <div className="relative w-80 h-80 mx-auto mt-32">
       {/* Background holográfico principal */}
       <div className={`
         absolute inset-0 rounded-full bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900

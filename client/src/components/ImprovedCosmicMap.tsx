@@ -713,7 +713,7 @@ ${studyNotes || 'Nenhuma anotação'}`;
           key={subTab.id}
           className="relative mt-4 mx-3 sm:absolute sm:left-12 z-30"
           style={{ 
-            top: window.innerWidth >= 640 ? `${400 + (index * 180)}px` : 'auto',
+            top: window.innerWidth >= 640 ? `${480 + (index * 180)}px` : 'auto',
             width: window.innerWidth >= 640 ? '300px' : 'auto',
             maxHeight: '150px'
           }}
