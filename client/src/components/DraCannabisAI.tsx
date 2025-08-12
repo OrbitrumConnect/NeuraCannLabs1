@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
@@ -8,6 +8,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
+import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
 import draCannabisImage from '@assets/20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png';
 
 interface ConsultResponse {
@@ -63,9 +64,36 @@ export function DraCannabisAI() {
   const [doctorImageUrl, setDoctorImageUrl] = useState<string | null>(null);
   const [consultationSummary, setConsultationSummary] = useState<ConsultationSummary | null>(null);
   const [showReferralDialog, setShowReferralDialog] = useState(false);
+  const [isTalking, setIsTalking] = useState(false);
+  const [isAutoStarting, setIsAutoStarting] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
+  const { shouldAutoStart, markAutoStarted } = useDraCannabisAutoStart();
+
+  // Auto-inicialização da Dra. Cannabis IA
+  useEffect(() => {
+    if (shouldAutoStart && !isAutoStarting) {
+      setIsAutoStarting(true);
+      
+      // Auto-upload da imagem primeiro
+      uploadImageMutation.mutate();
+      
+      setTimeout(() => {
+        // Saudação automática após 2 segundos
+        const welcomeMessage = "Olá! Eu sou a Dra. Cannabis IA. Seja bem-vindo ao NeuroCann Lab! Como posso ajudá-lo hoje com suas questões sobre cannabis medicinal?";
+        
+        setChatHistory(prev => [
+          ...prev,
+          { type: 'doctor', message: welcomeMessage, timestamp: new Date().toISOString() }
+        ]);
+        
+        markAutoStarted();
+        setIsAutoStarting(false);
+      }, 2000);
+    }
+  }, [shouldAutoStart, isAutoStarting]);
 
   // Upload da imagem da médica para D-ID
   const uploadImageMutation = useMutation({
@@ -106,6 +134,7 @@ export function DraCannabisAI() {
       
       // Automaticamente ativar resposta em voz da Dra. Cannabis
       if (doctorImageUrl && data.response) {
+        setIsTalking(true);
         speakMutation.mutate({ 
           text: data.response, 
           imageUrl: doctorImageUrl 
@@ -129,6 +158,7 @@ export function DraCannabisAI() {
     },
     onSuccess: (data: TalkResponse) => {
       setCurrentTalkId(data.talkId);
+      setIsTalking(true);
       toast({
         title: "Dra. Cannabis Falando",
         description: data.message,
@@ -153,6 +183,32 @@ export function DraCannabisAI() {
       return status?.status === 'done' ? false : 2000;
     },
   });
+
+  // Controlar animação da boca baseada no status do vídeo
+  useEffect(() => {
+    if (talkStatus?.status === 'done' && currentTalkId) {
+      // Vídeo terminou, parar movimento da boca após 3 segundos
+      setTimeout(() => {
+        setIsTalking(false);
+      }, 3000);
+    }
+  }, [talkStatus?.status, currentTalkId]);
+
+  // Saudação automática quando o avatar estiver ativo
+  useEffect(() => {
+    if (doctorImageUrl && shouldAutoStart) {
+      const welcomeMessage = "Olá! Eu sou a Dra. Cannabis IA. Seja bem-vindo ao NeuroCann Lab! Como posso ajudá-lo hoje com suas questões sobre cannabis medicinal?";
+      
+      // Ativar fala automática
+      setTimeout(() => {
+        setIsTalking(true);
+        speakMutation.mutate({ 
+          text: welcomeMessage, 
+          imageUrl: doctorImageUrl 
+        });
+      }, 1000);
+    }
+  }, [doctorImageUrl, shouldAutoStart]);
 
   // Gerar resumo da consulta
   const generateSummaryMutation = useMutation<ConsultationSummary, Error>({
@@ -264,14 +320,31 @@ export function DraCannabisAI() {
         <CardHeader className="text-center py-8">
           <div className="flex flex-col items-center justify-center space-y-4">
             <div className="relative">
-              <img 
-                src={draCannabisImage} 
-                alt="Dra. Cannabis IA" 
-                className="w-[31rem] h-[31rem] rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
-              />
-              <Badge className="absolute -bottom-3 -right-3 bg-green-500 text-white text-sm px-3 py-1">
-                IA
+              <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
+                <img 
+                  src={draCannabisImage} 
+                  alt="Dra. Cannabis IA" 
+                  className={`w-[31rem] h-[31rem] rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20 ${
+                    isTalking ? 'animate-pulse filter brightness-110' : ''
+                  }`}
+                />
+                {isTalking && (
+                  <div className="absolute inset-0 rounded-lg border-4 border-green-400/50 animate-ping" />
+                )}
+              </div>
+              <Badge className={`absolute -bottom-3 -right-3 text-white text-sm px-3 py-1 ${
+                isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
+              }`}>
+                {isTalking ? '🗣️ IA' : 'IA'}
               </Badge>
+              {isAutoStarting && (
+                <div className="absolute inset-0 bg-green-500/20 rounded-lg flex items-center justify-center">
+                  <div className="text-center text-green-400">
+                    <Loader2 className="w-8 h-8 mx-auto animate-spin mb-2" />
+                    <p className="text-sm">Inicializando...</p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </CardHeader>
