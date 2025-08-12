@@ -66,7 +66,10 @@ export function DraCannabisAI() {
   const [showReferralDialog, setShowReferralDialog] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
   const [isAutoStarting, setIsAutoStarting] = useState(false);
-  // videoRef removido - sistema nativo não precisa
+  const [didVideoUrl, setDidVideoUrl] = useState<string | null>(null);
+  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
+  const [useDIDAnimation, setUseDIDAnimation] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
@@ -89,10 +92,14 @@ export function DraCannabisAI() {
           { type: 'doctor', message: welcomeMessage, timestamp: new Date().toISOString() }
         ]);
         
-        // Fala automática da saudação
-        nativeAvatarService.makeAvatarSpeak(welcomeMessage, 'professional').catch(error => {
-          console.error('Erro na saudação automática:', error);
-        });
+        // Fala automática da saudação (D-ID ou nativo)
+        if (useDIDAnimation) {
+          generateDIDVideo(welcomeMessage);
+        } else {
+          nativeAvatarService.makeAvatarSpeak(welcomeMessage, 'professional').catch(error => {
+            console.error('Erro na saudação automática:', error);
+          });
+        }
         
         markAutoStarted();
         setIsAutoStarting(false);
@@ -133,6 +140,45 @@ export function DraCannabisAI() {
     },
   });
 
+  // Gerar vídeo animado D-ID
+  const generateDIDVideo = async (text: string) => {
+    setIsGeneratingVideo(true);
+    setDidVideoUrl(null);
+    
+    try {
+      const response = await apiRequest("/api/dra-cannabis/animate", {
+        method: "POST",
+        body: JSON.stringify({ text }),
+        headers: { "Content-Type": "application/json" }
+      });
+      
+      if (response.success && response.videoUrl) {
+        setDidVideoUrl(response.videoUrl);
+        
+        // Reproduzir vídeo automaticamente quando estiver pronto
+        if (videoRef.current) {
+          videoRef.current.src = response.videoUrl;
+          videoRef.current.play().catch(console.error);
+        }
+        
+        toast({
+          title: "Dra. Cannabis Animada!",
+          description: "Vídeo com animação facial gerado com sucesso",
+          variant: "default",
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao gerar vídeo D-ID:', error);
+      toast({
+        title: "Erro na Animação",
+        description: "Não foi possível gerar o vídeo animado",
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingVideo(false);
+    }
+  };
+
   // Consulta médica por texto
   const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
@@ -158,47 +204,54 @@ export function DraCannabisAI() {
       ]);
       setQuestion('');
       
-      // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema híbrido)
+      // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema híbrido + D-ID)
       if (data.response) {
         setIsTalking(true);
-        // Sistema híbrido: tenta ElevenLabs primeiro, fallback para nativo
-        (async () => {
-          try {
-            console.log('🎭 Tentando ElevenLabs para resposta automática...');
-            const response = await fetch('/api/avatar/speak', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ text: data.response })
-            });
-            
-            if (response.ok) {
-              const audioBlob = await response.blob();
-              if (audioBlob.size > 0) {
-                const audioUrl = URL.createObjectURL(audioBlob);
-                const audio = new Audio(audioUrl);
-                
-                audio.onended = () => {
-                  URL.revokeObjectURL(audioUrl);
-                  setIsTalking(false);
-                };
-                
-                await audio.play();
-                console.log('✅ ElevenLabs reproduzido automaticamente');
-                return;
-              }
-            }
-            throw new Error('ElevenLabs não disponível');
-          } catch (error) {
-            console.log('⚠️ Fallback para sistema nativo:', (error as Error).message);
+        
+        // Sistema com três opções: D-ID, ElevenLabs, ou nativo
+        if (useDIDAnimation) {
+          // Usar animação D-ID com vídeo realista
+          generateDIDVideo(data.response);
+        } else {
+          // Sistema híbrido: tenta ElevenLabs primeiro, fallback para nativo
+          (async () => {
             try {
-              await nativeAvatarService.makeAvatarSpeak(data.response, 'medical');
-              console.log('✅ Sistema nativo reproduzido');
-            } catch (nativeError) {
-              console.error('❌ Erro no sistema nativo:', nativeError);
+              console.log('🎭 Tentando ElevenLabs para resposta automática...');
+              const response = await fetch('/api/avatar/speak', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: data.response })
+              });
+              
+              if (response.ok) {
+                const audioBlob = await response.blob();
+                if (audioBlob.size > 0) {
+                  const audioUrl = URL.createObjectURL(audioBlob);
+                  const audio = new Audio(audioUrl);
+                  
+                  audio.onended = () => {
+                    URL.revokeObjectURL(audioUrl);
+                    setIsTalking(false);
+                  };
+                  
+                  await audio.play();
+                  console.log('✅ ElevenLabs reproduzido automaticamente');
+                  return;
+                }
+              }
+              throw new Error('ElevenLabs não disponível');
+            } catch (error) {
+              console.log('⚠️ Fallback para sistema nativo:', (error as Error).message);
+              try {
+                await nativeAvatarService.makeAvatarSpeak(data.response, 'medical');
+                console.log('✅ Sistema nativo reproduzido');
+              } catch (nativeError) {
+                console.error('❌ Erro no sistema nativo:', nativeError);
+              }
+              setIsTalking(false);
             }
-            setIsTalking(false);
-          }
-        })();
+          })();
+        }
       }
     },
     onError: (error: any) => {
@@ -402,6 +455,48 @@ export function DraCannabisAI() {
                 <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
                 <span className="text-sm md:text-base">Dra. Cannabis IA Ativada e Pronta!</span>
               </div>
+              
+              {/* Controle de Animação D-ID */}
+              <div className="flex items-center justify-center space-x-3">
+                <label className="flex items-center space-x-2 text-sm cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={useDIDAnimation}
+                    onChange={(e) => setUseDIDAnimation(e.target.checked)}
+                    className="w-4 h-4 text-green-600 border-green-300 rounded focus:ring-green-500"
+                  />
+                  <Video className="w-4 h-4" />
+                  <span>Animação Realista (D-ID)</span>
+                </label>
+              </div>
+
+              {/* Vídeo D-ID quando disponível */}
+              {didVideoUrl && useDIDAnimation && (
+                <div className="flex justify-center">
+                  <video
+                    ref={videoRef}
+                    width="240"
+                    height="240"
+                    controls
+                    autoPlay
+                    loop={false}
+                    className="rounded-lg shadow-lg border-2 border-green-500"
+                    onEnded={() => setIsTalking(false)}
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  >
+                    <source src={didVideoUrl} type="video/mp4" />
+                    Seu navegador não suporta reprodução de vídeo.
+                  </video>
+                </div>
+              )}
+
+              {/* Status da geração de vídeo D-ID */}
+              {isGeneratingVideo && (
+                <div className="flex items-center justify-center space-x-2 text-blue-400">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="text-sm">Gerando animação facial...</span>
+                </div>
+              )}
             </div>
           )}
         </CardContent>

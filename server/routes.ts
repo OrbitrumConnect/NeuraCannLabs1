@@ -1,4 +1,5 @@
 import type { Express } from "express";
+import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchema } from "@shared/schema";
@@ -8,6 +9,9 @@ import MemoryStore from "memorystore";
 import "./types";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Static files
+  app.use(express.static('client/public'));
+  
   // Session setup
   const MemStore = MemoryStore(session);
   app.use(session({
@@ -736,10 +740,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Import D-ID service at the top level
   let didService: any = null;
   try {
-    const { DIDService } = require('./didService');
-    didService = new DIDService();
+    const { getDIDService } = await import('./didService.js');
+    didService = getDIDService();
     console.log("🎭 Dra. Cannabis IA - Serviço D-ID inicializado");
-  } catch (error) {
+  } catch (error: any) {
     console.log("⚠️ D-ID service não disponível:", error.message);
   }
 
@@ -774,10 +778,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         imageUrl: uploadResult.url,
         message: "Dra. Cannabis IA configurada com sucesso!"
       });
-    } catch (error) {
-      console.error('Erro ao enviar imagem:', error);
+    } catch (error: any) {
+      console.error('❌ Erro no upload da imagem:', error);
       res.status(500).json({ 
-        error: "Erro ao configurar Dra. Cannabis IA",
+        error: 'Erro no upload da imagem',
+        details: error.message 
+      });
+    }
+  });
+
+  // Endpoint para animação D-ID da Dra. Cannabis
+  app.post("/api/doctor/animate", async (req, res) => {
+    try {
+      const { text } = req.body;
+      
+      if (!text) {
+        return res.status(400).json({ error: 'Texto é obrigatório' });
+      }
+
+      if (!didService) {
+        return res.status(500).json({ 
+          error: "Serviço D-ID não disponível" 
+        });
+      }
+
+      // Usar imagem estática da Dra. Cannabis (hospedada no projeto)
+      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis.png`;
+      
+      console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...');
+      
+      // Gerar vídeo animado com D-ID
+      const videoUrl = await didService.generateAnimatedSpeech(imageUrl, text);
+      
+      console.log('✅ Animação D-ID concluída:', videoUrl);
+      
+      res.json({
+        success: true,
+        videoUrl: videoUrl,
+        message: "Dra. Cannabis animada com sucesso!"
+      });
+      
+    } catch (error: any) {
+      console.error('❌ Erro na animação D-ID:', error);
+      res.status(500).json({ 
+        error: 'Erro na animação D-ID',
         details: error.message 
       });
     }

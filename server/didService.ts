@@ -1,194 +1,191 @@
 // Usando fetch nativo do Node.js 18+
 
-export interface DIDTalkRequest {
-  source_url: string;
+export interface DIDVideoRequest {
+  source_url: string; // URL da imagem da Dra. Cannabis
   script: {
-    type: 'text' | 'audio';
-    input: string;
-    provider?: {
-      type: string;
-      voice_id?: string;
+    type: 'text';
+    input: string; // Texto para a Dra. Cannabis falar
+    provider: {
+      type: 'microsoft';
+      voice_id: 'pt-BR-FranciscaNeural'; // Voz feminina brasileira
     };
   };
   config?: {
     fluent?: boolean;
     pad_audio?: number;
-    result_format?: string;
-    face?: {
-      mask_confidence?: number;
-      crop_type?: string;
-      expression?: string;
-      animation_instructions?: any[];
-    };
+    stitch?: boolean;
+    result_format?: 'mp4' | 'gif' | 'mov';
   };
 }
 
-export interface DIDTalkResponse {
+export interface DIDVideoResponse {
   id: string;
-  status: 'created' | 'done' | 'error';
+  object: 'talk';
+  created_at: string;
+  status: 'created' | 'started' | 'done' | 'error';
   result_url?: string;
-  error?: string;
+  error?: {
+    kind: string;
+    description: string;
+  };
 }
 
 export class DIDService {
-  private readonly apiKey: string;
-  private readonly baseUrl = 'https://api.d-id.com';
-
+  private apiKey: string;
+  private baseUrl = 'https://api.d-id.com';
+  
   constructor() {
-    // Usando a chave API fornecida
-    this.apiKey = process.env.DID_API_KEY || 'cGhwZzY5QGdtYWlsLmNvbQ:jt6E9r8R8sWdtaFBE0_rB';
+    this.apiKey = process.env.DID_API_KEY || '';
     if (!this.apiKey) {
-      throw new Error('DID_API_KEY not configured');
+      throw new Error('DID_API_KEY não encontrada nas variáveis de ambiente');
     }
   }
 
-  async createTalk(request: DIDTalkRequest): Promise<DIDTalkResponse> {
+  // Cria um vídeo animado da Dra. Cannabis falando
+  async createTalkingVideo(imageUrl: string, text: string): Promise<DIDVideoResponse> {
     try {
+      const requestData: DIDVideoRequest = {
+        source_url: imageUrl,
+        script: {
+          type: 'text',
+          input: text,
+          provider: {
+            type: 'microsoft',
+            voice_id: 'pt-BR-FranciscaNeural' // Voz feminina brasileira natural
+          }
+        },
+        config: {
+          fluent: true,
+          pad_audio: 0.1,
+          stitch: true,
+          result_format: 'mp4'
+        }
+      };
+
       const response = await fetch(`${this.baseUrl}/talks`, {
         method: 'POST',
         headers: {
           'Authorization': `Basic ${this.apiKey}`,
           'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
-        body: JSON.stringify(request),
+        body: JSON.stringify(requestData)
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`D-ID API error: ${response.status} - ${errorText}`);
+        console.error('❌ D-ID API Error:', response.status, errorText);
+        throw new Error(`D-ID API Error: ${response.status} - ${errorText}`);
       }
 
-      return await response.json() as DIDTalkResponse;
+      const result = await response.json() as DIDVideoResponse;
+      console.log('🎬 Vídeo D-ID criado:', result.id);
+      
+      return result;
+      
     } catch (error) {
-      console.error('Error creating D-ID talk:', error);
+      console.error('❌ Erro ao criar vídeo D-ID:', error);
       throw error;
     }
   }
 
-  async getTalkStatus(talkId: string): Promise<DIDTalkResponse> {
+  // Verifica o status de um vídeo
+  async checkVideoStatus(videoId: string): Promise<DIDVideoResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/talks/${talkId}`, {
+      const response = await fetch(`${this.baseUrl}/talks/${videoId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Basic ${this.apiKey}`,
-        },
+          'Accept': 'application/json'
+        }
       });
 
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`D-ID API error: ${response.status} - ${errorText}`);
+        throw new Error(`D-ID API Error: ${response.status} - ${errorText}`);
       }
 
-      return await response.json() as DIDTalkResponse;
+      return await response.json() as DIDVideoResponse;
+      
     } catch (error) {
-      console.error('Error getting D-ID talk status:', error);
+      console.error('❌ Erro ao verificar status D-ID:', error);
       throw error;
     }
   }
 
-  async uploadImage(imageBuffer: Buffer): Promise<{ url: string }> {
-    try {
-      const formData = new FormData();
-      const blob = new Blob([imageBuffer], { type: 'image/jpeg' });
-      formData.append('image', blob, 'doctor.jpg');
-
-      const response = await fetch(`${this.baseUrl}/images`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${this.apiKey}`,
-        },
-        body: formData,
-      });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`D-ID upload error: ${response.status} - ${errorText}`);
-      }
-
-      const result = await response.json() as { url: string };
-      return result;
-    } catch (error) {
-      console.error('Error uploading image to D-ID:', error);
-      throw error;
-    }
-  }
-
-  // Método para criar avatar médico falando com movimentação da boca otimizada
-  async createMedicalAssistantTalk(text: string, imageUrl?: string, mouthMovements?: any): Promise<DIDTalkResponse> {
-    const defaultImageUrl = imageUrl || 'https://create-images-results.d-id.com/DefaultPresenters/Noelle_f/image.jpeg';
+  // Aguarda a conclusão do vídeo (polling)
+  async waitForVideoCompletion(videoId: string, maxWaitTime = 60000): Promise<string> {
+    const startTime = Date.now();
+    const checkInterval = 2000; // 2 segundos
     
-    const request: DIDTalkRequest = {
-      source_url: defaultImageUrl,
-      script: {
-        type: 'text',
-        input: text,
-        provider: {
-          type: 'elevenlabs',
-          voice_id: 'EXAVITQu4vr4xnSDxMaL', // Voz feminina profissional
-        },
-      },
-      config: {
-        fluent: true,
-        pad_audio: 0,
-      },
-    };
-
-    // Add mouth movement configuration if provided
-    if (mouthMovements) {
-      request.config = {
-        ...request.config,
-        // Enhanced configuration for better mouth synchronization
-        result_format: 'mp4',
-        face: {
-          mask_confidence: 0.8,
-          crop_type: 'rectangle',
-          expression: mouthMovements.expression || 'friendly',
+    return new Promise((resolve, reject) => {
+      const checkStatus = async () => {
+        try {
+          const status = await this.checkVideoStatus(videoId);
+          
+          if (status.status === 'done' && status.result_url) {
+            console.log('✅ Vídeo D-ID concluído:', status.result_url);
+            resolve(status.result_url);
+            return;
+          }
+          
+          if (status.status === 'error') {
+            console.error('❌ Erro na geração D-ID:', status.error);
+            reject(new Error(`Erro D-ID: ${status.error?.description || 'Erro desconhecido'}`));
+            return;
+          }
+          
+          // Verificar timeout
+          if (Date.now() - startTime > maxWaitTime) {
+            reject(new Error('Timeout na geração do vídeo D-ID'));
+            return;
+          }
+          
+          // Continuar verificando
+          console.log(`⏳ Status D-ID: ${status.status} (${videoId})`);
+          setTimeout(checkStatus, checkInterval);
+          
+        } catch (error) {
+          reject(error);
         }
       };
-
-      // If ChatGPT provides specific mouth movement commands, add them
-      if (mouthMovements.commands && request.config?.face) {
-        request.config.face.animation_instructions = mouthMovements.commands;
-      }
-
-      console.log('🗣️ Aplicando movimentação da boca personalizada');
-    }
-
-    return this.createTalk(request);
+      
+      checkStatus();
+    });
   }
 
-  // Enhanced method for ChatGPT integration with intelligent mouth movement
-  async createIntelligentTalk(text: string, chatGptResponse?: any, imageUrl?: string): Promise<DIDTalkResponse> {
-    console.log('🧠 Criando talk inteligente com ChatGPT integration...');
-    
-    let mouthMovements = null;
-    
-    // Extract mouth movement instructions from ChatGPT response if available
-    if (chatGptResponse?.mouthCommands) {
-      mouthMovements = {
-        expression: chatGptResponse.mouthCommands.expression || 'friendly',
-        commands: chatGptResponse.mouthCommands.movements || [],
-      };
-      console.log('🤖 Comandos de movimentação da boca detectados do ChatGPT');
-    } else {
-      // Default intelligent mouth movements for medical assistant
-      mouthMovements = {
-        expression: 'professional',
-        commands: [
-          { time: 0, action: 'smile_slight' },
-          { time: 0.5, action: 'mouth_open_medical' },
-          { time: 1.0, action: 'nod_understanding' }
-        ]
-      };
-      console.log('💊 Aplicando movimentação médica padrão');
-    }
-
+  // Método completo: criar e aguardar conclusão
+  async generateAnimatedSpeech(imageUrl: string, text: string): Promise<string> {
     try {
-      return await this.createMedicalAssistantTalk(text, imageUrl, mouthMovements);
+      console.log('🎬 Iniciando animação D-ID para Dra. Cannabis...');
+      
+      // Criar o vídeo
+      const videoCreation = await this.createTalkingVideo(imageUrl, text);
+      
+      // Aguardar conclusão
+      const resultUrl = await this.waitForVideoCompletion(videoCreation.id);
+      
+      console.log('✅ Animação D-ID concluída:', resultUrl);
+      return resultUrl;
+      
     } catch (error) {
-      console.error('Erro ao criar talk inteligente, usando método padrão:', error);
-      // Fallback to regular talk creation
-      return await this.createMedicalAssistantTalk(text, imageUrl);
+      console.error('❌ Erro completo na animação D-ID:', error);
+      throw error;
     }
   }
+}
+
+// Instância singleton
+let didServiceInstance: DIDService | null = null;
+
+export function getDIDService(): DIDService {
+  if (!didServiceInstance) {
+    try {
+      didServiceInstance = new DIDService();
+    } catch (error) {
+      console.error('⚠️ D-ID service não disponível:', error);
+      throw error;
+    }
+  }
+  return didServiceInstance;
 }
