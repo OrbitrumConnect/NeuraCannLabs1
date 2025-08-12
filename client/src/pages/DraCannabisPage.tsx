@@ -7,98 +7,84 @@ import { Brain, Stethoscope, BookOpen, Shield, AlertCircle } from 'lucide-react'
 export default function DraCannabisPage() {
   return (
     <DashboardLayout>
-      <div className="space-y-6 p-6">
-        {/* Banner de Introdução */}
-        <Card className="bg-gradient-to-r from-green-900/30 to-blue-900/30 border-green-500/30">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <Brain className="w-12 h-12 text-green-400" />
-                <div>
-                  <CardTitle className="text-3xl text-green-400">
-                    Dra. Cannabis IA - Assistente Médico
-                  </CardTitle>
-                  <p className="text-green-200 mt-2">
-                    Primeira IA Médica Especializada em Cannabis do Brasil
-                  </p>
+      <div className="p-6">
+        {/* Layout principal focado na Dra. Cannabis IA */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          
+          {/* Componente Principal da Dra. Cannabis - Ocupa 3 colunas */}
+          <div className="lg:col-span-3">
+            <DraCannabisAI />
+          </div>
+          
+          {/* Sidebar compacta com informações - Ocupa 1 coluna */}
+          <div className="space-y-4">
+            
+            {/* Header compacto */}
+            <Card className="border-green-500/30 bg-gradient-to-br from-green-900/20 to-emerald-900/20">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                    <Brain className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-green-400">Dra. Cannabis IA</CardTitle>
+                    <Badge className="bg-green-600 text-white text-xs mt-1">
+                      D-ID + ElevenLabs
+                    </Badge>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="text-right">
-                <Badge className="bg-green-600 text-white mb-2">
-                  Tecnologia D-ID + ElevenLabs
-                </Badge>
-                <p className="text-sm text-green-200">
-                  Certificada pela ANVISA • CFM
+                <p className="text-xs text-green-200 mt-2">
+                  Certificada ANVISA • CFM
                 </p>
-              </div>
-            </div>
-          </CardHeader>
-          
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="flex items-center space-x-3 p-3 rounded-lg bg-green-800/20">
-                <Stethoscope className="w-6 h-6 text-green-400" />
-                <div>
-                  <h4 className="font-semibold text-green-300">Consultas IA</h4>
-                  <p className="text-sm text-green-200">Respostas médicas instantâneas</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-3 p-3 rounded-lg bg-blue-800/20">
-                <BookOpen className="w-6 h-6 text-blue-400" />
-                <div>
-                  <h4 className="font-semibold text-blue-300">Base Científica</h4>
-                  <p className="text-sm text-blue-200">15.000+ estudos indexados</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-3 p-3 rounded-lg bg-purple-800/20">
-                <Shield className="w-6 h-6 text-purple-400" />
-                <div>
-                  <h4 className="font-semibold text-purple-300">Compliance</h4>
-                  <p className="text-sm text-purple-200">100% regulamentações BR</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center space-x-3 p-3 rounded-lg bg-orange-800/20">
-                <AlertCircle className="w-6 h-6 text-orange-400" />
-                <div>
-                  <h4 className="font-semibold text-orange-300">Alertas</h4>
-                  <p className="text-sm text-orange-200">Monitoramento 24/7</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+              </CardHeader>
+            </Card>
 
-        {/* Componente Principal da Dra. Cannabis */}
-        <DraCannabisAI />
+            {/* Recursos disponíveis integrados */}
+            <Card className="border-blue-500/30 bg-blue-900/10">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-blue-400 flex items-center space-x-2">
+                  <BookOpen className="w-4 h-4" />
+                  <span>Recursos Médicos</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0 space-y-2">
+                <div className="flex items-center space-x-2 text-xs">
+                  <Stethoscope className="w-3 h-3 text-green-400" />
+                  <span className="text-gray-300">Consultas IA instantâneas</span>
+                </div>
+                <div className="flex items-center space-x-2 text-xs">
+                  <BookOpen className="w-3 h-3 text-blue-400" />
+                  <span className="text-gray-300">15.000+ estudos científicos</span>
+                </div>
+                <div className="flex items-center space-x-2 text-xs">
+                  <Shield className="w-3 h-3 text-purple-400" />
+                  <span className="text-gray-300">Compliance total BR</span>
+                </div>
+                <div className="flex items-center space-x-2 text-xs">
+                  <AlertCircle className="w-3 h-3 text-orange-400" />
+                  <span className="text-gray-300">Alertas em tempo real</span>
+                </div>
+              </CardContent>
+            </Card>
 
-        {/* Disclaimer Médico */}
-        <Card className="border-orange-500/30 bg-orange-900/10">
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-orange-400">
-              <AlertCircle className="w-5 h-5" />
-              <span>Importante - Disclaimer Médico</span>
-            </CardTitle>
-          </CardHeader>
-          
-          <CardContent className="text-orange-200 space-y-2">
-            <p>
-              • A <strong>Dra. Cannabis IA</strong> é um assistente baseado em inteligência artificial para fins educacionais e informativos.
-            </p>
-            <p>
-              • As respostas não substituem consulta médica presencial ou diagnóstico profissional.
-            </p>
-            <p>
-              • Sempre consulte seu médico antes de iniciar, alterar ou interromper qualquer tratamento.
-            </p>
-            <p>
-              • Este sistema está em conformidade com as regulamentações da ANVISA, CFM e LGPD.
-            </p>
-          </CardContent>
-        </Card>
+            {/* Disclaimer médico compacto */}
+            <Card className="border-orange-500/30 bg-orange-900/10">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-orange-400 flex items-center space-x-2">
+                  <AlertCircle className="w-4 h-4" />
+                  <span>Aviso Médico</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0 text-xs text-orange-200 space-y-1">
+                <p>• IA para fins educacionais</p>
+                <p>• Não substitui consulta médica</p>
+                <p>• Sempre consulte seu médico</p>
+                <p>• Conforme ANVISA, CFM e LGPD</p>
+              </CardContent>
+            </Card>
+            
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );
