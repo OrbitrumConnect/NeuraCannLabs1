@@ -852,8 +852,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // SISTEMA DE CONTEXTO CONVERSACIONAL INTELIGENTE
   // ========================================
   
-  function analyzeConversationContext(question, conversationHistory) {
+  function analyzeConversationContext(question: string, conversationHistory: any[]) {
     const q = question.toLowerCase().trim();
+    const historyLength = conversationHistory.length;
     
     // DETECTAR SAUDAÇÕES E INÍCIO DE CONVERSA
     const greetings = [
@@ -863,35 +864,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
     ];
     
     const isGreeting = greetings.some(greeting => q.includes(greeting));
-    const isFirstInteraction = conversationHistory.length === 0;
+    const isFirstInteraction = historyLength === 0;
     
     // DETECTAR PERGUNTAS SIMPLES VS COMPLEXAS
     const simpleQuestions = [
       'obrigado', 'valeu', 'ok', 'entendi', 'sim', 'não',
-      'pode ser', 'claro', 'certo', 'perfeito', 'legal'
+      'pode ser', 'claro', 'certo', 'perfeito', 'legal', 'blz'
     ];
     
     const isSimpleResponse = simpleQuestions.some(simple => q.includes(simple)) && q.length < 30;
     
-    // DETECTAR CONVERSA MÉDICA COMPLEXA
+    // DETECTAR CONTINUIDADE DE CONVERSA MÉDICA
     const medicalKeywords = [
       'dor', 'sintoma', 'medicamento', 'tratamento', 'doença', 
       'cannabis', 'cbd', 'thc', 'ansiedade', 'depressão', 
-      'insônia', 'epilepsia', 'câncer', 'fibromialgia'
+      'insônia', 'epilepsia', 'câncer', 'fibromialgia', 'sentindo',
+      'impressão', 'vou', 'estou', 'sinto', 'tenho', 'preciso'
     ];
     
-    const isMedicalComplex = medicalKeywords.some(keyword => q.includes(keyword)) || q.length > 50;
+    const isMedicalTopic = medicalKeywords.some(keyword => q.includes(keyword));
+    const isLongQuestion = q.length > 40;
     
-    // CLASSIFICAR ESTÁGIO DA CONVERSA
+    // DETECTAR FRUSTRAÇÃO OU REPETIÇÃO
+    const frustrationWords = ['ué', 'mas', 'já', 'falei', 'não lembrou', 'você não'];
+    const isFrustrated = frustrationWords.some(word => q.includes(word));
+    
+    // LÓGICA DE CLASSIFICAÇÃO MELHORADA
     if (isFirstInteraction && isGreeting) return 'greeting';
-    if (isSimpleResponse) return 'simple';
-    if (isMedicalComplex) return 'medical_deep';
-    if (conversationHistory.length > 3) return 'ongoing_deep';
+    if (isSimpleResponse && historyLength > 0) return 'simple';
+    if (isFrustrated || (historyLength > 2 && q.includes('já'))) return 'continuation';
+    if (isMedicalTopic || isLongQuestion) return 'medical_deep';
+    if (historyLength > 4) return 'ongoing_deep';
     
     return 'standard';
   }
   
-  function getContextualPrompt(stage, conversationHistory) {
+  function getContextualPrompt(stage: string, conversationHistory: any[]) {
     const basePersonality = "Você é a Dra. Cannabis IA, uma assistente médica revolucionária especializada em medicina integrativa e cannabis medicinal.";
     
     switch (stage) {
@@ -934,6 +942,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         ESTILO: Empática, investigativa, curiosa, técnica quando necessário`;
         
+      case 'continuation':
+        return `${basePersonality}
+        
+        CONTEXTO: CONTINUIDADE DE CONVERSA - O paciente está continuando a conversa anterior.
+        
+        INSTRUÇÕES IMPORTANTES:
+        - RECONHEÇA o que já foi discutido anteriormente
+        - Use frases como "Entendo, você estava me contando sobre..."
+        - Continue naturalmente a partir do ponto anterior
+        - NÃO repita apresentações ou perguntas já respondidas
+        - Seja empática e mostre que está prestando atenção`;
+        
       case 'ongoing_deep':
         return `${basePersonality}
         
@@ -953,8 +973,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }
   
-  function buildConversationMessages(conversationHistory) {
-    return conversationHistory.slice(-6).map(entry => ({
+  function buildConversationMessages(conversationHistory: any[]) {
+    return conversationHistory.slice(-6).map((entry: any) => ({
       role: entry.type === 'user' ? 'user' : 'assistant',
       content: entry.message
     }));
@@ -1092,6 +1112,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
       return 'Entendo. Mais alguma coisa que posso esclarecer?';
+    }
+    
+    if (conversationStage === 'continuation') {
+      // Respostas para quando o usuário está continuando a conversa e mostra frustração
+      const continuationResponses = {
+        'ué': 'Desculpe, você tem razão! Você estava me contando sobre isso. Continue, por favor.',
+        'mas': 'Verdade, você já estava me explicando. Me conta mais sobre isso.',
+        'já falei': 'Tem razão, peço desculpas. Você estava me contando... continue de onde parou.',
+        'você não': 'Desculpe! Eu estava prestando atenção. Me conte mais sobre o que você estava explicando.',
+        'lembrou': 'Claro que lembro! Você estava me falando sobre sua situação. Continue me contando.'
+      };
+      
+      for (const [key, response] of Object.entries(continuationResponses)) {
+        if (questionLower.includes(key)) {
+          return response;
+        }
+      }
+      return 'Entendo que você estava me contando algo importante. Continue, estou aqui para te ouvir.';
     }
     
     // Respostas conversacionais adaptáveis - empáticas mas contextuais
