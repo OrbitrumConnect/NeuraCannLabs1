@@ -384,48 +384,7 @@ export function DraCannabisAI() {
                 <span>Dra. Cannabis IA Ativada e Pronta!</span>
               </div>
               
-              {/* Triggers de Navegação */}
-              <div className="grid grid-cols-2 gap-3">
-                <Button 
-                  onClick={() => setLocation('/')}
-                  variant="outline"
-                  className="border-blue-500/50 hover:bg-blue-900/20 text-blue-300"
-                  data-testid="button-home-trigger"
-                >
-                  <Home className="w-4 h-4 mr-2" />
-                  Home
-                </Button>
-                
-                <Button 
-                  onClick={() => setLocation('/scientific')}
-                  variant="outline" 
-                  className="border-purple-500/50 hover:bg-purple-900/20 text-purple-300"
-                  data-testid="button-scientific-trigger"
-                >
-                  <Search className="w-4 h-4 mr-2" />
-                  Científico
-                </Button>
-                
-                <Button 
-                  onClick={() => setLocation('/clinical')}
-                  variant="outline"
-                  className="border-orange-500/50 hover:bg-orange-900/20 text-orange-300"
-                  data-testid="button-clinical-trigger"
-                >
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Clínico
-                </Button>
-                
-                <Button 
-                  onClick={() => setLocation('/forum')}
-                  variant="outline"
-                  className="border-cyan-500/50 hover:bg-cyan-900/20 text-cyan-300"
-                  data-testid="button-forum-trigger"
-                >
-                  <Users className="w-4 h-4 mr-2" />
-                  Fórum
-                </Button>
-              </div>
+
             </div>
           )}
         </CardContent>
@@ -443,7 +402,7 @@ export function DraCannabisAI() {
         <CardContent className="space-y-4">
           {/* Histórico da Conversa Integrado */}
           {chatHistory.length > 0 && (
-            <div className="max-h-64 overflow-y-auto space-y-3 p-4 bg-green-50 dark:bg-green-950/30 rounded-lg border border-green-200 dark:border-green-800/50">
+            <div className="max-h-64 overflow-y-auto space-y-3 p-4 bg-green-900/10 border border-green-600/20 rounded-lg backdrop-blur-sm">
               <h4 className="font-medium text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
               {chatHistory.map((entry, index) => (
                 <div
@@ -475,6 +434,12 @@ export function DraCannabisAI() {
               placeholder="Faça sua pergunta sobre cannabis medicinal..."
               value={question}
               onChange={(e) => setQuestion(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey && !consultMutation.isPending && question.trim()) {
+                  e.preventDefault();
+                  handleSubmitQuestion();
+                }
+              }}
               className="flex-1 min-h-20"
               data-testid="textarea-medical-question"
             />
