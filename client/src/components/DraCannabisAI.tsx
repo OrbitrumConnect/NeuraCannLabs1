@@ -139,11 +139,12 @@ export function DraCannabisAI() {
       const response = await apiRequest('/api/doctor/consult', 'POST', data);
       return response as ConsultResponse;
     },
-    onSuccess: (data: ConsultResponse) => {
+    onSuccess: (data: ConsultResponse, variables) => {
       const now = new Date().toISOString();
+      console.log('✅ Resposta recebida da Dra. Cannabis:', data.response);
       setChatHistory(prev => [
         ...prev,
-        { type: 'user', message: question, timestamp: now },
+        { type: 'user', message: variables.question, timestamp: now },
         { type: 'doctor', message: data.response, timestamp: now }
       ]);
       setQuestion('');
