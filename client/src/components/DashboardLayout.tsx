@@ -20,16 +20,8 @@ interface DashboardLayoutProps {
   avatarScanning?: boolean;
 }
 
+// Apenas itens individuais que aparecem soltos no cabeçalho
 const dashboardOptions = [
-  // Grupo 1: Pesquisa & Dados
-  { id: "scientific", name: "Dados Científicos", icon: "fas fa-microscope", group: "research" },
-  { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md", group: "research" },
-  
-  // Grupo 2: Perfil & Estudo
-  { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain", group: "personal" },
-  { id: "profile", name: "Perfil", icon: "fas fa-user-circle", group: "personal" },
-  
-  // Itens individuais normais
   { id: "overview", name: "Visão Geral", icon: "fas fa-chart-line" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
@@ -152,12 +144,6 @@ export default function DashboardLayout({
                 </div>
               </div>
             </div>
-            
-            {/* Analytics Button (sem verde) */}
-            <a href="/analytics" className="hidden lg:flex items-center space-x-1 px-2 py-1 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
-              <i className="fas fa-chart-line text-gray-300 text-xs" />
-              <span className="text-gray-300 text-xs">Analytics</span>
-            </a>
             
           {/* Botões individuais normais */}
           <nav className="hidden lg:flex items-center space-x-2">
