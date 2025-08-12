@@ -395,37 +395,7 @@ export function DraCannabisAI() {
         </Card>
       )}
 
-      {/* Exemplos de Perguntas */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Exemplos de Consultas</CardTitle>
-        </CardHeader>
-        
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {[
-              "Como o CBD ajuda no tratamento da epilepsia?",
-              "Qual a dosagem recomendada para dor crônica?",
-              "Cannabis medicinal é eficaz para ansiedade?",
-              "Efeitos colaterais do THC em oncologia?",
-              "Protocolo para síndrome de Dravet",
-              "Interações com outros medicamentos"
-            ].map((example, index) => (
-              <Button
-                key={index}
-                variant="outline"
-                size="sm"
-                onClick={() => setQuestion(example)}
-                className="text-left justify-start h-auto p-3"
-                data-testid={`button-example-${index}`}
-              >
-                <MessageCircle className="w-4 h-4 mr-2 text-green-500" />
-                {example}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+
     </div>
   );
 }
