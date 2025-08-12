@@ -431,6 +431,137 @@ html, body, #root {
       padding-top: max(6rem, env(safe-area-inset-top) + 1.5rem);
     }
   }
-  
+}
 
+/* Calendário Médico - Tema Escuro NeuroCann Lab */
+.rbc-calendar {
+  background-color: hsl(0, 0%, 8%) !important;
+  color: hsl(0, 0%, 90%) !important;
+  border: 1px solid hsl(0, 0%, 20%) !important;
+  border-radius: 12px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* Header do calendário */
+.rbc-header {
+  background-color: hsl(0, 0%, 12%) !important;
+  color: hsl(120, 85%, 75%) !important;
+  border-bottom: 1px solid hsl(0, 0%, 20%) !important;
+  padding: 16px 12px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+}
+
+/* Navegação do mês */
+.rbc-toolbar {
+  background-color: hsl(0, 0%, 10%) !important;
+  padding: 16px !important;
+  border-bottom: 1px solid hsl(0, 0%, 20%) !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.rbc-toolbar button {
+  background-color: hsl(0, 0%, 15%) !important;
+  color: hsl(0, 0%, 85%) !important;
+  border: 1px solid hsl(0, 0%, 25%) !important;
+  border-radius: 6px !important;
+  padding: 8px 16px !important;
+  margin: 0 4px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.rbc-toolbar button:hover {
+  background-color: hsl(120, 85%, 25%) !important;
+  color: white !important;
+  border-color: hsl(120, 85%, 35%) !important;
+}
+
+.rbc-toolbar button.rbc-active {
+  background-color: hsl(120, 85%, 30%) !important;
+  color: white !important;
+  border-color: hsl(120, 85%, 40%) !important;
+}
+
+.rbc-toolbar-label {
+  color: hsl(120, 85%, 75%) !important;
+  font-weight: 700 !important;
+  font-size: 18px !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Células do calendário */
+.rbc-date-cell {
+  background-color: hsl(0, 0%, 8%) !important;
+  border-right: 1px solid hsl(0, 0%, 18%) !important;
+  border-bottom: 1px solid hsl(0, 0%, 18%) !important;
+  padding: 8px !important;
+  min-height: 120px !important;
+}
+
+.rbc-date-cell:hover {
+  background-color: hsl(0, 0%, 12%) !important;
+}
+
+/* Datas do calendário */
+.rbc-date-cell button {
+  background: none !important;
+  border: none !important;
+  color: hsl(0, 0%, 75%) !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.rbc-date-cell button:hover {
+  background-color: hsl(120, 85%, 25%) !important;
+  color: white !important;
+}
+
+/* Data de hoje */
+.rbc-today {
+  background-color: hsl(120, 85%, 8%) !important;
+  border: 1px solid hsl(120, 85%, 25%) !important;
+}
+
+.rbc-today button {
+  background-color: hsl(120, 85%, 30%) !important;
+  color: white !important;
+  font-weight: 700 !important;
+}
+
+/* Eventos médicos */
+.rbc-event {
+  background-color: hsl(120, 85%, 35%) !important;
+  border: 1px solid hsl(120, 85%, 45%) !important;
+  border-radius: 6px !important;
+  color: white !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  padding: 4px 8px !important;
+  margin: 2px 0 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.rbc-event:hover {
+  background-color: hsl(120, 85%, 40%) !important;
+  border-color: hsl(120, 85%, 50%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Off-range (datas de outros meses) */
+.rbc-off-range {
+  color: hsl(0, 0%, 40%) !important;
+}
+
+.rbc-off-range button {
+  color: hsl(0, 0%, 35%) !important;
 }
