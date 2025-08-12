@@ -21,7 +21,6 @@ interface DashboardLayoutProps {
 }
 
 const dashboardOptions = [
-  { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
   { id: "overview", name: "Visão Geral", icon: "fas fa-chart-line" },
   { id: "scientific", name: "Dados Científicos", icon: "fas fa-microscope" },
   { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
