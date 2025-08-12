@@ -87,7 +87,7 @@ export default function MedicalAvatar3D({
     const loader = new GLTFLoader();
     
     // Using ReadyPlayer.me custom avatar model
-    const avatarUrl = 'https://models.readyplayer.me/689aad4d4dd25e5878ab5220.glb';
+    const avatarUrl = 'https://models.readyplayer.me/689aa01db63b0dc9e0057a30.glb';
     
     loader.load(
       avatarUrl,
