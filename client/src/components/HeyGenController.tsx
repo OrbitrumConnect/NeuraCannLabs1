@@ -27,10 +27,7 @@ export function HeyGenController() {
   // Start session mutation
   const startSession = useMutation({
     mutationFn: async () => {
-      return await apiRequest('/api/heygen/start', {
-        method: 'POST',
-        body: { accessToken }
-      });
+      return await apiRequest('/api/heygen/start', 'POST', { accessToken });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/heygen/status'] });
@@ -43,9 +40,7 @@ export function HeyGenController() {
   // Stop session mutation
   const stopSession = useMutation({
     mutationFn: async () => {
-      return await apiRequest('/api/heygen/stop', {
-        method: 'POST'
-      });
+      return await apiRequest('/api/heygen/stop', 'POST');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/heygen/status'] });
@@ -55,10 +50,7 @@ export function HeyGenController() {
   // Speak mutation
   const speak = useMutation({
     mutationFn: async (text: string) => {
-      return await apiRequest('/api/heygen/speak', {
-        method: 'POST',
-        body: { text }
-      });
+      return await apiRequest('/api/heygen/speak', 'POST', { text });
     },
     onError: (error) => {
       console.error('Erro ao fazer avatar falar:', error);
