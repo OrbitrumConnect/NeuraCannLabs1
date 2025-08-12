@@ -3,9 +3,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Mic, MicOff, MessageCircle, Video, Upload, CheckCircle, Play, FileText, UserPlus, AlertTriangle } from 'lucide-react';
+import { Loader2, Mic, MicOff, MessageCircle, Video, Upload, CheckCircle, Play, FileText, UserPlus, AlertTriangle, Home, Search, BookOpen, Users } from 'lucide-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
+import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import draCannabisImage from '@assets/20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png';
 
@@ -64,6 +65,7 @@ export function DraCannabisAI() {
   const [showReferralDialog, setShowReferralDialog] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
 
   // Upload da imagem da médica para D-ID
   const uploadImageMutation = useMutation({
@@ -257,7 +259,7 @@ export function DraCannabisAI() {
               <img 
                 src={draCannabisImage} 
                 alt="Dra. Cannabis IA" 
-                className="w-[28rem] h-[28rem] rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
+                className="w-[31rem] h-[31rem] rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
               />
               <Badge className="absolute -bottom-3 -right-3 bg-green-500 text-white text-sm px-3 py-1">
                 IA
@@ -289,9 +291,54 @@ export function DraCannabisAI() {
           )}
           
           {uploadImageMutation.data && (
-            <div className="flex items-center justify-center space-x-2 text-green-400">
-              <CheckCircle className="w-5 h-5" />
-              <span>Dra. Cannabis IA Ativada e Pronta!</span>
+            <div className="space-y-4">
+              <div className="flex items-center justify-center space-x-2 text-green-400">
+                <CheckCircle className="w-5 h-5" />
+                <span>Dra. Cannabis IA Ativada e Pronta!</span>
+              </div>
+              
+              {/* Triggers de Navegação */}
+              <div className="grid grid-cols-2 gap-3">
+                <Button 
+                  onClick={() => setLocation('/')}
+                  variant="outline"
+                  className="border-blue-500/50 hover:bg-blue-900/20 text-blue-300"
+                  data-testid="button-home-trigger"
+                >
+                  <Home className="w-4 h-4 mr-2" />
+                  Home
+                </Button>
+                
+                <Button 
+                  onClick={() => setLocation('/scientific')}
+                  variant="outline" 
+                  className="border-purple-500/50 hover:bg-purple-900/20 text-purple-300"
+                  data-testid="button-scientific-trigger"
+                >
+                  <Search className="w-4 h-4 mr-2" />
+                  Científico
+                </Button>
+                
+                <Button 
+                  onClick={() => setLocation('/clinical')}
+                  variant="outline"
+                  className="border-orange-500/50 hover:bg-orange-900/20 text-orange-300"
+                  data-testid="button-clinical-trigger"
+                >
+                  <BookOpen className="w-4 h-4 mr-2" />
+                  Clínico
+                </Button>
+                
+                <Button 
+                  onClick={() => setLocation('/forum')}
+                  variant="outline"
+                  className="border-cyan-500/50 hover:bg-cyan-900/20 text-cyan-300"
+                  data-testid="button-forum-trigger"
+                >
+                  <Users className="w-4 h-4 mr-2" />
+                  Fórum
+                </Button>
+              </div>
             </div>
           )}
         </CardContent>
