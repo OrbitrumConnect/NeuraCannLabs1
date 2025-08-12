@@ -1,9 +1,9 @@
-import { NativeAvatarIA } from '@/components/NativeAvatarIA';
+import { StreamingMedicalAvatar3D } from '@/components/StreamingMedicalAvatar3D';
 
 export function NativeAvatarPage() {
   return (
     <div className="h-full w-full overflow-hidden">
-      <NativeAvatarIA />
+      <StreamingMedicalAvatar3D />
     </div>
   );
 }
