@@ -660,6 +660,73 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ========================================
+  // AVATAR PROFISSIONAL - ElevenLabs + D-ID
+  // ========================================
+  
+  app.post('/api/avatar/speak', async (req, res) => {
+    try {
+      const { text, voice_settings, use_lip_sync = false } = req.body;
+      
+      if (!text) {
+        return res.status(400).json({ error: 'Texto é obrigatório' });
+      }
+
+      // 1. Gerar áudio com ElevenLabs (qualidade profissional)
+      const elevenApiKey = process.env.ELEVENLABS_API_KEY;
+      const voiceId = 'EXAVITQu4vr4xnSDxMaL'; // Voz Bella (feminina, profissional)
+      
+      if (!elevenApiKey) {
+        console.log('⚠️ ElevenLabs API key não encontrada, usando sistema nativo');
+        return res.status(200).json({
+          type: 'native',
+          message: 'Sistema nativo ativo'
+        });
+      }
+
+      const elevenResponse = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
+        {
+          method: 'POST',
+          headers: {
+            'xi-api-key': elevenApiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            text,
+            model_id: 'eleven_multilingual_v2',
+            voice_settings: voice_settings || {
+              stability: 0.75,
+              similarity_boost: 0.9,
+              style: 0.0,
+              use_speaker_boost: true
+            }
+          })
+        }
+      );
+
+      if (!elevenResponse.ok) {
+        throw new Error(`ElevenLabs error: ${elevenResponse.status}`);
+      }
+
+      console.log('✅ Áudio gerado com ElevenLabs para:', text.substring(0, 50) + '...');
+      
+      const audioBuffer = await elevenResponse.arrayBuffer();
+      
+      // Retornar áudio de alta qualidade
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Content-Disposition', 'inline; filename="speech.mp3"');
+      res.send(Buffer.from(audioBuffer));
+
+    } catch (error: any) {
+      console.error('❌ Erro no sistema de avatar profissional:', error);
+      res.status(500).json({ 
+        error: 'Erro interno do servidor',
+        details: error.message 
+      });
+    }
+  });
+
   // Critical modules endpoints
   console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
 
