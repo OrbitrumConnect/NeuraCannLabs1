@@ -8,7 +8,57 @@ import MemoryStore from "memorystore";
 import "./types";
 import { createHeyGenRestService, getHeyGenRestService } from "./heygen-rest-service.js";
 
+// OpenAI Medical AI Integration - Preparado para IA Médica Especializada
+let openai: any = null;
+
+// Configuração da IA Médica - Dr. Cannabis IA
+const MEDICAL_AI_CONFIG = {
+  model: "gpt-4o", // Modelo mais recente para análises médicas precisas
+  temperature: 0.3, // Precisão médica rigorosa
+  max_tokens: 1500,
+  systemPrompt: `Você é o Dr. Cannabis IA, um médico virtual especialista em cannabis medicinal com anos de experiência clínica.
+
+EXPERTISE:
+- Medicina canabinoide avançada
+- Protocolos de dosagem personalizados  
+- Interações medicamentosas
+- Análise de casos clínicos complexos
+- Regulamentações ANVISA atualizadas
+
+COMUNICAÇÃO:
+- Sempre responda em português brasileiro
+- Use linguagem médica precisa mas acessível
+- Forneça dosagens específicas quando apropriado
+- Cite estudos científicos quando disponível
+- Sempre inclua alertas de segurança relevantes
+
+RESPONSABILIDADES:
+- Análise científica rigorosa
+- Recomendações baseadas em evidências
+- Identificação de contraindicações
+- Orientações de monitoramento
+- Alertas regulatórios importantes`
+};
+
+// Inicializar OpenAI quando a chave estiver disponível
+function initializeOpenAI() {
+  try {
+    if (process.env.OPENAI_API_KEY && !openai) {
+      const OpenAI = require('openai');
+      openai = new OpenAI({
+        apiKey: process.env.OPENAI_API_KEY,
+      });
+      console.log('🧠 Dr. Cannabis IA - Sistema médico especializado ativado');
+    }
+  } catch (error) {
+    console.log('⚠️ OpenAI não configurado - aguardando chave médica especializada');
+  }
+}
+
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Inicializar sistema OpenAI médico
+  initializeOpenAI();
+  
   // Session setup
   const MemStore = MemoryStore(session);
   app.use(session({
@@ -59,6 +109,127 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(user);
     } else {
       res.status(401).json({ message: "Não autenticado" });
+    }
+  });
+
+  // Dr. Cannabis IA - Consulta Médica Especializada
+  app.post("/api/medical-consultation", async (req, res) => {
+    try {
+      const { query, patientContext, symptoms } = req.body;
+      
+      if (!query) {
+        return res.status(400).json({ error: "Consulta médica é obrigatória" });
+      }
+
+      if (!openai) {
+        return res.status(503).json({ 
+          error: "Sistema IA médico não configurado", 
+          message: "Aguardando chave OpenAI de IA médica especializada" 
+        });
+      }
+
+      // Construir contexto médico completo
+      const medicalContext = `
+      CONSULTA MÉDICA: ${query}
+      
+      ${patientContext ? `CONTEXTO PACIENTE: ${patientContext}` : ''}
+      ${symptoms ? `SINTOMAS RELATADOS: ${symptoms}` : ''}
+      
+      Forneça análise médica baseada em evidências com:
+      1. Análise dos sintomas/condição
+      2. Potenciais protocolos canabinoides
+      3. Dosagens recomendadas específicas
+      4. Contraindicações e alertas
+      5. Monitoramento necessário
+      6. Referências científicas relevantes
+      `;
+
+      const response = await openai.chat.completions.create({
+        model: MEDICAL_AI_CONFIG.model,
+        messages: [
+          { role: "system", content: MEDICAL_AI_CONFIG.systemPrompt },
+          { role: "user", content: medicalContext }
+        ],
+        temperature: MEDICAL_AI_CONFIG.temperature,
+        max_tokens: MEDICAL_AI_CONFIG.max_tokens
+      });
+
+      const medicalAdvice = response.choices[0].message.content;
+
+      res.json({
+        consultation: medicalAdvice,
+        timestamp: new Date().toISOString(),
+        drCannabisIA: true,
+        medicalGrade: true
+      });
+
+    } catch (error) {
+      console.error('Erro na consulta médica:', error);
+      res.status(500).json({ 
+        error: "Erro na consulta médica especializada",
+        message: "Sistema temporariamente indisponível" 
+      });
+    }
+  });
+
+  // Análise de Sintomas com IA Médica
+  app.post("/api/analyze-symptoms", async (req, res) => {
+    try {
+      const { symptoms, patientAge, medicalHistory } = req.body;
+      
+      if (!symptoms) {
+        return res.status(400).json({ error: "Sintomas são obrigatórios" });
+      }
+
+      if (!openai) {
+        return res.status(503).json({ 
+          error: "Sistema IA médico não configurado", 
+          message: "Aguardando chave OpenAI de IA médica especializada" 
+        });
+      }
+
+      const analysisPrompt = `
+      ANÁLISE DE SINTOMAS PARA CANNABIS MEDICINAL:
+      
+      Sintomas: ${symptoms}
+      ${patientAge ? `Idade: ${patientAge} anos` : ''}
+      ${medicalHistory ? `Histórico: ${medicalHistory}` : ''}
+      
+      Forneça:
+      1. Avaliação clínica dos sintomas
+      2. Possível adequação para cannabis medicinal
+      3. Cannabinoides mais indicados (THC/CBD/outros)
+      4. Forma de administração recomendada
+      5. Protocolo de dosagem inicial
+      6. Precauções específicas
+      7. Monitoramento necessário
+      `;
+
+      const response = await openai.chat.completions.create({
+        model: MEDICAL_AI_CONFIG.model,
+        messages: [
+          { role: "system", content: MEDICAL_AI_CONFIG.systemPrompt },
+          { role: "user", content: analysisPrompt }
+        ],
+        temperature: MEDICAL_AI_CONFIG.temperature,
+        max_tokens: MEDICAL_AI_CONFIG.max_tokens
+      });
+
+      const analysis = response.choices[0].message.content;
+
+      res.json({
+        symptomAnalysis: analysis,
+        timestamp: new Date().toISOString(),
+        drCannabisIA: true,
+        clinicalGrade: true
+      });
+
+    } catch (error) {
+      console.error('Erro na análise de sintomas:', error);
+      res.status(500).json({ 
+        error: "Erro na análise de sintomas",
+        message: "Sistema temporariamente indisponível" 
+      });
     }
   });
 

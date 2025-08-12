@@ -249,10 +249,14 @@ export default function VoiceEnabledAvatar({ onVoiceMessage, onStartConsultation
           <div className="absolute -top-2 left-0 w-3 h-3 bg-gray-700 rounded-full" />
         </div>
 
-        {/* Certificações virtuais */}
-        <div className="absolute right-2 top-2 text-xs">
-          <div className="bg-green-100 text-green-800 px-1 py-0.5 rounded text-[6px] mb-1">CRM Virtual</div>
-          <div className="bg-blue-100 text-blue-800 px-1 py-0.5 rounded text-[6px]">Especialista Canabinóide</div>
+        {/* Certificações virtuais - Posicionamento corrigido */}
+        <div className="absolute right-2 top-6 text-xs space-y-1 z-20">
+          <div className="bg-green-100 text-green-800 px-1.5 py-1 rounded text-[7px] shadow-sm border border-green-200">
+            CRM Virtual
+          </div>
+          <div className="bg-blue-100 text-blue-800 px-1.5 py-1 rounded text-[7px] shadow-sm border border-blue-200">
+            Especialista Cannabinoide
+          </div>
         </div>
       </div>
 

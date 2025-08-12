@@ -145,12 +145,12 @@ function MedicalAvatarStreaming({ audioPlaying, isListening, mood }: AvatarStrea
       </div>
 
       {/* Certificações virtuais */}
-      <div className="absolute -top-4 -left-4 bg-green-500/20 backdrop-blur-sm rounded-lg p-2 border border-green-500/30">
+      <div className="absolute top-16 -left-4 bg-green-500/20 backdrop-blur-sm rounded-lg p-2 border border-green-500/30">
         <div className="text-xs text-green-400 font-bold">CRM Virtual</div>
         <div className="text-xs text-green-300">Cannabis IA</div>
       </div>
 
-      <div className="absolute -top-4 -right-4 bg-blue-500/20 backdrop-blur-sm rounded-lg p-2 border border-blue-500/30">
+      <div className="absolute top-16 -right-4 bg-blue-500/20 backdrop-blur-sm rounded-lg p-2 border border-blue-500/30">
         <div className="text-xs text-blue-400 font-bold">Especialista</div>
         <div className="text-xs text-blue-300">Canabinóide</div>
       </div>
@@ -255,7 +255,7 @@ export function StreamingMedicalAvatar3D() {
   return (
     <div className="relative h-full w-full bg-gradient-to-b from-gray-900 via-blue-900 to-black">
       {/* Controles do Avatar */}
-      <div className="absolute top-4 left-4 z-10 flex flex-col space-y-2">
+      <div className="absolute top-32 left-4 z-10 flex flex-col space-y-2">
         <Button
           onClick={toggleSpeech}
           variant={audioPlaying ? "destructive" : "default"}
