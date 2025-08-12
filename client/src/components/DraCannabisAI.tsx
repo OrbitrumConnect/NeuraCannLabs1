@@ -215,7 +215,25 @@ export function DraCannabisAI() {
     },
   });
 
-  // Sistema nativo não precisa de reprodução de vídeo D-ID
+  // Mutation para reprodução de áudio das respostas
+  const speakMutation = useMutation({
+    mutationFn: async (text: string) => {
+      setIsTalking(true);
+      await nativeAvatarService.makeAvatarSpeak(text, 'medical');
+      return { success: true };
+    },
+    onSuccess: () => {
+      setIsTalking(false);
+    },
+    onError: (error: any) => {
+      setIsTalking(false);
+      toast({
+        title: "Erro na Reprodução",
+        description: error.message || "Erro ao reproduzir áudio",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleSubmitQuestion = () => {
     if (!question.trim()) return;
@@ -223,8 +241,7 @@ export function DraCannabisAI() {
   };
 
   const handleSpeakResponse = (text: string) => {
-    // Sistema nativo - fala automática já integrada
-    nativeAvatarService.makeAvatarSpeak(text, 'medical');
+    speakMutation.mutate(text);
   };
 
   const startVoiceRecognition = () => {
