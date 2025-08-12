@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution, type PatientReferral, type UpsertPatientReferral, type DigitalAnamnesis, type UpsertDigitalAnamnesis, type LabIntegration, type LabResult, type MedicalTeamMember, type ComplianceAudit } from "@shared/schema";
+import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution, type PatientReferral, type UpsertPatientReferral, type DigitalAnamnesis, type UpsertDigitalAnamnesis, type LabIntegration, type LabResult, type MedicalTeamMember, type ComplianceAudit, type Conversation, type InsertConversation, type LearningPattern, type InsertLearningPattern, type AiInsight, type InsertAiInsight } from "@shared/schema";
 import { comprehensiveStudies, comprehensiveClinicalCases, comprehensiveAlerts } from './comprehensive-medical-database';
 import { randomUUID } from "crypto";
 
@@ -67,6 +67,20 @@ export interface IStorage {
   // Compliance Audits - Auditoria e Compliance
   getComplianceAudits(): Promise<ComplianceAudit[]>;
   createComplianceAudit(audit: Omit<ComplianceAudit, 'id' | 'createdAt'>): Promise<ComplianceAudit>;
+  
+  // Sistema de Aprendizado Contínuo
+  getConversations(sessionId?: string): Promise<Conversation[]>;
+  createConversation(conversation: InsertConversation): Promise<Conversation>;
+  updateConversation(id: string, updates: Partial<Conversation>): Promise<Conversation | undefined>;
+  
+  // Padrões de Aprendizado
+  getLearningPatterns(category?: string): Promise<LearningPattern[]>;
+  createLearningPattern(pattern: InsertLearningPattern): Promise<LearningPattern>;
+  updateLearningPattern(id: string, updates: Partial<LearningPattern>): Promise<LearningPattern | undefined>;
+  
+  // AI Insights
+  getAiInsights(category?: string): Promise<AiInsight[]>;
+  createAiInsight(insight: InsertAiInsight): Promise<AiInsight>;
 }
 
 export class MemStorage implements IStorage {
@@ -83,6 +97,10 @@ export class MemStorage implements IStorage {
   private labResults: Map<string, LabResult>;
   private medicalTeam: Map<string, MedicalTeamMember>;
   private complianceAudits: Map<string, ComplianceAudit>;
+  // Sistema de Aprendizado Contínuo
+  private conversations: Map<string, Conversation>;
+  private learningPatterns: Map<string, LearningPattern>;
+  private aiInsights: Map<string, AiInsight>;
 
   constructor() {
     this.users = new Map();
@@ -98,6 +116,10 @@ export class MemStorage implements IStorage {
     this.labResults = new Map();
     this.medicalTeam = new Map();
     this.complianceAudits = new Map();
+    // Inicializar Sistema de Aprendizado Contínuo
+    this.conversations = new Map();
+    this.learningPatterns = new Map();
+    this.aiInsights = new Map();
     
     // Inicializar com base de dados abrangente
     this.initializeSampleData();
@@ -976,6 +998,88 @@ export class MemStorage implements IStorage {
     });
 
     console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
+  }
+
+  // ========================================
+  // SISTEMA DE APRENDIZADO CONTÍNUO
+  // ========================================
+  
+  async getConversations(sessionId?: string): Promise<Conversation[]> {
+    const conversations = Array.from(this.conversations.values());
+    if (sessionId) {
+      return conversations.filter(conv => conv.sessionId === sessionId);
+    }
+    return conversations;
+  }
+
+  async createConversation(conversationData: InsertConversation): Promise<Conversation> {
+    const conversation: Conversation = {
+      id: randomUUID(),
+      ...conversationData,
+      createdAt: new Date(),
+    };
+    this.conversations.set(conversation.id, conversation);
+    console.log(`🧠 Nova conversa salva: ${conversation.id} | Contexto: ${conversation.context}`);
+    return conversation;
+  }
+
+  async updateConversation(id: string, updates: Partial<Conversation>): Promise<Conversation | undefined> {
+    const conversation = this.conversations.get(id);
+    if (!conversation) return undefined;
+    
+    const updatedConversation = { ...conversation, ...updates };
+    this.conversations.set(id, updatedConversation);
+    console.log(`🔄 Conversa atualizada: ${id}`);
+    return updatedConversation;
+  }
+
+  async getLearningPatterns(category?: string): Promise<LearningPattern[]> {
+    const patterns = Array.from(this.learningPatterns.values());
+    if (category) {
+      return patterns.filter(pattern => pattern.medicalCategory === category);
+    }
+    return patterns.sort((a, b) => b.frequency - a.frequency); // Mais frequentes primeiro
+  }
+
+  async createLearningPattern(patternData: InsertLearningPattern): Promise<LearningPattern> {
+    const pattern: LearningPattern = {
+      id: randomUUID(),
+      ...patternData,
+      createdAt: new Date(),
+      lastUpdated: new Date(),
+    };
+    this.learningPatterns.set(pattern.id, pattern);
+    console.log(`📈 Novo padrão identificado: ${pattern.pattern} | Freq: ${pattern.frequency}`);
+    return pattern;
+  }
+
+  async updateLearningPattern(id: string, updates: Partial<LearningPattern>): Promise<LearningPattern | undefined> {
+    const pattern = this.learningPatterns.get(id);
+    if (!pattern) return undefined;
+    
+    const updatedPattern = { ...pattern, ...updates, lastUpdated: new Date() };
+    this.learningPatterns.set(id, updatedPattern);
+    console.log(`🔄 Padrão atualizado: ${pattern.pattern} | Nova freq: ${updatedPattern.frequency}`);
+    return updatedPattern;
+  }
+
+  async getAiInsights(category?: string): Promise<AiInsight[]> {
+    const insights = Array.from(this.aiInsights.values());
+    if (category) {
+      return insights.filter(insight => insight.category === category);
+    }
+    return insights.sort((a, b) => b.confidence - a.confidence); // Maior confiança primeiro
+  }
+
+  async createAiInsight(insightData: InsertAiInsight): Promise<AiInsight> {
+    const insight: AiInsight = {
+      id: randomUUID(),
+      ...insightData,
+      createdAt: new Date(),
+    };
+    this.aiInsights.set(insight.id, insight);
+    console.log(`💡 Novo insight: ${insight.insight.substring(0, 50)}... | Confiança: ${insight.confidence}%`);
+    return insight;
   }
 }
 

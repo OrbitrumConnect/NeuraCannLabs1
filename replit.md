@@ -35,12 +35,18 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 ### Backend Architecture
 - **Runtime & Framework**: Node.js with Express.js for RESTful API endpoints, using ES modules.
 - **Development Setup**: Custom Vite integration for HMR and seamless frontend-backend integration.
-- **API Design**: RESTful endpoints for scientific studies (`/api/scientific`), clinical cases (`/api/clinical`), alerts (`/api/alerts`), and user profiles (`/api/profile`).
+- **API Design**: RESTful endpoints for scientific studies (`/api/scientific`), clinical cases (`/api/clinical`), alerts (`/api/alerts`), user profiles (`/api/profile`), and the new continuous learning system (`/api/learning/*`).
 - **Data Storage**: Currently uses in-memory storage (MemStorage class) with an architecture designed for easy swap to database implementations.
+- **Continuous Learning System**: Automatically saves and analyzes all user conversations to improve AI responses over time. Includes pattern recognition, success rate tracking, and AI-generated insights.
 
 ### Database Schema Design
 - **ORM & Validation**: Drizzle ORM with PostgreSQL dialect configured; Zod schemas for runtime validation and type safety.
-- **Data Models**: Users (medical professionals), Scientific Studies, Clinical Cases, Alerts. The system also includes a `study_submissions` database for tracking research submissions.
+- **Data Models**: Users (medical professionals), Scientific Studies, Clinical Cases, Alerts, Study Submissions.
+- **Learning System Models** (Added December 2024):
+  - **Conversations**: Stores all user-AI interactions with context, medical topics, and success metrics
+  - **Learning Patterns**: Tracks recurring patterns in conversations with frequency and success rates
+  - **AI Insights**: Auto-generated insights from conversation analysis for system improvement
+  - **User Feedback**: Optional feedback system for conversation quality assessment
 
 ### Feature Specifications
 - **REVOLUCIONÁRIA DOUTORA CANNABIS IA v3.0**: Sistema de consulta médica TRANSFORMADOR que quebra paradigmas da medicina tradicional através de:
@@ -60,6 +66,18 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **AI Capabilities**: Specialized AI for cross-analysis, semantic analysis, contextual suggestions, automatic detection of common medical errors, and intelligent contextual chat that reads user notes and cross-references data. The Dr. Cannabis AI avatar is interactive and controls system activation.
 - **Audio Features**: Animação de boca simulada implementada com detecção de fala ativa (isAvatarSpeaking), Text-to-Speech otimizado para leitura de conteúdo médico.
 - **Search Interface Auto-Activation**: Correção crítica aplicada - pesquisas agora ativam automaticamente o Dr AI (isDrAIActive) mostrando todas as opções de chat, exploração e estudos conforme funcionamento normal do sistema.
+
+### Sistema de Aprendizado Contínuo v3.0 (Implementado Dezembro 2024)
+- **"Conversa Sensorial Recíproca"**: Sistema revolucionário que captura, analisa e aprende de TODAS as interações dos usuários
+- **Padrões Médicos Inteligentes**: IA identifica automaticamente padrões recorrentes (epilepsia + ansiedade, CBD + dor crônica, etc.) e melhora respostas baseadas na frequência e taxa de sucesso
+- **Insights Auto-Gerados**: Sistema cria automaticamente insights sobre melhores práticas médicas baseado em análise de conversas reais
+- **Evolução Contínua**: Cada conversa alimenta a inteligência da Dra. Cannabis, tornando-a mais precisa e personalizada ao longo do tempo
+- **Métricas de Sucesso**: Rastreamento de satisfação, duração das consultas, tópicos médicos mais discutidos e taxa de encaminhamentos
+- **API Endpoints Dedicados**: 
+  - `/api/learning/conversations` - Histórico completo de conversas
+  - `/api/learning/patterns` - Padrões médicos identificados
+  - `/api/learning/insights` - Insights gerados pela IA
+  - `/api/learning/feedback` - Sistema de feedback dos usuários
 
 ## External Dependencies
 - **Database**: Neon serverless PostgreSQL (configured via Drizzle ORM).

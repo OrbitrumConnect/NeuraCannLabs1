@@ -54,6 +54,46 @@ export const alerts = pgTable("alerts", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Sistema de Aprendizado Contínuo - Conversas Armazenadas
+export const conversations = pgTable("conversations", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  sessionId: text("session_id").notNull(), // ID da sessão de conversa
+  userId: text("user_id"), // ID do usuário (opcional, pode ser anônimo)
+  messages: text("messages").notNull(), // JSON das mensagens da conversa
+  context: text("context"), // Contexto detectado (greeting, medical_deep, etc.)
+  satisfactionRating: integer("satisfaction_rating"), // 1-5 estrelas
+  feedback: text("feedback"), // Feedback do usuário sobre a conversa
+  medicalTopics: text("medical_topics"), // Array JSON dos tópicos médicos discutidos
+  isSuccessful: integer("is_successful").default(0), // 1 se conversa foi bem sucedida
+  duration: integer("duration"), // Duração em segundos
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Base de Conhecimento Dinâmica - Padrões de Aprendizado
+export const learningPatterns = pgTable("learning_patterns", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  pattern: text("pattern").notNull(), // Padrão detectado (ex: "ansiedade + insônia")
+  frequency: integer("frequency").default(1), // Quantas vezes apareceu
+  successRate: integer("success_rate").default(0), // Taxa de sucesso (0-100%)
+  bestResponse: text("best_response"), // Melhor resposta identificada
+  contextType: text("context_type"), // Tipo de contexto onde funciona melhor
+  medicalCategory: text("medical_category"), // Categoria médica
+  lastUpdated: timestamp("last_updated").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Insights de Melhoria Contínua
+export const aiInsights = pgTable("ai_insights", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  insight: text("insight").notNull(), // Insight descoberto
+  category: text("category").notNull(), // conversational, medical, technical
+  confidence: integer("confidence").notNull(), // 0-100% confiança
+  source: text("source").notNull(), // De onde veio (conversations, feedback, etc.)
+  implemented: integer("implemented").default(0), // Se foi implementado
+  impact: text("impact"), // Impacto esperado/observado
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
@@ -71,6 +111,22 @@ export const insertClinicalCaseSchema = createInsertSchema(clinicalCases).omit({
 });
 
 export const insertAlertSchema = createInsertSchema(alerts).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertConversationSchema = createInsertSchema(conversations).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertLearningPatternSchema = createInsertSchema(learningPatterns).omit({
+  id: true,
+  createdAt: true,
+  lastUpdated: true,
+});
+
+export const insertAiInsightSchema = createInsertSchema(aiInsights).omit({
   id: true,
   createdAt: true,
 });
@@ -157,6 +213,14 @@ export type PatientEvolution = typeof patientEvolution.$inferSelect;
 export type InsertPatientEvolution = z.infer<typeof insertPatientEvolutionSchema>;
 export type StudySubmission = typeof studySubmissions.$inferSelect;
 export type InsertStudySubmission = z.infer<typeof insertStudySubmissionSchema>;
+
+// Tipos para Sistema de Aprendizado Contínuo
+export type Conversation = typeof conversations.$inferSelect;
+export type InsertConversation = z.infer<typeof insertConversationSchema>;
+export type LearningPattern = typeof learningPatterns.$inferSelect;
+export type InsertLearningPattern = z.infer<typeof insertLearningPatternSchema>;
+export type AiInsight = typeof aiInsights.$inferSelect;
+export type InsertAiInsight = z.infer<typeof insertAiInsightSchema>;
 
 // Encaminhamento de Pacientes entre Especialistas
 export const patientReferrals = pgTable("patient_referrals", {

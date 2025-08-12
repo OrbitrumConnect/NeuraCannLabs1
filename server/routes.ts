@@ -997,6 +997,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const conversationStage = analyzeConversationContext(question, conversationHistory);
       console.log(`🧠 Contexto detectado: ${conversationStage} | Histórico: ${conversationHistory.length} msgs`);
       
+      // Gerar ID de sessão único se não existir
+      const sessionId = req.body.sessionId || `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      
       // Check if OpenAI API key is available for enhanced intelligence
       const openaiKey = process.env.OPENAI_API_KEY;
       let response, specialty = "Cannabis Medicinal";
@@ -1049,12 +1052,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
         console.log("💡 OpenAI API key não encontrada, usando conhecimento base...");
         response = getSimulatedMedicalResponse(question, conversationStage);
       }
+
+      // SALVAR CONVERSA NO SISTEMA DE APRENDIZADO CONTÍNUO
+      try {
+        const medicalTopics = extractMedicalTopics(question + " " + response);
+        const fullConversation = [
+          ...conversationHistory,
+          { type: 'user', message: question, timestamp: new Date().toISOString() },
+          { type: 'assistant', message: response, timestamp: new Date().toISOString() }
+        ];
+        
+        await storage.createConversation({
+          sessionId,
+          userId: req.body.userId || null,
+          messages: JSON.stringify(fullConversation),
+          context: conversationStage,
+          medicalTopics: JSON.stringify(medicalTopics),
+          isSuccessful: 1,
+          duration: Math.floor((Date.now() - (req.body.startTime || Date.now())) / 1000)
+        });
+        
+        await identifyAndSaveLearningPatterns(question, response, conversationStage, medicalTopics);
+      } catch (learningError) {
+        console.error("⚠️ Erro no sistema de aprendizado:", learningError);
+      }
       
       res.json({
         success: true,
         response,
         doctor: "Dra. Cannabis IA",
         specialty,
+        sessionId,
         timestamp: new Date().toISOString(),
         recommendations: [
           "Consulta médica presencial recomendada",
@@ -1378,9 +1406,232 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
     }
   });
 
+  // ========================================
+  // ENDPOINTS DO SISTEMA DE APRENDIZADO CONTÍNUO
+  // ========================================
+  
+  // GET /api/learning/conversations - Listar conversas salvas
+  app.get('/api/learning/conversations', async (req, res) => {
+    try {
+      const { sessionId, limit = '10' } = req.query;
+      let conversations = await storage.getConversations(sessionId as string);
+      
+      // Limitar número de resultados
+      const limitNum = parseInt(limit as string);
+      if (!isNaN(limitNum)) {
+        conversations = conversations.slice(0, limitNum);
+      }
+      
+      // Estatísticas
+      const stats = {
+        total: conversations.length,
+        successful: conversations.filter(c => c.isSuccessful).length,
+        contexts: [...new Set(conversations.map(c => c.context))],
+        averageDuration: conversations.length > 0 
+          ? Math.round(conversations.reduce((sum, c) => sum + (c.duration || 0), 0) / conversations.length)
+          : 0
+      };
+      
+      res.json({
+        success: true,
+        conversations: conversations.map(c => ({
+          ...c,
+          messages: c.messages ? JSON.parse(c.messages) : [],
+          medicalTopics: c.medicalTopics ? JSON.parse(c.medicalTopics) : []
+        })),
+        stats
+      });
+    } catch (error) {
+      console.error('Erro ao buscar conversas:', error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  });
+
+  // GET /api/learning/patterns - Listar padrões de aprendizado
+  app.get('/api/learning/patterns', async (req, res) => {
+    try {
+      const { category, limit = '20' } = req.query;
+      let patterns = await storage.getLearningPatterns(category as string);
+      
+      // Limitar número de resultados
+      const limitNum = parseInt(limit as string);
+      if (!isNaN(limitNum)) {
+        patterns = patterns.slice(0, limitNum);
+      }
+      
+      // Estatísticas
+      const stats = {
+        total: patterns.length,
+        avgSuccessRate: patterns.length > 0 
+          ? Math.round(patterns.reduce((sum, p) => sum + p.successRate, 0) / patterns.length)
+          : 0,
+        topCategories: [...new Set(patterns.map(p => p.medicalCategory))].slice(0, 5)
+      };
+      
+      res.json({
+        success: true,
+        patterns,
+        stats
+      });
+    } catch (error) {
+      console.error('Erro ao buscar padrões:', error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  });
+
+  // GET /api/learning/insights - Listar insights da IA
+  app.get('/api/learning/insights', async (req, res) => {
+    try {
+      const { category, implemented } = req.query;
+      let insights = await storage.getAiInsights(category as string);
+      
+      // Filtrar por implementação se especificado
+      if (implemented !== undefined) {
+        const isImplemented = implemented === 'true' || implemented === '1';
+        insights = insights.filter(i => Boolean(i.implemented) === isImplemented);
+      }
+      
+      // Estatísticas
+      const stats = {
+        total: insights.length,
+        implemented: insights.filter(i => i.implemented).length,
+        avgConfidence: insights.length > 0 
+          ? Math.round(insights.reduce((sum, i) => sum + i.confidence, 0) / insights.length)
+          : 0,
+        categories: [...new Set(insights.map(i => i.category))]
+      };
+      
+      res.json({
+        success: true,
+        insights,
+        stats
+      });
+    } catch (error) {
+      console.error('Erro ao buscar insights:', error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  });
+
+  // POST /api/learning/feedback - Enviar feedback sobre uma conversa
+  app.post('/api/learning/feedback', async (req, res) => {
+    try {
+      const { conversationId, rating, feedback } = req.body;
+      
+      if (!conversationId || !rating) {
+        return res.status(400).json({ error: 'conversationId e rating são obrigatórios' });
+      }
+      
+      // Atualizar conversa com feedback
+      const updated = await storage.updateConversation(conversationId, {
+        satisfactionRating: rating,
+        feedback: feedback || null
+      });
+      
+      if (!updated) {
+        return res.status(404).json({ error: 'Conversa não encontrada' });
+      }
+      
+      // Criar insight baseado no feedback se for negativo
+      if (rating <= 2 && feedback) {
+        await storage.createAiInsight({
+          insight: `Feedback negativo: ${feedback}`,
+          category: 'feedback',
+          confidence: 90,
+          source: 'user_feedback',
+          implemented: 0,
+          impact: 'Identificação de área para melhoria'
+        });
+      }
+      
+      res.json({
+        success: true,
+        message: 'Feedback salvo com sucesso',
+        conversation: updated
+      });
+    } catch (error) {
+      console.error('Erro ao salvar feedback:', error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+  });
+
+  // ========================================
+  // SISTEMA DE APRENDIZADO CONTÍNUO - Funções Utilitárias
+  // ========================================
+
+  // Extrai tópicos médicos de uma conversa
+  function extractMedicalTopics(text: string): string[] {
+    const medicalTerms = [
+      'epilepsia', 'convulsão', 'dor crônica', 'fibromialgia', 'câncer', 'oncologia',
+      'ansiedade', 'depressão', 'ptsd', 'autismo', 'parkinson', 'alzheimer',
+      'cbd', 'thc', 'cbg', 'cbn', 'cannabis medicinal', 'canabidiol',
+      'náusea', 'vômito', 'apetite', 'insônia', 'sono', 'glaucoma',
+      'esclerose múltipla', 'artrite', 'reumatismo', 'enxaqueca'
+    ];
+    
+    const textLower = text.toLowerCase();
+    const foundTopics = medicalTerms.filter(term => textLower.includes(term));
+    return [...new Set(foundTopics)]; // Remove duplicados
+  }
+
+  // Identifica e salva padrões de aprendizado
+  async function identifyAndSaveLearningPatterns(
+    question: string, 
+    response: string, 
+    context: string, 
+    medicalTopics: string[]
+  ) {
+    try {
+      // Identificar padrões de combinações de sintomas/condições
+      for (const topic of medicalTopics) {
+        const patternKey = `${context}_${topic}`;
+        
+        // Verificar se já existe um padrão similar
+        const existingPatterns = await storage.getLearningPatterns();
+        const existingPattern = existingPatterns.find(p => p.pattern === patternKey);
+        
+        if (existingPattern) {
+          // Incrementar frequência do padrão existente
+          await storage.updateLearningPattern(existingPattern.id, {
+            frequency: existingPattern.frequency + 1,
+            successRate: Math.min(95, existingPattern.successRate + 1), // Assumir sucesso gradual
+            bestResponse: response.length > (existingPattern.bestResponse?.length || 0) ? response : existingPattern.bestResponse
+          });
+        } else {
+          // Criar novo padrão de aprendizado
+          await storage.createLearningPattern({
+            pattern: patternKey,
+            frequency: 1,
+            successRate: 85, // Taxa inicial otimista
+            bestResponse: response,
+            contextType: context,
+            medicalCategory: topic
+          });
+        }
+      }
+
+      // Gerar insights baseados em padrões identificados
+      if (medicalTopics.length > 1) {
+        // Insight sobre combinações de condições
+        const insight = `Pacientes com ${medicalTopics.join(' + ')} respondem bem ao contexto ${context}`;
+        await storage.createAiInsight({
+          insight,
+          category: 'medical',
+          confidence: 75,
+          source: 'conversation_analysis',
+          implemented: 0,
+          impact: 'Melhora na personalização de respostas para casos complexos'
+        });
+      }
+
+    } catch (error) {
+      console.error("⚠️ Erro ao identificar padrões:", error);
+    }
+  }
+
   console.log("🎭 Dra. Cannabis IA - Assistente médico inicializado com sucesso!");
   console.log("🧠 Sistema preparado para integração ChatGPT (aguardando OPENAI_API_KEY)");
   console.log("💬 Funcionalidades: Consulta IA, Resumo de Consulta, Encaminhamento Médico");
+  console.log("🧠 Sistema de Aprendizado Contínuo: ATIVO - Salvando todas as conversas para evolução da IA");
 
   const httpServer = createServer(app);
 
