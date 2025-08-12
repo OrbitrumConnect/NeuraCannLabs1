@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Mic, MicOff, Volume2, VolumeX, MessageCircle, Stethoscope } from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, MessageCircle, Stethoscope, Calendar, Plus } from 'lucide-react';
 
 interface VoiceEnabledAvatarProps {
   onVoiceMessage?: (message: string) => void;
@@ -20,6 +20,7 @@ export default function VoiceEnabledAvatar({ onVoiceMessage, onStartConsultation
   const [lastMessage, setLastMessage] = useState('');
   const [recognition, setRecognition] = useState<any>(null);
   const [synthesis, setSynthesis] = useState<SpeechSynthesis | null>(null);
+  const [showCalendarSave, setShowCalendarSave] = useState(false);
   const mouthRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -145,6 +146,40 @@ export default function VoiceEnabledAvatar({ onVoiceMessage, onStartConsultation
     const greeting = 'Olá! Sou o Dr. Cannabis IA, especialista em cannabis medicinal. Como posso ajudá-lo hoje?';
     speakResponse(greeting);
     onStartConsultation?.();
+  };
+
+  const saveConsultationToCalendar = async () => {
+    if (!lastMessage || !isActive) return;
+    
+    try {
+      const consultationData = {
+        patientName: 'Consulta Dr. Cannabis IA',
+        consultationDate: new Date().toISOString(),
+        symptoms: lastMessage,
+        diagnosis: 'Consulta AI realizada via sistema streaming',
+        treatment: 'Orientações fornecidas pelo Dr. Cannabis IA',
+        notes: `Consulta realizada em ${new Date().toLocaleString('pt-BR')}. Interação via comando de voz.`,
+        consultationStatus: 'completed',
+        aiAnalysis: 'Consulta registrada através do sistema de avatar streaming'
+      };
+
+      const response = await fetch('/api/medical-consultations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(consultationData)
+      });
+
+      if (response.ok) {
+        setShowCalendarSave(true);
+        speakResponse('Consulta salva no calendário médico com sucesso!');
+        setTimeout(() => setShowCalendarSave(false), 3000);
+      }
+    } catch (error) {
+      console.error('Erro ao salvar consulta:', error);
+      speakResponse('Erro ao salvar a consulta no calendário.');
+    }
   };
 
   const getAvatarGlow = () => {
@@ -311,12 +346,37 @@ export default function VoiceEnabledAvatar({ onVoiceMessage, onStartConsultation
         >
           {isSpeaking ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
         </button>
+
+        {/* Botão Salvar no Calendário */}
+        <button
+          onClick={saveConsultationToCalendar}
+          disabled={!isActive || !lastMessage}
+          className={`
+            p-3 rounded-full transition-all duration-300 hover:scale-105
+            ${isActive && lastMessage
+              ? 'bg-green-600 hover:bg-green-700 text-white' 
+              : 'bg-gray-600 text-white opacity-50 cursor-not-allowed'
+            }
+            ${showCalendarSave ? 'animate-bounce bg-green-500' : ''}
+          `}
+          data-testid="button-save-calendar"
+          title="Salvar consulta no calendário médico"
+        >
+          {showCalendarSave ? <Plus className="w-5 h-5" /> : <Calendar className="w-5 h-5" />}
+        </button>
       </div>
 
       {/* Indicador de Status */}
       {lastMessage && (
         <div className="absolute -top-16 left-1/2 transform -translate-x-1/2 bg-black/80 text-white px-4 py-2 rounded-lg text-sm max-w-xs text-center">
           ":{lastMessage}"
+        </div>
+      )}
+
+      {/* Confirmação de Salvamento no Calendário */}
+      {showCalendarSave && (
+        <div className="absolute -top-24 left-1/2 transform -translate-x-1/2 bg-green-600/90 text-white px-4 py-2 rounded-lg text-sm max-w-xs text-center animate-bounce">
+          ✅ Consulta salva no calendário!
         </div>
       )}
 
