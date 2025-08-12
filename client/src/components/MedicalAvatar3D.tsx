@@ -94,7 +94,7 @@ export default function MedicalAvatar3D({
       (gltf) => {
         const model = gltf.scene;
         model.scale.setScalar(1.2);
-        model.position.set(0, 0, 0);
+        model.position.set(0, -0.5, 0);
         
         // Add medical coat material (white lab coat effect)
         model.traverse((child) => {
