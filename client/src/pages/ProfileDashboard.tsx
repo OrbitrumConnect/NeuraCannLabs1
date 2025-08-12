@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
 import VoiceSettings from "@/components/VoiceSettings";
 import { PatientDataModal } from "@/components/PatientDataModal";
+import { MedicalConsultationsManager } from "@/components/MedicalConsultationsManager";
 import { useState } from "react";
 
 export default function ProfileDashboard() {
@@ -12,6 +13,7 @@ export default function ProfileDashboard() {
   const [modalMode, setModalMode] = useState<'add' | 'evolution' | 'analysis' | 'reports'>('add');
   const [personalInfoExpanded, setPersonalInfoExpanded] = useState(false);
   const [preferencesExpanded, setPreferencesExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<'profile' | 'consultations'>('profile');
   
   const { data: profile, isLoading, error } = useQuery({
     queryKey: ["/api/profile"],
@@ -75,7 +77,35 @@ export default function ProfileDashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Navegação por Abas */}
+      <div className="flex space-x-1 mb-6 bg-gray-800/30 p-1 rounded-lg">
+        <Button
+          variant={activeTab === 'profile' ? 'default' : 'ghost'}
+          onClick={() => setActiveTab('profile')}
+          className={`flex-1 ${activeTab === 'profile' 
+            ? 'bg-green-600 hover:bg-green-700 text-white' 
+            : 'text-gray-400 hover:text-white hover:bg-gray-700/50'}`}
+          data-testid="tab-profile"
+        >
+          <i className="fas fa-user mr-2" />
+          Perfil
+        </Button>
+        <Button
+          variant={activeTab === 'consultations' ? 'default' : 'ghost'}
+          onClick={() => setActiveTab('consultations')}
+          className={`flex-1 ${activeTab === 'consultations' 
+            ? 'bg-green-600 hover:bg-green-700 text-white' 
+            : 'text-gray-400 hover:text-white hover:bg-gray-700/50'}`}
+          data-testid="tab-consultations"
+        >
+          <i className="fas fa-stethoscope mr-2" />
+          Consultas Médicas
+        </Button>
+      </div>
+
+      {/* Conteúdo das Abas */}
+      {activeTab === 'profile' && (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Info */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
@@ -432,6 +462,12 @@ export default function ProfileDashboard() {
           </Card>
         </div>
       </div>
+      )}
+
+      {/* Aba de Consultas Médicas */}
+      {activeTab === 'consultations' && (
+        <MedicalConsultationsManager />
+      )}
 
       {/* Modal Potência de Dados */}
       <PatientDataModal 

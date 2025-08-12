@@ -1,4 +1,4 @@
-import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution, type PatientReferral, type UpsertPatientReferral, type DigitalAnamnesis, type UpsertDigitalAnamnesis, type LabIntegration, type LabResult, type MedicalTeamMember, type ComplianceAudit } from "@shared/schema";
+import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution, type PatientReferral, type UpsertPatientReferral, type DigitalAnamnesis, type UpsertDigitalAnamnesis, type LabIntegration, type LabResult, type MedicalTeamMember, type ComplianceAudit, type MedicalConsultation, type InsertMedicalConsultation } from "@shared/schema";
 import { comprehensiveStudies, comprehensiveClinicalCases, comprehensiveAlerts } from './comprehensive-medical-database';
 import { randomUUID } from "crypto";
 
@@ -67,6 +67,13 @@ export interface IStorage {
   // Compliance Audits - Auditoria e Compliance
   getComplianceAudits(): Promise<ComplianceAudit[]>;
   createComplianceAudit(audit: Omit<ComplianceAudit, 'id' | 'createdAt'>): Promise<ComplianceAudit>;
+  
+  // Medical Consultations - Consultas Médicas e PDF
+  getMedicalConsultations(): Promise<MedicalConsultation[]>;
+  getMedicalConsultation(id: string): Promise<MedicalConsultation | undefined>;
+  createMedicalConsultation(consultation: InsertMedicalConsultation): Promise<MedicalConsultation>;
+  updateMedicalConsultation(id: string, updates: Partial<MedicalConsultation>): Promise<MedicalConsultation | undefined>;
+  getMedicalConsultationsByDate(date: string): Promise<MedicalConsultation[]>;
 }
 
 export class MemStorage implements IStorage {
@@ -83,6 +90,7 @@ export class MemStorage implements IStorage {
   private labResults: Map<string, LabResult>;
   private medicalTeam: Map<string, MedicalTeamMember>;
   private complianceAudits: Map<string, ComplianceAudit>;
+  private medicalConsultations: Map<string, MedicalConsultation>;
 
   constructor() {
     this.users = new Map();
@@ -98,6 +106,7 @@ export class MemStorage implements IStorage {
     this.labResults = new Map();
     this.medicalTeam = new Map();
     this.complianceAudits = new Map();
+    this.medicalConsultations = new Map();
     
     // Inicializar com base de dados abrangente
     this.initializeSampleData();
@@ -976,6 +985,49 @@ export class MemStorage implements IStorage {
     });
 
     console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
+  }
+
+  // ==================== CONSULTAS MÉDICAS E PDF ====================
+  
+  async getMedicalConsultations(): Promise<MedicalConsultation[]> {
+    return Array.from(this.medicalConsultations.values());
+  }
+
+  async getMedicalConsultation(id: string): Promise<MedicalConsultation | undefined> {
+    return this.medicalConsultations.get(id);
+  }
+
+  async createMedicalConsultation(consultation: InsertMedicalConsultation): Promise<MedicalConsultation> {
+    const newConsultation: MedicalConsultation = {
+      id: randomUUID(),
+      ...consultation,
+      consultationDate: consultation.consultationDate || new Date(),
+      createdAt: new Date(),
+    };
+    
+    this.medicalConsultations.set(newConsultation.id, newConsultation);
+    return newConsultation;
+  }
+
+  async updateMedicalConsultation(id: string, updates: Partial<MedicalConsultation>): Promise<MedicalConsultation | undefined> {
+    const consultation = this.medicalConsultations.get(id);
+    if (!consultation) {
+      return undefined;
+    }
+
+    const updatedConsultation = { ...consultation, ...updates };
+    this.medicalConsultations.set(id, updatedConsultation);
+    return updatedConsultation;
+  }
+
+  async getMedicalConsultationsByDate(date: string): Promise<MedicalConsultation[]> {
+    const targetDate = new Date(date);
+    const consultations = Array.from(this.medicalConsultations.values());
+    
+    return consultations.filter(consultation => {
+      const consultationDate = new Date(consultation.consultationDate);
+      return consultationDate.toDateString() === targetDate.toDateString();
+    });
   }
 }
 

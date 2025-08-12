@@ -1021,8 +1021,156 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ==================== CONSULTAS MÉDICAS E PDF ====================
+  
+  // Criar nova consulta médica
+  app.post("/api/medical-consultations", async (req, res) => {
+    try {
+      const consultation = await storage.createMedicalConsultation(req.body);
+      
+      // Analisar com Dr. Cannabis IA se disponível
+      if (openai) {
+        try {
+          const aiAnalysis = await openai.chat.completions.create({
+            model: MEDICAL_AI_CONFIG.model,
+            temperature: MEDICAL_AI_CONFIG.temperature,
+            max_tokens: MEDICAL_AI_CONFIG.max_tokens,
+            messages: [
+              { role: "system", content: MEDICAL_AI_CONFIG.systemPrompt },
+              { 
+                role: "user", 
+                content: `Analise esta consulta médica:
+                
+Paciente: ${req.body.patientName} (${req.body.patientAge} anos, ${req.body.patientGender})
+Sintomas: ${req.body.symptoms}
+Diagnóstico: ${req.body.diagnosis || 'Não informado'}
+Tratamento: ${req.body.treatment || 'Não informado'}
+Medicação: ${req.body.medication || 'Não informada'}
+Dosagem: ${req.body.dosage || 'Não informada'}
+
+Forneça análise clínica, recomendações e alertas de segurança relevantes.`
+              }
+            ]
+          });
+          
+          const analysis = aiAnalysis.choices[0]?.message?.content;
+          if (analysis) {
+            await storage.updateMedicalConsultation(consultation.id, { aiAnalysis: analysis });
+          }
+        } catch (aiError) {
+          console.log('⚠️ Análise IA indisponível:', aiError.message);
+        }
+      }
+      
+      res.json(consultation);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao criar consulta médica" });
+    }
+  });
+
+  // Listar consultas médicas
+  app.get("/api/medical-consultations", async (req, res) => {
+    try {
+      const consultations = await storage.getMedicalConsultations();
+      res.json(consultations);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao buscar consultas médicas" });
+    }
+  });
+
+  // Buscar consulta específica
+  app.get("/api/medical-consultations/:id", async (req, res) => {
+    try {
+      const consultation = await storage.getMedicalConsultation(req.params.id);
+      if (!consultation) {
+        return res.status(404).json({ message: "Consulta não encontrada" });
+      }
+      res.json(consultation);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao buscar consulta médica" });
+    }
+  });
+
+  // Gerar PDF da consulta médica
+  app.post("/api/medical-consultations/:id/generate-pdf", async (req, res) => {
+    try {
+      const consultation = await storage.getMedicalConsultation(req.params.id);
+      if (!consultation) {
+        return res.status(404).json({ message: "Consulta não encontrada" });
+      }
+
+      // Marcar PDF como gerado
+      await storage.updateMedicalConsultation(req.params.id, { pdfGenerated: 1 });
+
+      // Retornar dados formatados para PDF
+      const pdfData = {
+        consultationId: consultation.id,
+        doctor: {
+          name: "Dr. " + (consultation.doctorId || "Médico"),
+          crm: "CRM-SP 123456",
+          specialty: "Medicina Canabinoide"
+        },
+        patient: {
+          name: consultation.patientName,
+          age: consultation.patientAge,
+          gender: consultation.patientGender,
+          weight: consultation.patientWeight
+        },
+        consultation: {
+          date: consultation.consultationDate,
+          symptoms: consultation.symptoms,
+          diagnosis: consultation.diagnosis,
+          treatment: consultation.treatment,
+          medication: consultation.medication,
+          dosage: consultation.dosage,
+          frequency: consultation.frequency,
+          duration: consultation.duration,
+          notes: consultation.notes,
+          followUpDate: consultation.followUpDate,
+          aiAnalysis: consultation.aiAnalysis
+        },
+        clinic: {
+          name: "NeuroCann Lab",
+          address: "São Paulo, SP",
+          phone: "(11) 9999-9999",
+          email: "contato@neurocannlab.com"
+        },
+        generated: new Date().toISOString()
+      };
+
+      res.json({
+        success: true,
+        pdfData,
+        message: "Dados do PDF preparados"
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao gerar PDF" });
+    }
+  });
+
+  // Atualizar consulta médica
+  app.put("/api/medical-consultations/:id", async (req, res) => {
+    try {
+      const consultation = await storage.updateMedicalConsultation(req.params.id, req.body);
+      res.json(consultation);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao atualizar consulta médica" });
+    }
+  });
+
+  // Buscar consultas por data (para calendário)
+  app.get("/api/medical-consultations/calendar/:date", async (req, res) => {
+    try {
+      const consultations = await storage.getMedicalConsultationsByDate(req.params.date);
+      res.json(consultations);
+    } catch (error) {
+      res.status(500).json({ message: "Erro ao buscar consultas por data" });
+    }
+  });
+
   // Critical modules endpoints
   console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
+  console.log("🏥 Sistema de consultas médicas e PDF implementado");
   console.log("🎬 HeyGen Streaming Avatar API configurada");
 
   const httpServer = createServer(app);
