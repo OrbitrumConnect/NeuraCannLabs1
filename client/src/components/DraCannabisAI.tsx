@@ -141,11 +141,12 @@ export function DraCannabisAI() {
     },
     onSuccess: (data: ConsultResponse, variables) => {
       const now = new Date().toISOString();
-      console.log('✅ Resposta recebida da Dra. Cannabis:', data.response);
+      console.log('✅ Resposta completa da API:', data);
+      console.log('✅ Texto da resposta:', data.response);
       setChatHistory(prev => [
         ...prev,
         { type: 'user', message: variables.question, timestamp: now },
-        { type: 'doctor', message: data.response, timestamp: now }
+        { type: 'doctor', message: data.response || 'Erro: resposta não encontrada', timestamp: now }
       ]);
       setQuestion('');
       
