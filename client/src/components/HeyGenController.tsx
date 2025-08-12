@@ -114,20 +114,29 @@ export function HeyGenController() {
     <div className="space-y-6">
       {/* Avatar Display Area */}
       <div className="relative w-full max-w-lg mx-auto">
-        <div className="aspect-[3/4] bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 rounded-2xl border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20 flex items-center justify-center">
+        <div className="aspect-[3/4] bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 rounded-2xl border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20 flex items-center justify-center relative">
           <div id="heygen-avatar-container" className="w-full h-full rounded-2xl overflow-hidden">
-            {/* Avatar iframe/video será injetado aqui pelo SDK do HeyGen */}
-            <div className="w-full h-full flex items-center justify-center text-cyan-400">
-              <div className="text-center space-y-4">
-                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center">
-                  <Video className="w-10 h-10 text-white" />
+            {/* Nosso avatar 3D Dr. Cannabis IA */}
+            <div className="w-full h-full flex items-center justify-center">
+              <div className="relative w-48 h-48">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 to-cyan-500/20 rounded-full animate-pulse"></div>
+                <div className="relative z-10 w-full h-full bg-gradient-to-br from-green-600 to-cyan-600 rounded-full flex items-center justify-center shadow-2xl">
+                  <div className="text-center text-white">
+                    <div className="text-4xl font-bold mb-2">🧠</div>
+                    <div className="text-sm font-medium">Dr. Cannabis</div>
+                    <div className="text-xs opacity-80">IA Médica</div>
+                  </div>
                 </div>
-                <p className="text-sm">Avatar HeyGen será carregado aqui</p>
-                <p className="text-xs text-cyan-300/70">
-                  {status?.isConnected ? 'Conectado - Pronto para uso' : 'Inicie uma sessão para começar'}
-                </p>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                </div>
               </div>
             </div>
+          </div>
+          
+          {/* Status indicator */}
+          <div className="absolute bottom-4 right-4 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full text-xs text-cyan-300">
+            {status?.isConnected ? '🟢 Conectado' : '🔴 Desconectado'}
           </div>
         </div>
       </div>
@@ -265,29 +274,54 @@ export function HeyGenController() {
           </div>
         )}
 
-        {/* Quick Actions */}
+        {/* Quick Actions - Triggers Médicos */}
         {status?.isConnected && (
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium text-cyan-400">Ações Rápidas</h4>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "Olá! Sou o Dr. Cannabis IA, como posso ajudá-lo hoje?",
-                "Vamos explorar os estudos científicos mais recentes sobre cannabis medicinal.",
-                "Posso explicar sobre dosagens e protocolos médicos de canabinoides.",
-                "Que tipo de análise médica você gostaria de realizar?"
-              ].map((text, index) => (
-                <Button
-                  key={index}
-                  onClick={() => speak.mutate(text)}
-                  disabled={speak.isPending}
-                  variant="outline"
-                  size="sm"
-                  className="text-xs border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20"
-                  data-testid={`button-quick-action-${index}`}
-                >
-                  {text.substring(0, 30)}...
-                </Button>
-              ))}
+          <div className="space-y-3">
+            <h4 className="text-sm font-medium text-green-400">Triggers Médicos Inteligentes</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <Button
+                onClick={() => speak.mutate("Olá! Sou o Dr. Cannabis IA, especialista em cannabis medicinal. Como posso ajudá-lo hoje?")}
+                disabled={speak.isPending}
+                variant="outline"
+                className="text-left p-4 h-auto border-green-500/30 text-green-300 hover:bg-green-500/20 flex flex-col items-start"
+                data-testid="trigger-saudacao"
+              >
+                <div className="font-medium text-sm mb-1">🤝 Saudação Médica</div>
+                <div className="text-xs opacity-80">Apresentação profissional do Dr. Cannabis IA</div>
+              </Button>
+
+              <Button
+                onClick={() => speak.mutate("Vou analisar seus sintomas. Por favor, descreva detalhadamente o que está sentindo.")}
+                disabled={speak.isPending}
+                variant="outline"
+                className="text-left p-4 h-auto border-blue-500/30 text-blue-300 hover:bg-blue-500/20 flex flex-col items-start"
+                data-testid="trigger-analisar-sintomas"
+              >
+                <div className="font-medium text-sm mb-1">🔍 Analisar Sintomas</div>
+                <div className="text-xs opacity-80">Análise detalhada de sintomas médicos</div>
+              </Button>
+
+              <Button
+                onClick={() => speak.mutate("Posso explicar protocolos médicos, dosagens e formas de administração de cannabis medicinal.")}
+                disabled={speak.isPending}
+                variant="outline"
+                className="text-left p-4 h-auto border-purple-500/30 text-purple-300 hover:bg-purple-500/20 flex flex-col items-start"
+                data-testid="trigger-protocolos"
+              >
+                <div className="font-medium text-sm mb-1">💊 Protocolos & Dosagens</div>
+                <div className="text-xs opacity-80">Orientações sobre dosagens e protocolos</div>
+              </Button>
+
+              <Button
+                onClick={() => speak.mutate("Vamos explorar os estudos científicos mais recentes sobre cannabis medicinal e suas aplicações.")}
+                disabled={speak.isPending}
+                variant="outline"
+                className="text-left p-4 h-auto border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 flex flex-col items-start"
+                data-testid="trigger-estudos"
+              >
+                <div className="font-medium text-sm mb-1">📚 Estudos Científicos</div>
+                <div className="text-xs opacity-80">Pesquisas e evidências científicas</div>
+              </Button>
             </div>
           </div>
         )}
