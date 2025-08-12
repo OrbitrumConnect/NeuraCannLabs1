@@ -327,25 +327,28 @@ export function DraCannabisAI() {
   };
 
   return (
-    <div className="space-y-6">
-      {/* Header da Dra. Cannabis - Card Aumentado */}
-      <Card className="bg-gradient-to-r from-green-900/20 to-green-800/20 border-green-600/30 min-h-[400px]">
-        <CardHeader className="text-center py-8">
-          <div className="flex flex-col items-center justify-center space-y-4">
+    <div className="space-y-4 md:space-y-6 px-2 md:px-0">
+      {/* Header da Dra. Cannabis - Responsivo */}
+      <Card className="bg-gradient-to-r from-green-900/20 to-green-800/20 border-green-600/30 min-h-[300px] md:min-h-[400px]">
+        <CardHeader className="text-center py-4 md:py-8">
+          <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
             <div className="relative">
               <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
                 <img 
                   src={draCannabisImage} 
                   alt="Dra. Cannabis IA" 
-                  className={`w-[37.2rem] h-[37.2rem] rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20 ${
-                    isTalking ? 'animate-pulse filter brightness-110' : ''
-                  }`}
+                  className={`
+                    w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-[37.2rem] lg:h-[37.2rem] 
+                    rounded-lg object-contain shadow-2xl 
+                    bg-gradient-to-br from-green-900/10 to-green-800/20 
+                    ${isTalking ? 'animate-pulse filter brightness-110' : ''}
+                  `}
                 />
                 {isTalking && (
                   <div className="absolute inset-0 rounded-lg border-4 border-green-400/50 animate-ping" />
                 )}
               </div>
-              <Badge className={`absolute -bottom-3 -right-3 text-white text-sm px-3 py-1 ${
+              <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
                 isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
               }`}>
                 {isTalking ? '🗣️ IA' : 'IA'}
@@ -353,8 +356,8 @@ export function DraCannabisAI() {
               {isAutoStarting && (
                 <div className="absolute inset-0 bg-green-500/20 rounded-lg flex items-center justify-center">
                   <div className="text-center text-green-400">
-                    <Loader2 className="w-8 h-8 mx-auto animate-spin mb-2" />
-                    <p className="text-sm">Inicializando...</p>
+                    <Loader2 className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin mb-2" />
+                    <p className="text-xs md:text-sm">Inicializando...</p>
                   </div>
                 </div>
               )}
@@ -362,18 +365,19 @@ export function DraCannabisAI() {
           </div>
         </CardHeader>
         
-        <CardContent className="text-center space-y-4">
+        <CardContent className="text-center space-y-3 md:space-y-4 px-4 md:px-6">
           {!setupNativeDraMutation.data && (
             <Button 
               onClick={() => setupNativeDraMutation.mutate()}
               disabled={setupNativeDraMutation.isPending}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600 hover:bg-green-700 w-full max-w-xs mx-auto text-sm md:text-base"
               data-testid="button-activate-doctor"
             >
               {setupNativeDraMutation.isPending ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Ativando Dra. Cannabis...
+                  <span className="hidden sm:inline">Ativando Dra. Cannabis...</span>
+                  <span className="sm:hidden">Ativando...</span>
                 </>
               ) : (
                 <>
@@ -385,46 +389,44 @@ export function DraCannabisAI() {
           )}
           
           {setupNativeDraMutation.data && (
-            <div className="space-y-4">
+            <div className="space-y-3 md:space-y-4">
               <div className="flex items-center justify-center space-x-2 text-green-400">
-                <CheckCircle className="w-5 h-5" />
-                <span>Dra. Cannabis IA Ativada e Pronta!</span>
+                <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
+                <span className="text-sm md:text-base">Dra. Cannabis IA Ativada e Pronta!</span>
               </div>
-              
-
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Interface de Consulta */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <MessageCircle className="w-5 h-5 text-green-500" />
+      {/* Interface de Consulta - Mobile Otimizada */}
+      <Card className="mx-2 md:mx-0">
+        <CardHeader className="pb-3 md:pb-4">
+          <CardTitle className="flex items-center space-x-2 text-base md:text-lg">
+            <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500" />
             <span>Consulta com Dra. Cannabis</span>
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="space-y-4">
-          {/* Histórico da Conversa Integrado */}
+        <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+          {/* Histórico da Conversa Mobile */}
           {chatHistory.length > 0 && (
-            <div className="max-h-64 overflow-y-auto space-y-3 p-4 bg-green-900/10 border border-green-600/20 rounded-lg backdrop-blur-sm">
-              <h4 className="font-medium text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
+            <div className="max-h-48 md:max-h-64 overflow-y-auto space-y-2 md:space-y-3 p-3 md:p-4 bg-green-900/10 border border-green-600/20 rounded-lg backdrop-blur-sm">
+              <h4 className="font-medium text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
               {chatHistory.map((entry, index) => (
                 <div
                   key={index}
                   className={`flex ${entry.type === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`max-w-[85%] p-3 rounded-lg ${
+                    className={`max-w-[90%] md:max-w-[85%] p-2 md:p-3 rounded-lg ${
                       entry.type === 'user'
                         ? 'bg-blue-600 text-white'
                         : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                     }`}
                     data-testid={`chat-${entry.type}-${index}`}
                   >
-                    <p className="text-sm">{entry.message}</p>
+                    <p className="text-xs md:text-sm">{entry.message}</p>
                     <small className="text-xs opacity-70 mt-1 block">
                       {entry.type === 'doctor' ? 'Dra. Cannabis' : 'Você'} - {
                         new Date(entry.timestamp).toLocaleTimeString('pt-BR')
@@ -436,7 +438,8 @@ export function DraCannabisAI() {
             </div>
           )}
 
-          <div className="flex space-x-2">
+          {/* Input Mobile Responsivo */}
+          <div className="space-y-3 md:space-y-0 md:flex md:space-x-2">
             <Textarea
               placeholder="Faça sua pergunta sobre cannabis medicinal..."
               value={question}
@@ -447,16 +450,18 @@ export function DraCannabisAI() {
                   handleSubmitQuestion();
                 }
               }}
-              className="flex-1 min-h-20"
+              className="w-full min-h-16 md:min-h-20 text-sm md:text-base resize-none"
               data-testid="textarea-medical-question"
             />
             
-            <div className="flex flex-col space-y-2">
+            {/* Botão de Voz Mobile */}
+            <div className="flex justify-center md:flex-col md:space-y-2">
               <Button
                 onClick={startVoiceRecognition}
                 disabled={isListening}
                 variant="outline"
                 size="sm"
+                className="w-12 h-12 md:w-10 md:h-10 rounded-full"
                 data-testid="button-voice-input"
               >
                 {isListening ? (
@@ -468,11 +473,12 @@ export function DraCannabisAI() {
             </div>
           </div>
           
-          <div className="flex flex-wrap gap-3 items-center">
+          {/* Botões de Ação Mobile */}
+          <div className="space-y-3 md:space-y-0 md:flex md:flex-wrap md:gap-3 md:items-center">
             <Button 
               onClick={handleSubmitQuestion}
               disabled={consultMutation.isPending || !question.trim()}
-              className="bg-green-600 hover:bg-green-700"
+              className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-sm md:text-base"
               data-testid="button-submit-question"
             >
               {consultMutation.isPending ? (
@@ -481,77 +487,85 @@ export function DraCannabisAI() {
                   Consultando...
                 </>
               ) : (
-                'Consultar Dra. Cannabis'
+                <>
+                  <MessageCircle className="w-4 h-4 mr-2 md:hidden" />
+                  <span className="md:hidden">Consultar</span>
+                  <span className="hidden md:inline">Consultar Dra. Cannabis</span>
+                </>
               )}
             </Button>
 
-            {/* Triggers de Resumo e Encaminhamento Médico - Sempre visíveis */}
-            <Button
-              onClick={() => generateSummaryMutation.mutate()}
-              disabled={generateSummaryMutation.isPending || chatHistory.length === 0}
-              size="sm"
-              variant="outline"
-              className="text-blue-600 border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950"
-              data-testid="button-generate-summary-quick"
-            >
-              {generateSummaryMutation.isPending ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : (
-                <FileText className="w-4 h-4 mr-2" />
-              )}
-              Resumo da Conversa
-            </Button>
-            
-            <Button
-              onClick={() => referToMedicalMutation.mutate()}
-              disabled={referToMedicalMutation.isPending || chatHistory.length === 0}
-              size="sm"
-              variant="outline"
-              className="text-orange-600 border-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950"
-              data-testid="button-refer-medical-quick"
-            >
-              {referToMedicalMutation.isPending ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : (
-                <UserPlus className="w-4 h-4 mr-2" />
-              )}
-              Solicitar Profissional
-            </Button>
+            {/* Botões Secundários Mobile */}
+            <div className="grid grid-cols-2 gap-2 md:flex md:gap-3">
+              <Button
+                onClick={() => generateSummaryMutation.mutate()}
+                disabled={generateSummaryMutation.isPending || chatHistory.length === 0}
+                size="sm"
+                variant="outline"
+                className="text-blue-600 border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 text-xs md:text-sm"
+                data-testid="button-generate-summary-quick"
+              >
+                {generateSummaryMutation.isPending ? (
+                  <Loader2 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 animate-spin" />
+                ) : (
+                  <FileText className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                )}
+                <span className="md:hidden">Resumo</span>
+                <span className="hidden md:inline">Resumo da Conversa</span>
+              </Button>
+              
+              <Button
+                onClick={() => referToMedicalMutation.mutate()}
+                disabled={referToMedicalMutation.isPending || chatHistory.length === 0}
+                size="sm"
+                variant="outline"
+                className="text-orange-600 border-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950 text-xs md:text-sm"
+                data-testid="button-refer-medical-quick"
+              >
+                {referToMedicalMutation.isPending ? (
+                  <Loader2 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2 animate-spin" />
+                ) : (
+                  <UserPlus className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                )}
+                <span className="md:hidden">Médico</span>
+                <span className="hidden md:inline">Solicitar Profissional</span>
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
 
 
 
-      {/* Resumo da Consulta */}
+      {/* Resumo da Consulta - Mobile Otimizado */}
       {consultationSummary && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <FileText className="w-5 h-5 text-blue-500" />
+        <Card className="mx-2 md:mx-0">
+          <CardHeader className="pb-3 md:pb-4">
+            <CardTitle className="flex items-center space-x-2 text-base md:text-lg">
+              <FileText className="w-4 h-4 md:w-5 md:h-5 text-blue-500" />
               <span>Resumo da Consulta</span>
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
             <div>
-              <h4 className="font-medium text-sm mb-2">Sintomas do Paciente:</h4>
-              <p className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+              <h4 className="font-medium text-xs md:text-sm mb-2">Sintomas do Paciente:</h4>
+              <p className="text-xs md:text-sm bg-gray-50 dark:bg-gray-800 p-2 md:p-3 rounded-lg leading-relaxed">
                 {consultationSummary.patientSymptoms}
               </p>
             </div>
             
             <div>
-              <h4 className="font-medium text-sm mb-2">Recomendações Médicas:</h4>
-              <p className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+              <h4 className="font-medium text-xs md:text-sm mb-2">Recomendações Médicas:</h4>
+              <p className="text-xs md:text-sm bg-gray-50 dark:bg-gray-800 p-2 md:p-3 rounded-lg leading-relaxed">
                 {consultationSummary.doctorRecommendations}
               </p>
             </div>
             
             {consultationSummary.medications.length > 0 && (
               <div>
-                <h4 className="font-medium text-sm mb-2">Medicações:</h4>
-                <ul className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg list-disc list-inside">
+                <h4 className="font-medium text-xs md:text-sm mb-2">Medicações:</h4>
+                <ul className="text-xs md:text-sm bg-gray-50 dark:bg-gray-800 p-2 md:p-3 rounded-lg list-disc list-inside space-y-1">
                   {consultationSummary.medications.map((med, index) => (
                     <li key={index}>{med}</li>
                   ))}
@@ -560,13 +574,13 @@ export function DraCannabisAI() {
             )}
             
             <div>
-              <h4 className="font-medium text-sm mb-2">Acompanhamento:</h4>
-              <p className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+              <h4 className="font-medium text-xs md:text-sm mb-2">Acompanhamento:</h4>
+              <p className="text-xs md:text-sm bg-gray-50 dark:bg-gray-800 p-2 md:p-3 rounded-lg leading-relaxed">
                 {consultationSummary.followUp}
               </p>
             </div>
             
-            <small className="text-xs text-gray-500">
+            <small className="text-xs text-gray-500 text-center block">
               Gerado em: {new Date(consultationSummary.timestamp).toLocaleString('pt-BR')}
             </small>
           </CardContent>
