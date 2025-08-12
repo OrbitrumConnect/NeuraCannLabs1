@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
-import { Play, Square, Mic, MicOff, Volume2, VolumeX, Activity, Zap } from 'lucide-react';
+import { Play, Square, Mic, MicOff, Volume2, VolumeX, Activity, Zap, Video } from 'lucide-react';
 
 interface HeyGenStatus {
   isConnected: boolean;
@@ -111,7 +111,28 @@ export function HeyGenController() {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto bg-black/40 backdrop-blur-xl border-cyan-500/30">
+    <div className="space-y-6">
+      {/* Avatar Display Area */}
+      <div className="relative w-full max-w-lg mx-auto">
+        <div className="aspect-[3/4] bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 rounded-2xl border-2 border-cyan-500/30 shadow-2xl shadow-cyan-500/20 flex items-center justify-center">
+          <div id="heygen-avatar-container" className="w-full h-full rounded-2xl overflow-hidden">
+            {/* Avatar iframe/video será injetado aqui pelo SDK do HeyGen */}
+            <div className="w-full h-full flex items-center justify-center text-cyan-400">
+              <div className="text-center space-y-4">
+                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center">
+                  <Video className="w-10 h-10 text-white" />
+                </div>
+                <p className="text-sm">Avatar HeyGen será carregado aqui</p>
+                <p className="text-xs text-cyan-300/70">
+                  {status?.isConnected ? 'Conectado - Pronto para uso' : 'Inicie uma sessão para começar'}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <Card className="w-full max-w-2xl mx-auto bg-black/40 backdrop-blur-xl border-cyan-500/30">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
@@ -272,5 +293,6 @@ export function HeyGenController() {
         )}
       </CardContent>
     </Card>
+    </div>
   );
 }

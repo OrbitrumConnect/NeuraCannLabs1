@@ -5,7 +5,7 @@ import { Zap, Mic, Volume2, Video, MessageCircle } from "lucide-react";
 
 export default function HeyGenAvatarPage() {
   return (
-    <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8 pt-12 sm:pt-14 space-y-6">
+    <div className="container mx-auto px-3 py-4 sm:px-4 sm:py-6 pt-8 sm:pt-10 space-y-4 pb-20">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">

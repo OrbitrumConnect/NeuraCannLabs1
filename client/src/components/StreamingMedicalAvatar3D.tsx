@@ -41,7 +41,7 @@ function MedicalAvatarStreaming({ audioPlaying, isListening, mood }: AvatarStrea
   };
 
   return (
-    <div className="relative w-80 h-80 mx-auto mt-16">
+    <div className="relative w-80 h-80 mx-auto mt-8">
       {/* Background holográfico principal */}
       <div className={`
         absolute inset-0 rounded-full bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900
