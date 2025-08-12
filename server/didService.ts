@@ -13,6 +13,13 @@ export interface DIDTalkRequest {
   config?: {
     fluent?: boolean;
     pad_audio?: number;
+    result_format?: string;
+    face?: {
+      mask_confidence?: number;
+      crop_type?: string;
+      expression?: string;
+      animation_instructions?: any[];
+    };
   };
 }
 
@@ -28,7 +35,8 @@ export class DIDService {
   private readonly baseUrl = 'https://api.d-id.com';
 
   constructor() {
-    this.apiKey = process.env.DID_API_KEY || '';
+    // Usando a chave API fornecida
+    this.apiKey = process.env.DID_API_KEY || 'cGhwZzY5QGdtYWlsLmNvbQ:jt6E9r8R8sWdtaFBE0_rB';
     if (!this.apiKey) {
       throw new Error('DID_API_KEY not configured');
     }
@@ -139,7 +147,7 @@ export class DIDService {
       };
 
       // If ChatGPT provides specific mouth movement commands, add them
-      if (mouthMovements.commands) {
+      if (mouthMovements.commands && request.config?.face) {
         request.config.face.animation_instructions = mouthMovements.commands;
       }
 
