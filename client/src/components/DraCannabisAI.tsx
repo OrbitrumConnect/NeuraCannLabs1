@@ -147,12 +147,34 @@ export function DraCannabisAI() {
       ]);
       setQuestion('');
       
-      // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema nativo)
+      // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema híbrido)
       if (data.response) {
-        nativeAvatarService.makeAvatarSpeak(data.response, 'medical').catch(error => {
-          console.error('Erro ao fazer avatar falar:', error);
+        setIsTalking(true);
+        // Tenta ElevenLabs primeiro, fallback para nativo
+        (async () => {
+          try {
+            console.log('🎭 Tentando ElevenLabs para resposta automática...');
+            const response = await fetch('/api/avatar/speak', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text: data.response })
+            });
+            
+            if (response.ok) {
+              const audioBlob = await response.blob();
+              const audioUrl = URL.createObjectURL(audioBlob);
+              const audio = new Audio(audioUrl);
+              await audio.play();
+              console.log('✅ ElevenLabs reproduzido automaticamente');
+            } else {
+              throw new Error('ElevenLabs falhou');
+            }
+          } catch (error) {
+            console.log('⚠️ Fallback para sistema nativo');
+            await nativeAvatarService.makeAvatarSpeak(data.response, 'medical');
+          }
           setIsTalking(false);
-        });
+        })();
       }
     },
     onError: (error: any) => {
@@ -405,6 +427,35 @@ export function DraCannabisAI() {
         </CardHeader>
         
         <CardContent className="space-y-4">
+          {/* Histórico da Conversa Integrado */}
+          {chatHistory.length > 0 && (
+            <div className="max-h-64 overflow-y-auto space-y-3 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-lg border">
+              <h4 className="font-medium text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
+              {chatHistory.map((entry, index) => (
+                <div
+                  key={index}
+                  className={`flex ${entry.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[85%] p-3 rounded-lg ${
+                      entry.type === 'user'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                    }`}
+                    data-testid={`chat-${entry.type}-${index}`}
+                  >
+                    <p className="text-sm">{entry.message}</p>
+                    <small className="text-xs opacity-70 mt-1 block">
+                      {entry.type === 'doctor' ? 'Dra. Cannabis' : 'Você'} - {
+                        new Date(entry.timestamp).toLocaleTimeString('pt-BR')
+                      }
+                    </small>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="flex space-x-2">
             <Textarea
               placeholder="Faça sua pergunta sobre cannabis medicinal..."
@@ -484,94 +535,7 @@ export function DraCannabisAI() {
         </CardContent>
       </Card>
 
-      {/* Sistema nativo não precisa de vídeo separado - avatar integrado */}
 
-      {/* Histórico do Chat */}
-      {chatHistory.length > 0 && (
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Histórico da Consulta</CardTitle>
-              
-              <div className="flex space-x-2">
-                <Button
-                  onClick={() => generateSummaryMutation.mutate()}
-                  disabled={generateSummaryMutation.isPending || chatHistory.length === 0}
-                  size="sm"
-                  variant="outline"
-                  data-testid="button-generate-summary"
-                >
-                  {generateSummaryMutation.isPending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <FileText className="w-4 h-4 mr-2" />
-                  )}
-                  Resumo da Consulta
-                </Button>
-                
-                <Button
-                  onClick={() => referToMedicalMutation.mutate()}
-                  disabled={referToMedicalMutation.isPending || chatHistory.length === 0}
-                  size="sm"
-                  variant="outline"
-                  className="text-orange-600 border-orange-600 hover:bg-orange-50"
-                  data-testid="button-refer-medical"
-                >
-                  {referToMedicalMutation.isPending ? (
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  ) : (
-                    <UserPlus className="w-4 h-4 mr-2" />
-                  )}
-                  Solicitar Médico
-                </Button>
-              </div>
-            </div>
-          </CardHeader>
-          
-          <CardContent className="space-y-4 max-h-96 overflow-y-auto">
-            {chatHistory.map((entry, index) => (
-              <div
-                key={index}
-                className={`flex ${entry.type === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[80%] p-3 rounded-lg ${
-                    entry.type === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-                  }`}
-                  data-testid={`chat-${entry.type}-${index}`}
-                >
-                  <p className="text-sm">{entry.message}</p>
-                  <small className="text-xs opacity-70 mt-1 block">
-                    {entry.type === 'doctor' ? 'Dra. Cannabis' : 'Você'} - {
-                      new Date(entry.timestamp).toLocaleTimeString('pt-BR')
-                    }
-                  </small>
-                  
-                  {entry.type === 'doctor' && (
-                    <Button
-                      onClick={() => handleSpeakResponse(entry.message)}
-                      disabled={speakMutation.isPending}
-                      size="sm"
-                      variant="outline"
-                      className="mt-2"
-                      data-testid={`button-speak-${index}`}
-                    >
-                      {speakMutation.isPending ? (
-                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                      ) : (
-                        <Video className="w-3 h-3 mr-1" />
-                      )}
-                      Ouvir Resposta
-                    </Button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      )}
 
       {/* Resumo da Consulta */}
       {consultationSummary && (
