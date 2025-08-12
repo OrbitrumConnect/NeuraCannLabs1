@@ -137,7 +137,7 @@ export function DraCannabisAI() {
   const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
       const response = await apiRequest('/api/doctor/consult', 'POST', data);
-      return response as ConsultResponse;
+      return await response.json() as ConsultResponse;
     },
     onSuccess: (data: ConsultResponse, variables) => {
       const now = new Date().toISOString();
@@ -208,7 +208,7 @@ export function DraCannabisAI() {
   const generateSummaryMutation = useMutation<ConsultationSummary, Error>({
     mutationFn: async () => {
       const response = await apiRequest('/api/doctor/generate-summary', 'POST', { chatHistory });
-      return response as ConsultationSummary;
+      return await response.json() as ConsultationSummary;
     },
     onSuccess: (data: ConsultationSummary) => {
       setConsultationSummary(data);
@@ -234,7 +234,7 @@ export function DraCannabisAI() {
         chatHistory,
         consultationSummary
       });
-      return response as MedicalReferral;
+      return await response.json() as MedicalReferral;
     },
     onSuccess: (data: MedicalReferral) => {
       setShowReferralDialog(true);
