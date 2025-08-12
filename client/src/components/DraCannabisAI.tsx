@@ -103,6 +103,14 @@ export function DraCannabisAI() {
         { type: 'doctor', message: data.response, timestamp: data.timestamp }
       ]);
       setQuestion('');
+      
+      // Automaticamente ativar resposta em voz da Dra. Cannabis
+      if (doctorImageUrl && data.response) {
+        speakMutation.mutate({ 
+          text: data.response, 
+          imageUrl: doctorImageUrl 
+        });
+      }
     },
     onError: (error: any) => {
       toast({
