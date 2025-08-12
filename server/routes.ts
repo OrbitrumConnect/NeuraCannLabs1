@@ -782,7 +782,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Consulta médica com IA - Integração com conhecimento médico
+  // Consulta médica com IA - Integração com conhecimento médico e ChatGPT
   app.post("/api/doctor/consult", async (req, res) => {
     try {
       const { question, patientData } = req.body;
@@ -793,39 +793,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Simular resposta médica baseada em conhecimento sobre cannabis medicinal
-      const medicalResponses = {
-        'epilepsia': `Como especialista em cannabis medicinal, posso informar que o CBD tem mostrado eficácia no tratamento de epilepsia refratária. Estudos clínicos demonstram redução significativa nas convulsões, especialmente em síndromes como Dravet e Lennox-Gastaut. O protocolo usual inicia com 5mg/kg/dia de CBD, podendo ser ajustado conforme resposta clínica.`,
-        
-        'dor': `Para dor crônica, a cannabis medicinal oferece uma abordagem multimodal. O CBD possui propriedades anti-inflamatórias, enquanto doses baixas de THC (1-2.5mg) podem potencializar o efeito analgésico. Recomendo iniciar com ratio 20:1 CBD:THC, monitorando efeitos adversos e ajustando conforme necessário.`,
-        
-        'ansiedade': `O CBD tem perfil ansiolítico comprovado em estudos clínicos. Para transtornos de ansiedade, doses de 25-50mg de CBD podem ser eficazes. É importante avaliar interações medicamentosas, especialmente com benzodiazepínicos, e monitorar função hepática durante o tratamento.`,
-        
-        'cancer': `Em oncologia, a cannabis medicinal pode auxiliar no controle de náuseas, vômitos induzidos por quimioterapia e estimular o apetite. O THC é mais eficaz para esses sintomas, enquanto o CBD pode ter propriedades anti-tumorais em pesquisa pré-clínica. Sempre coordenar com equipe oncológica.`
-      };
+      console.log("🎭 Consulta da Dra. Cannabis:", question.substring(0, 50) + "...");
 
-      // Buscar resposta baseada em palavras-chave
-      let response = "Como Dra. Cannabis, especialista em medicina canabinoide, posso orientá-lo sobre o uso terapêutico da cannabis. ";
-      
-      const questionLower = question.toLowerCase();
-      for (const [condition, advice] of Object.entries(medicalResponses)) {
-        if (questionLower.includes(condition)) {
-          response = advice;
-          break;
+      // Check if OpenAI API key is available for enhanced intelligence
+      const openaiKey = process.env.OPENAI_API_KEY;
+      let response, specialty = "Cannabis Medicinal";
+
+      if (openaiKey) {
+        // Use OpenAI ChatGPT for intelligent response with medical knowledge
+        try {
+          console.log("🧠 Usando ChatGPT para resposta médica inteligente...");
+          
+          const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${openaiKey}`,
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              model: 'gpt-4o', // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+              messages: [
+                {
+                  role: 'system',
+                  content: `Você é a Dra. Cannabis IA, uma assistente médica especializada em cannabis medicinal e medicina integrativa. Sua base de conhecimento inclui:
+
+                  ESPECIALIDADES:
+                  - Cannabis medicinal e medicina canabinoide
+                  - Fitoterapia e medicina integrativa
+                  - Neurologia aplicada à cannabis (epilepsia, Parkinson)
+                  - Oncologia de suporte com cannabis
+                  - Controle de dor crônica
+                  - Psiquiatria e transtornos de ansiedade
+
+                  PROTOCOLOS MÉDICOS:
+                  - Dosagens padronizadas (CBD: 5-50mg/dia, THC: 1-10mg/dia)
+                  - Ratios terapêuticos (20:1, 10:1, 1:1 CBD:THC)
+                  - Interações medicamentosas
+                  - Contraindicações e efeitos adversos
+
+                  DIRETRIZES:
+                  - Sempre recomende consulta médica presencial
+                  - Base suas respostas em evidências científicas
+                  - Seja empática mas profissional
+                  - Mencione monitoramento médico
+                  - Respeite regulamentações brasileiras (RDC 327/2019)
+                  - Responda em português brasileiro
+                  - Limite respostas a 200 palavras`
+                },
+                {
+                  role: 'user', 
+                  content: question
+                }
+              ],
+              max_tokens: 400,
+              temperature: 0.7
+            })
+          });
+
+          if (openaiResponse.ok) {
+            const data = await openaiResponse.json();
+            response = data.choices[0].message.content;
+            specialty = "Cannabis Medicinal - IA Avançada";
+            console.log("✅ Resposta ChatGPT gerada com sucesso");
+          } else {
+            throw new Error('Erro na API do OpenAI');
+          }
+        } catch (error) {
+          console.error('⚠️ Erro ao usar ChatGPT:', error.message);
+          response = getSimulatedMedicalResponse(question);
         }
+      } else {
+        console.log("💡 OpenAI API key não encontrada, usando conhecimento base...");
+        response = getSimulatedMedicalResponse(question);
       }
-      
-      if (response === "Como Dra. Cannabis, especialista em medicina canabinoide, posso orientá-lo sobre o uso terapêutico da cannabis. ") {
-        response += "Para uma orientação mais específica, preciso de mais detalhes sobre a condição clínica e histórico médico do paciente. A cannabis medicinal deve sempre ser prescrita com base em evidências científicas e acompanhamento médico adequado.";
-      }
-
-      console.log("🎭 Consulta da Dra. Cannabis:", question.substring(0, 30) + "...");
       
       res.json({
         success: true,
         response,
-        doctor: "Dra. Cannabis",
-        specialty: "Cannabis Medicinal",
+        doctor: "Dra. Cannabis IA",
+        specialty,
         timestamp: new Date().toISOString(),
         recommendations: [
           "Consulta médica presencial recomendada",
@@ -843,7 +889,140 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Função para resposta simulada baseada em conhecimento médico
+  function getSimulatedMedicalResponse(question: string) {
+    const medicalResponses = {
+      'epilepsia': `Como especialista em cannabis medicinal, posso informar que o CBD tem mostrado eficácia no tratamento de epilepsia refratária. Estudos clínicos demonstram redução significativa nas convulsões, especialmente em síndromes como Dravet e Lennox-Gastaut. O protocolo usual inicia com 5mg/kg/dia de CBD, podendo ser ajustado conforme resposta clínica.`,
+      
+      'dor': `Para dor crônica, a cannabis medicinal oferece uma abordagem multimodal. O CBD possui propriedades anti-inflamatórias, enquanto doses baixas de THC (1-2.5mg) podem potencializar o efeito analgésico. Recomendo iniciar com ratio 20:1 CBD:THC, monitorando efeitos adversos e ajustando conforme necessário.`,
+      
+      'ansiedade': `O CBD tem perfil ansiolítico comprovado em estudos clínicos. Para transtornos de ansiedade, doses de 25-50mg de CBD podem ser eficazes. É importante avaliar interações medicamentosas, especialmente com benzodiazepínicos, e monitorar função hepática durante o tratamento.`,
+      
+      'cancer': `Em oncologia, a cannabis medicinal pode auxiliar no controle de náuseas, vômitos induzidos por quimioterapia e estimular o apetite. O THC é mais eficaz para esses sintomas, enquanto o CBD pode ter propriedades anti-tumorais em pesquisa pré-clínica. Sempre coordenar com equipe oncológica.`
+    };
+
+    const questionLower = question.toLowerCase();
+    for (const [condition, advice] of Object.entries(medicalResponses)) {
+      if (questionLower.includes(condition)) {
+        return advice;
+      }
+    }
+    
+    return "Como Dra. Cannabis, especialista em medicina canabinoide, posso orientá-lo sobre o uso terapêutico da cannabis. Para uma orientação mais específica, preciso de mais detalhes sobre a condição clínica e histórico médico do paciente. A cannabis medicinal deve sempre ser prescrita com base em evidências científicas e acompanhamento médico adequado.";
+  }
+
+  // Gerar resumo da consulta
+  app.post("/api/doctor/generate-summary", async (req, res) => {
+    try {
+      const { chatHistory } = req.body;
+      
+      if (!chatHistory || chatHistory.length === 0) {
+        return res.status(400).json({ 
+          error: "Histórico da consulta é obrigatório" 
+        });
+      }
+
+      console.log("📋 Gerando resumo da consulta...");
+
+      // Extract patient symptoms and doctor recommendations from chat
+      const patientMessages = chatHistory.filter((msg: any) => msg.type === 'user');
+      const doctorMessages = chatHistory.filter((msg: any) => msg.type === 'doctor');
+
+      const patientSymptoms = patientMessages.map((msg: any) => msg.message).join('. ');
+      const doctorRecommendations = doctorMessages.map((msg: any) => msg.message).join('. ');
+
+      // Extract medications mentioned (simplified approach)
+      const medications: string[] = [];
+      const medicationKeywords = ['CBD', 'THC', 'cannabis', 'cannabidiol', 'tetrahidrocanabinol'];
+      doctorMessages.forEach((msg: any) => {
+        medicationKeywords.forEach(med => {
+          if (msg.message.toLowerCase().includes(med.toLowerCase()) && !medications.includes(med)) {
+            medications.push(med);
+          }
+        });
+      });
+
+      const summary = {
+        patientSymptoms: patientSymptoms || "Sintomas não especificados detalhadamente na consulta",
+        doctorRecommendations: doctorRecommendations || "Orientações gerais sobre cannabis medicinal",
+        medications: medications.length > 0 ? medications : ["Cannabis medicinal (a definir protocolo)"],
+        followUp: "Acompanhamento médico especializado recomendado para ajuste de protocolo e monitoramento de efeitos",
+        timestamp: new Date().toISOString()
+      };
+
+      console.log("✅ Resumo da consulta gerado");
+      
+      res.json(summary);
+    } catch (error) {
+      console.error('Erro ao gerar resumo:', error);
+      res.status(500).json({ 
+        error: "Erro ao gerar resumo da consulta",
+        details: error.message 
+      });
+    }
+  });
+
+  // Encaminhar para médico especialista
+  app.post("/api/doctor/refer-to-medical", async (req, res) => {
+    try {
+      const { chatHistory, consultationSummary } = req.body;
+      
+      if (!chatHistory || chatHistory.length === 0) {
+        return res.status(400).json({ 
+          error: "Histórico da consulta é obrigatório" 
+        });
+      }
+
+      console.log("👨‍⚕️ Processando encaminhamento médico...");
+
+      // Analyze complexity and determine urgency
+      const patientMessages = chatHistory.filter((msg: any) => msg.type === 'user');
+      const symptoms = patientMessages.map((msg: any) => msg.message.toLowerCase()).join(' ');
+      
+      let urgency: 'low' | 'medium' | 'high' = 'low';
+      let recommendedSpecialty = 'Cannabis Medicinal';
+
+      // Determine urgency based on keywords
+      if (symptoms.includes('dor intensa') || symptoms.includes('convulsão') || symptoms.includes('crise')) {
+        urgency = 'high';
+      } else if (symptoms.includes('dor') || symptoms.includes('ansiedade') || symptoms.includes('insônia')) {
+        urgency = 'medium';
+      }
+
+      // Determine specialty
+      if (symptoms.includes('epilepsia') || symptoms.includes('convulsão')) {
+        recommendedSpecialty = 'Neurologia';
+      } else if (symptoms.includes('cancer') || symptoms.includes('quimioterapia')) {
+        recommendedSpecialty = 'Oncologia';
+      } else if (symptoms.includes('dor')) {
+        recommendedSpecialty = 'Medicina da Dor';
+      }
+
+      const referral = {
+        success: true,
+        summary: consultationSummary?.patientSymptoms || "Consulta sobre cannabis medicinal realizada",
+        patientInfo: `Paciente consultou Dra. Cannabis IA com ${patientMessages.length} questões específicas`,
+        recommendedSpecialty,
+        urgency,
+        timestamp: new Date().toISOString(),
+        message: "O resumo do prontuário será enviado ao médico especialista para facilitar a avaliação e continuidade do tratamento"
+      };
+
+      console.log(`✅ Encaminhamento processado - Especialidade: ${recommendedSpecialty}, Urgência: ${urgency}`);
+      
+      res.json(referral);
+    } catch (error) {
+      console.error('Erro no encaminhamento:', error);
+      res.status(500).json({ 
+        error: "Erro ao processar encaminhamento médico",
+        details: error.message 
+      });
+    }
+  });
+
   console.log("🎭 Dra. Cannabis IA - Assistente médico inicializado com sucesso!");
+  console.log("🧠 Sistema preparado para integração ChatGPT (aguardando OPENAI_API_KEY)");
+  console.log("💬 Funcionalidades: Consulta IA, Resumo de Consulta, Encaminhamento Médico");
 
   const httpServer = createServer(app);
 

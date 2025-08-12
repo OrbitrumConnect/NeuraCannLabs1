@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Mic, MicOff, MessageCircle, Video, Upload, CheckCircle, Play } from 'lucide-react';
+import { Loader2, Mic, MicOff, MessageCircle, Video, Upload, CheckCircle, Play, FileText, UserPlus, AlertTriangle } from 'lucide-react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
@@ -32,6 +32,24 @@ interface TalkStatus {
   error?: string;
 }
 
+interface ConsultationSummary {
+  patientSymptoms: string;
+  doctorRecommendations: string;
+  medications: string[];
+  followUp: string;
+  timestamp: string;
+}
+
+interface MedicalReferral {
+  success: boolean;
+  summary: string;
+  patientInfo: string;
+  recommendedSpecialty: string;
+  urgency: 'low' | 'medium' | 'high';
+  timestamp: string;
+  message: string;
+}
+
 export function DraCannabisAI() {
   const [question, setQuestion] = useState('');
   const [chatHistory, setChatHistory] = useState<Array<{
@@ -42,6 +60,8 @@ export function DraCannabisAI() {
   const [isListening, setIsListening] = useState(false);
   const [currentTalkId, setCurrentTalkId] = useState<string | null>(null);
   const [doctorImageUrl, setDoctorImageUrl] = useState<string | null>(null);
+  const [consultationSummary, setConsultationSummary] = useState<ConsultationSummary | null>(null);
+  const [showReferralDialog, setShowReferralDialog] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const { toast } = useToast();
 
@@ -69,10 +89,10 @@ export function DraCannabisAI() {
   });
 
   // Consulta médica por texto
-  const consultMutation = useMutation({
+  const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
       const response = await apiRequest('/api/doctor/consult', 'POST', data);
-      return response;
+      return response as ConsultResponse;
     },
     onSuccess: (data: ConsultResponse) => {
       setChatHistory(prev => [
@@ -92,10 +112,10 @@ export function DraCannabisAI() {
   });
 
   // Criar vídeo falado da Dra. Cannabis
-  const speakMutation = useMutation({
+  const speakMutation = useMutation<TalkResponse, Error, { text: string; imageUrl?: string }>({
     mutationFn: async (data: { text: string; imageUrl?: string }) => {
       const response = await apiRequest('/api/doctor/speak', 'POST', data);
-      return response;
+      return response as TalkResponse;
     },
     onSuccess: (data: TalkResponse) => {
       setCurrentTalkId(data.talkId);
@@ -121,6 +141,55 @@ export function DraCannabisAI() {
     refetchInterval: (data) => {
       const status = data as TalkStatus;
       return status?.status === 'done' ? false : 2000;
+    },
+  });
+
+  // Gerar resumo da consulta
+  const generateSummaryMutation = useMutation<ConsultationSummary, Error>({
+    mutationFn: async () => {
+      const response = await apiRequest('/api/doctor/generate-summary', 'POST', { chatHistory });
+      return response as ConsultationSummary;
+    },
+    onSuccess: (data: ConsultationSummary) => {
+      setConsultationSummary(data);
+      toast({
+        title: "Resumo da Consulta Gerado",
+        description: "O resumo foi gerado com sucesso",
+        variant: "default",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro ao Gerar Resumo",
+        description: error.message || "Erro ao gerar resumo da consulta",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Encaminhar para médico
+  const referToMedicalMutation = useMutation<MedicalReferral, Error>({
+    mutationFn: async () => {
+      const response = await apiRequest('/api/doctor/refer-to-medical', 'POST', { 
+        chatHistory,
+        consultationSummary
+      });
+      return response as MedicalReferral;
+    },
+    onSuccess: (data: MedicalReferral) => {
+      setShowReferralDialog(true);
+      toast({
+        title: "Encaminhamento Solicitado",
+        description: data.message,
+        variant: "default",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Erro no Encaminhamento",
+        description: error.message || "Erro ao solicitar encaminhamento médico",
+        variant: "destructive",
+      });
     },
   });
 
@@ -339,7 +408,42 @@ export function DraCannabisAI() {
       {chatHistory.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle>Histórico da Consulta</CardTitle>
+            <div className="flex items-center justify-between">
+              <CardTitle>Histórico da Consulta</CardTitle>
+              
+              <div className="flex space-x-2">
+                <Button
+                  onClick={() => generateSummaryMutation.mutate()}
+                  disabled={generateSummaryMutation.isPending || chatHistory.length === 0}
+                  size="sm"
+                  variant="outline"
+                  data-testid="button-generate-summary"
+                >
+                  {generateSummaryMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <FileText className="w-4 h-4 mr-2" />
+                  )}
+                  Resumo da Consulta
+                </Button>
+                
+                <Button
+                  onClick={() => referToMedicalMutation.mutate()}
+                  disabled={referToMedicalMutation.isPending || chatHistory.length === 0}
+                  size="sm"
+                  variant="outline"
+                  className="text-orange-600 border-orange-600 hover:bg-orange-50"
+                  data-testid="button-refer-medical"
+                >
+                  {referToMedicalMutation.isPending ? (
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  ) : (
+                    <UserPlus className="w-4 h-4 mr-2" />
+                  )}
+                  Solicitar Médico
+                </Button>
+              </div>
+            </div>
           </CardHeader>
           
           <CardContent className="space-y-4 max-h-96 overflow-y-auto">
@@ -383,6 +487,91 @@ export function DraCannabisAI() {
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Resumo da Consulta */}
+      {consultationSummary && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <FileText className="w-5 h-5 text-blue-500" />
+              <span>Resumo da Consulta</span>
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="space-y-4">
+            <div>
+              <h4 className="font-medium text-sm mb-2">Sintomas do Paciente:</h4>
+              <p className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                {consultationSummary.patientSymptoms}
+              </p>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-sm mb-2">Recomendações Médicas:</h4>
+              <p className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                {consultationSummary.doctorRecommendations}
+              </p>
+            </div>
+            
+            {consultationSummary.medications.length > 0 && (
+              <div>
+                <h4 className="font-medium text-sm mb-2">Medicações:</h4>
+                <ul className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg list-disc list-inside">
+                  {consultationSummary.medications.map((med, index) => (
+                    <li key={index}>{med}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            <div>
+              <h4 className="font-medium text-sm mb-2">Acompanhamento:</h4>
+              <p className="text-sm bg-gray-50 dark:bg-gray-800 p-3 rounded-lg">
+                {consultationSummary.followUp}
+              </p>
+            </div>
+            
+            <small className="text-xs text-gray-500">
+              Gerado em: {new Date(consultationSummary.timestamp).toLocaleString('pt-BR')}
+            </small>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Dialog de Encaminhamento Médico */}
+      {showReferralDialog && (
+        <Card className="border-orange-200 bg-orange-50 dark:bg-orange-950">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2 text-orange-700">
+              <AlertTriangle className="w-5 h-5" />
+              <span>Encaminhamento para Médico Especialista</span>
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="space-y-4">
+            <div className="p-4 bg-orange-100 dark:bg-orange-900 rounded-lg">
+              <p className="text-sm text-orange-800 dark:text-orange-200">
+                <strong>📋 Resumo do prontuário será enviado ao médico especialista</strong>
+              </p>
+              <p className="text-sm text-orange-700 dark:text-orange-300 mt-2">
+                Todas as informações da sua consulta com a Dra. Cannabis IA foram organizadas 
+                em um resumo detalhado que será encaminhado para facilitar a leitura e 
+                compreensão do médico especialista sobre seu caso.
+              </p>
+            </div>
+            
+            <div className="flex justify-end space-x-2">
+              <Button
+                onClick={() => setShowReferralDialog(false)}
+                variant="outline"
+                size="sm"
+              >
+                Entendi
+              </Button>
+            </div>
           </CardContent>
         </Card>
       )}

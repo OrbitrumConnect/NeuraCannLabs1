@@ -105,8 +105,8 @@ export class DIDService {
     }
   }
 
-  // Método para criar avatar médico falando
-  async createMedicalAssistantTalk(text: string, imageUrl?: string): Promise<DIDTalkResponse> {
+  // Método para criar avatar médico falando com movimentação da boca otimizada
+  async createMedicalAssistantTalk(text: string, imageUrl?: string, mouthMovements?: any): Promise<DIDTalkResponse> {
     const defaultImageUrl = imageUrl || 'https://create-images-results.d-id.com/DefaultPresenters/Noelle_f/image.jpeg';
     
     const request: DIDTalkRequest = {
@@ -125,6 +125,62 @@ export class DIDService {
       },
     };
 
+    // Add mouth movement configuration if provided
+    if (mouthMovements) {
+      request.config = {
+        ...request.config,
+        // Enhanced configuration for better mouth synchronization
+        result_format: 'mp4',
+        face: {
+          mask_confidence: 0.8,
+          crop_type: 'rectangle',
+          expression: mouthMovements.expression || 'friendly',
+        }
+      };
+
+      // If ChatGPT provides specific mouth movement commands, add them
+      if (mouthMovements.commands) {
+        request.config.face.animation_instructions = mouthMovements.commands;
+      }
+
+      console.log('🗣️ Aplicando movimentação da boca personalizada');
+    }
+
     return this.createTalk(request);
+  }
+
+  // Enhanced method for ChatGPT integration with intelligent mouth movement
+  async createIntelligentTalk(text: string, chatGptResponse?: any, imageUrl?: string): Promise<DIDTalkResponse> {
+    console.log('🧠 Criando talk inteligente com ChatGPT integration...');
+    
+    let mouthMovements = null;
+    
+    // Extract mouth movement instructions from ChatGPT response if available
+    if (chatGptResponse?.mouthCommands) {
+      mouthMovements = {
+        expression: chatGptResponse.mouthCommands.expression || 'friendly',
+        commands: chatGptResponse.mouthCommands.movements || [],
+      };
+      console.log('🤖 Comandos de movimentação da boca detectados do ChatGPT');
+    } else {
+      // Default intelligent mouth movements for medical assistant
+      mouthMovements = {
+        expression: 'professional',
+        commands: [
+          { time: 0, action: 'smile_slight' },
+          { time: 0.5, action: 'mouth_open_medical' },
+          { time: 1.0, action: 'nod_understanding' }
+        ]
+      };
+      console.log('💊 Aplicando movimentação médica padrão');
+    }
+
+    try {
+      return await this.createMedicalAssistantTalk(text, imageUrl, mouthMovements);
+    } catch (error) {
+      console.error('Erro ao criar talk inteligente, usando método padrão:', error);
+      // Fallback to regular talk creation
+      return await this.createMedicalAssistantTalk(text, imageUrl);
+    }
   }
 }
