@@ -21,15 +21,19 @@ interface DashboardLayoutProps {
 }
 
 const dashboardOptions = [
+  // Grupo 1: Pesquisa & Dados
+  { id: "scientific", name: "Dados Científicos", icon: "fas fa-microscope", group: "research" },
+  { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md", group: "research" },
+  
+  // Grupo 2: Perfil & Estudo
+  { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain", group: "personal" },
+  { id: "profile", name: "Perfil", icon: "fas fa-user-circle", group: "personal" },
+  
+  // Itens individuais normais
   { id: "overview", name: "Visão Geral", icon: "fas fa-chart-line" },
-  { id: "scientific", name: "Dados Científicos", icon: "fas fa-microscope" },
-  { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
-  { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
-  { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
-
+  { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
-  { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
 ];
 
 export default function DashboardLayout({
@@ -102,54 +106,84 @@ export default function DashboardLayout({
           </div>
           
           <div className="flex items-center space-x-2 sm:space-x-4">
-            {/* Dra. Cannabis IA - Botão Especial */}
+            {/* Dra. Cannabis IA - Botão Especial (menor) */}
             <button 
               onClick={() => handleDashboardClick("dra-cannabis")}
-              className="hidden md:flex items-center space-x-2 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 transition-all border border-purple-400/30 hover:border-purple-400/50"
+              className="hidden md:flex items-center space-x-1 px-2 py-1 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 transition-all border border-purple-400/30 hover:border-purple-400/50"
               data-testid="nav-dra-cannabis-header"
             >
-              <i className="fas fa-robot text-purple-400 text-sm" />
-              <span className="text-purple-400 text-xs font-medium">Dra. Cannabis IA</span>
-              <span className="bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs rounded-full px-1.5 py-0.5 ml-1">IA</span>
+              <i className="fas fa-robot text-purple-400 text-xs" />
+              <span className="text-purple-400 text-xs">Dra. IA</span>
             </button>
             
-            {/* Analytics Button */}
-            <a href="/analytics" className="hidden lg:flex items-center space-x-2 px-2 py-1.5 rounded-lg bg-green-500/20 hover:bg-green-500/30 transition-colors border border-green-500/30">
-              <i className="fas fa-chart-line text-green-400 text-sm" />
-              <span className="text-green-400 text-xs font-medium">Analytics</span>
+            {/* Grupos com dropdown */}
+            <div className="hidden lg:flex items-center space-x-2">
+              {/* Grupo Pesquisa & Dados */}
+              <div className="relative group">
+                <button className="flex items-center space-x-1 px-2 py-1 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
+                  <i className="fas fa-search text-gray-300 text-xs" />
+                  <span className="text-gray-300 text-xs">Pesquisa</span>
+                  <i className="fas fa-chevron-down text-xs" />
+                </button>
+                <div className="absolute top-full left-0 mt-1 w-40 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  <button onClick={() => handleDashboardClick("scientific")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                    <i className="fas fa-microscope mr-2" />Dados Científicos
+                  </button>
+                  <button onClick={() => handleDashboardClick("clinical")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                    <i className="fas fa-user-md mr-2" />Casos Clínicos
+                  </button>
+                </div>
+              </div>
+
+              {/* Grupo Perfil & Estudo */}
+              <div className="relative group">
+                <button className="flex items-center space-x-1 px-2 py-1 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
+                  <i className="fas fa-user text-gray-300 text-xs" />
+                  <span className="text-gray-300 text-xs">Perfil</span>
+                  <i className="fas fa-chevron-down text-xs" />
+                </button>
+                <div className="absolute top-full left-0 mt-1 w-32 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  <button onClick={() => handleDashboardClick("my-study")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                    <i className="fas fa-brain mr-2" />Meu Estudo
+                  </button>
+                  <button onClick={() => handleDashboardClick("profile")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                    <i className="fas fa-user-circle mr-2" />Perfil
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            {/* Analytics Button (sem verde) */}
+            <a href="/analytics" className="hidden lg:flex items-center space-x-1 px-2 py-1 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
+              <i className="fas fa-chart-line text-gray-300 text-xs" />
+              <span className="text-gray-300 text-xs">Analytics</span>
             </a>
             
-          <nav className="hidden lg:flex items-center space-x-3">
-            {dashboardOptions.map((option) => (
+          {/* Botões individuais normais */}
+          <nav className="hidden lg:flex items-center space-x-2">
+            {dashboardOptions
+              .filter(option => !option.group) // Apenas itens sem grupo
+              .map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
-                className={`px-3 py-1.5 rounded-lg transition-all text-sm ${
+                className={`px-2 py-1 rounded-lg transition-all text-xs ${
                   activeDashboard === option.id
-                    ? "bg-green-500/20 text-green-500 border border-green-500/30"
-                    : "hover:bg-green-500/20 hover:text-green-500"
+                    ? "bg-gray-600/30 text-white border border-gray-500/50"
+                    : "text-gray-300 hover:bg-gray-600/20 hover:text-white border border-gray-500/30"
                 }`}
                 data-testid={`nav-${option.id}`}
               >
-                <i className={`${option.icon} mr-1.5 text-xs`} />
+                <i className={`${option.icon} mr-1 text-xs`} />
                 <span className="text-xs">{option.name}</span>
                 {option.id === "alerts" && (
                   <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-1 py-0.5">3</span>
                 )}
-                {option.id === "my-study" && (
-                  <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1 py-0.5">NEW</span>
-                )}
                 {option.id === "forum" && (
                   <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1 py-0.5">29</span>
                 )}
-                {option.id === "critical-modules" && (
-                  <span className="ml-1 bg-purple-500 text-white text-xs rounded-full px-1 py-0.5">5</span>
-                )}
                 {option.id === "admin" && (
-                  <span className="ml-1 bg-green-500 text-white text-xs rounded-full px-1 py-0.5">🌍</span>
-                )}
-                {option.id === "dra-cannabis" && (
-                  <span className="ml-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-xs rounded-full px-1 py-0.5">IA</span>
+                  <span className="ml-1 bg-orange-500 text-white text-xs rounded-full px-1 py-0.5">🌍</span>
                 )}
               </button>
             ))}
