@@ -957,24 +957,71 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Função para resposta simulada baseada em conhecimento médico
   function getSimulatedMedicalResponse(question: string) {
-    const medicalResponses = {
-      'epilepsia': `Como especialista em cannabis medicinal, posso informar que o CBD tem mostrado eficácia no tratamento de epilepsia refratária. Estudos clínicos demonstram redução significativa nas convulsões, especialmente em síndromes como Dravet e Lennox-Gastaut. O protocolo usual inicia com 5mg/kg/dia de CBD, podendo ser ajustado conforme resposta clínica.`,
-      
-      'dor': `Para dor crônica, a cannabis medicinal oferece uma abordagem multimodal. O CBD possui propriedades anti-inflamatórias, enquanto doses baixas de THC (1-2.5mg) podem potencializar o efeito analgésico. Recomendo iniciar com ratio 20:1 CBD:THC, monitorando efeitos adversos e ajustando conforme necessário.`,
-      
-      'ansiedade': `O CBD tem perfil ansiolítico comprovado em estudos clínicos. Para transtornos de ansiedade, doses de 25-50mg de CBD podem ser eficazes. É importante avaliar interações medicamentosas, especialmente com benzodiazepínicos, e monitorar função hepática durante o tratamento.`,
-      
-      'cancer': `Em oncologia, a cannabis medicinal pode auxiliar no controle de náuseas, vômitos induzidos por quimioterapia e estimular o apetite. O THC é mais eficaz para esses sintomas, enquanto o CBD pode ter propriedades anti-tumorais em pesquisa pré-clínica. Sempre coordenar com equipe oncológica.`
+    const questionLower = question.toLowerCase();
+    
+    // Respostas conversacionais naturais
+    const conversationalResponses = {
+      'oi': 'Olá! Como posso ajudá-lo hoje? Sou a Dra. Cannabis, especialista em medicina canabinoide. Pode me contar o que está buscando ou qual sua dúvida sobre cannabis medicinal?',
+      'ola': 'Oi! Tudo bem? Sou a Dra. Cannabis e estou aqui para esclarecer suas dúvidas sobre cannabis medicinal. O que posso ajudá-lo hoje?',
+      'tudo bem': 'Tudo ótimo por aqui, obrigada por perguntar! E você, como está se sentindo? Em que posso auxiliá-lo hoje?',
+      'como vai': 'Vou muito bem, obrigada! E você? Há algo específico sobre cannabis medicinal que gostaria de conversar hoje?',
+      'bom dia': 'Bom dia! Espero que esteja tendo um dia maravilhoso. Como posso ajudá-lo com informações sobre cannabis medicinal?',
+      'boa tarde': 'Boa tarde! Como posso auxiliá-lo hoje? Estou aqui para esclarecer qualquer dúvida sobre cannabis medicinal.',
+      'boa noite': 'Boa noite! Em que posso ajudá-lo hoje? Sou especialista em cannabis medicinal e estou à disposição.'
     };
 
-    const questionLower = question.toLowerCase();
+    // Respostas médicas especializadas com tom conversacional
+    const medicalResponses = {
+      'epilepsia': `Ah, você quer saber sobre epilepsia? É uma área onde a cannabis medicinal tem mostrado resultados realmente promissores! O CBD tem evidências sólidas para epilepsia refratária, especialmente nas síndromes de Dravet e Lennox-Gastaut. Já vi casos incríveis de crianças que tiveram redução significativa nas crises. O protocolo geralmente começa com 5mg/kg/dia de CBD. Você tem algum caso específico em mente?`,
+      
+      'dor': `Dor crônica é uma das minhas especialidades! A cannabis oferece uma abordagem muito interessante porque trabalha em múltiplos mecanismos. O CBD tem ação anti-inflamatória excelente, e quando combinamos com doses baixas de THC (1-2,5mg), conseguimos potencializar o alívio. Costumo sugerir começar com ratio 20:1 CBD:THC. Que tipo de dor você está lidando?`,
+      
+      'ansiedade': `Ansiedade é algo que vejo muito no consultório. O CBD realmente funciona bem para isso! Estudos mostram eficácia com doses de 25-50mg de CBD por dia. O interessante é que ele não causa dependência como os ansiolíticos tradicionais. Claro que sempre preciso avaliar interações com outras medicações. Você já tentou outras abordagens para ansiedade?`,
+      
+      'cancer': `Em oncologia, a cannabis é uma grande aliada para qualidade de vida. Ajuda muito com náuseas da quimioterapia e melhora o apetite - o THC é especialmente eficaz para isso. Há pesquisas promissoras sobre propriedades antitumorais do CBD também, embora ainda estejam em fase experimental. Sempre trabalho junto com a equipe oncológica. Você ou alguém próximo está passando por tratamento?`,
+
+      'cbd': `O CBD é realmente fascinante! É o canabinoide não-psicoativo que tem revolucionado a medicina. Tem propriedades anti-inflamatórias, ansiolíticas, anticonvulsivantes... É seguro, bem tolerado e não causa dependência. Para que condição você está considerando o CBD?`,
+      
+      'thc': `O THC tem má reputação, mas na medicina é muito útil quando usado corretamente! Em doses baixas, ajuda com dor, náuseas, estimula apetite... O segredo é encontrar a dose mínima eficaz. Claro que precisa ser prescrito e acompanhado. Tem alguma condição específica em mente?`
+    };
+
+    // Primeiro verifica saudações e conversação natural
+    for (const [greeting, response] of Object.entries(conversationalResponses)) {
+      if (questionLower.includes(greeting)) {
+        return response;
+      }
+    }
+
+    // Depois verifica termos médicos
     for (const [condition, advice] of Object.entries(medicalResponses)) {
       if (questionLower.includes(condition)) {
         return advice;
       }
     }
     
-    return "Como Dra. Cannabis, especialista em medicina canabinoide, posso orientá-lo sobre o uso terapêutico da cannabis. Para uma orientação mais específica, preciso de mais detalhes sobre a condição clínica e histórico médico do paciente. A cannabis medicinal deve sempre ser prescrita com base em evidências científicas e acompanhamento médico adequado.";
+    // Respostas contextually inteligentes baseadas em padrões
+    if (questionLower.includes('como') && questionLower.includes('funciona')) {
+      return "Ótima pergunta! A cannabis medicinal funciona através do sistema endocanabinoide do nosso corpo - é como uma rede de receptores que regulam dor, humor, apetite, sono... O CBD e THC se encaixam nesses receptores como chaves em fechaduras. Sobre qual condição específica você gostaria de entender melhor o mecanismo?";
+    }
+    
+    if (questionLower.includes('legal') || questionLower.includes('receita')) {
+      return "Sim, no Brasil a cannabis medicinal é legal desde 2019! Precisa de receita médica e pode ser importada ou comprada em farmácias autorizadas pela ANVISA. Já temos várias farmácias preparando fórmulas aqui. Você já conversou com algum médico sobre isso ou quer saber como encontrar um prescritor?";
+    }
+    
+    if (questionLower.includes('efeito') && questionLower.includes('colateral')) {
+      return "Os efeitos colaterais são geralmente leves quando bem dosado! CBD pode causar sonolência, boca seca, mudança no apetite. THC em doses médicas pode dar leve tontura inicial. O importante é começar devagar - 'start low, go slow' como dizemos. Muito diferente dos efeitos dos medicamentos tradicionais, né? Tem alguma preocupação específica?";
+    }
+    
+    if (questionLower.includes('quanto') && (questionLower.includes('custa') || questionLower.includes('preço'))) {
+      return "Os custos variam bastante! Óleos de CBD podem custar de R$ 200 a R$ 800 mensais, dependendo da dose. Produtos importados custam mais. Algumas empresas nacionais estão oferecendo preços mais acessíveis. Vale lembrar que é investimento em qualidade de vida. Você está considerando para qual condição?";
+    }
+    
+    if (questionLower.includes('criança') || questionLower.includes('pediatri')) {
+      return "Pediatria com cannabis é uma área muito especial! Uso principalmente para epilepsia refratária, autismo, TDAH... Claro que com muito mais cuidado - doses menores, acompanhamento rigoroso, sempre CBD primeiro. Já vi transformações incríveis em crianças. É para alguma situação específica que você está perguntando?";
+    }
+
+    // Resposta padrão mais conversacional e envolvente
+    return "Interessante! Conte-me mais sobre isso. Sou especialista em cannabis medicinal e adoro conversar sobre como essa medicina pode melhorar a qualidade de vida das pessoas. Qual aspecto mais te desperta curiosidade? Posso falar sobre mecanismos de ação, dosagens, condições específicas, aspectos legais... O que você gostaria de explorar?";
   }
 
   // Gerar resumo da consulta
