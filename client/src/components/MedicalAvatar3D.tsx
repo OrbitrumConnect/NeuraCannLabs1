@@ -86,9 +86,8 @@ export default function MedicalAvatar3D({
     // Load medical avatar
     const loader = new GLTFLoader();
     
-    // Using a professional medical avatar model
-    // In production, you'd host your own medical professional model
-    const avatarUrl = 'https://threejs.org/examples/models/gltf/Xbot.glb';
+    // Using ReadyPlayer.me custom avatar model
+    const avatarUrl = 'https://models.readyplayer.me/689aa01db63b0dc9e0057a30.glb';
     
     loader.load(
       avatarUrl,
