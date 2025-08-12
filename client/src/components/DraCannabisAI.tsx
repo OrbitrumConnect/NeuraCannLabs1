@@ -181,31 +181,31 @@ export function DraCannabisAI() {
   return (
     <div className="space-y-6">
       {/* Header da Dra. Cannabis - Card Aumentado */}
-      <Card className="bg-gradient-to-r from-green-900/20 to-green-800/20 border-green-600/30 min-h-[600px]">
-        <CardHeader className="text-center py-16">
-          <div className="flex flex-col items-center justify-center space-y-8">
+      <Card className="bg-gradient-to-r from-green-900/20 to-green-800/20 border-green-600/30 min-h-[400px]">
+        <CardHeader className="text-center py-8">
+          <div className="flex flex-col items-center justify-center space-y-4">
             <div className="relative">
               <img 
                 src={draCannabisImage} 
                 alt="Dra. Cannabis IA" 
-                className="w-48 h-48 rounded-lg object-cover shadow-2xl"
+                className="w-48 h-48 rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
               />
               <Badge className="absolute -bottom-3 -right-3 bg-green-500 text-white text-sm px-3 py-1">
                 IA
               </Badge>
             </div>
-            <div className="text-center space-y-3">
-              <CardTitle className="text-2xl text-green-400 font-bold">
+            <div className="text-center space-y-2">
+              <CardTitle className="text-xl text-green-400 font-bold">
                 Dra. Cannabis IA
               </CardTitle>
-              <p className="text-green-200 text-sm max-w-xl">
+              <p className="text-green-200 text-xs max-w-lg">
                 Assistente Médico Especializado em Cannabis Medicinal
               </p>
-              <div className="flex items-center justify-center space-x-2 mt-4">
-                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-3 py-1">
+              <div className="flex items-center justify-center space-x-2 mt-3">
+                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-2 py-1">
                   Cannabis Medicinal
                 </Badge>
-                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-3 py-1">
+                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-2 py-1">
                   Inteligência Artificial
                 </Badge>
               </div>
