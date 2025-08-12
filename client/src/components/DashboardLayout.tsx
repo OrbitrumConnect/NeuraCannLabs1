@@ -27,7 +27,6 @@ const dashboardOptions = [
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
-  { id: "heygen-avatar", name: "Avatar Streaming", icon: "fas fa-video" },
   { id: "critical-modules", name: "Integração Laboratorial", icon: "fas fa-cogs" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
@@ -209,8 +208,7 @@ export default function DashboardLayout({
                       option.id === "clinical" ? "text-blue-400" :
                       option.id === "alerts" ? "text-amber-400" :
                       option.id === "admin" ? "text-green-400" :
-                      option.id === "profile" ? "text-purple-400" :
-                      option.id === "heygen-avatar" ? "text-cyan-400" : ""
+                      option.id === "profile" ? "text-purple-400" : ""
                     }`} />
                     <span className="font-semibold text-base">{option.name}</span>
                   </div>
@@ -234,7 +232,6 @@ export default function DashboardLayout({
                   {option.id === "alerts" && "Notificações importantes"}
                   {option.id === "my-study" && "Submissões de estudos"}
                   {option.id === "forum" && "Discussões colaborativas"}
-                  {option.id === "heygen-avatar" && "Avatar IA em tempo real"}
                   {option.id === "critical-modules" && "Funcionalidades médicas hospitalares"}
                   {option.id === "admin" && "Central científica mundial"}
                   {option.id === "profile" && "Configurações pessoais"}

@@ -117,35 +117,6 @@ export const insertPatientEvolutionSchema = createInsertSchema(patientEvolution)
   createdAt: true,
 });
 
-// Tabela para consultas médicas e geração de PDF
-export const medicalConsultations = pgTable("medical_consultations", {
-  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  doctorId: varchar("doctor_id").references(() => users.id).notNull(),
-  patientName: text("patient_name").notNull(),
-  patientAge: integer("patient_age"),
-  patientGender: text("patient_gender"),
-  patientWeight: text("patient_weight"),
-  consultationDate: timestamp("consultation_date").defaultNow(),
-  symptoms: text("symptoms").notNull(),
-  diagnosis: text("diagnosis"),
-  treatment: text("treatment"),
-  medication: text("medication"),
-  dosage: text("dosage"),
-  frequency: text("frequency"),
-  duration: text("duration"),
-  notes: text("notes"),
-  followUpDate: timestamp("follow_up_date"),
-  consultationStatus: text("consultation_status").default("active"), // active, completed, cancelled
-  aiAnalysis: text("ai_analysis"), // Análise do Dr. Cannabis IA
-  pdfGenerated: integer("pdf_generated").default(0), // 0 = não gerado, 1 = gerado
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
-export const insertMedicalConsultationSchema = createInsertSchema(medicalConsultations).omit({
-  id: true,
-  createdAt: true,
-});
-
 // Study submission and review system
 export const studySubmissions = pgTable("study_submissions", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -186,8 +157,6 @@ export type PatientEvolution = typeof patientEvolution.$inferSelect;
 export type InsertPatientEvolution = z.infer<typeof insertPatientEvolutionSchema>;
 export type StudySubmission = typeof studySubmissions.$inferSelect;
 export type InsertStudySubmission = z.infer<typeof insertStudySubmissionSchema>;
-export type MedicalConsultation = typeof medicalConsultations.$inferSelect;
-export type InsertMedicalConsultation = z.infer<typeof insertMedicalConsultationSchema>;
 
 // Encaminhamento de Pacientes entre Especialistas
 export const patientReferrals = pgTable("patient_referrals", {

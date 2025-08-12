@@ -24,7 +24,6 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Routing**: Wouter for lightweight client-side routing.
 - **UI/UX Decisions**: Fixed main cards, expandable bottom dock for sub-searches, professional zoom/pan (50%-200%), precise handles (6x6px) on sub-search icons, main card expanded to 480px height, responsive layout with intelligent absolute positioning, hover effects and smooth transitions. The main interface focuses on the Dr. Cannabis AI avatar, which controls system activation. Layout is optimized for mobile with a reorganized menu, relative positioning for elements, and vertically stacked sub-searches.
 - **Scanner System**: Horizontal line scanner with synchronized avatar glow effect. Yellow line appears during 22%-32% of screen scan (1 second duration). Dr. Cannabis avatar glows yellow from 12%-20% (perfect timing - 0.4s anticipation). Soft yellow color (rgba(255,235,59)) with 30% reduced intensity for elegant effect.
-- **Avatar Implementation**: Two avatar systems exist - the main Dr. Cannabis IA (StreamingMedicalAvatar3D) which is fully functional and the HeyGen streaming avatar. Focus remains on the Dr. Cannabis IA system which includes voice interaction, consultation saving, and medical guidance features.
 - **Design Principles**: Consistent brand identity with a permanent night mode (dark medical interface) and green as the primary medical color across all UI elements. Standardized dashboard dimensions for visual harmony.
 
 ### Backend Architecture
@@ -46,8 +45,6 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Discussion Forum**: A "Fórum de Discussão" with categories, medical posts, and statistics, integrated with the "Meus Estudos" section for discussion based on approved studies. Supports attachments (PDF, DOC, DOCX, JPG, PNG).
 - **Audio Features**: Optimized Text-to-Speech for reading search results and medical content.
 - **Search Interface Auto-Activation**: Correção crítica aplicada - pesquisas agora ativam automaticamente o Dr AI (isDrAIActive) mostrando todas as opções de chat, exploração e estudos conforme funcionamento normal do sistema.
-- **Avatar Status**: Dr. Cannabis IA avatar totalmente funcional com botão de salvar consultas no calendário médico implementado. Sistema HeyGen streaming existente mas foco mantido no Dr. Cannabis IA para testes futuros de API.
-- **Layout Adjustments**: Avatar reposicionado 15% para cima (mt-8), controles do HeyGen dashboard ajustados com padding reduzido e margem inferior (pb-20) para evitar corte dos elementos.
 
 ## External Dependencies
 - **Database**: Neon serverless PostgreSQL (configured via Drizzle ORM).

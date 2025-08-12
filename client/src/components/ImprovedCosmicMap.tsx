@@ -707,15 +707,15 @@ ${studyNotes || 'Nenhuma anotação'}`;
 
 
 
-      {/* Sub-search Results - Layout melhorado sem sobreposição */}
+      {/* Sub-search Results - Responsive positioning com mais espaçamento - Only show when Dr AI is active */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
           key={subTab.id}
-          className="relative mt-4 mx-3 sm:absolute sm:left-12 z-30"
+          className="relative mt-4 mx-3 sm:fixed sm:left-8 z-30 sm:z-30"
           style={{ 
-            top: window.innerWidth >= 640 ? `${480 + (index * 180)}px` : 'auto',
-            width: window.innerWidth >= 640 ? '300px' : 'auto',
-            maxHeight: '150px'
+            top: window.innerWidth >= 640 ? `${320 + (index * 220)}px` : 'auto',
+            width: window.innerWidth >= 640 ? '280px' : 'auto',
+            maxHeight: '160px'
           }}
         >
           <div className="bg-purple-950/90 backdrop-blur-md rounded-lg border border-purple-500/40 p-3">

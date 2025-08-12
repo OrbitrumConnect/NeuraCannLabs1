@@ -86,15 +86,16 @@ export default function MedicalAvatar3D({
     // Load medical avatar
     const loader = new GLTFLoader();
     
-    // Using ReadyPlayer.me custom avatar model
-    const avatarUrl = 'https://models.readyplayer.me/689aad4d4dd25e5878ab5220.glb';
+    // Using a professional medical avatar model
+    // In production, you'd host your own medical professional model
+    const avatarUrl = 'https://threejs.org/examples/models/gltf/Xbot.glb';
     
     loader.load(
       avatarUrl,
       (gltf) => {
         const model = gltf.scene;
-        model.scale.setScalar(1.5);
-        model.position.set(0, -0.5, 0);
+        model.scale.setScalar(1.2);
+        model.position.set(0, 0, 0);
         
         // Add medical coat material (white lab coat effect)
         model.traverse((child) => {
