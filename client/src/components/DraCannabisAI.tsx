@@ -257,7 +257,7 @@ export function DraCannabisAI() {
               <img 
                 src={draCannabisImage} 
                 alt="Dra. Cannabis IA" 
-                className="w-40 h-40 rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
+                className="w-44 h-44 rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20"
               />
               <Badge className="absolute -bottom-3 -right-3 bg-green-500 text-white text-sm px-3 py-1">
                 IA
