@@ -48,9 +48,7 @@ export function DraCannabisAI() {
   // Upload da imagem da médica para D-ID
   const uploadImageMutation = useMutation({
     mutationFn: async () => {
-      const response = await apiRequest('/api/doctor/upload-image', {
-        method: 'POST'
-      });
+      const response = await apiRequest('/api/doctor/upload-image', 'POST');
       return response;
     },
     onSuccess: (data: any) => {
@@ -73,10 +71,7 @@ export function DraCannabisAI() {
   // Consulta médica por texto
   const consultMutation = useMutation({
     mutationFn: async (data: { question: string }) => {
-      const response = await apiRequest('/api/doctor/consult', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
+      const response = await apiRequest('/api/doctor/consult', 'POST', data);
       return response;
     },
     onSuccess: (data: ConsultResponse) => {
@@ -99,10 +94,7 @@ export function DraCannabisAI() {
   // Criar vídeo falado da Dra. Cannabis
   const speakMutation = useMutation({
     mutationFn: async (data: { text: string; imageUrl?: string }) => {
-      const response = await apiRequest('/api/doctor/speak', {
-        method: 'POST',
-        body: JSON.stringify(data)
-      });
+      const response = await apiRequest('/api/doctor/speak', 'POST', data);
       return response;
     },
     onSuccess: (data: TalkResponse) => {
@@ -188,32 +180,32 @@ export function DraCannabisAI() {
 
   return (
     <div className="space-y-6">
-      {/* Header da Dra. Cannabis */}
-      <Card className="bg-gradient-to-r from-green-900/20 to-green-800/20 border-green-600/30">
-        <CardHeader className="text-center">
-          <div className="flex items-center justify-center space-x-4">
+      {/* Header da Dra. Cannabis - Card Aumentado */}
+      <Card className="bg-gradient-to-r from-green-900/20 to-green-800/20 border-green-600/30 min-h-[600px]">
+        <CardHeader className="text-center py-16">
+          <div className="flex flex-col items-center justify-center space-y-8">
             <div className="relative">
               <img 
                 src={draCannabisImage} 
                 alt="Dra. Cannabis IA" 
-                className="w-24 h-24 rounded-full object-cover border-4 border-green-500 shadow-lg"
+                className="w-48 h-48 rounded-lg object-cover shadow-2xl"
               />
-              <Badge className="absolute -bottom-2 -right-2 bg-green-500 text-white">
+              <Badge className="absolute -bottom-3 -right-3 bg-green-500 text-white text-sm px-3 py-1">
                 IA
               </Badge>
             </div>
-            <div>
-              <CardTitle className="text-3xl text-green-400 font-bold">
+            <div className="text-center space-y-3">
+              <CardTitle className="text-2xl text-green-400 font-bold">
                 Dra. Cannabis IA
               </CardTitle>
-              <p className="text-green-200 mt-2">
+              <p className="text-green-200 text-sm max-w-xl">
                 Assistente Médico Especializado em Cannabis Medicinal
               </p>
-              <div className="flex items-center justify-center space-x-2 mt-3">
-                <Badge variant="outline" className="text-green-300 border-green-500">
+              <div className="flex items-center justify-center space-x-2 mt-4">
+                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-3 py-1">
                   Cannabis Medicinal
                 </Badge>
-                <Badge variant="outline" className="text-green-300 border-green-500">
+                <Badge variant="outline" className="text-green-300 border-green-500 text-xs px-3 py-1">
                   Inteligência Artificial
                 </Badge>
               </div>
