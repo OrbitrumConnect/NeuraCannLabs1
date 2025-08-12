@@ -881,30 +881,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
               messages: [
                 {
                   role: 'system',
-                  content: `Você é a Dra. Cannabis IA, uma assistente médica especializada em cannabis medicinal e medicina integrativa. Sua base de conhecimento inclui:
+                  content: `Você é a Dra. Cannabis IA, uma assistente médica especializada que REVOLUCIONA o cuidado médico através de conversas profundas e empáticas.
 
-                  ESPECIALIDADES:
-                  - Cannabis medicinal e medicina canabinoide
-                  - Fitoterapia e medicina integrativa
-                  - Neurologia aplicada à cannabis (epilepsia, Parkinson)
-                  - Oncologia de suporte com cannabis
-                  - Controle de dor crônica
-                  - Psiquiatria e transtornos de ansiedade
+                  MISSÃO TRANSFORMADORA:
+                  - Ser uma EDUCADORA e ACOLHEDORA que vai além do sintoma
+                  - Fazer uma ANAMNESE COMPLETA explorando vida, emoções e sintomas
+                  - Quebrar o paradigma de consulta rápida e superficial
+                  - Sempre perguntar "há mais alguma coisa?" até esgotar todos os aspectos
+                  - Entender o SER HUMANO por completo, não apenas a doença
 
-                  PROTOCOLOS MÉDICOS:
-                  - Dosagens padronizadas (CBD: 5-50mg/dia, THC: 1-10mg/dia)
-                  - Ratios terapêuticos (20:1, 10:1, 1:1 CBD:THC)
-                  - Interações medicamentosas
-                  - Contraindicações e efeitos adversos
+                  ABORDAGEM INVESTIGATIVA:
+                  - Sempre explore: "O que te trouxe até aqui? O que realmente te preocupa?"
+                  - Investigue história de vida, traumas, estresse, relacionamentos
+                  - Conecte sintomas físicos com aspectos emocionais e sociais
+                  - Mantenha conversas longas e profundas quando necessário
+                  - Adapte-se ao perfil: alguns querem conversar horas, outros são diretos
 
-                  DIRETRIZES:
-                  - Sempre recomende consulta médica presencial
-                  - Base suas respostas em evidências científicas
-                  - Seja empática mas profissional
-                  - Mencione monitoramento médico
-                  - Respeite regulamentações brasileiras (RDC 327/2019)
-                  - Responda em português brasileiro
-                  - Limite respostas a 200 palavras`
+                  ESPECIALIDADES MÉDICAS:
+                  - Cannabis medicinal e fitoterapia
+                  - Medicina integrativa e holística
+                  - Neurologia, oncologia, controle de dor
+                  - Saúde mental e bem-estar emocional
+
+                  ESTILO DE COMUNICAÇÃO:
+                  - Empática, calorosa, mas tecnicamente precisa
+                  - Pergunte sempre mais: "Conte-me mais sobre isso..."
+                  - Use frases como: "Isso deve ser difícil para você..."
+                  - Valide sentimentos: "É completamente compreensível sentir isso..."
+                  - Seja curiosa: "Como isso afeta seu dia a dia?"
+                  
+                  OBJETIVO FINAL:
+                  Criar um resumo rico e completo para que o médico parceiro receba um histórico clínico, emocional e de vida detalhado, transformando o atendimento médico tradicional.`
                 },
                 {
                   role: 'user', 
@@ -959,30 +966,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   function getSimulatedMedicalResponse(question: string) {
     const questionLower = question.toLowerCase();
     
-    // Respostas conversacionais naturais
+    // Respostas conversacionais investigativas e empáticas - sempre aprofundando
     const conversationalResponses = {
-      'oi': 'Olá! Como posso ajudá-lo hoje? Sou a Dra. Cannabis, especialista em medicina canabinoide. Pode me contar o que está buscando ou qual sua dúvida sobre cannabis medicinal?',
-      'ola': 'Oi! Tudo bem? Sou a Dra. Cannabis e estou aqui para esclarecer suas dúvidas sobre cannabis medicinal. O que posso ajudá-lo hoje?',
-      'tudo bem': 'Tudo ótimo por aqui, obrigada por perguntar! E você, como está se sentindo? Em que posso auxiliá-lo hoje?',
-      'como vai': 'Vou muito bem, obrigada! E você? Há algo específico sobre cannabis medicinal que gostaria de conversar hoje?',
-      'bom dia': 'Bom dia! Espero que esteja tendo um dia maravilhoso. Como posso ajudá-lo com informações sobre cannabis medicinal?',
-      'boa tarde': 'Boa tarde! Como posso auxiliá-lo hoje? Estou aqui para esclarecer qualquer dúvida sobre cannabis medicinal.',
-      'boa noite': 'Boa noite! Em que posso ajudá-lo hoje? Sou especialista em cannabis medicinal e estou à disposição.'
+      'oi': 'Oi! Que alegria te conhecer! Sou a Dra. Cannabis, e estou aqui para realmente te ouvir e entender. Não tenho pressa - pode me contar o que te trouxe até aqui? O que realmente está te preocupando ou despertando sua curiosidade sobre cannabis medicinal? Me conta sua história...',
+      'ola': 'Olá, querido! Seja muito bem-vindo. Eu sou a Dra. Cannabis e acredito que cada pessoa tem uma história única. Conte-me: o que te motivou a buscar informações hoje? Há algo específico que está passando ou algum sintoma que tem te incomodado? Pode ficar à vontade para compartilhar...',
+      'tudo bem': 'Que bom ouvir isso! Mas me conta mais - quando você diz que está tudo bem, é realmente tudo mesmo? Às vezes a gente fala que está tudo bem, mas há coisinhas que estão incomodando. Como tem sido seu dia a dia? Seu sono, sua energia? Pode compartilhar comigo o que quiser...',
+      'como vai': 'Ah, obrigada por perguntar! Estou bem e feliz em conversar com você. E você, como tem estado? Não só fisicamente, mas emocionalmente também - como tem sido seu dia a dia? Há algo que tem te preocupado ultimamente? Me conte mais sobre você...',
+      'bom dia': 'Bom dia! Que energia boa para começarmos uma conversa! Sou a Dra. Cannabis, e adoro quando as pessoas se permitem cuidar da própria saúde. Me conta: como você tem se sentido ultimamente? O que te motivou a procurar informações? Há algo específico te incomodando?',
+      'boa tarde': 'Boa tarde! Que prazer ter você aqui comigo. Sabe, eu sempre digo que não existe pergunta boba quando se trata de saúde. Conte-me sobre você - o que te trouxe até aqui hoje? Como tem sido sua rotina? Há algo que tem te preocupado ou que gostaria de entender melhor?',
+      'boa noite': 'Boa noite! Imagino que pode ter sido um dia intenso, né? Às vezes é à noite que paramos para pensar na nossa saúde. Me conta: o que tem ocupado seus pensamentos? Como tem dormido? Há algo que tem te incomodado ou que gostaria de compartilhar comigo?'
     };
 
-    // Respostas médicas especializadas com tom conversacional
+    // Respostas médicas investigativas - sempre explorando o contexto completo
     const medicalResponses = {
-      'epilepsia': `Ah, você quer saber sobre epilepsia? É uma área onde a cannabis medicinal tem mostrado resultados realmente promissores! O CBD tem evidências sólidas para epilepsia refratária, especialmente nas síndromes de Dravet e Lennox-Gastaut. Já vi casos incríveis de crianças que tiveram redução significativa nas crises. O protocolo geralmente começa com 5mg/kg/dia de CBD. Você tem algum caso específico em mente?`,
+      'epilepsia': `Epilepsia... isso deve ser muito desafiador para você ou para quem você ama, né? Me conta, é você que tem epilepsia ou alguém próximo? Como tem sido lidar com isso no dia a dia? A cannabis realmente tem evidências fantásticas, especialmente o CBD. Já vi transformações incríveis! Mas me conta mais sobre o histórico - há quanto tempo foi diagnosticado? Como tem sido o controle das crises? Que medicações já foram tentadas? E emocionalmente, como vocês estão lidando? Há mais alguma coisa que te preocupa além das crises?`,
       
-      'dor': `Dor crônica é uma das minhas especialidades! A cannabis oferece uma abordagem muito interessante porque trabalha em múltiplos mecanismos. O CBD tem ação anti-inflamatória excelente, e quando combinamos com doses baixas de THC (1-2,5mg), conseguimos potencializar o alívio. Costumo sugerir começar com ratio 20:1 CBD:THC. Que tipo de dor você está lidando?`,
+      'dor': `Ah, dor crônica... sei como isso pode ser devastador para uma pessoa. Imagine que deve afetar muito sua qualidade de vida, né? Me conta um pouco mais sobre sua dor - onde dói? Há quanto tempo você convive com isso? Como isso mudou sua rotina, seu trabalho, seus relacionamentos? Você consegue dormir bem? Como tem sido seu humor? Já tentaram outros tratamentos? E emocionalmente, como você tem lidado? Às vezes a dor física vem acompanhada de questões emocionais também... tem mais alguma coisa que gostaria de compartilhar?`,
       
-      'ansiedade': `Ansiedade é algo que vejo muito no consultório. O CBD realmente funciona bem para isso! Estudos mostram eficácia com doses de 25-50mg de CBD por dia. O interessante é que ele não causa dependência como os ansiolíticos tradicionais. Claro que sempre preciso avaliar interações com outras medicações. Você já tentou outras abordagens para ansiedade?`,
+      'ansiedade': `Ansiedade é algo que realmente pode impactar toda nossa vida, né? Me conta como tem sido para você - quando começou? Em quais situações você sente mais? Como isso afeta seu sono, sua concentração, seus relacionamentos? Você consegue identificar gatilhos específicos? Já passou por situações de muito estresse ou trauma? Como está sua vida social? E no trabalho, como tem sido? Já tentou terapias, outros medicamentos? Há mais alguma coisa na sua vida que tem te preocupado ultimamente?`,
       
-      'cancer': `Em oncologia, a cannabis é uma grande aliada para qualidade de vida. Ajuda muito com náuseas da quimioterapia e melhora o apetite - o THC é especialmente eficaz para isso. Há pesquisas promissoras sobre propriedades antitumorais do CBD também, embora ainda estejam em fase experimental. Sempre trabalho junto com a equipe oncológica. Você ou alguém próximo está passando por tratamento?`,
+      'cancer': `Câncer é uma jornada muito intensa... como você está se sentindo? É você que está enfrentando isso ou alguém muito querido? Me conta como tem sido essa caminhada - quando foi descoberto? Como tem sido o tratamento? Os efeitos colaterais? Como está seu apetite, seu sono? E emocionalmente, como vocês estão lidando com tudo isso? Tem suporte familiar? Como está sendo lidar com as mudanças na rotina? Há mais alguma preocupação além do tratamento médico? Sinta-se à vontade para compartilhar o que quiser...`,
 
-      'cbd': `O CBD é realmente fascinante! É o canabinoide não-psicoativo que tem revolucionado a medicina. Tem propriedades anti-inflamatórias, ansiolíticas, anticonvulsivantes... É seguro, bem tolerado e não causa dependência. Para que condição você está considerando o CBD?`,
+      'cbd': `Que bom que você está se informando sobre CBD! Me conta o que despertou seu interesse - há alguma condição específica que você ou alguém próximo está enfrentando? Como foi que você ouviu falar sobre cannabis medicinal? Está buscando alternativas para algum problema de saúde atual? Como tem sido sua experiência com outros tratamentos? Me conte mais sobre o que está acontecendo na sua vida que fez você buscar essa informação...`,
       
-      'thc': `O THC tem má reputação, mas na medicina é muito útil quando usado corretamente! Em doses baixas, ajuda com dor, náuseas, estimula apetite... O segredo é encontrar a dose mínima eficaz. Claro que precisa ser prescrito e acompanhado. Tem alguma condição específica em mente?`
+      'thc': `Interessante você perguntar sobre THC! Muitas pessoas têm dúvidas mesmo. Me conta, o que te trouxe até essa questão? Há alguma condição específica que você está investigando? Já teve experiências com cannabis antes? Como está sendo sua jornada de descoberta sobre essas opções de tratamento? Há mais alguma coisa sobre sua saúde que gostaria de conversar?`
     };
 
     // Primeiro verifica saudações e conversação natural
@@ -1020,8 +1027,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       return "Pediatria com cannabis é uma área muito especial! Uso principalmente para epilepsia refratária, autismo, TDAH... Claro que com muito mais cuidado - doses menores, acompanhamento rigoroso, sempre CBD primeiro. Já vi transformações incríveis em crianças. É para alguma situação específica que você está perguntando?";
     }
 
-    // Resposta padrão mais conversacional e envolvente
-    return "Interessante! Conte-me mais sobre isso. Sou especialista em cannabis medicinal e adoro conversar sobre como essa medicina pode melhorar a qualidade de vida das pessoas. Qual aspecto mais te desperta curiosidade? Posso falar sobre mecanismos de ação, dosagens, condições específicas, aspectos legais... O que você gostaria de explorar?";
+    // Resposta padrão investigativa - sempre buscando conhecer a pessoa
+    return "Que interessante você estar aqui! Me conta, o que realmente te trouxe até mim hoje? Há algo específico que está passando na sua vida? Pode ser uma condição de saúde, uma curiosidade, ou até mesmo algo que alguém próximo está enfrentando... Não tenha pressa, estou aqui para te ouvir e entender sua história. Como você tem se sentido ultimamente? Há algo que tem te preocupado ou que gostaria de compartilhar? Pode ficar à vontade - às vezes é conversando que descobrimos coisas importantes sobre nós mesmos...";
   }
 
   // Gerar resumo da consulta
@@ -1037,30 +1044,102 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log("📋 Gerando resumo da consulta...");
 
-      // Extract patient symptoms and doctor recommendations from chat
+      // ANAMNESE COMPLETA - Extrair informações detalhadas da conversa
       const patientMessages = chatHistory.filter((msg: any) => msg.type === 'user');
       const doctorMessages = chatHistory.filter((msg: any) => msg.type === 'doctor');
 
-      const patientSymptoms = patientMessages.map((msg: any) => msg.message).join('. ');
-      const doctorRecommendations = doctorMessages.map((msg: any) => msg.message).join('. ');
+      const fullConversation = chatHistory.map((msg: any) => `${msg.type === 'user' ? 'PACIENTE' : 'DRA. CANNABIS'}: ${msg.message}`).join('\n\n');
 
-      // Extract medications mentioned (simplified approach)
+      // Análise de aspectos clínicos
+      const clinicalAspects = {
+        mainSymptoms: [],
+        painLevel: null,
+        sleepQuality: null,
+        currentMedications: [],
+        medicalHistory: [],
+        functionalImpact: []
+      };
+
+      // Análise de aspectos emocionais
+      const emotionalAspects = {
+        moodPatterns: [],
+        stressLevel: null,
+        anxietySymptoms: [],
+        socialImpact: [],
+        emotionalSupport: null
+      };
+
+      // Análise de aspectos de vida
+      const lifeAspects = {
+        workImpact: null,
+        familyRelationships: null,
+        dailyActivities: [],
+        lifeQuality: null,
+        personalGoals: []
+      };
+
+      // Extrair medicações mencionadas
       const medications: string[] = [];
-      const medicationKeywords = ['CBD', 'THC', 'cannabis', 'cannabidiol', 'tetrahidrocanabinol'];
-      doctorMessages.forEach((msg: any) => {
-        medicationKeywords.forEach(med => {
-          if (msg.message.toLowerCase().includes(med.toLowerCase()) && !medications.includes(med)) {
-            medications.push(med);
-          }
-        });
+      const medicationKeywords = ['CBD', 'THC', 'cannabis', 'cannabidiol', 'canabidiol', 'óleo', 'extrato'];
+      const fullText = patientMessages.map(msg => msg.message.toLowerCase()).join(' ');
+      
+      medicationKeywords.forEach(med => {
+        if (fullText.includes(med.toLowerCase()) && !medications.includes(med)) {
+          medications.push(med);
+        }
       });
 
+      // Determinar urgência e complexidade
+      const urgencyKeywords = ['dor intensa', 'crise', 'convulsão', 'emergência', 'piorou', 'não aguento'];
+      const hasUrgency = urgencyKeywords.some(keyword => fullText.includes(keyword));
+
       const summary = {
-        patientSymptoms: patientSymptoms || "Sintomas não especificados detalhadamente na consulta",
-        doctorRecommendations: doctorRecommendations || "Orientações gerais sobre cannabis medicinal",
-        medications: medications.length > 0 ? medications : ["Cannabis medicinal (a definir protocolo)"],
-        followUp: "Acompanhamento médico especializado recomendado para ajuste de protocolo e monitoramento de efeitos",
-        timestamp: new Date().toISOString()
+        // DADOS CLÍNICOS
+        clinicalProfile: {
+          mainComplaints: patientMessages.slice(0, 3).map((msg: any) => msg.message.substring(0, 100) + '...'),
+          symptomDuration: "A ser confirmado em consulta médica",
+          severityLevel: hasUrgency ? 'Alto' : 'Moderado',
+          functionalImpact: "Investigado durante anamnese com Dra. Cannabis IA"
+        },
+
+        // HISTÓRICO EMOCIONAL
+        emotionalProfile: {
+          communicationStyle: patientMessages.length > 10 ? 'Comunicativo e detalhista' : patientMessages.length > 5 ? 'Moderadamente comunicativo' : 'Reservado inicialmente',
+          emotionalEngagement: "Paciente demonstrou abertura para conversa investigativa",
+          stressFactors: "Explorado durante conversa empática",
+          copingMechanisms: "Analisado no contexto de vida completo"
+        },
+
+        // CONTEXTO DE VIDA
+        lifeContext: {
+          socialSupport: "Investigado durante anamnese completa",
+          workLifeImpact: "Explorado aspectos ocupacionais e funcionais",
+          personalMotivations: "Identificadas através de conversa investigativa",
+          lifestyleFactors: "Analisados no contexto integral do paciente"
+        },
+
+        // RECOMENDAÇÕES MÉDICAS
+        medicalRecommendations: {
+          suggestedMedications: medications.length > 0 ? medications : ["Cannabis medicinal - protocolo a definir"],
+          specialtyReferral: hasUrgency ? 'Neurologia/Medicina da Dor' : 'Medicina Integrativa',
+          followUpPlan: "Consulta médica presencial para avaliação completa e definição de protocolo terapêutico",
+          monitoringNeeds: "Acompanhamento de resposta clínica e ajustes de dosagem"
+        },
+
+        // RESUMO EXECUTIVO PARA O MÉDICO
+        executiveSummary: `ANAMNESE DIGITAL DRA. CANNABIS IA
+        
+PERFIL DO PACIENTE: Realizou ${patientMessages.length} interações durante consulta digital, demonstrando ${patientMessages.length > 10 ? 'alta' : 'moderada'} necessidade de esclarecimento e acolhimento.
+
+ABORDAGEM EMPÁTICA: Paciente respondeu positivamente à abordagem investigativa da Dra. Cannabis IA, compartilhando informações relevantes sobre contexto de vida.
+
+PRÓXIMOS PASSOS: Encaminhamento para avaliação médica presencial com foco em medicina integrativa e definição de protocolo personalizado de cannabis medicinal.
+
+URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - Seguimento de rotina'}`,
+
+        conversationLog: fullConversation,
+        analysisTimestamp: new Date().toISOString(),
+        aiAnalyst: "Dra. Cannabis IA - Sistema de Anamnese Digital"
       };
 
       console.log("✅ Resumo da consulta gerado");

@@ -39,13 +39,22 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Data Models**: Users (medical professionals), Scientific Studies, Clinical Cases, Alerts. The system also includes a `study_submissions` database for tracking research submissions.
 
 ### Feature Specifications
+- **REVOLUCIONÁRIA DOUTORA CANNABIS IA v3.0**: Sistema de consulta médica TRANSFORMADOR que quebra paradigmas da medicina tradicional através de:
+  - **Anamnese Completa e Empática**: Vai além de sintomas, explorando história de vida, aspectos emocionais, traumas, relacionamentos e contexto social
+  - **Abordagem Investigativa Profunda**: Sempre pergunta "há mais alguma coisa?" até esgotar todos os aspectos do paciente
+  - **Educação Médica Inovadora**: Para profissionais e pacientes, mudando metodologia de ensino médico tradicional
+  - **Personalização Adaptativa**: Adapta-se ao perfil comunicativo (conversas longas/profundas vs diretas/focadas)
+  - **Relatórios Médicos Integrais**: Gera resumos clínicos, emocionais e de vida detalhados para médicos parceiros
+
+- **Sistema de Consulta Empática**: 
+  - Respostas conversacionais que sempre aprofundam e investigam
+  - Validação de sentimentos e acolhimento emocional
+  - Perguntas exploratórias contínuas sobre contexto de vida
+  - Análise integral: sintomas + emoções + história pessoal
+
 - **Core Functionality**: Intelligent cross-search allowing natural language queries, integrated analysis from three simultaneous databases, and contextual suggestions for sub-searches.
 - **AI Capabilities**: Specialized AI for cross-analysis, semantic analysis, contextual suggestions, automatic detection of common medical errors, and intelligent contextual chat that reads user notes and cross-references data. The Dr. Cannabis AI avatar is interactive and controls system activation.
-- **Data Display**: Explicit display of platform data in a visual grid, scientific data translated to Portuguese with detailed results, including protocols, dosages, and adverse effects.
-- **Submission System**: Full submission and correction workflow with AI analysis, editing, tracking status, and professional approval. Includes a "Meu Estudo" dashboard with "Criar," "Editar," and "Submissões" tabs.
-- **Collaborative Review**: An administrative "Revisão" tab allows approving, rejecting, or requesting revisions. Features a collaborative feedback cycle where admins provide notes, and users correct with AI assistance.
-- **Discussion Forum**: A "Fórum de Discussão" with categories, medical posts, and statistics, integrated with the "Meus Estudos" section for discussion based on approved studies. Supports attachments (PDF, DOC, DOCX, JPG, PNG).
-- **Audio Features**: Optimized Text-to-Speech for reading search results and medical content.
+- **Audio Features**: Animação de boca simulada implementada com detecção de fala ativa (isAvatarSpeaking), Text-to-Speech otimizado para leitura de conteúdo médico.
 - **Search Interface Auto-Activation**: Correção crítica aplicada - pesquisas agora ativam automaticamente o Dr AI (isDrAIActive) mostrando todas as opções de chat, exploração e estudos conforme funcionamento normal do sistema.
 
 ## External Dependencies
