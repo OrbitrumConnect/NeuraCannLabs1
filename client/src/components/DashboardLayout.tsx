@@ -28,7 +28,7 @@ const dashboardOptions = [
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
-  { id: "critical-modules", name: "Integração Laboratorial", icon: "fas fa-cogs" },
+
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
 ];
