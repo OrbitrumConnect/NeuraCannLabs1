@@ -136,7 +136,15 @@ export function DraCannabisAI() {
   // Consulta médica por texto
   const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
-      const response = await apiRequest('/api/doctor/consult', 'POST', data);
+      const payload = {
+        question: data.question,
+        conversationHistory: chatHistory.map(msg => ({
+          type: msg.type === 'user' ? 'user' : 'assistant',
+          message: msg.message,
+          timestamp: msg.timestamp
+        }))
+      };
+      const response = await apiRequest('/api/doctor/consult', 'POST', payload);
       return await response.json() as ConsultResponse;
     },
     onSuccess: (data: ConsultResponse, variables) => {

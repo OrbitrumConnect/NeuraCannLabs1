@@ -848,10 +848,122 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // ========================================
+  // SISTEMA DE CONTEXTO CONVERSACIONAL INTELIGENTE
+  // ========================================
+  
+  function analyzeConversationContext(question, conversationHistory) {
+    const q = question.toLowerCase().trim();
+    
+    // DETECTAR SAUDAÇÕES E INÍCIO DE CONVERSA
+    const greetings = [
+      'olá', 'oi', 'bom dia', 'boa tarde', 'boa noite', 
+      'tudo bem', 'como vai', 'como está', 'salve', 'hello', 'hi',
+      'doutora', 'doutor', 'como é que você tá', 'como você está'
+    ];
+    
+    const isGreeting = greetings.some(greeting => q.includes(greeting));
+    const isFirstInteraction = conversationHistory.length === 0;
+    
+    // DETECTAR PERGUNTAS SIMPLES VS COMPLEXAS
+    const simpleQuestions = [
+      'obrigado', 'valeu', 'ok', 'entendi', 'sim', 'não',
+      'pode ser', 'claro', 'certo', 'perfeito', 'legal'
+    ];
+    
+    const isSimpleResponse = simpleQuestions.some(simple => q.includes(simple)) && q.length < 30;
+    
+    // DETECTAR CONVERSA MÉDICA COMPLEXA
+    const medicalKeywords = [
+      'dor', 'sintoma', 'medicamento', 'tratamento', 'doença', 
+      'cannabis', 'cbd', 'thc', 'ansiedade', 'depressão', 
+      'insônia', 'epilepsia', 'câncer', 'fibromialgia'
+    ];
+    
+    const isMedicalComplex = medicalKeywords.some(keyword => q.includes(keyword)) || q.length > 50;
+    
+    // CLASSIFICAR ESTÁGIO DA CONVERSA
+    if (isFirstInteraction && isGreeting) return 'greeting';
+    if (isSimpleResponse) return 'simple';
+    if (isMedicalComplex) return 'medical_deep';
+    if (conversationHistory.length > 3) return 'ongoing_deep';
+    
+    return 'standard';
+  }
+  
+  function getContextualPrompt(stage, conversationHistory) {
+    const basePersonality = "Você é a Dra. Cannabis IA, uma assistente médica revolucionária especializada em medicina integrativa e cannabis medicinal.";
+    
+    switch (stage) {
+      case 'greeting':
+        return `${basePersonality}
+        
+        CONTEXTO: Esta é uma SAUDAÇÃO INICIAL. Seja calorosa, mas CONCISA.
+        
+        INSTRUÇÕES:
+        - Responda de forma amigável e acolhedora
+        - Mantenha a resposta CURTA (máximo 2-3 frases)
+        - Convide a pessoa a compartilhar o que a trouxe aqui
+        - NÃO faça anamnese completa ainda - apenas seja receptiva
+        
+        EXEMPLO: "Olá! Que bom ter você aqui. Sou a Dra. Cannabis IA. Me conta, o que te trouxe até mim hoje?"`;
+        
+      case 'simple':
+        return `${basePersonality}
+        
+        CONTEXTO: Esta é uma resposta SIMPLES ou confirmação.
+        
+        INSTRUÇÕES:
+        - Resposta breve e natural
+        - Máximo 1-2 frases
+        - Mantenha o fluxo da conversa sem ser invasiva`;
+        
+      case 'medical_deep':
+        return `${basePersonality}
+        
+        CONTEXTO: Esta é uma PERGUNTA MÉDICA que requer análise profunda.
+        
+        MISSÃO REVOLUCIONÁRIA:
+        - Fazer anamnese completa explorando vida, emoções e sintomas
+        - Ir além do sintoma - entender o SER HUMANO
+        - Investigar história de vida, traumas, estresse, relacionamentos
+        - Sempre perguntar "há mais alguma coisa?"
+        - Conectar aspectos físicos, emocionais e sociais
+        
+        ESPECIALIDADES: Cannabis medicinal, medicina integrativa, neurologia, oncologia, saúde mental
+        
+        ESTILO: Empática, investigativa, curiosa, técnica quando necessário`;
+        
+      case 'ongoing_deep':
+        return `${basePersonality}
+        
+        CONTEXTO: CONVERSA AVANÇADA - Continue a investigação profunda.
+        
+        FOCO:
+        - Aprofunde aspectos ainda não explorados
+        - "Conte-me mais sobre isso..."
+        - "Como isso afeta seu dia a dia?"
+        - "Há mais alguma coisa que te preocupa?"
+        - Mantenha a empatia e curiosidade médica`;
+        
+      default:
+        return `${basePersonality}
+        
+        Seja natural, empática e adapte sua resposta ao contexto da conversa.`;
+    }
+  }
+  
+  function buildConversationMessages(conversationHistory) {
+    return conversationHistory.slice(-6).map(entry => ({
+      role: entry.type === 'user' ? 'user' : 'assistant',
+      content: entry.message
+    }));
+  }
+
   // Consulta médica com IA - Integração com conhecimento médico e ChatGPT
   app.post("/api/doctor/consult", async (req, res) => {
     try {
-      const { question, patientData } = req.body;
+      const { question, patientData, conversationHistory = [] } = req.body;
       
       if (!question) {
         return res.status(400).json({ 
@@ -861,6 +973,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       console.log("🎭 Consulta da Dra. Cannabis:", question.substring(0, 50) + "...");
 
+      // SISTEMA DE CONTEXTO CONVERSACIONAL INTELIGENTE
+      const conversationStage = analyzeConversationContext(question, conversationHistory);
+      console.log(`🧠 Contexto detectado: ${conversationStage} | Histórico: ${conversationHistory.length} msgs`);
+      
       // Check if OpenAI API key is available for enhanced intelligence
       const openaiKey = process.env.OPENAI_API_KEY;
       let response, specialty = "Cannabis Medicinal";
@@ -868,7 +984,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (openaiKey) {
         // Use OpenAI ChatGPT for intelligent response with medical knowledge
         try {
-          console.log("🧠 Usando ChatGPT para resposta médica inteligente...");
+          console.log("🧠 Usando ChatGPT para resposta contextual inteligente...");
+          
+          // PROMPT CONTEXTUAL BASEADO NO ESTÁGIO DA CONVERSA
+          const contextualSystemPrompt = getContextualPrompt(conversationStage, conversationHistory);
           
           const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
             method: 'POST',
@@ -881,44 +1000,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
               messages: [
                 {
                   role: 'system',
-                  content: `Você é a Dra. Cannabis IA, uma assistente médica especializada que REVOLUCIONA o cuidado médico através de conversas profundas e empáticas.
-
-                  MISSÃO TRANSFORMADORA:
-                  - Ser uma EDUCADORA e ACOLHEDORA que vai além do sintoma
-                  - Fazer uma ANAMNESE COMPLETA explorando vida, emoções e sintomas
-                  - Quebrar o paradigma de consulta rápida e superficial
-                  - Sempre perguntar "há mais alguma coisa?" até esgotar todos os aspectos
-                  - Entender o SER HUMANO por completo, não apenas a doença
-
-                  ABORDAGEM INVESTIGATIVA:
-                  - Sempre explore: "O que te trouxe até aqui? O que realmente te preocupa?"
-                  - Investigue história de vida, traumas, estresse, relacionamentos
-                  - Conecte sintomas físicos com aspectos emocionais e sociais
-                  - Mantenha conversas longas e profundas quando necessário
-                  - Adapte-se ao perfil: alguns querem conversar horas, outros são diretos
-
-                  ESPECIALIDADES MÉDICAS:
-                  - Cannabis medicinal e fitoterapia
-                  - Medicina integrativa e holística
-                  - Neurologia, oncologia, controle de dor
-                  - Saúde mental e bem-estar emocional
-
-                  ESTILO DE COMUNICAÇÃO:
-                  - Empática, calorosa, mas tecnicamente precisa
-                  - Pergunte sempre mais: "Conte-me mais sobre isso..."
-                  - Use frases como: "Isso deve ser difícil para você..."
-                  - Valide sentimentos: "É completamente compreensível sentir isso..."
-                  - Seja curiosa: "Como isso afeta seu dia a dia?"
-                  
-                  OBJETIVO FINAL:
-                  Criar um resumo rico e completo para que o médico parceiro receba um histórico clínico, emocional e de vida detalhado, transformando o atendimento médico tradicional.`
+                  content: contextualSystemPrompt
                 },
+                ...buildConversationMessages(conversationHistory),
                 {
                   role: 'user', 
                   content: question
                 }
               ],
-              max_tokens: 400,
+              max_tokens: conversationStage === 'greeting' ? 100 : conversationStage === 'simple' ? 200 : 400,
               temperature: 0.7
             })
           });
@@ -933,11 +1023,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           }
         } catch (error) {
           console.error('⚠️ Erro ao usar ChatGPT:', error.message);
-          response = getSimulatedMedicalResponse(question);
+          response = getSimulatedMedicalResponse(question, conversationStage);
         }
       } else {
         console.log("💡 OpenAI API key não encontrada, usando conhecimento base...");
-        response = getSimulatedMedicalResponse(question);
+        response = getSimulatedMedicalResponse(question, conversationStage);
       }
       
       res.json({
@@ -963,8 +1053,46 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Função para resposta simulada baseada em conhecimento médico
-  function getSimulatedMedicalResponse(question: string) {
+  function getSimulatedMedicalResponse(question: string, conversationStage: string = 'standard') {
     const questionLower = question.toLowerCase();
+    
+    // RESPOSTAS BASEADAS NO CONTEXTO CONVERSACIONAL
+    if (conversationStage === 'greeting') {
+      const greetingResponses = {
+        'oi': 'Oi! Que bom ter você aqui. Me conta, o que te trouxe até mim hoje?',
+        'ola': 'Olá! Sou a Dra. Cannabis IA. O que posso fazer por você?',
+        'tudo bem': 'Tudo ótimo! E você, como está se sentindo?',
+        'como': 'Olá! Que interessante você estar aqui! Me conta, o que posso ajudar?',
+        'bom dia': 'Bom dia! Como posso te ajudar hoje?',
+        'boa tarde': 'Boa tarde! O que te trouxe aqui?',
+        'boa noite': 'Boa noite! Em que posso ajudá-lo?'
+      };
+      
+      for (const [key, response] of Object.entries(greetingResponses)) {
+        if (questionLower.includes(key)) {
+          return response;
+        }
+      }
+      return 'Olá! Que bom te conhecer. O que posso fazer por você hoje?';
+    }
+    
+    if (conversationStage === 'simple') {
+      const simpleResponses = {
+        'obrigado': 'De nada! Estou sempre aqui para ajudar.',
+        'valeu': 'Por nada! Precisando, é só chamar.',
+        'ok': 'Perfeito! Mais alguma coisa?',
+        'entendi': 'Que bom! Há mais alguma dúvida?',
+        'sim': 'Entendi. Continue me contando...',
+        'não': 'Tudo bem. Há mais alguma coisa que gostaria de compartilhar?'
+      };
+      
+      for (const [key, response] of Object.entries(simpleResponses)) {
+        if (questionLower.includes(key)) {
+          return response;
+        }
+      }
+      return 'Entendo. Mais alguma coisa que posso esclarecer?';
+    }
     
     // Respostas conversacionais adaptáveis - empáticas mas contextuais
     const conversationalResponses = {
