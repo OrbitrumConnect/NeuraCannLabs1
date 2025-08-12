@@ -324,7 +324,7 @@ export function DraCannabisAI() {
                 <img 
                   src={draCannabisImage} 
                   alt="Dra. Cannabis IA" 
-                  className={`w-[31rem] h-[31rem] rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20 ${
+                  className={`w-[37.2rem] h-[37.2rem] rounded-lg object-contain shadow-2xl bg-gradient-to-br from-green-900/10 to-green-800/20 ${
                     isTalking ? 'animate-pulse filter brightness-110' : ''
                   }`}
                 />
