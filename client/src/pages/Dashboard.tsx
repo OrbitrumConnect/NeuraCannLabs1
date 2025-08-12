@@ -13,6 +13,7 @@ import ProfileDashboard from "./ProfileDashboard";
 import { FreePlanNotification } from '@/components/FreePlanNotification';
 import { PlansFloatingTrigger } from '@/components/PlansFloatingTrigger';
 import GlobalAdminDashboard from "./GlobalAdminDashboard";
+import { welcomeService } from '@/services/welcomeService';
 
 export default function Dashboard() {
   const { section } = useParams();
@@ -31,13 +32,25 @@ export default function Dashboard() {
     if (section) {
       setActiveDashboard(section);
     }
+    
+    // Saudação automática da Dra. Cannabis IA ao entrar no dashboard
+    if (activeDashboard === "overview" || !section) {
+      const timer = setTimeout(() => {
+        welcomeService.playWelcomeMessage().catch(error => {
+          console.error('Erro na saudação da Dra. Cannabis:', error);
+        });
+      }, 2000); // 2 segundos após carregar
+      
+      return () => clearTimeout(timer);
+    }
+    
     // Desabilitado - navegação via header agora
     // if (isFreePlan && !localStorage.getItem('freePlanNotificationShown')) {
     //   setShowFreePlanNotification(true);
     // }
 
     // Voice commands agora funcionam diretamente no input - sem listeners
-  }, [section, isFreePlan]);
+  }, [section, isFreePlan, activeDashboard]);
 
   const handleMenuClick = () => {
     setSideNavOpen(!sideNavOpen);
