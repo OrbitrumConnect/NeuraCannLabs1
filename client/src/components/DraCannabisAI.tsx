@@ -181,7 +181,7 @@ export function DraCannabisAI() {
             }
             throw new Error('ElevenLabs não disponível');
           } catch (error) {
-            console.log('⚠️ Fallback para sistema nativo:', error.message);
+            console.log('⚠️ Fallback para sistema nativo:', (error as Error).message);
             try {
               await nativeAvatarService.makeAvatarSpeak(data.response, 'medical');
               console.log('✅ Sistema nativo reproduzido');
@@ -293,9 +293,14 @@ export function DraCannabisAI() {
         setIsListening(true);
       };
 
-      recognition.onresult = (event: any) => {
+      recognition.onresult = async (event: any) => {
         const transcript = event.results[0][0].transcript;
         setQuestion(transcript);
+        
+        // AUTOMATICAMENTE processa a pergunta após captura
+        console.log('🎤 Áudio capturado:', transcript);
+        // Processar automaticamente a pergunta capturada
+        consultMutation.mutate({ question: transcript });
       };
 
       recognition.onerror = () => {

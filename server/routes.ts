@@ -966,30 +966,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   function getSimulatedMedicalResponse(question: string) {
     const questionLower = question.toLowerCase();
     
-    // Respostas conversacionais investigativas e empáticas - sempre aprofundando
+    // Respostas conversacionais adaptáveis - empáticas mas contextuais
     const conversationalResponses = {
-      'oi': 'Oi! Que alegria te conhecer! Sou a Dra. Cannabis, e estou aqui para realmente te ouvir e entender. Não tenho pressa - pode me contar o que te trouxe até aqui? O que realmente está te preocupando ou despertando sua curiosidade sobre cannabis medicinal? Me conta sua história...',
-      'ola': 'Olá, querido! Seja muito bem-vindo. Eu sou a Dra. Cannabis e acredito que cada pessoa tem uma história única. Conte-me: o que te motivou a buscar informações hoje? Há algo específico que está passando ou algum sintoma que tem te incomodado? Pode ficar à vontade para compartilhar...',
-      'tudo bem': 'Que bom ouvir isso! Mas me conta mais - quando você diz que está tudo bem, é realmente tudo mesmo? Às vezes a gente fala que está tudo bem, mas há coisinhas que estão incomodando. Como tem sido seu dia a dia? Seu sono, sua energia? Pode compartilhar comigo o que quiser...',
-      'como vai': 'Ah, obrigada por perguntar! Estou bem e feliz em conversar com você. E você, como tem estado? Não só fisicamente, mas emocionalmente também - como tem sido seu dia a dia? Há algo que tem te preocupado ultimamente? Me conte mais sobre você...',
-      'bom dia': 'Bom dia! Que energia boa para começarmos uma conversa! Sou a Dra. Cannabis, e adoro quando as pessoas se permitem cuidar da própria saúde. Me conta: como você tem se sentido ultimamente? O que te motivou a procurar informações? Há algo específico te incomodando?',
-      'boa tarde': 'Boa tarde! Que prazer ter você aqui comigo. Sabe, eu sempre digo que não existe pergunta boba quando se trata de saúde. Conte-me sobre você - o que te trouxe até aqui hoje? Como tem sido sua rotina? Há algo que tem te preocupado ou que gostaria de entender melhor?',
-      'boa noite': 'Boa noite! Imagino que pode ter sido um dia intenso, né? Às vezes é à noite que paramos para pensar na nossa saúde. Me conta: o que tem ocupado seus pensamentos? Como tem dormido? Há algo que tem te incomodado ou que gostaria de compartilhar comigo?'
+      'oi': 'Oi! Sou a Dra. Cannabis. Que bom te conhecer! O que te trouxe até aqui hoje?',
+      'ola': 'Olá! Sou a Dra. Cannabis. Seja bem-vindo! Me conta o que você gostaria de saber?',
+      'tudo bem': 'Ótimo! E você, como está? Há algo sobre sua saúde que gostaria de conversar?',
+      'como vai': 'Tudo bem por aqui! E você, como tem se sentido? Em que posso te ajudar hoje?',
+      'bom dia': 'Bom dia! Como posso ajudar você a cuidar melhor da sua saúde hoje?',
+      'boa tarde': 'Boa tarde! Que bom ter você aqui. O que posso esclarecer para você?',
+      'boa noite': 'Boa noite! Como posso te ajudar? Há algo te incomodando?'
     };
 
-    // Respostas médicas investigativas - sempre explorando o contexto completo
+    // Respostas médicas contextuais - investigativas mas adaptáveis
     const medicalResponses = {
-      'epilepsia': `Epilepsia... isso deve ser muito desafiador para você ou para quem você ama, né? Me conta, é você que tem epilepsia ou alguém próximo? Como tem sido lidar com isso no dia a dia? A cannabis realmente tem evidências fantásticas, especialmente o CBD. Já vi transformações incríveis! Mas me conta mais sobre o histórico - há quanto tempo foi diagnosticado? Como tem sido o controle das crises? Que medicações já foram tentadas? E emocionalmente, como vocês estão lidando? Há mais alguma coisa que te preocupa além das crises?`,
+      'epilepsia': `Epilepsia é uma área onde a cannabis tem evidências sólidas! O CBD especialmente funciona muito bem para epilepsia refratária. Me conta, é para você ou alguém próximo? Como tem sido o controle das crises atualmente?`,
       
-      'dor': `Ah, dor crônica... sei como isso pode ser devastador para uma pessoa. Imagine que deve afetar muito sua qualidade de vida, né? Me conta um pouco mais sobre sua dor - onde dói? Há quanto tempo você convive com isso? Como isso mudou sua rotina, seu trabalho, seus relacionamentos? Você consegue dormir bem? Como tem sido seu humor? Já tentaram outros tratamentos? E emocionalmente, como você tem lidado? Às vezes a dor física vem acompanhada de questões emocionais também... tem mais alguma coisa que gostaria de compartilhar?`,
+      'dor': `Dor crônica é uma das minhas especialidades! A cannabis oferece alívio por múltiplos mecanismos. CBD tem ação anti-inflamatória, e pequenas doses de THC potencializam o efeito. Que tipo de dor você está enfrentando?`,
       
-      'ansiedade': `Ansiedade é algo que realmente pode impactar toda nossa vida, né? Me conta como tem sido para você - quando começou? Em quais situações você sente mais? Como isso afeta seu sono, sua concentração, seus relacionamentos? Você consegue identificar gatilhos específicos? Já passou por situações de muito estresse ou trauma? Como está sua vida social? E no trabalho, como tem sido? Já tentou terapias, outros medicamentos? Há mais alguma coisa na sua vida que tem te preocupado ultimamente?`,
+      'ansiedade': `Ansiedade é algo muito comum que vejo no consultório. O CBD funciona muito bem - 25-50mg por dia, sem causar dependência como ansiolíticos tradicionais. Como tem sido sua ansiedade? Em que momentos você sente mais?`,
       
-      'cancer': `Câncer é uma jornada muito intensa... como você está se sentindo? É você que está enfrentando isso ou alguém muito querido? Me conta como tem sido essa caminhada - quando foi descoberto? Como tem sido o tratamento? Os efeitos colaterais? Como está seu apetite, seu sono? E emocionalmente, como vocês estão lidando com tudo isso? Tem suporte familiar? Como está sendo lidar com as mudanças na rotina? Há mais alguma preocupação além do tratamento médico? Sinta-se à vontade para compartilhar o que quiser...`,
+      'cancer': `Em oncologia, cannabis é excelente para qualidade de vida! Ajuda com náuseas da quimio e estimula o apetite. Há pesquisas promissoras sobre propriedades antitumorais do CBD também. É para você ou alguém querido?`,
 
-      'cbd': `Que bom que você está se informando sobre CBD! Me conta o que despertou seu interesse - há alguma condição específica que você ou alguém próximo está enfrentando? Como foi que você ouviu falar sobre cannabis medicinal? Está buscando alternativas para algum problema de saúde atual? Como tem sido sua experiência com outros tratamentos? Me conte mais sobre o que está acontecendo na sua vida que fez você buscar essa informação...`,
+      'cbd': `CBD é fascinante! Não-psicoativo, anti-inflamatório, ansiolítico, anticonvulsivante... Muito seguro e bem tolerado. Para que condição você está considerando CBD?`,
       
-      'thc': `Interessante você perguntar sobre THC! Muitas pessoas têm dúvidas mesmo. Me conta, o que te trouxe até essa questão? Há alguma condição específica que você está investigando? Já teve experiências com cannabis antes? Como está sendo sua jornada de descoberta sobre essas opções de tratamento? Há mais alguma coisa sobre sua saúde que gostaria de conversar?`
+      'thc': `THC tem má reputação, mas na medicina é muito útil quando bem dosado! Ajuda com dor, náuseas, apetite... O segredo é a dose mínima eficaz. Que condição você tem em mente?`
     };
 
     // Primeiro verifica saudações e conversação natural
