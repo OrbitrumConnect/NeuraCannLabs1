@@ -67,6 +67,80 @@ export default function DraCannabisPage() {
               </CardContent>
             </Card>
 
+            {/* Exemplos de Consultas */}
+            <Card className="border-purple-500/30 bg-purple-900/10">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm text-purple-400 flex items-center space-x-2">
+                  <Brain className="w-4 h-4" />
+                  <span>Exemplos de Consultas</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="pt-0 space-y-1">
+                <div className="text-xs text-gray-300 space-y-1">
+                  <button 
+                    className="text-left w-full hover:text-purple-300 hover:bg-purple-800/20 p-1 rounded transition-colors cursor-pointer"
+                    onClick={() => {
+                      const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
+                      if (input) {
+                        input.value = "Como o CBD ajuda no tratamento da epilepsia?";
+                        input.focus();
+                      }
+                    }}
+                  >
+                    • Como o CBD ajuda no tratamento da epilepsia?
+                  </button>
+                  <button 
+                    className="text-left w-full hover:text-purple-300 hover:bg-purple-800/20 p-1 rounded transition-colors cursor-pointer"
+                    onClick={() => {
+                      const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
+                      if (input) {
+                        input.value = "Qual a dosagem recomendada para dor crônica?";
+                        input.focus();
+                      }
+                    }}
+                  >
+                    • Qual a dosagem recomendada para dor crônica?
+                  </button>
+                  <button 
+                    className="text-left w-full hover:text-purple-300 hover:bg-purple-800/20 p-1 rounded transition-colors cursor-pointer"
+                    onClick={() => {
+                      const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
+                      if (input) {
+                        input.value = "Cannabis medicinal é eficaz para ansiedade?";
+                        input.focus();
+                      }
+                    }}
+                  >
+                    • Cannabis medicinal é eficaz para ansiedade?
+                  </button>
+                  <button 
+                    className="text-left w-full hover:text-purple-300 hover:bg-purple-800/20 p-1 rounded transition-colors cursor-pointer"
+                    onClick={() => {
+                      const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
+                      if (input) {
+                        input.value = "Efeitos colaterais do THC em oncologia?";
+                        input.focus();
+                      }
+                    }}
+                  >
+                    • Efeitos colaterais do THC em oncologia?
+                  </button>
+                  <button 
+                    className="text-left w-full hover:text-purple-300 hover:bg-purple-800/20 p-1 rounded transition-colors cursor-pointer"
+                    onClick={() => {
+                      const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
+                      if (input) {
+                        input.value = "Protocolo para síndrome de Dravet";
+                        input.focus();
+                      }
+                    }}
+                  >
+                    • Protocolo para síndrome de Dravet
+                  </button>
+                </div>
+              </CardContent>
+            </Card>
+
             {/* Disclaimer médico compacto */}
             <Card className="border-orange-500/30 bg-orange-900/10">
               <CardHeader className="pb-2">
