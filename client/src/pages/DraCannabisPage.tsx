@@ -19,6 +19,26 @@ export default function DraCannabisPage() {
           
           {/* Sidebar compacta com informações - Ocupa 1 coluna */}
           <div className="space-y-4">
+            
+            {/* Header compacto */}
+            <Card className="border-green-500/30 bg-gradient-to-br from-green-900/20 to-emerald-900/20">
+              <CardHeader className="pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                    <Brain className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg text-green-400">Dra. Cannabis IA</CardTitle>
+                    <Badge className="bg-green-600 text-white text-xs mt-1">
+                      D-ID + ElevenLabs
+                    </Badge>
+                  </div>
+                </div>
+                <p className="text-xs text-green-200 mt-2">
+                  Certificada ANVISA • CFM
+                </p>
+              </CardHeader>
+            </Card>
 
             {/* Recursos disponíveis integrados */}
             <Card className="border-blue-500/30 bg-blue-900/10">
