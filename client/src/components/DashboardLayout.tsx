@@ -89,7 +89,7 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-green-500/30 backdrop-blur-md">
-        <div className="container mx-auto px-2 sm:px-4 py-0 sm:py-0.5 flex items-center justify-between">
+        <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
           <div className="flex items-center space-x-2 sm:space-x-3">
             <div className="w-6 h-6 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
               <i className="fas fa-cannabis text-white text-xs sm:text-lg" />

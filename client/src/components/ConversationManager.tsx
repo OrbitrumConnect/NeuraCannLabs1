@@ -74,20 +74,7 @@ export function ConversationManager({
   };
 
   if (!isOpen) {
-    return (
-      <div className="fixed top-4 right-4 z-50">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="flex items-center gap-2 px-3 py-2 bg-purple-600/90 hover:bg-purple-600 text-white rounded-lg transition-all shadow-lg border border-purple-400/30"
-          title="Gerenciar Conversas - Clique para ver todas as conversas"
-        >
-          <MessageCircle className="w-5 h-5" />
-          <span className="text-sm font-medium">
-            {conversations.length > 0 ? `${conversations.length} conversas` : 'Conversas'}
-          </span>
-        </button>
-      </div>
-    );
+    return null;
   }
 
   return (
