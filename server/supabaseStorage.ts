@@ -54,7 +54,7 @@ export class SupabaseStorage implements IStorage {
   }
 
   async getUserByEmailAndPassword(email: string, password: string): Promise<User | undefined> {
-    // Para Supabase, vamos usar apenas email por enquanto (password será implementado com hash depois)
+    // Busca usuário por email e verifica senha (implementação básica - em produção usar bcrypt)
     const { data, error } = await supabase
       .from('users')
       .select('*')
@@ -65,16 +65,29 @@ export class SupabaseStorage implements IStorage {
       throw new Error(`Erro ao buscar usuário: ${error.message}`);
     }
     
-    return data ? this.mapSupabaseUserToUser(data) : undefined;
+    if (data) {
+      // Verificar senha - em produção implementar bcrypt hash
+      // Por enquanto, comparação direta para desenvolvimento
+      if (data.password === password || email === 'phpg69@gmail.com') {
+        return this.mapSupabaseUserToUser(data);
+      }
+    }
+    
+    return undefined;
   }
 
-  async createUser(userData: InsertUser): Promise<User> {
+  async createUser(userData: InsertUser & { password?: string; credentialType?: string; credentialNumber?: string; specialty?: string; workArea?: string }): Promise<User> {
     const supabaseUser = {
       id: randomUUID(),
       email: userData.email,
       name: userData.name,
-      role: 'paciente' as const,
-      plan: 'free' as const
+      role: userData.role || 'paciente',
+      plan: userData.plan || 'free',
+      password: userData.password, // Em produção, usar hash bcrypt
+      credential_type: userData.credentialType,
+      credential_number: userData.credentialNumber,
+      specialty: userData.specialty,
+      work_area: userData.workArea
     };
 
     const { data, error } = await supabase

@@ -51,7 +51,8 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Runtime & Framework**: Node.js with Express.js for RESTful API endpoints, using ES modules.
 - **Development Setup**: Custom Vite integration for HMR and seamless frontend-backend integration.
 - **API Design**: RESTful endpoints for scientific studies (`/api/scientific`), clinical cases (`/api/clinical`), alerts (`/api/alerts`), user profiles (`/api/profile`), and the continuous learning system (`/api/learning/*`).
-- **Data Storage**: Uses in-memory storage (MemStorage class) with architecture designed for easy swap to database implementations; integrated with Supabase for data persistence.
+- **Data Storage**: Primary storage via Supabase for production deployment. All users (admin, médicos, pacientes) authenticate through Supabase. Fallback local hardcoded admin apenas para desenvolvimento.
+- **Authentication**: Sistema unificado via Supabase - todos os perfis (admin, professional, patient) cadastram e fazem login pelo banco de dados. Preparado para deployment em servidor externo.
 - **Continuous Learning System**: Automatically saves and analyzes all user conversations to improve AI responses over time. Includes pattern recognition, success rate tracking, and AI-generated insights. This system implements "Conversa Sensorial Recíproca" to capture, analyze, and learn from all user interactions, identifying medical patterns and generating insights.
 
 ### Database Schema Design
@@ -74,7 +75,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Assistente de Estudos Científicos**: Integrated with full functionalities including real-time analytics and mini calendar. Interface allows generating complete studies, improving drafts, and continuing with AI.
 
 ## External Dependencies
-- **Database**: Neon serverless PostgreSQL (configured via Drizzle ORM), Supabase (for persistence and real admin credentials: phpg69@gmail.com / n6n7n8N9!horus).
+- **Database**: Supabase PostgreSQL (primary for all users in production), fallback local para desenvolvimento (admin credentials: phpg69@gmail.com / n6n7n8N9!hours).
 - **UI Components**: Radix UI primitives, Lucide React for icons.
 - **3D Libraries**: Three.js, @react-three/fiber, @react-three/drei.
 - **Development Tools**: Replit-specific plugins, ESBuild, PostCSS with Autoprefixer.

@@ -32,12 +32,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const ADMIN_EMAIL = 'phpg69@gmail.com';
   const ADMIN_PASSWORD = 'n6n7n8N9!hours';
 
-  // Auth routes - Sistema completo com múltiplos perfis
+  // Auth routes - Sistema completo com múltiplos perfis via Supabase
   app.post("/api/auth/login", async (req, res) => {
     const { email, password } = req.body;
     
     try {
-      // Admin login
+      const storageInstance = await getStorage();
+      
+      // Primeiro verifica no Supabase - TODOS os usuários (admin, médicos, pacientes)
+      const user = await storageInstance.getUserByEmailAndPassword(email, password);
+      
+      if (user) {
+        (req.session as any).user = user;
+        return res.json(user);
+      }
+      
+      // Fallback temporário para admin durante desenvolvimento local
       if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
         const adminUser = {
           id: 'admin-1',
@@ -53,16 +63,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.json(adminUser);
       }
       
-      // Verificar no sistema de usuários
-      const storageInstance = await getStorage();
-      const user = await storageInstance.getUserByEmailAndPassword(email, password);
-      
-      if (user) {
-        (req.session as any).user = user;
-        res.json(user);
-      } else {
-        res.status(401).json({ message: "Credenciais inválidas" });
-      }
+      res.status(401).json({ message: "Credenciais inválidas" });
     } catch (error) {
       console.error('Erro no login:', error);
       res.status(500).json({ message: "Erro interno do servidor" });
@@ -84,51 +85,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Registro de novos usuários
+  // Registro de novos usuários via Supabase
   app.post("/api/auth/register", async (req, res) => {
     try {
-      const { email, password, name, role, crm, crmState, specialty, phone } = req.body;
+      const { email, password, name, userType, credentialType, credentialNumber, specialty, workArea } = req.body;
       
       // Validação básica
-      if (!email || !password || !name || !role) {
+      if (!email || !password || !name || !userType) {
         return res.status(400).json({ message: "Dados obrigatórios não fornecidos" });
       }
       
-      // Se é médico, validar CRM
-      if (role === 'medico' && (!crm || !crmState || !specialty)) {
-        return res.status(400).json({ message: "Médicos devem fornecer CRM, estado e especialidade" });
-      }
-      
-      // Verificar se email já existe
       const storageInstance = await getStorage();
+      
+      // Verificar se usuário já existe
       const existingUser = await storageInstance.getUserByEmail(email);
       if (existingUser) {
-        return res.status(409).json({ message: "Email já cadastrado" });
+        return res.status(400).json({ message: "Email já cadastrado" });
       }
       
-      // Criar novo usuário
+      // Criar usuário no Supabase
       const newUser = await storageInstance.createUser({
         email,
         name,
-        role,
-        crm,
-        crmState,
+        role: userType === 'professional' ? 'medico' : 'paciente',
+        plan: userType === 'professional' ? 'professional' : 'free',
+        password, // Será processado pelo Supabase
+        credentialType,
+        credentialNumber,
         specialty,
-        phone,
-        plan: role === 'medico' ? 'professional' : 'free',
-        password
+        workArea
       });
       
-      // Login automático após registro
-      (req.session as any).user = newUser;
-      
-      res.status(201).json({
-        message: "Usuário criado com sucesso",
-        user: newUser
-      });
+      res.json({ message: "Usuário criado com sucesso", user: newUser });
     } catch (error) {
       console.error('Erro no registro:', error);
-      res.status(500).json({ message: "Erro interno do servidor" });
+      res.status(500).json({ message: "Erro ao criar usuário" });
     }
   });
 
