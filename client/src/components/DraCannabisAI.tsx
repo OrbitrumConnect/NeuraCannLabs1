@@ -158,13 +158,22 @@ export function DraCannabisAI() {
         if (videoRef.current) {
           videoRef.current.src = result.videoUrl;
           videoRef.current.play().catch(console.error);
+          
+          // Quando vídeo acabar, continuar permitindo interação
+          videoRef.current.onended = () => {
+            console.log('🎬 Vídeo D-ID concluído - Sistema de voz continua ativo');
+            // NÃO definir setIsTalking(false) aqui para manter interação
+          };
         }
         
         toast({
           title: "Dra. Cannabis Animada!",
-          description: "Vídeo com animação facial gerado com sucesso",
+          description: "Vídeo realista criado! Sistema de voz permanece ativo.",
           variant: "default",
         });
+      } else {
+        // Se D-ID falhar, garantir que voz normal continue funcionando
+        console.log('⚠️ D-ID falhou, mas sistema de voz normal continua funcionando');
       }
     } catch (error) {
       console.error('Erro ao gerar vídeo D-ID:', error);
@@ -220,11 +229,15 @@ export function DraCannabisAI() {
       if (data.response) {
         setIsTalking(true);
         
-        // Sistema com três opções: D-ID, ElevenLabs, ou nativo
+        // Sistema com três opções: D-ID + Voz, ElevenLabs, ou nativo
         if (useDIDAnimation) {
-          // Usar animação D-ID com vídeo realista
+          // Usar animação D-ID com vídeo realista + sistema de voz normal
           generateDIDVideo(data.response);
-        } else {
+          // IMPORTANTE: Continuar com voz normal mesmo com D-ID ativo
+        }
+        
+        // SEMPRE executar sistema de voz (independente do D-ID)
+        {
           // Sistema híbrido: tenta ElevenLabs primeiro, fallback para nativo
           (async () => {
             try {
@@ -287,7 +300,6 @@ export function DraCannabisAI() {
                 console.error('❌ Erro no sistema nativo:', nativeError);
                 setIsTalking(false);
               }
-              setIsTalking(false);
             }
           })();
         }
