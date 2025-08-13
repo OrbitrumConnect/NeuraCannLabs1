@@ -99,42 +99,42 @@ export default function DashboardLayout({
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
       {/* Header */}
       <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-green-500/30 backdrop-blur-md">
-        <div className="container mx-auto px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            <div className="w-6 h-6 sm:w-10 sm:h-10 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
-              <i className="fas fa-cannabis text-white text-xs sm:text-lg" />
+        <div className="container mx-auto px-3 sm:px-5 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
+              <i className="fas fa-cannabis text-white text-sm sm:text-xl" />
             </div>
-            <h1 className="text-sm sm:text-2xl font-bold text-green-400">NeuroCann Lab</h1>
+            <h1 className="text-base sm:text-3xl font-bold text-green-400">NeuroCann Lab</h1>
           </div>
           
-          <div className="flex items-center space-x-2 sm:space-x-4">
-            {/* Dra. Cannabis IA - Botão Especial (menor) */}
+          <div className="flex items-center space-x-3 sm:space-x-5">
+            {/* Dra. Cannabis IA - Botão Especial (maior) */}
             <button 
               onClick={() => handleDashboardClick("dra-cannabis")}
-              className="hidden md:flex items-center space-x-1 px-2 py-1 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 transition-all border border-purple-400/30 hover:border-purple-400/50"
+              className="hidden md:flex items-center space-x-1 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 transition-all border border-purple-400/30 hover:border-purple-400/50"
               data-testid="nav-dra-cannabis-header"
             >
-              <i className="fas fa-robot text-purple-400 text-xs" />
-              <span className="text-purple-400 text-xs">Dra. IA</span>
+              <i className="fas fa-robot text-purple-400 text-sm" />
+              <span className="text-purple-400 text-sm">Dra. IA</span>
             </button>
             
             {/* Grupos com dropdown */}
-            <div className="hidden lg:flex items-center space-x-2">
+            <div className="hidden lg:flex items-center space-x-3">
               {/* Grupo Pesquisa & Dados */}
               <div className="relative group">
-                <button className="flex items-center space-x-1 px-2 py-1 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
-                  <i className="fas fa-search text-gray-300 text-xs" />
-                  <span className="text-gray-300 text-xs">Pesquisa</span>
-                  <i className="fas fa-chevron-down text-xs" />
+                <button className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
+                  <i className="fas fa-search text-gray-300 text-sm" />
+                  <span className="text-gray-300 text-sm">Pesquisa</span>
+                  <i className="fas fa-chevron-down text-sm" />
                 </button>
-                <div className="absolute top-full left-0 mt-1 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
-                  <button onClick={() => handleDashboardClick("overview")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                <div className="absolute top-full left-0 mt-1 w-56 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  <button onClick={() => handleDashboardClick("overview")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-chart-line mr-2" />Estudos Cruzados
                   </button>
-                  <button onClick={() => handleDashboardClick("scientific")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                  <button onClick={() => handleDashboardClick("scientific")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-microscope mr-2" />Dados Científicos
                   </button>
-                  <button onClick={() => handleDashboardClick("clinical")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                  <button onClick={() => handleDashboardClick("clinical")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-user-md mr-2" />Casos Clínicos
                   </button>
                 </div>
@@ -142,16 +142,16 @@ export default function DashboardLayout({
 
               {/* Grupo Sistema */}
               <div className="relative group">
-                <button className="flex items-center space-x-1 px-2 py-1 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
-                  <i className="fas fa-cog text-gray-300 text-xs" />
-                  <span className="text-gray-300 text-xs">Sistema</span>
-                  <i className="fas fa-chevron-down text-xs" />
+                <button className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
+                  <i className="fas fa-cog text-gray-300 text-sm" />
+                  <span className="text-gray-300 text-sm">Sistema</span>
+                  <i className="fas fa-chevron-down text-sm" />
                 </button>
-                <div className="absolute top-full left-0 mt-1 w-36 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
-                  <button onClick={() => handleDashboardClick("profile")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                <div className="absolute top-full left-0 mt-1 w-44 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  <button onClick={() => handleDashboardClick("profile")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-user-circle mr-2" />Perfil
                   </button>
-                  <button onClick={() => handleDashboardClick("admin")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                  <button onClick={() => handleDashboardClick("admin")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-shield-alt mr-2" />Admin Global
                   </button>
                 </div>
@@ -159,57 +159,57 @@ export default function DashboardLayout({
             </div>
             
           {/* Botões individuais normais */}
-          <nav className="hidden lg:flex items-center space-x-2">
+          <nav className="hidden lg:flex items-center space-x-3">
             {desktopHeaderOptions
               .map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
-                className={`px-2 py-1 rounded-lg transition-all text-xs ${
+                className={`px-3 py-2 rounded-lg transition-all text-sm ${
                   activeDashboard === option.id
                     ? "bg-gray-600/30 text-white border border-gray-500/50"
                     : "text-gray-300 hover:bg-gray-600/20 hover:text-white border border-gray-500/30"
                 }`}
                 data-testid={`nav-${option.id}`}
               >
-                <i className={`${option.icon} mr-1 text-xs`} />
-                <span className="text-xs">{option.name}</span>
+                <i className={`${option.icon} mr-2 text-sm`} />
+                <span className="text-sm">{option.name}</span>
                 {option.id === "alerts" && (
-                  <span className="ml-1 bg-red-500 text-white text-xs rounded-full px-1 py-0.5">3</span>
+                  <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
                 )}
                 {option.id === "forum" && (
-                  <span className="ml-1 bg-blue-500 text-white text-xs rounded-full px-1 py-0.5">29</span>
+                  <span className="ml-2 bg-blue-500 text-white text-xs rounded-full px-2 py-1">29</span>
                 )}
                 {option.id === "admin" && (
-                  <span className="ml-1 bg-orange-500 text-white text-xs rounded-full px-1 py-0.5">🌍</span>
+                  <span className="ml-2 bg-orange-500 text-white text-xs rounded-full px-2 py-1">🌍</span>
                 )}
               </button>
             ))}
           </nav>
           
           {/* Logout - Desktop */}
-          <div className="hidden lg:flex items-center space-x-3 ml-6">
+          <div className="hidden lg:flex items-center space-x-4 ml-7">
             <Button
               onClick={handleLogout}
               variant="ghost"
-              size="sm"
-              className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400"
+              size="default"
+              className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400 px-4 py-2"
               data-testid="button-logout-desktop"
             >
-              <LogOut className="w-4 h-4 mr-2" />
+              <LogOut className="w-5 h-5 mr-2" />
               Sair
             </Button>
           </div>
           
-          <div className="lg:hidden flex items-center space-x-2">
+          <div className="lg:hidden flex items-center space-x-3">
             <button
               id="menuToggle"
               onClick={onMenuClick}
-              className="w-10 h-10 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
+              className="w-12 h-12 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
               data-testid="mobile-menu-toggle"
               aria-label="Menu"
             >
-              <i className="fas fa-bars text-green-500 text-base" />
+              <i className="fas fa-bars text-green-500 text-lg" />
             </button>
           </div>
           </div>
@@ -223,24 +223,24 @@ export default function DashboardLayout({
             className="bg-gradient-to-b from-cyber-gray to-cyber-light backdrop-blur-md holographic-border rounded-xl"
             data-testid="side-navigation"
           >
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-green-500">Menu</h2>
+        <div className="p-5">
+          <div className="flex items-center justify-between mb-5">
+            <h2 className="text-xl font-semibold text-green-500">Menu</h2>
             <button
               onClick={() => setSideNavOpen(false)}
-              className="w-8 h-8 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
+              className="w-10 h-10 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
               aria-label="Fechar menu"
             >
-              <i className="fas fa-times text-green-500 text-sm" />
+              <i className="fas fa-times text-green-500 text-base" />
             </button>
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-3">
             {mobileMenuOptions.map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
-                className={`w-full text-left p-3 rounded-lg transition-all data-card touch-manipulation min-h-14 ${
+                className={`w-full text-left p-4 rounded-lg transition-all data-card touch-manipulation min-h-16 ${
                   activeDashboard === option.id
                     ? "bg-green-500/20 text-green-500 border-green-500/30"
                     : "hover:bg-green-500/10"
@@ -249,7 +249,7 @@ export default function DashboardLayout({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
-                    <i className={`${option.icon} mr-3 text-base ${
+                    <i className={`${option.icon} mr-4 text-lg ${
                       option.id === "overview" ? "text-cyan-400" :
                       option.id === "dra-cannabis" ? "text-purple-400" :
                       option.id === "scientific" ? "text-emerald-400" :
@@ -259,22 +259,22 @@ export default function DashboardLayout({
                       option.id === "profile" ? "text-pink-400" :
                       option.id === "admin" ? "text-green-400" : "text-gray-400"
                     }`} />
-                    <span className="font-semibold text-base">{option.name}</span>
+                    <span className="font-semibold text-lg">{option.name}</span>
                   </div>
                   {option.id === "dra-cannabis" && (
-                    <span className="bg-purple-500 text-white text-xs rounded-full px-2 py-1">🤖</span>
+                    <span className="bg-purple-500 text-white text-sm rounded-full px-3 py-1">🤖</span>
                   )}
                   {option.id === "alerts" && (
-                    <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
+                    <span className="bg-red-500 text-white text-sm rounded-full px-3 py-1">3</span>
                   )}
                   {option.id === "forum" && (
-                    <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1">29</span>
+                    <span className="bg-blue-500 text-white text-sm rounded-full px-3 py-1">29</span>
                   )}
                   {option.id === "admin" && (
-                    <span className="bg-green-500 text-white text-xs rounded-full px-2 py-1">🌍</span>
+                    <span className="bg-green-500 text-white text-sm rounded-full px-3 py-1">🌍</span>
                   )}
                 </div>
-                <div className="text-xs text-gray-400 mt-1 ml-7">
+                <div className="text-sm text-gray-400 mt-2 ml-8">
                   {option.id === "overview" && "Dashboard principal"}
                   {option.id === "dra-cannabis" && "Consulta médica com IA empática"}
                   {option.id === "scientific" && "Estudos e pesquisas"}
@@ -290,22 +290,22 @@ export default function DashboardLayout({
           </div>
 
           {/* User Info & Logout - Mobile */}
-          <div className="mt-4 pt-4 border-t border-green-500/20">
-            <div className="flex items-center space-x-2 mb-3">
-              <User className="w-4 h-4 text-green-500" />
+          <div className="mt-5 pt-5 border-t border-green-500/20">
+            <div className="flex items-center space-x-3 mb-4">
+              <User className="w-5 h-5 text-green-500" />
               <div>
-                <div className="text-white font-medium text-sm">{user?.name || 'Administrador'}</div>
-                <div className="text-xs text-gray-400">{user?.email || 'Phpg69@gmail.com'}</div>
+                <div className="text-white font-medium text-base">{user?.name || 'Administrador'}</div>
+                <div className="text-sm text-gray-400">{user?.email || 'Phpg69@gmail.com'}</div>
               </div>
             </div>
             <Button
               onClick={handleLogout}
               variant="ghost"
-              size="sm"
-              className="w-full text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400"
+              size="default"
+              className="w-full text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400 py-3"
               data-testid="button-logout-mobile"
             >
-              <LogOut className="w-4 h-4 mr-2" />
+              <LogOut className="w-5 h-5 mr-2" />
               Fazer Logout
             </Button>
           </div>
@@ -317,7 +317,7 @@ export default function DashboardLayout({
 
 
       {/* Main Content */}
-      <main className="pt-12 sm:pt-20 min-h-screen cyber-grid relative">
+      <main className="pt-16 sm:pt-24 min-h-screen cyber-grid relative">
         {/* Dynamic Medical Background */}
         <DynamicMedicalBackground 
           context={activeDashboard as any}
