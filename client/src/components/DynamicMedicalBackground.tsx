@@ -81,7 +81,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentPattern(prev => {
-        const newPattern = (prev + 0.3) % 100 // Movimento bem mais lento
+        const newPattern = (prev + 1) % 100 // Movimento mais visível
         
         // CRITICAL: Sincronizar posição exata entre linha e avatar
         setScanPosition(newPattern);
@@ -90,7 +90,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       })
       // Variação sutil na intensidade para efeito "respiratório"
       setIntensity(0.2 + Math.sin(Date.now() / 3000) * 0.2)
-    }, 50) // Movimento mais lento e suave
+    }, 80) // Velocidade otimizada para movimento visível
 
     return () => clearInterval(interval)
   }, [config.speed, setScanPosition])
@@ -245,7 +245,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
         className="absolute left-0 right-0 h-0.5 scanner-line"
         style={{
           background: (() => {
-            const currentPos = (currentPattern * 2) % 100;
+            const currentPos = currentPattern;
             // Zona amarela UNIVERSAL: 32% a 42% - sincronização melhorada para mobile/web
             const isYellowZone = currentPos >= 32 && currentPos <= 42;
             
@@ -259,9 +259,9 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
               ? `linear-gradient(90deg, transparent, rgba(255,235,59,0.8), rgba(255,235,59,1.0), rgba(255,235,59,0.8), transparent)`
               : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`;
           })(),
-          top: `${(currentPattern * 2) % 100}%`,
+          top: `${currentPattern}%`,
           filter: (() => {
-            const currentPos = (currentPattern * 2) % 100;
+            const currentPos = currentPattern;
             const isYellowZone = currentPos >= 32 && currentPos <= 42;
             
             return isYellowZone
@@ -269,7 +269,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
               : `blur(1px) drop-shadow(0 0 4px ${config.color})`;
           })(),
           opacity: (() => {
-            const currentPos = (currentPattern * 2) % 100;
+            const currentPos = currentPattern;
             // Fade out nos últimos 10% e fade in nos primeiros 10%
             if (currentPos > 85) {
               return ((100 - currentPos) / 15) * 0.6; // Fade out gradual
