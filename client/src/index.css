@@ -37,6 +37,12 @@
   }
 }
 
+/* Scanner line - garantir z-index acima do background */
+.scanner-line {
+  z-index: 50 !important;
+  position: relative;
+}
+
 /* Avatar talking animations */
 @keyframes mouth-move {
   0% { transform: scaleY(1) scaleX(1); }

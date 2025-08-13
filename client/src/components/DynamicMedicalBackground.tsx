@@ -242,7 +242,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       
       {/* Linha horizontal que escaneia - desaparece no final e reaparece no topo */}
       <div
-        className="absolute left-0 right-0 h-0.5"
+        className="absolute left-0 right-0 h-0.5 scanner-line"
         style={{
           background: (() => {
             const currentPos = (currentPattern * 2) % 100;
@@ -278,7 +278,8 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
             }
             return 0.6; // Opacidade normal
           })(),
-          transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
+          transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+          zIndex: 50 // Garantir que apareça acima das esferas do background
         }}
       />
     </div>
