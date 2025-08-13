@@ -6,6 +6,7 @@ import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchem
 import { z } from "zod";
 import session from "express-session";
 import MemoryStore from "memorystore";
+import { superMedicalAI } from "./superMedicalAI";
 import "./types";
 
 export async function registerRoutes(app: Express): Promise<Server> {
