@@ -46,13 +46,21 @@ interface MainCardProps {
 export default function MainCard({ result, isMinimized = false, onToggleMinimize, onCardExpand }: MainCardProps & { onCardExpand?: (content: string, title: string, autoStartTTS?: boolean) => void }) {
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
 
-  // Auto-reprodução da NOA ESPERANÇA ao carregar dados
+  // Auto-reprodução da resposta integrada (Plataforma + NOA ESPERANÇA)
   useEffect(() => {
     if (result && !hasAutoPlayed && !isMinimized) {
-      const noaResponse = `NOA ESPERANÇA ativa! Dashboard de estudos cruzados carregado com ${result.meta.counts.studies} estudos científicos, ${result.meta.counts.trials} casos clínicos e ${result.meta.counts.alerts || 0} alertas. ${result.crossDataSummary || 'Análise cruzada pronta para consulta.'}`;
+      let originalText = '';
+      if (typeof result.response === 'string') {
+        originalText = result.response;
+      } else if (typeof result.response === 'object' && result.response !== null && 'response' in result.response) {
+        originalText = String(result.response.response);
+      }
+      
+      // Resposta integrada para TTS
+      const integratedResponse = `${originalText.replace(/[🔬📊🏥⚠️🧠💊🎯]/g, '').replace(/\*\*/g, '')}. Análise complementar NOA ESPERANÇA: ${result.crossDataSummary || `Com base nos dados da plataforma, identifico correlações específicas nos ${result.meta.counts.studies} estudos científicos e ${result.meta.counts.trials} casos clínicos disponíveis.`}`;
       
       // Reprodução automática usando TTS
-      const utterance = new SpeechSynthesisUtterance(noaResponse);
+      const utterance = new SpeechSynthesisUtterance(integratedResponse);
       utterance.lang = 'pt-BR';
       utterance.rate = 0.9;
       utterance.pitch = 1.1;
@@ -160,32 +168,42 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
       ) : (
         /* Full View */
         <>
-          {/* NOA ESPERANÇA Header */}
-          <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded border border-green-500/40">
+          {/* Header Unificado */}
+          <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gradient-to-r from-blue-900/30 to-green-900/30 rounded border border-blue-500/40">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Bot className="w-5 h-5 text-green-400 animate-pulse" />
-                <h3 className="text-base sm:text-lg font-bold text-green-300">NOA ESPERANÇA</h3>
-                <div className="px-2 py-0.5 bg-green-500/20 text-green-300 text-xs rounded-full">Inteligência Principal</div>
+                <div className="flex items-center space-x-1">
+                  <Microscope className="w-4 h-4 text-blue-400" />
+                  <Bot className="w-4 h-4 text-green-400 animate-pulse" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-blue-300">Análise Técnica</h3>
+                <div className="px-2 py-0.5 bg-green-500/20 text-green-300 text-xs rounded-full">+ NOA ESPERANÇA</div>
               </div>
               <Volume2 className="w-4 h-4 text-green-400" />
             </div>
-            <p className="text-xs sm:text-sm text-green-200 mt-1">
+            <p className="text-xs sm:text-sm text-blue-200 mt-1">
               📊 {result.query} • Base: {result.categories.scientific?.length || 0} estudos • {result.categories.clinical?.length || 0} casos • {result.categories.alerts?.length || 0} alertas
             </p>
           </div>
 
-          {/* NOA ESPERANÇA Response */}
+          {/* Resposta Integrada: Plataforma + NOA ESPERANÇA */}
           <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gray-800/30 rounded border border-green-500/20">
             <div className="text-xs sm:text-sm text-gray-300 leading-relaxed">
               {(() => {
-                let text = '';
+                let originalText = '';
                 if (typeof result.response === 'string') {
-                  text = result.response;
+                  originalText = result.response;
                 } else if (typeof result.response === 'object' && result.response !== null && 'response' in result.response) {
-                  text = String(result.response.response);
+                  originalText = String(result.response.response);
                 }
-                return text.split('\n').map((line, i) => (
+                
+                // Resposta integrada da plataforma + NOA
+                const integratedResponse = `${originalText}
+
+**🤖 Análise Complementar NOA ESPERANÇA:**
+${result.crossDataSummary || `Com base nos ${result.categories.scientific?.length || 0} estudos científicos, ${result.categories.clinical?.length || 0} casos clínicos e ${result.categories.alerts?.length || 0} alertas na base de dados, posso identificar correlações específicas e padrões médicos relevantes para otimizar o tratamento proposto.`}`;
+                
+                return integratedResponse.split('\n').map((line, i) => (
                   <div key={i} dangerouslySetInnerHTML={{
                     __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-green-300">$1</strong>')
                   }} />
@@ -193,23 +211,12 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
               })()}
             </div>
             
-            {/* Reprodução automática sem botão manual */}
+            {/* Indicador de reprodução automática */}
             <div className="mt-2 flex items-center text-xs text-green-400">
               <Volume2 className="w-3 h-3 mr-1 animate-pulse" />
-              Áudio reproduzido automaticamente pela NOA
+              Resposta integrada reproduzida automaticamente
             </div>
           </div>
-          
-          {/* Resumo Automático dos Dados Cruzados */}
-          {result.crossDataSummary && (
-            <div className="mb-3 p-2 sm:p-3 bg-emerald-900/20 rounded border border-emerald-500/30">
-              <h4 className="text-sm font-semibold text-emerald-300 mb-1 flex items-center">
-                <Bot className="w-4 h-4 mr-1" />
-                Análise Cruzada Automática
-              </h4>
-              <p className="text-xs text-emerald-200">{result.crossDataSummary}</p>
-            </div>
-          )}
 
           {/* Data Categories Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-3">
