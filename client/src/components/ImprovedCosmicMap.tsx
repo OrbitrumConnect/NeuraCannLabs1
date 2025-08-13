@@ -213,18 +213,17 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     addMessage({ role: 'user', content: userMessage, timestamp: Date.now() });
 
     try {
-      const response = await fetch('/api/ai-search', {
+      const response = await fetch('/api/doctor/consult', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          query: userMessage, 
-          filter: 'todos',
-          conversationHistory: currentConversation?.messages || [] // Enviar histórico da conversa atual
+          question: userMessage, 
+          context: 'cross_study_research'
         })
       });
 
       const data = await response.json();
-      const assistantResponse = data.answer || 'Resposta não disponível';
+      const assistantResponse = data.response || 'Resposta não disponível';
 
       // Adicionar resposta da IA
       addMessage({ role: 'assistant', content: assistantResponse, timestamp: Date.now() });
