@@ -8,7 +8,7 @@ interface Avatar3DProps {
 export default function Avatar3D({ 
   className = "w-20 sm:w-32 h-20 sm:h-32", 
   size = 100,
-  color = "#22c55e",
+  color = "#00ff00",
   isScanning = false 
 }: Avatar3DProps) {
   return (
@@ -44,30 +44,16 @@ export default function Avatar3D({
             style={{ animationDuration: '8s' }}
           />
           
-          {/* Cabeça da Dra. Cannabis */}
-          <circle cx="50" cy="30" r="12" fill={color} fillOpacity="0.4" />
-          <circle cx="47" cy="28" r="1.5" fill={color} fillOpacity="0.8" />
-          <circle cx="53" cy="28" r="1.5" fill={color} fillOpacity="0.8" />
-          <path d="M47 32 Q50 34 53 32" stroke={color} strokeWidth="1.2" fill="none" opacity="0.8" />
+          {/* Inner medical symbol */}
+          <circle cx="50" cy="35" r="12" fill={color} fillOpacity="0.3" />
+          <path d="M35 65 Q 50 45 65 65 Q 50 85 35 65" fill={color} fillOpacity="0.2" />
           
-          {/* Corpo médico da Dra. Cannabis */}
-          <path d="M38 42 Q50 38 62 42 L60 72 Q50 76 40 72 Z" fill={color} fillOpacity="0.3" />
-          
-          {/* Cruz médica no peito */}
-          <path d="M48 50 L52 50 M50 48 L50 52" stroke="#ffffff" strokeWidth="1.8" opacity="0.9" />
-          
-          {/* Folha de Cannabis estilizada */}
+          {/* Cannabis leaf silhouette */}
           <path 
-            d="M50 18 Q45 22 42 26 Q47 30 50 34 Q53 30 58 26 Q55 22 50 18 Z" 
-            fill="#16a34a" 
-            fillOpacity="0.7"
-            className={isScanning ? "animate-bounce" : "animate-pulse"}
+            d="M50 25 Q 45 30 40 35 Q 45 40 50 45 Q 55 40 60 35 Q 55 30 50 25 Z" 
+            fill={color} 
+            fillOpacity="0.6"
           />
-          <path d="M48 20 L52 20 M46 24 L54 24 M44 28 L56 28" stroke="#15803d" strokeWidth="0.6" opacity="0.6" />
-          
-          {/* Estetoscópio */}
-          <path d="M42 46 Q38 50 42 54 Q46 50 42 46" fill={color} fillOpacity="0.5" />
-          <path d="M42 46 Q50 44 58 46" stroke={color} strokeWidth="1.2" fill="none" opacity="0.7" />
           
           {/* Gradient definitions */}
           <defs>
@@ -81,7 +67,7 @@ export default function Avatar3D({
       </div>
       
       <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 px-3 py-1 bg-cyber-gray rounded-full border border-green-500/30">
-        <span className="text-xs text-green-500 animate-pulse">Dra. Cannabis IA</span>
+        <span className="text-xs text-green-500 animate-pulse">Dr. AI Assistant</span>
       </div>
     </div>
   );

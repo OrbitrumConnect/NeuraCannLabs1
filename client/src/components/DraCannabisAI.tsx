@@ -391,87 +391,19 @@ export function DraCannabisAI() {
         <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
           <div className="relative">
             <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
-              {/* Avatar Holográfico da Dra. Cannabis IA */}
-              <div 
+              <img 
+                src={draCannabisImage} 
+                alt="Dra. Cannabis IA" 
                 className={`
                   w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
-                  avatar-glow relative flex items-center justify-center
-                  ${isTalking ? 'avatar-scanning scale-105' : ''}
-                  ${setupNativeDraMutation.data ? 'scale-110' : ''}
+                  rounded-lg object-contain shadow-2xl 
+                  bg-transparent
+                  ${isTalking ? 'animate-pulse filter brightness-110' : ''}
                 `}
-              >
-                {/* Efeitos de scanning quando ativo */}
-                {isTalking && (
-                  <>
-                    <div className="absolute inset-0 rounded-full animate-ping border-4 border-green-500/60" />
-                    <div className="absolute inset-2 rounded-full animate-pulse bg-green-500/10 border-2 border-green-500/40" />
-                  </>
-                )}
-                
-                {/* Avatar Holográfico SVG - Dra. Cannabis */}
-                <div className={`relative animate-hologram ${isTalking ? 'scale-110' : ''} transition-transform duration-300`}>
-                  <svg
-                    className="w-full h-full animate-pulse-glow"
-                    viewBox="0 0 100 100"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{ 
-                      filter: isTalking 
-                        ? `drop-shadow(0 0 20px #22c55e) brightness(1.5)` 
-                        : setupNativeDraMutation.data
-                        ? `drop-shadow(0 0 10px #22c55e) brightness(1.2)` 
-                        : `drop-shadow(0 0 5px #22c55e) brightness(1.0)` 
-                    }}
-                  >
-                    {/* Anel holográfico externo */}
-                    <circle 
-                      cx="50" 
-                      cy="50" 
-                      r="45" 
-                      stroke="url(#draCannabisGradient)" 
-                      strokeWidth="2" 
-                      fill="none"
-                      className="animate-spin"
-                      style={{ animationDuration: '8s' }}
-                    />
-                    
-                    {/* Cabeça da Dra. Cannabis */}
-                    <circle cx="50" cy="30" r="15" fill="#22c55e" fillOpacity="0.4" />
-                    <circle cx="46" cy="28" r="2" fill="#22c55e" fillOpacity="0.8" />
-                    <circle cx="54" cy="28" r="2" fill="#22c55e" fillOpacity="0.8" />
-                    <path d="M46 34 Q50 36 54 34" stroke="#22c55e" strokeWidth="1.5" fill="none" opacity="0.8" />
-                    
-                    {/* Corpo médico */}
-                    <path d="M35 45 Q50 40 65 45 L62 75 Q50 80 38 75 Z" fill="#22c55e" fillOpacity="0.3" />
-                    
-                    {/* Cruz médica no peito */}
-                    <path d="M48 52 L52 52 M50 50 L50 54" stroke="#ffffff" strokeWidth="2" opacity="0.9" />
-                    
-                    {/* Folha de Cannabis estilizada */}
-                    <path 
-                      d="M50 18 Q45 22 42 26 Q47 30 50 34 Q53 30 58 26 Q55 22 50 18 Z" 
-                      fill="#16a34a" 
-                      fillOpacity="0.7"
-                      className="animate-pulse"
-                    />
-                    <path d="M48 20 L52 20 M46 24 L54 24 M44 28 L56 28" stroke="#15803d" strokeWidth="0.8" opacity="0.6" />
-                    
-                    {/* Estetoscópio */}
-                    <path d="M42 48 Q38 52 42 56 Q46 52 42 48" fill="#22c55e" fillOpacity="0.5" />
-                    <path d="M42 48 Q50 46 58 48" stroke="#22c55e" strokeWidth="1.5" fill="none" opacity="0.7" />
-                    
-                    {/* Gradientes */}
-                    <defs>
-                      <radialGradient id="draCannabisGradient" cx="50%" cy="50%" r="50%">
-                        <stop offset="0%" stopColor="#22c55e" stopOpacity="0.9"/>
-                        <stop offset="30%" stopColor="#16a34a" stopOpacity="0.7"/>
-                        <stop offset="70%" stopColor="#15803d" stopOpacity="0.5"/>
-                        <stop offset="100%" stopColor="#22c55e" stopOpacity="0.3"/>
-                      </radialGradient>
-                    </defs>
-                  </svg>
-                </div>
-              </div>
+              />
+              {isTalking && (
+                <div className="absolute inset-0 rounded-lg border-4 border-green-400/50 animate-ping" />
+              )}
             </div>
             <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
               isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
