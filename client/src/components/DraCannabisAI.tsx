@@ -387,7 +387,7 @@ export function DraCannabisAI() {
   return (
     <div className="space-y-4 md:space-y-6 px-2 md:px-0">
       {/* Header da Dra. Cannabis - SEM CARD - Livre */}
-      <div className="text-center py-4 md:py-8 min-h-[300px] md:min-h-[400px]">
+      <div className="text-center py-3 md:py-6 min-h-[280px] md:min-h-[350px]">
         <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
           <div className="relative">
             <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
@@ -395,7 +395,7 @@ export function DraCannabisAI() {
                 src={draCannabisImage} 
                 alt="Dra. Cannabis IA" 
                 className={`
-                  w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-[37.2rem] lg:h-[37.2rem] 
+                  w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 
                   rounded-lg object-contain shadow-2xl 
                   bg-transparent
                   ${isTalking ? 'animate-pulse filter brightness-110' : ''}
