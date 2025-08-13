@@ -148,6 +148,50 @@ export default function UnifiedHeader({
           {/* Separador */}
           <div className="w-px h-6 bg-gray-600 mx-1"></div>
 
+          {/* Dra. Cannabis IA */}
+          <Button
+            variant={location === '/dra-cannabis' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => handleNavigate('/dra-cannabis')}
+            className={`text-xs px-3 ${
+              location === '/dra-cannabis' 
+                ? 'bg-green-600 text-white' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-700'
+            }`}
+            data-testid="nav-dra-cannabis"
+          >
+            🧬 Dra. IA
+          </Button>
+
+          {/* Módulos Médicos */}
+          <Button
+            variant={location === '/medical' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => handleNavigate('/medical')}
+            className={`text-xs px-3 ${
+              location === '/medical' 
+                ? 'bg-cyan-600 text-white' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-700'
+            }`}
+            data-testid="nav-medical"
+          >
+            🩺 Clínico
+          </Button>
+
+          <Button
+            variant={location === '/analytics' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => handleNavigate('/analytics')}
+            className={`text-xs px-3 ${
+              location === '/analytics' 
+                ? 'bg-orange-600 text-white' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-700'
+            }`}
+            data-testid="nav-analytics"
+          >
+            📊 Analytics
+          </Button>
+
           {/* Academy - Destaque especial */}
           <Button
             variant={location === '/education' ? 'default' : 'ghost'}
