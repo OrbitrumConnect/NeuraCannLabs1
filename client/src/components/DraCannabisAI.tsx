@@ -171,118 +171,40 @@ export default function DraCannabisAI() {
   });
 
   // Carregar widget oficial D-ID com timeout e fallback
-  const loadDIDWidget = () => {
-    if (!didContainerRef.current || isDIDWidgetLoaded) return;
+  const loadDIDWidget = async () => {
+    if (isDIDWidgetLoaded) return;
 
-    // Verificar se script já existe
-    const existingScript = document.querySelector('script[data-name="did-agent"]');
-    if (existingScript) {
-      console.log('🎭 Script D-ID já existe - removendo duplicata');
-      existingScript.remove();
-    }
-
-    console.log('🎭 Carregando widget oficial D-ID NOA ESPERANÇA...');
+    console.log('🎭 Inicializando sistema D-ID via API direta...');
     console.log('🔗 Domínio atual:', window.location.hostname);
-    console.log('🌍 URL completa:', window.location.href);
-    console.log('🔑 Client Key (primeiros 20):', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli'.substring(0, 20) + '...');
-    console.log('🎭 Agent ID:', 'v2_agt_WAM9eh_P');
     
-    // Verificar tipo de ambiente
-    const isDev = window.location.hostname.includes('spock.replit.dev');
-    const isProd = window.location.hostname.includes('replit.app');
-    console.log('🏗️ Ambiente:', isDev ? 'Desenvolvimento' : isProd ? 'Produção' : 'Desconhecido');
-
-    // Limpar container completamente
-    didContainerRef.current.innerHTML = '';
-
-    // Timeout para fallback se widget não carregar
-    const loadingTimeout = setTimeout(() => {
-      console.error('⏰ Timeout no carregamento do widget D-ID - usando fallback');
+    try {
+      // Testar conectividade com API D-ID primeiro
+      const testResponse = await fetch('/api/dra-cannabis/test-did');
+      const testResult = await testResponse.json();
+      
+      if (!testResult.success) {
+        throw new Error('API D-ID não acessível');
+      }
+      
+      console.log('✅ API D-ID conectada!');
+      setIsDIDWidgetLoaded(true);
+      
+      toast({
+        title: "NOA ESPERANÇA Ativa!",
+        description: "Sistema D-ID via API funcionando",
+        variant: "default",
+      });
+      
+    } catch (error) {
+      console.error('❌ Erro conectando API D-ID:', error);
       setIsDIDWidgetLoaded(false);
       setUseDIDAnimation(false);
       toast({
-        title: "Widget D-ID Timeout",
-        description: "Voltando para sistema local - verifique autorização do domínio",
+        title: "Erro D-ID", 
+        description: "Não foi possível conectar com API D-ID",
         variant: "destructive",
       });
-    }, 15000); // 15 segundos timeout
-
-    // Aguardar um momento antes de criar o script
-    setTimeout(() => {
-      if (!didContainerRef.current) {
-        clearTimeout(loadingTimeout);
-        return;
-      }
-
-      // Criar e adicionar script do widget D-ID
-      const script = document.createElement('script');
-      script.type = 'module';
-      script.src = 'https://agent.d-id.com/v2/index.js';
-      script.setAttribute('data-mode', 'fabio');
-      script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli');
-      script.setAttribute('data-agent-id', 'v2_agt_WAM9eh_P');
-      script.setAttribute('data-name', 'did-agent');
-      script.setAttribute('data-monitor', 'true');
-      script.setAttribute('data-orientation', 'horizontal');
-      script.setAttribute('data-position', 'left');
-
-      script.onload = () => {
-        clearTimeout(loadingTimeout);
-        console.log('✅ Script D-ID carregado!');
-        console.log('🔍 Verificando inicialização do widget...');
-        
-        // Aguardar widget aparecer no DOM
-        let checkCount = 0;
-        const checkWidget = () => {
-          checkCount++;
-          console.log(`🔎 Tentativa ${checkCount}/10 - Procurando widget no DOM...`);
-          
-          const widgetElement = document.querySelector('iframe[src*="d-id"], div[data-agent-id], #did-agent, [data-name="did-agent"]');
-          console.log('🎯 Widget encontrado:', widgetElement);
-          
-          if (widgetElement) {
-            console.log('✅ Widget D-ID encontrado no DOM!');
-            setIsDIDWidgetLoaded(true);
-            toast({
-              title: "NOA ESPERANÇA Ativa!",
-              description: "Widget D-ID oficial funcionando",
-              variant: "default",
-            });
-          } else if (checkCount < 10) {
-            setTimeout(checkWidget, 500);
-          } else {
-            console.error('❌ Widget não apareceu após 10 tentativas');
-            console.log('🔧 Debug - Client Key válida?', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli'.length, 'caracteres');
-            console.log('🔧 Debug - Agent ID:', 'v2_agt_WAM9eh_P');
-            console.log('🔧 Debug - Domínio atual:', window.location.hostname);
-            
-            setIsDIDWidgetLoaded(false);
-            setUseDIDAnimation(false);
-            toast({
-              title: "Erro de Autorização D-ID", 
-              description: `Verifique se ${window.location.hostname} está autorizado no painel D-ID`,
-              variant: "destructive",
-            });
-          }
-        };
-        
-        setTimeout(checkWidget, 1000);
-      };
-
-      script.onerror = () => {
-        clearTimeout(loadingTimeout);
-        console.error('❌ Erro ao carregar script do widget D-ID');
-        setIsDIDWidgetLoaded(false);
-        setUseDIDAnimation(false);
-        toast({
-          title: "Erro no Widget D-ID",
-          description: "Falha no carregamento do script - verifique conexão",
-          variant: "destructive",
-        });
-      };
-
-      document.head.appendChild(script);
-    }, 500);
+    }
   };
 
   // Consulta médica por texto - sistema local (quando D-ID desativado)

@@ -811,6 +811,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // AVATAR PROFISSIONAL - ElevenLabs + D-ID
   // ========================================
   
+  // Endpoint para testar conectividade com D-ID
+  app.get('/api/dra-cannabis/test-did', async (req, res) => {
+    try {
+      console.log('🔗 Testando conectividade D-ID...');
+      
+      // Verificar se temos API key
+      if (!process.env.DID_API_KEY) {
+        return res.json({
+          success: false,
+          message: 'DID_API_KEY não configurada',
+          needsSetup: true
+        });
+      }
+      
+      // Testar se conseguimos acessar a API D-ID
+      const response = await fetch('https://api.d-id.com/agents/v2_agt_WAM9eh_P', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Basic ${process.env.DID_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const isConnected = response.status === 200;
+      
+      console.log(`🎭 D-ID API ${isConnected ? '✅ Conectada' : '❌ Falha'} (${response.status})`);
+      
+      res.json({
+        success: isConnected,
+        status: response.status,
+        message: isConnected ? 'D-ID API conectada' : 'Falha na conexão D-ID',
+        agent: 'v2_agt_WAM9eh_P',
+        apiAvailable: true
+      });
+      
+    } catch (error) {
+      console.error('Erro teste D-ID:', error);
+      res.json({
+        success: false,
+        error: error.message,
+        apiAvailable: false
+      });
+    }
+  });
+  
   app.post('/api/avatar/speak', async (req, res) => {
     try {
       const { text, voice_settings } = req.body;
