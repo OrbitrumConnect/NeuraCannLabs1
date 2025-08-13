@@ -124,7 +124,7 @@ export default function EducationDashboard() {
       )}
 
       {/* Botão Ativar Dra. IA */}
-      <div className="mb-8 text-center">
+      <div className="mb-8 text-center flex flex-col items-center gap-3">
         <Button
           onClick={() => setIsDrAIActive(true)}
           className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-8 py-4 rounded-xl shadow-2xl border border-emerald-400/20 transition-all duration-300 hover:scale-105"
@@ -133,6 +133,15 @@ export default function EducationDashboard() {
         >
           <Brain className="w-6 h-6 mr-3" />
           {isDrAIActive ? 'Dra. Cannabis IA Ativa' : 'Ativar Dra. Cannabis IA'}
+        </Button>
+        
+        {/* Trigger para voltar ao app principal */}
+        <Button
+          onClick={() => window.location.href = '/dashboard/overview'}
+          className="bg-gray-600/80 hover:bg-gray-500/90 text-white px-4 py-2 rounded-lg text-xs border border-gray-500/20 transition-all duration-200 hover:scale-105"
+          data-testid="button-back-to-main"
+        >
+          ← App Principal
         </Button>
       </div>
 
