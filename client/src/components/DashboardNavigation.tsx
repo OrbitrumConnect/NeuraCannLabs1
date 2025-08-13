@@ -97,20 +97,19 @@ export default function DashboardNavigation({ userRole }: NavigationProps) {
         {/* Divider */}
         <div className="w-px h-6 bg-gray-600 mx-1"></div>
 
-        {/* Education */}
+        {/* Education Academy - Destaque especial */}
         <Button
           variant={location === '/education' ? 'default' : 'ghost'}
           size="sm"
           onClick={() => handleNavigate('/education')}
-          className={`text-xs px-3 ${
+          className={`text-xs px-3 font-semibold border transition-all ${
             location === '/education' 
-              ? 'bg-yellow-600 text-white' 
-              : 'text-gray-300 hover:text-white hover:bg-gray-700'
+              ? 'bg-emerald-600 text-white border-emerald-500 shadow-lg shadow-emerald-500/25' 
+              : 'text-emerald-300 border-emerald-600/50 bg-emerald-900/20 hover:text-white hover:bg-emerald-600 hover:border-emerald-500'
           }`}
           data-testid="nav-education"
         >
-          <i className="fas fa-graduation-cap mr-1" />
-          Academy
+          🎓 Academy
         </Button>
 
         {/* Profile */}

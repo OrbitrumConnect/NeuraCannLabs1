@@ -150,6 +150,26 @@ export default function Dashboard() {
       
       {/* Floating Plans Trigger */}
       <PlansFloatingTrigger />
+      
+      {/* Floating Academy Button - Extra destaque */}
+      <div className="fixed bottom-6 left-6 z-50">
+        <button
+          onClick={() => setLocation('/education')}
+          className="group bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-6 py-4 rounded-2xl shadow-2xl shadow-emerald-500/25 border border-emerald-400/20 transition-all duration-300 hover:scale-105 hover:shadow-emerald-400/40 backdrop-blur-sm"
+          data-testid="floating-academy-button"
+        >
+          <div className="flex items-center gap-3">
+            <div className="text-2xl">🎓</div>
+            <div className="flex flex-col items-start">
+              <div className="font-bold text-sm">NeuroCann</div>
+              <div className="font-semibold text-xs opacity-90">Academy</div>
+            </div>
+          </div>
+          
+          {/* Pulsing indicator */}
+          <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+        </button>
+      </div>
     </div>
   );
 }
