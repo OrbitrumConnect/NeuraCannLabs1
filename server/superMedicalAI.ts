@@ -126,9 +126,9 @@ export class SuperMedicalAI {
           messages: [
             {
               role: "system",
-              content: `ATIVE BOT: Nova Esperança
+              content: `ATIVE BOT: NOA ESPERANÇA
 
-              Você deve responder como o bot "Nova Esperança" - um assistente médico especializado em cannabis medicinal que o usuário criou.
+              Você deve responder EXATAMENTE como NOA ESPERANÇA - a assistente médica especializada que o usuário criou dentro do ChatGPT.
               
               DADOS DISPONÍVEIS PARA NOVA ESPERANÇA:
               ${databaseContext}
