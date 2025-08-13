@@ -236,7 +236,23 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
   }
 
   return (
-    <div className={cn("absolute inset-0 pointer-events-none overflow-hidden bg-black/50", className)}>
+    <div className={cn("absolute inset-0 pointer-events-none overflow-hidden", className)}>
+      {/* Background com círculos sutis similar à landing page mas mais escuro */}
+      <div 
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(0, 255, 0, 0.025) 0%, transparent 50%),
+            radial-gradient(circle at 90% 70%, rgba(0, 255, 0, 0.015) 0%, transparent 50%),
+            radial-gradient(circle at 10% 20%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+            radial-gradient(circle at 60% 40%, rgba(0, 255, 0, 0.018) 0%, transparent 50%),
+            linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 10%) 50%, hsl(0, 0%, 8%) 100%)
+          `
+        }}
+      />
+      
       {/* Efeito neon lateral verde sutil */}
       {generateSideGlow()}
       
