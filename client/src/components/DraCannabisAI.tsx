@@ -86,10 +86,21 @@ export default function DraCannabisAI() {
       loadDIDWidget();
     } else if (!useDIDAnimation && isDIDWidgetLoaded) {
       // Limpar widget D-ID quando desativado
+      console.log('🎭 Desativando widget D-ID...');
+      
+      // Remover script do DOM
+      const existingScript = document.querySelector('script[data-name="did-agent"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+      
+      // Limpar container
       if (didContainerRef.current) {
         didContainerRef.current.innerHTML = '';
-        setIsDIDWidgetLoaded(false);
       }
+      
+      setIsDIDWidgetLoaded(false);
+      console.log('✅ Widget D-ID desativado');
     }
   }, [useDIDAnimation]);
 
@@ -159,46 +170,59 @@ export default function DraCannabisAI() {
     },
   });
 
-  // Carregar widget oficial D-ID
+  // Carregar widget oficial D-ID (evitar duplicação)
   const loadDIDWidget = () => {
     if (!didContainerRef.current || isDIDWidgetLoaded) return;
 
+    // Verificar se script já existe
+    const existingScript = document.querySelector('script[data-name="did-agent"]');
+    if (existingScript) {
+      console.log('🎭 Script D-ID já existe - removendo duplicata');
+      existingScript.remove();
+    }
+
     console.log('🎭 Carregando widget oficial D-ID NOA ESPERANÇA...');
 
-    // Limpar container
+    // Limpar container completamente
     didContainerRef.current.innerHTML = '';
 
-    // Criar e adicionar script do widget D-ID
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = 'https://agent.d-id.com/v2/index.js';
-    script.setAttribute('data-mode', 'full');
-    script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli');
-    script.setAttribute('data-agent-id', 'v2_agt_WAM9eh_P');
-    script.setAttribute('data-name', 'did-agent');
-    script.setAttribute('data-monitor', 'true');
-    script.setAttribute('data-target-id', 'did-container');
+    // Aguardar um momento antes de criar o script
+    setTimeout(() => {
+      if (!didContainerRef.current) return;
 
-    script.onload = () => {
-      console.log('✅ Widget D-ID NOA ESPERANÇA carregado com sucesso!');
-      setIsDIDWidgetLoaded(true);
-      toast({
-        title: "NOA ESPERANÇA Ativa!",
-        description: "Widget D-ID oficial carregado - pode conversar diretamente",
-        variant: "default",
-      });
-    };
+      // Criar e adicionar script do widget D-ID
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://agent.d-id.com/v2/index.js';
+      script.setAttribute('data-mode', 'full');
+      script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli');
+      script.setAttribute('data-agent-id', 'v2_agt_WAM9eh_P');
+      script.setAttribute('data-name', 'did-agent');
+      script.setAttribute('data-monitor', 'true');
+      script.setAttribute('data-target-id', 'did-container');
 
-    script.onerror = () => {
-      console.error('❌ Erro ao carregar widget D-ID - verifique se domínio está autorizado');
-      toast({
-        title: "Erro no Widget D-ID",
-        description: "Verifique se o domínio está autorizado no painel D-ID",
-        variant: "destructive",
-      });
-    };
+      script.onload = () => {
+        console.log('✅ Widget D-ID NOA ESPERANÇA carregado com sucesso!');
+        setIsDIDWidgetLoaded(true);
+        toast({
+          title: "NOA ESPERANÇA Ativa!",
+          description: "Widget D-ID oficial carregado - pode conversar diretamente",
+          variant: "default",
+        });
+      };
 
-    document.head.appendChild(script);
+      script.onerror = () => {
+        console.error('❌ Erro ao carregar widget D-ID');
+        setIsDIDWidgetLoaded(false);
+        toast({
+          title: "Erro no Widget D-ID",
+          description: "Domínio não autorizado ou problema de conexão",
+          variant: "destructive",
+        });
+      };
+
+      document.head.appendChild(script);
+    }, 100);
   };
 
   // Consulta médica por texto - sistema local (quando D-ID desativado)
@@ -221,7 +245,7 @@ export default function DraCannabisAI() {
       const payload = {
         question: data.question,
         conversationHistory: chatHistory.map(msg => ({
-          type: msg.type === 'user' ? 'user' : 'assistant',
+          type: msg.type === 'user' ? 'user' as const : 'assistant' as const,
           message: msg.message,
           timestamp: msg.timestamp
         }))
