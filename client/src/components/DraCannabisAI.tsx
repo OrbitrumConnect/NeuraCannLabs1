@@ -170,7 +170,7 @@ export default function DraCannabisAI() {
     },
   });
 
-  // Carregar widget oficial D-ID (evitar duplicação)
+  // Carregar widget oficial D-ID com timeout e fallback
   const loadDIDWidget = () => {
     if (!didContainerRef.current || isDIDWidgetLoaded) return;
 
@@ -182,13 +182,29 @@ export default function DraCannabisAI() {
     }
 
     console.log('🎭 Carregando widget oficial D-ID NOA ESPERANÇA...');
+    console.log('🔗 Domínio atual:', window.location.hostname);
 
     // Limpar container completamente
     didContainerRef.current.innerHTML = '';
 
+    // Timeout para fallback se widget não carregar
+    const loadingTimeout = setTimeout(() => {
+      console.error('⏰ Timeout no carregamento do widget D-ID - usando fallback');
+      setIsDIDWidgetLoaded(false);
+      setUseDIDAnimation(false);
+      toast({
+        title: "Widget D-ID Timeout",
+        description: "Voltando para sistema local - verifique autorização do domínio",
+        variant: "destructive",
+      });
+    }, 15000); // 15 segundos timeout
+
     // Aguardar um momento antes de criar o script
     setTimeout(() => {
-      if (!didContainerRef.current) return;
+      if (!didContainerRef.current) {
+        clearTimeout(loadingTimeout);
+        return;
+      }
 
       // Criar e adicionar script do widget D-ID
       const script = document.createElement('script');
@@ -202,27 +218,46 @@ export default function DraCannabisAI() {
       script.setAttribute('data-target-id', 'did-container');
 
       script.onload = () => {
+        clearTimeout(loadingTimeout);
         console.log('✅ Widget D-ID NOA ESPERANÇA carregado com sucesso!');
-        setIsDIDWidgetLoaded(true);
-        toast({
-          title: "NOA ESPERANÇA Ativa!",
-          description: "Widget D-ID oficial carregado - pode conversar diretamente",
-          variant: "default",
-        });
+        
+        // Aguardar widget aparecer no DOM
+        setTimeout(() => {
+          const widgetElement = didContainerRef.current?.querySelector('iframe, div[data-testid]');
+          if (widgetElement) {
+            setIsDIDWidgetLoaded(true);
+            toast({
+              title: "NOA ESPERANÇA Ativa!",
+              description: "Widget D-ID oficial carregado - pode conversar diretamente",
+              variant: "default",
+            });
+          } else {
+            console.warn('⚠️ Script carregado mas widget não apareceu - possível problema de autorização');
+            setIsDIDWidgetLoaded(false);
+            setUseDIDAnimation(false);
+            toast({
+              title: "Widget D-ID Não Inicializado", 
+              description: "Domínio pode não estar autorizado no painel D-ID",
+              variant: "destructive",
+            });
+          }
+        }, 2000);
       };
 
       script.onerror = () => {
-        console.error('❌ Erro ao carregar widget D-ID');
+        clearTimeout(loadingTimeout);
+        console.error('❌ Erro ao carregar script do widget D-ID');
         setIsDIDWidgetLoaded(false);
+        setUseDIDAnimation(false);
         toast({
           title: "Erro no Widget D-ID",
-          description: "Domínio não autorizado ou problema de conexão",
+          description: "Falha no carregamento do script - verifique conexão",
           variant: "destructive",
         });
       };
 
       document.head.appendChild(script);
-    }, 100);
+    }, 500);
   };
 
   // Consulta médica por texto - sistema local (quando D-ID desativado)
@@ -599,9 +634,21 @@ export default function DraCannabisAI() {
               )}
               
               {useDIDAnimation && !isDIDWidgetLoaded && (
-                <div className="flex items-center justify-center space-x-2 text-yellow-400">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="text-sm">Carregando Widget D-ID...</span>
+                <div className="flex flex-col items-center justify-center space-y-2 text-yellow-400">
+                  <div className="flex items-center space-x-2">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span className="text-sm">Carregando Widget D-ID...</span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      console.log('🔄 Forçando fallback para sistema local');
+                      setUseDIDAnimation(false);
+                      setIsDIDWidgetLoaded(false);
+                    }}
+                    className="text-xs px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-white"
+                  >
+                    Usar Sistema Local
+                  </button>
                 </div>
               )}
 
