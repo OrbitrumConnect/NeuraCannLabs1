@@ -221,7 +221,9 @@ export class SuperMedicalAI {
                   - Dados do fórum com assuntos semanais
                   - Análise cruzada de dados científicos
                   
-                  FOCO: Atendimento rápido, dados precisos, evidências científicas. Seja objetiva mas mantenha a empatia da NOA.`
+                  FOCO: Atendimento rápido, dados precisos, evidências científicas. Seja objetiva mas mantenha a empatia da NOA.
+                  
+                  IMPORTANTE: Limite suas respostas a NO MÁXIMO 8 frases concisas e diretas.`
                   :
                   `Você é NOA ESPERANÇA - exatamente como foi treinada no fine-tuning.
 
