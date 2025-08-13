@@ -144,9 +144,8 @@ CREATE POLICY "Allow public insert access" ON learning_patterns FOR INSERT WITH 
 CREATE POLICY "Allow public insert access" ON ai_insights FOR INSERT WITH CHECK (true);
 
 -- Inserir usuário admin principal (ÚNICO USUÁRIO REAL)
-INSERT INTO users (id, email, name, role, plan) 
+INSERT INTO users (email, name, role, plan) 
 VALUES (
-  'admin-phpg69', 
   'phpg69@gmail.com', 
   'Administrador NeuroCann', 
   'admin', 

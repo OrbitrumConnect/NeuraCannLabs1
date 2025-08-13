@@ -119,7 +119,6 @@ export async function initializeSupabaseTables(): Promise<boolean> {
 async function createTestUser(): Promise<void> {
   try {
     const adminUser = {
-      id: 'admin-phpg69',
       email: 'phpg69@gmail.com',
       name: 'Administrador NeuroCann',
       role: 'admin',
