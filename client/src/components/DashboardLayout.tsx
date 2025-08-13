@@ -22,7 +22,7 @@ interface DashboardLayoutProps {
 
 // Apenas itens individuais que aparecem soltos no cabeçalho
 const dashboardOptions = [
-  { id: "overview", name: "Visão Geral", icon: "fas fa-chart-line" },
+  { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
   { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
   { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
   { id: "clinical", name: "Clínico", icon: "fas fa-user-md" },
