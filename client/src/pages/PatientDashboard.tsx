@@ -82,7 +82,7 @@ export default function PatientDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Patient Profile Info */}
-        <div className="lg:col-span-2 space-y-6 scale-[0.85]">
+        <div className="lg:col-span-2 space-y-6 scale-[0.68]">
           <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-6">
@@ -255,7 +255,7 @@ export default function PatientDashboard() {
         </div>
 
         {/* Right Sidebar */}
-        <div className="space-y-6 scale-[0.85]">
+        <div className="space-y-6 scale-[0.68]">
           {/* Find Doctor Card */}
           <Card className="bg-gradient-to-br from-emerald-900/20 to-green-900/20 border border-emerald-600 rounded-xl">
             <CardContent className="p-6">
