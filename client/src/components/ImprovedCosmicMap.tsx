@@ -6,7 +6,7 @@ import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, 
 import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
-import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator";
+// import { VoiceGreetingIndicator } from "./VoiceGreetingIndicator"; // DESABILITADO - usando apenas Dra. Cannabis IA moderna
 // Voice commands removido conforme solicitado
 import { ConversationIndicator } from "./ConversationIndicator";
 import { ConversationManager } from "./ConversationManager";
@@ -912,8 +912,8 @@ ${studyNotes || 'Nenhuma anotação'}`;
         </div>
       ))}
 
-      {/* Voice Controls */}
-      <VoiceGreetingIndicator />
+      {/* Voice Controls DESABILITADO - Sistema antigo removido */}
+      {/* <VoiceGreetingIndicator /> - DESABILITADO: usando apenas Dra. Cannabis IA moderna */}
 
       {/* Conversation Manager - APENAS DESKTOP */}
       <div className="hidden lg:block">

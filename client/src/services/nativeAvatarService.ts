@@ -27,11 +27,16 @@ export class NativeAvatarService {
     this.animationCallback = callback;
   }
 
-  // Obtém vozes femininas disponíveis em português
+  // Obtém vozes femininas disponíveis em português - BUSCA MAIS AGRESSIVA
   getPortugueseVoices(): SpeechSynthesisVoice[] {
     const voices = this.speechSynthesis.getVoices();
     return voices.filter(voice => 
-      voice.lang.startsWith('pt') && voice.name.toLowerCase().includes('female')
+      voice.lang.startsWith('pt') && 
+      (voice.name.toLowerCase().includes('female') || 
+       voice.name.toLowerCase().includes('maria') ||
+       voice.name.toLowerCase().includes('feminina') ||
+       voice.name.toLowerCase().includes('luciana') ||
+       voice.name.toLowerCase().includes('fiona'))
     );
   }
 
@@ -71,10 +76,10 @@ export class NativeAvatarService {
           this.currentUtterance.voice = professionalVoice;
         }
 
-        // Configura parâmetros de voz
-        this.currentUtterance.rate = config.rate || 0.9; // Levemente mais lenta para clareza médica
-        this.currentUtterance.pitch = config.pitch || 1.1; // Tom levemente mais agudo
-        this.currentUtterance.volume = config.volume || 0.8;
+        // Configura parâmetros de voz - SEMPRE FEMININA
+        this.currentUtterance.rate = config.rate || 0.85; // Velocidade natural
+        this.currentUtterance.pitch = config.pitch || 1.3; // PITCH FEMININO FORÇADO (era 1.1 - muito baixo!)
+        this.currentUtterance.volume = config.volume || 0.9;
 
         // Controla animação da boca durante a fala
         let animationFrame: number;
@@ -143,13 +148,13 @@ export class NativeAvatarService {
     return this.speechSynthesis.speaking;
   }
 
-  // Método principal para fazer a Dra. Cannabis falar
+  // Método principal para fazer a Dra. Cannabis falar - SEMPRE FEMININA
   async makeAvatarSpeak(text: string, pattern: 'medical' | 'friendly' | 'professional' = 'medical'): Promise<void> {
     const config: SpeechConfig = {
       text,
       rate: pattern === 'medical' ? 0.85 : 0.9,
-      pitch: pattern === 'professional' ? 1.0 : 1.1,
-      volume: 0.8
+      pitch: 1.3,  // FORÇAR PITCH FEMININO SEMPRE (era 1.0/1.1 - muito baixo!)
+      volume: 0.9
     };
 
     return this.createSpeechWithAnimation(config);

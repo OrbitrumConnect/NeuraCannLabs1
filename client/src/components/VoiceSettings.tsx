@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { useAuth } from '@/hooks/useAuth';
 import { useVoiceGreeting } from '@/hooks/useVoiceGreeting';
-import { VoiceMessagePreview } from './VoiceGreetingIndicator';
+// import { VoiceMessagePreview } from './VoiceGreetingIndicator'; // DESABILITADO - sistema antigo removido
 
 export default function VoiceSettings() {
   const { user } = useAuth();
@@ -203,10 +203,11 @@ export default function VoiceSettings() {
             </>
           )}
 
-          {/* Preview da Mensagem */}
+          {/* Preview da Mensagem DESABILITADO - sistema antigo removido */}
           {voiceEnabled && currentMessage && (
             <div className="mt-4">
-              <VoiceMessagePreview />
+              {/* <VoiceMessagePreview /> - DESABILITADO */}
+              <p className="text-sm text-gray-500">Sistema de saudação antiga desabilitado - Usando apenas Dra. Cannabis IA moderna</p>
             </div>
           )}
 

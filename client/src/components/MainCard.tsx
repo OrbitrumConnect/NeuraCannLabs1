@@ -76,19 +76,23 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
       // Resposta integrada para TTS
       const integratedResponse = `${originalText.replace(/[🔬📊🏥⚠️🧠💊🎯]/g, '').replace(/\*\*/g, '')}. Análise complementar NOA ESPERANÇA: ${result.crossDataSummary || `Com base nos dados da plataforma, identifico correlações específicas nos ${result.meta.counts.studies} estudos científicos e ${result.meta.counts.trials} casos clínicos disponíveis.`}`;
       
-      // Reprodução automática usando TTS
+      // Reprodução automática usando TTS - FORÇAR VOZ FEMININA
       const utterance = new SpeechSynthesisUtterance(integratedResponse);
       utterance.lang = 'pt-BR';
-      utterance.rate = 0.9;
-      utterance.pitch = 1.1;
+      utterance.rate = 0.85;  // Velocidade mais natural
+      utterance.pitch = 1.3;  // Pitch bem feminino (era 1.1 - muito baixo!)
+      utterance.volume = 0.9;
       
-      // Priorizar voz feminina Microsoft Maria
+      // Priorizar voz feminina Microsoft Maria - BUSCA MAIS AGRESSIVA
       const voices = speechSynthesis.getVoices();
       const femaleVoice = voices.find(voice => 
-        voice.name.includes('Maria') || 
-        voice.name.includes('female') || 
-        voice.lang.includes('pt-BR')
-      );
+        voice.lang === 'pt-BR' &&
+        (voice.name.includes('Maria') || voice.name.includes('Feminina') || 
+         voice.name.includes('female') || voice.name.includes('Luciana') ||
+         voice.name.includes('Fiona'))
+      ) || voices.find(voice => 
+        voice.lang.includes('pt-BR') && !voice.name.includes('male')
+      ) || voices.find(voice => voice.lang.includes('pt'));
       if (femaleVoice) utterance.voice = femaleVoice;
       
       speechSynthesis.speak(utterance);
