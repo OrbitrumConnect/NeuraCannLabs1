@@ -143,7 +143,7 @@ CREATE POLICY "Allow public insert access" ON clinical_cases FOR INSERT WITH CHE
 CREATE POLICY "Allow public insert access" ON learning_patterns FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public insert access" ON ai_insights FOR INSERT WITH CHECK (true);
 
--- Inserir usuário admin principal
+-- Inserir usuário admin principal (ÚNICO USUÁRIO REAL)
 INSERT INTO users (id, email, name, role, plan) 
 VALUES (
   'admin-phpg69', 
@@ -153,17 +153,7 @@ VALUES (
   'admin'
 ) ON CONFLICT (email) DO NOTHING;
 
--- Inserir usuário de teste para desenvolvimento
-INSERT INTO users (id, email, name, role, plan) 
-VALUES (
-  'test-user-123', 
-  'teste@neurocann.com', 
-  'Usuário Teste', 
-  'paciente', 
-  'free'
-) ON CONFLICT (email) DO NOTHING;
-
 -- Confirmação final
 SELECT 'Supabase NeuroCann Lab configurado com sucesso!' as status,
-       'Admin: phpg69@gmail.com' as admin_user,
-       'Teste: teste@neurocann.com' as test_user;
+       'Admin Real: phpg69@gmail.com' as admin_user,
+       'Sistema funcionando apenas com usuários reais' as modo;

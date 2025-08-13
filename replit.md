@@ -30,9 +30,9 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 
 **Integração Supabase (Agosto 2025)**:
 - **SUPABASE INTEGRADO**: Sistema de persistência de dados configurado com fallback MemStorage
-- **Credenciais Configuradas**: URL e chave anônima integradas ao sistema  
-- **Usuário de Teste**: teste@neurocann.com criado automaticamente para desenvolvimento
-- **Tabelas Preparadas**: Scripts SQL prontos para criação no painel Supabase
+- **Credenciais Admin Reais**: phpg69@gmail.com / n6n7n8N9!horus configuradas no sistema
+- **Apenas Usuários Reais**: Sistema configurado para funcionar exclusivamente com dados autênticos
+- **Tabelas Preparadas**: Scripts SQL finais prontos para criação no painel Supabase
 - **Sistema Híbrido**: MemStorage para funcionamento imediato + Supabase para persistência
 - **Aprendizado Contínuo**: Conversas da NOA serão salvas no Supabase após execução do script
 

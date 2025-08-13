@@ -115,7 +115,7 @@ export async function initializeSupabaseTables(): Promise<boolean> {
   }
 }
 
-// Função para criar usuário admin real
+// Função para verificar usuário admin real
 async function createTestUser(): Promise<void> {
   try {
     const adminUser = {
@@ -133,32 +133,11 @@ async function createTestUser(): Promise<void> {
       .single();
 
     if (error) {
-      console.log('⚠️ Erro ao criar usuário admin:', error.message);
+      console.log('⚠️ Erro ao verificar usuário admin:', error.message);
     } else {
-      console.log('✅ Usuário admin criado/atualizado:', data.email);
-    }
-
-    // Também criar usuário de teste para desenvolvimento
-    const testUser = {
-      id: 'test-user-123',
-      email: 'teste@neurocann.com',
-      name: 'Usuário Teste',
-      role: 'paciente',
-      plan: 'free'
-    };
-
-    const { data: testData, error: testError } = await supabase
-      .from('users')
-      .upsert(testUser)
-      .select()
-      .single();
-
-    if (testError) {
-      console.log('⚠️ Erro ao criar usuário teste:', testError.message);
-    } else {
-      console.log('✅ Usuário teste criado/atualizado:', testData.email);
+      console.log('✅ Usuário admin confirmado:', data.email);
     }
   } catch (error) {
-    console.log('⚠️ Falha ao criar usuários:', error instanceof Error ? error.message : error);
+    console.log('⚠️ Falha ao verificar usuário admin:', error instanceof Error ? error.message : error);
   }
 }
