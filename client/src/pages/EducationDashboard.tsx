@@ -220,7 +220,7 @@ export default function EducationDashboard() {
         <TabsContent value="courses" className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-white">Meus Cursos</h2>
-            <Button className="bg-emerald-500 hover:bg-emerald-600 text-xs px-2 py-1 scale-80" data-testid="button-browse-courses">
+            <Button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-primary-foreground h-10 bg-emerald-500 hover:bg-emerald-600 px-3 py-2 pl-[0px] pr-[0px] pt-[0px] pb-[0px] mt-[-2px] mb-[-2px] ml-[30px] mr-[30px] text-[12px] font-thin" data-testid="button-browse-courses">
               Explorar Cursos
             </Button>
           </div>
