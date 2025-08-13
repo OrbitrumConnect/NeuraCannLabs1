@@ -18,6 +18,8 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import MedicalDashboard from "@/pages/MedicalDashboard";
 import PatientDashboard from "@/pages/PatientDashboard";
+import ProfessionalDashboard from "@/pages/ProfessionalDashboard";
+import ProfileDashboard from "@/pages/ProfileDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import RoleSelector from "@/components/RoleSelector";
 import NotFound from "@/pages/not-found";
@@ -72,6 +74,12 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/plans" component={PlansPage} />
+      
+      {/* Dashboard Routes */}
+      <Route path="/patient" component={PatientDashboard} />
+      <Route path="/professional" component={ProfessionalDashboard} />
+      <Route path="/profile" component={ProfileDashboard} />
+      
       <Route path="/" component={getDashboardComponent()} />
       <Route path="/dashboard/:section?" component={Dashboard} />
       <Route path="/medical" component={MedicalDashboard} />
