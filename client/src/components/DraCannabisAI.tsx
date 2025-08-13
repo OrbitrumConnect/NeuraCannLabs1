@@ -386,44 +386,42 @@ export function DraCannabisAI() {
 
   return (
     <div className="space-y-4 md:space-y-6 px-2 md:px-0">
-      {/* Header da Dra. Cannabis - Responsivo */}
-      <Card className="bg-gradient-to-r from-green-900/20 to-green-800/20 border-green-600/30 min-h-[300px] md:min-h-[400px]">
-        <CardHeader className="text-center py-4 md:py-8">
-          <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
-            <div className="relative">
-              <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
-                <img 
-                  src={draCannabisImage} 
-                  alt="Dra. Cannabis IA" 
-                  className={`
-                    w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-[37.2rem] lg:h-[37.2rem] 
-                    rounded-lg object-contain shadow-2xl 
-                    bg-gradient-to-br from-green-900/10 to-green-800/20 
-                    ${isTalking ? 'animate-pulse filter brightness-110' : ''}
-                  `}
-                />
-                {isTalking && (
-                  <div className="absolute inset-0 rounded-lg border-4 border-green-400/50 animate-ping" />
-                )}
-              </div>
-              <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
-                isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
-              }`}>
-                {isTalking ? '🗣️ IA' : 'IA'}
-              </Badge>
-              {isAutoStarting && (
-                <div className="absolute inset-0 bg-green-500/20 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-green-400">
-                    <Loader2 className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin mb-2" />
-                    <p className="text-xs md:text-sm">Inicializando...</p>
-                  </div>
-                </div>
+      {/* Header da Dra. Cannabis - SEM CARD - Livre */}
+      <div className="text-center py-4 md:py-8 min-h-[300px] md:min-h-[400px]">
+        <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
+          <div className="relative">
+            <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
+              <img 
+                src={draCannabisImage} 
+                alt="Dra. Cannabis IA" 
+                className={`
+                  w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-[37.2rem] lg:h-[37.2rem] 
+                  rounded-lg object-contain shadow-2xl 
+                  bg-gradient-to-br from-green-900/10 to-green-800/20 
+                  ${isTalking ? 'animate-pulse filter brightness-110' : ''}
+                `}
+              />
+              {isTalking && (
+                <div className="absolute inset-0 rounded-lg border-4 border-green-400/50 animate-ping" />
               )}
             </div>
+            <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
+              isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
+            }`}>
+              {isTalking ? '🗣️ IA' : 'IA'}
+            </Badge>
+            {isAutoStarting && (
+              <div className="absolute inset-0 bg-green-500/20 rounded-lg flex items-center justify-center">
+                <div className="text-center text-green-400">
+                  <Loader2 className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin mb-2" />
+                  <p className="text-xs md:text-sm">Inicializando...</p>
+                </div>
+              </div>
+            )}
           </div>
-        </CardHeader>
+        </div>
         
-        <CardContent className="text-center space-y-3 md:space-y-4 px-4 md:px-6">
+        <div className="text-center space-y-3 md:space-y-4 px-4 md:px-6 mt-4">
           {!setupNativeDraMutation.data && (
             <Button 
               onClick={() => setupNativeDraMutation.mutate()}
@@ -496,8 +494,8 @@ export function DraCannabisAI() {
               )}
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Interface de Consulta - Mobile Otimizada */}
       <Card className="mx-2 md:mx-0">
