@@ -350,6 +350,153 @@ export class SuperMedicalAI {
     return 'geral';
   }
 
+  // ACESSAR DADOS DO CHATGPT - Análises e Insights Gerados
+  async getAIGeneratedInsights(topic?: string): Promise<{
+    totalConversations: number;
+    medicalTopics: Array<{topic: string, count: number}>;
+    averageConfidence: number;
+    commonQuestions: string[];
+    aiRecommendations: string[];
+    learningPatterns: any[];
+  }> {
+    try {
+      // Busca todas as conversas do ChatGPT
+      const conversations = await storage.getConversations();
+      
+      // Análise dos dados gerados pelo ChatGPT
+      const topicCounts = new Map<string, number>();
+      let totalConfidence = 0;
+      const questions = new Set<string>();
+      const recommendations = new Set<string>();
+
+      for (const conv of conversations) {
+        // Conta tópicos médicos
+        if (conv.medicalTopic) {
+          topicCounts.set(conv.medicalTopic, (topicCounts.get(conv.medicalTopic) || 0) + 1);
+        }
+        
+        // Soma confiança
+        totalConfidence += conv.successRating || 0.5;
+        
+        // Coleta perguntas comuns
+        if (conv.userMessage.length > 10) {
+          questions.add(conv.userMessage);
+        }
+        
+        // Extrai recomendações do contexto do ChatGPT
+        try {
+          const context = JSON.parse(conv.context || '{}');
+          if (context.recommendations) {
+            context.recommendations.forEach((rec: string) => recommendations.add(rec));
+          }
+        } catch (e) {}
+      }
+
+      // Busca padrões de aprendizado identificados pelo ChatGPT
+      const patterns = await storage.getLearningPatterns();
+      
+      return {
+        totalConversations: conversations.length,
+        medicalTopics: Array.from(topicCounts.entries()).map(([topic, count]) => ({topic, count})),
+        averageConfidence: conversations.length > 0 ? totalConfidence / conversations.length : 0,
+        commonQuestions: Array.from(questions).slice(0, 10),
+        aiRecommendations: Array.from(recommendations).slice(0, 15),
+        learningPatterns: patterns
+      };
+    } catch (error) {
+      console.error("❌ Erro ao acessar dados do ChatGPT:", error);
+      return {
+        totalConversations: 0,
+        medicalTopics: [],
+        averageConfidence: 0,
+        commonQuestions: [],
+        aiRecommendations: [],
+        learningPatterns: []
+      };
+    }
+  }
+
+  // CONSULTAR CONVERSAS ESPECÍFICAS DO CHATGPT
+  async getChatGPTConversation(sessionId: string): Promise<{
+    conversation: any[];
+    aiAnalysis: string;
+    medicalInsights: string[];
+    confidence: number;
+  }> {
+    try {
+      const conversations = await storage.getConversations(sessionId);
+      
+      let aiAnalysis = "Análise não disponível";
+      let medicalInsights: string[] = [];
+      let confidence = 0;
+
+      if (conversations.length > 0) {
+        const lastConv = conversations[conversations.length - 1];
+        try {
+          const context = JSON.parse(lastConv.context || '{}');
+          medicalInsights = context.medicalInsights || [];
+          confidence = context.confidence || 0;
+          
+          // Gera análise da conversa usando ChatGPT
+          if (this.openai) {
+            const analysis = await this.openai.chat.completions.create({
+              model: "gpt-4o",
+              messages: [
+                {
+                  role: "system",
+                  content: "Analise esta conversa médica e forneça insights sobre o caso clínico, padrões identificados e recomendações."
+                },
+                {
+                  role: "user", 
+                  content: `Conversa: ${conversations.map(c => `${c.userMessage} -> ${c.aiResponse}`).join('\n')}`
+                }
+              ],
+              max_tokens: 300
+            });
+            aiAnalysis = analysis.choices[0].message.content || "Análise não disponível";
+          }
+        } catch (e) {}
+      }
+
+      return {
+        conversation: conversations,
+        aiAnalysis,
+        medicalInsights,
+        confidence
+      };
+    } catch (error) {
+      console.error("❌ Erro ao consultar conversa do ChatGPT:", error);
+      return {
+        conversation: [],
+        aiAnalysis: "Erro ao acessar dados",
+        medicalInsights: [],
+        confidence: 0
+      };
+    }
+  }
+
+  // ESTATÍSTICAS DO CONHECIMENTO DO CHATGPT
+  getSystemStats(): {
+    knowledgeBaseSize: number;
+    totalConversations: number;
+    isActive: boolean;
+    capabilities: string[];
+  } {
+    return {
+      knowledgeBaseSize: this.medicalKnowledgeBase.length,
+      totalConversations: this.conversationHistory.size,
+      isActive: this.openai !== null,
+      capabilities: [
+        "Consultas médicas especializadas",
+        "Análise de casos clínicos", 
+        "Recomendações personalizadas",
+        "Acesso ao banco de dados médico",
+        "Aprendizado contínuo",
+        "Geração de insights médicos"
+      ]
+    };
+  }
+
   // Integra conhecimento externo de APIs médicas
   async integrateExternalKnowledge(apiData: any): Promise<void> {
     console.log("🔄 Integrando conhecimento médico externo...");
