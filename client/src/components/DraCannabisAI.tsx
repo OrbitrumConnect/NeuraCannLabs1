@@ -11,7 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
 // Nova imagem médica PERFEITA - mulher médica real
 const draCannabisImage = '/dra-cannabis-medica.png';
-import { RealisticMouthAnimation } from './RealisticMouthAnimation';
+// import { RealisticMouthAnimation } from './RealisticMouthAnimation'; // Removido para evitar captura de tela
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 interface ConsultResponse {
@@ -415,13 +415,18 @@ export function DraCannabisAI() {
                   </Badge>
                 </div>
               ) : (
-                // Avatar TOTALMENTE LIVRE - ZERO Formas Geométricas
+                // Avatar SIMPLES E DIRETO - SEM Canvas para evitar captura de tela
                 <>
-                  <RealisticMouthAnimation
-                    imageUrl={draCannabisImage}
-                    isAnimating={isTalking}
-                    audioRef={audioRef}
-                    className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 object-contain drop-shadow-2xl"
+                  <img
+                    src={draCannabisImage}
+                    alt="Dra. Cannabis IA"
+                    className={`w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 object-contain drop-shadow-2xl rounded-lg ${
+                      isTalking ? 'animate-pulse ring-4 ring-green-400/50' : ''
+                    }`}
+                    style={{
+                      filter: isTalking ? 'brightness(1.1) saturate(1.1)' : 'brightness(1)',
+                      transition: 'all 0.3s ease'
+                    }}
                   />
                   
                   {/* Badge completamente separado do avatar */}
