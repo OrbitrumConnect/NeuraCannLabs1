@@ -154,15 +154,15 @@ export default function DashboardLayout({
   };
 
   return (
-    <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-emerald-900/20 to-slate-900 text-gray-100 font-sans">
       {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-green-500/30 backdrop-blur-md">
+      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-slate-900/90 via-emerald-900/30 to-slate-900/90 border-b border-emerald-400/30 backdrop-blur-md">
         <div className="container mx-auto px-3 sm:px-5 py-3 sm:py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3 sm:space-x-4">
-            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
-              <i className="fas fa-cannabis text-white text-sm sm:text-xl" />
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-400/50">
+              <i className="fas fa-cannabis text-black text-sm sm:text-xl" />
             </div>
-            <h1 className="text-base sm:text-3xl font-bold text-green-400">NeuroCann Lab</h1>
+            <h1 className="text-base sm:text-3xl font-bold text-emerald-400">NeuroCann Lab</h1>
           </div>
           
           <div className="flex items-center space-x-3 sm:space-x-5">
