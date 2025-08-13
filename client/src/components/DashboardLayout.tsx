@@ -20,23 +20,58 @@ interface DashboardLayoutProps {
   avatarScanning?: boolean;
 }
 
-// Menu completo para mobile - FLUXO CORRETO
-const mobileMenuOptions = [
-  { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
-  { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
-  { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
-  { id: "clinical", name: "Clínico", icon: "fas fa-user-md" },
-  { id: "forum", name: "Fórum", icon: "fas fa-comments" },
-  { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
-  { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
-  { id: "admin", name: "Painel Admin", icon: "fas fa-shield-alt" },
-];
+// Menu específico para cada tipo de usuário
+const getMenuOptionsForUser = (userRole: string) => {
+  // Menu base comum
+  const baseOptions = [
+    { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
+    { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
+  ];
 
-// Apenas itens essenciais para o cabeçalho desktop - FLUXO CORRETO
-const desktopHeaderOptions = [
-  { id: "forum", name: "Fórum", icon: "fas fa-comments" },
-  { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
-];
+  // Adicionar opções específicas por tipo de usuário
+  if (userRole === 'admin') {
+    return [
+      ...baseOptions,
+      { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
+      { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
+      { id: "clinical", name: "Clínico", icon: "fas fa-user-md" },
+      { id: "forum", name: "Fórum", icon: "fas fa-comments" },
+      { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
+      { id: "admin", name: "Painel Admin", icon: "fas fa-shield-alt" },
+    ];
+  } else if (userRole === 'medico') {
+    return [
+      ...baseOptions,
+      { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
+      { id: "scientific", name: "Pesquisa Científica", icon: "fas fa-microscope" },
+      { id: "forum", name: "Fórum Médico", icon: "fas fa-comments" },
+      { id: "alerts", name: "Alertas Clínicos", icon: "fas fa-bell" },
+    ];
+  } else {
+    // Paciente
+    return [
+      ...baseOptions,
+      { id: "forum", name: "Comunidade", icon: "fas fa-comments" },
+      { id: "alerts", name: "Minhas Notificações", icon: "fas fa-bell" },
+    ];
+  }
+};
+
+// Cabeçalho desktop também específico por usuário
+const getDesktopHeaderOptions = (userRole: string) => {
+  if (userRole === 'admin' || userRole === 'medico') {
+    return [
+      { id: "forum", name: "Fórum", icon: "fas fa-comments" },
+      { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
+      { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
+    ];
+  } else {
+    return [
+      { id: "forum", name: "Comunidade", icon: "fas fa-comments" },
+      { id: "alerts", name: "Notificações", icon: "fas fa-bell" },
+    ];
+  }
+};
 
 export default function DashboardLayout({
   children,
@@ -49,6 +84,11 @@ export default function DashboardLayout({
 }: DashboardLayoutProps) {
   const { user, isAuthenticated } = useAuth();
   const { toast } = useToast();
+  
+  // Determinar o tipo de usuário
+  const userRole = user?.role || 'paciente';
+  const mobileMenuOptions = getMenuOptionsForUser(userRole);
+  const desktopHeaderOptions = getDesktopHeaderOptions(userRole);
   const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
 
   const handleLogout = async () => {
