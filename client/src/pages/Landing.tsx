@@ -183,7 +183,7 @@ export default function Landing() {
                 size="lg" 
                 className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-8 py-4 text-xl hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group"
                 data-testid="button-start-trial"
-                onClick={() => setActiveTab('register')}
+                onClick={() => window.location.href = '/register'}
               >
                 <UserPlus className="w-5 h-5 mr-2 group-hover:animate-pulse" />
                 Começar Gratuitamente
@@ -196,7 +196,7 @@ export default function Landing() {
       {/* Navigation Tabs */}
       <section className="container mx-auto px-3 py-8 sm:py-12">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 max-w-3xl mx-auto bg-black/20 backdrop-blur-md border border-cyan-500/20 h-10 sm:h-auto">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 max-w-2xl mx-auto bg-black/20 backdrop-blur-md border border-cyan-500/20 h-10 sm:h-auto">
             <TabsTrigger 
               value="about" 
               className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
@@ -229,14 +229,7 @@ export default function Landing() {
               <span className="hidden sm:inline">Depoimentos</span>
               <span className="sm:hidden">Reviews</span>
             </TabsTrigger>
-            <TabsTrigger 
-              value="register" 
-              className="text-white data-[state=active]:bg-gradient-to-r data-[state=active]:from-green-600 data-[state=active]:to-green-500 hover:bg-white/5 transition-all duration-300 group"
-            >
-              <UserPlus className="w-4 h-4 mr-2 group-hover:text-green-300 transition-colors" />
-              <span className="hidden sm:inline">Cadastro</span>
-              <span className="sm:hidden">Cadastro</span>
-            </TabsTrigger>
+
           </TabsList>
 
           <TabsContent value="about" className="mt-12">
@@ -458,111 +451,7 @@ export default function Landing() {
             </div>
           </TabsContent>
 
-          <TabsContent value="register" className="mt-12">
-            <div className="max-w-2xl mx-auto">
-              <Card className="bg-black/40 backdrop-blur-md border-cyan-500/30">
-                <CardHeader className="text-center">
-                  <CardTitle className="text-3xl text-white mb-4">
-                    Começar Gratuitamente
-                  </CardTitle>
-                  <CardDescription className="text-gray-300 text-lg">
-                    Crie sua conta e tenha acesso completo à plataforma NeuroCann Lab
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    <div className="group">
-                      <Label htmlFor="name" className="text-white group-hover:text-green-300 transition-colors duration-300">
-                        Nome Completo
-                      </Label>
-                      <Input 
-                        id="name" 
-                        placeholder="Dr. João Silva" 
-                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300"
-                        data-testid="input-name"
-                      />
-                    </div>
-                    <div className="group">
-                      <Label htmlFor="email" className="text-white group-hover:text-green-300 transition-colors duration-300">
-                        E-mail Profissional
-                      </Label>
-                      <Input 
-                        id="email" 
-                        type="email" 
-                        placeholder="joao.silva@hospital.com.br" 
-                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300"
-                        data-testid="input-email"
-                      />
-                    </div>
-                    <div className="group">
-                      <Label htmlFor="password" className="text-white group-hover:text-green-300 transition-colors duration-300">
-                        Senha
-                      </Label>
-                      <Input 
-                        id="password" 
-                        type="password" 
-                        placeholder="Mínimo 8 caracteres" 
-                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300"
-                        data-testid="input-password"
-                      />
-                    </div>
-                    <div className="group">
-                      <Label htmlFor="specialty" className="text-white group-hover:text-green-300 transition-colors duration-300">
-                        Especialidade
-                      </Label>
-                      <Input 
-                        id="specialty" 
-                        placeholder="Neurologia, Oncologia, Medicina da Dor..." 
-                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300"
-                        data-testid="input-specialty"
-                      />
-                    </div>
-                    <div className="group">
-                      <Label htmlFor="crm" className="text-white group-hover:text-green-300 transition-colors duration-300">
-                        CRM (Opcional)
-                      </Label>
-                      <Input 
-                        id="crm" 
-                        placeholder="CRM/SP 123456" 
-                        className="bg-white/10 border-cyan-500/30 text-white placeholder:text-gray-400 focus:border-cyan-400 focus:ring-cyan-400/20 hover:bg-white/15 transition-all duration-300"
-                        data-testid="input-crm"
-                      />
-                    </div>
-                    <Button 
-                      className="w-full bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 hover:scale-105 hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300 group py-3 text-lg" 
-                      data-testid="button-register"
-                      onClick={() => {
-                        // Simular criação de conta e login
-                        const userData = {
-                          id: Date.now().toString(),
-                          name: 'Novo Usuário',
-                          email: 'usuario@exemplo.com',
-                          role: null // Não tem role definido ainda - irá para seleção
-                        };
-                        localStorage.setItem('user', JSON.stringify(userData));
-                        window.location.href = '/';
-                      }}
-                    >
-                      <UserPlus className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform duration-300" />
-                      Criar Conta Gratuita
-                    </Button>
-                    <div className="text-center">
-                      <p className="text-gray-400 text-sm">
-                        Já tem uma conta?{' '}
-                        <Button 
-                          variant="link" 
-                          className="text-cyan-400 hover:text-cyan-300 p-0 h-auto font-normal"
-                          onClick={() => setActiveTab('login')}
-                        >
-                          Fazer login
-                        </Button>
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
+
         </Tabs>
       </section>
 
@@ -581,7 +470,7 @@ export default function Landing() {
               size="lg" 
               className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-8 py-4 text-lg hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group"
               data-testid="button-register-cta"
-              onClick={() => setActiveTab('register')}
+              onClick={() => window.location.href = '/register'}
             >
               <UserPlus className="w-5 h-5 mr-2 group-hover:animate-pulse" />
               Cadastrar Gratuitamente
