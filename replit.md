@@ -27,10 +27,10 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Auto-Submissão Mobile**: Áudio capturado agora processa automaticamente e gera respostas da Dra. Cannabis sem necessidade de cliques adicionais
 - **Dra. Cannabis IA Livre**: Avatar removido de todos os cards containers, agora flutua livremente na interface com fundo totalmente transparente e dimensões otimizadas para consistência visual com a plataforma
 - **Voz Feminina Garantida**: Microsoft Maria (português) configurada como padrão para manter consistência
-- **SISTEMA DUAL NOA**: Avatar principal + Avatar estudos cruzados compartilham mesma inteligência NOA ESPERANÇA
-- **Aprendizado Contínuo Ativo**: Ambos avatares aprendem automaticamente com todos os dados da plataforma (estudos, casos, conversas anteriores)
-- **LIMITAÇÃO DE RESPOSTAS IMPLEMENTADA**: Card principal limitado a 8 frases, estudos cruzados a 10 frases com análise técnica detalhada
-- **ANÁLISE DE DADOS CRUZADOS APERFEIÇOADA**: Foco em dosagens específicas, correlações quantificadas, protocolos de titulação e padrões terapêuticos
+- **CENTRAL INTELIGENTE DE DADOS CRUZADOS**: Sistema unificado que combina dados científicos, clínicos do fórum, Dra. Cannabis IA + NOA ChatGPT-4 para criar a central de estudos médicos
+- **Aprendizado Contínuo Ativo**: Sistema aprende automaticamente com todos os dados da plataforma (estudos, casos, conversas anteriores)
+- **LIMITAÇÃO DE RESPOSTAS IMPLEMENTADA**: Card principal limitado a 8 frases, central de estudos com análise técnica detalhada
+- **ANÁLISE DE DADOS CRUZADOS APERFEIÇOADA**: Foco em dosagens específicas, correlações quantificadas, protocolos de titulação e padrões terapêuticos reunindo todo conteúdo para médicos
 - **CONTROLES AVANÇADOS DE CARDS**: Botões minimizar (amarelo) e fechar (vermelho) com abertura automática ao pesquisar
 - **RASCUNHO AUTOMÁTICO**: Estudos de dados cruzados agora mostram rascunho automaticamente quando há conversação ativa - não precisa mais clicar "Ver"
 - **GERADOR DE ESTUDOS COLABORATIVO**: Sistema totalmente integrado com contexto da NOA - usa todas as conversas, estudos e casos da plataforma para criar estudos colaborativos. Chat em tempo real no rascunho permite criação conjunta usuário+NOA
@@ -46,6 +46,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Routing**: Wouter for lightweight client-side routing.
 - **UI/UX Decisions**: Fixed main cards, expandable bottom dock for sub-searches, professional zoom/pan (50%-200%), precise handles (6x6px) on sub-search icons, main card expanded to 480px height, responsive layout with intelligent absolute positioning, hover effects and smooth transitions. The main interface focuses on the Dr. Cannabis AI avatar, which controls system activation. Layout is optimized for mobile with a reorganized menu, relative positioning for elements, and vertically stacked sub-searches. Consistent brand identity with a permanent night mode (dark medical interface) and emerald/green as the primary medical color across all UI elements. Standardized dashboard dimensions for visual harmony. Complete color standardization implemented across all dashboards using emerald-400/emerald-500/emerald-600 palette for consistent branding.
 - **Scanner System**: Horizontal line scanner with synchronized avatar glow effect, soft yellow color (rgba(255,235,59)) with 30% reduced intensity for elegant effect.
+- **Central Intelligence Hub**: ImprovedCosmicMap serves as the unified intelligence center combining scientific data, clinical forum data, Dr. Cannabis AI + NOA ChatGPT-4 for comprehensive medical studies.
 
 ### Backend Architecture
 - **Runtime & Framework**: Node.js with Express.js for RESTful API endpoints, using ES modules.
@@ -68,12 +69,23 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
   - **Personalização Adaptativa**: Adapts to communicative profiles (long/deep vs. direct/focused conversations).
   - **Relatórios Médicos Integrais**: Generates detailed clinical, emotional, and life summaries for partner doctors.
 - **Sistema de Consulta Empática**: Conversational responses that deepen and investigate, validate feelings, explore life context, and analyze symptoms, emotions, and personal history integrally.
-- **Core Functionality**: Intelligent cross-search allowing natural language queries, integrated analysis from three simultaneous databases, and contextual suggestions for sub-searches.
+- **Central Intelligence Hub**: ImprovedCosmicMap serves as the unified intelligence system that combines:
+  - **Dados Científicos**: Scientific research and studies integration
+  - **Dados Clínicos do Fórum**: Clinical cases and forum discussions
+  - **Dra. Cannabis IA + NOA ChatGPT-4**: Combined AI intelligence for medical analysis
+  - **Central de Estudos**: Comprehensive study center for medical professionals
+- **Core Functionality**: Intelligent cross-search allowing natural language queries, integrated analysis from multiple simultaneous databases, and contextual suggestions for sub-searches.
 - **AI Capabilities**: Specialized AI for cross-analysis, semantic analysis, contextual suggestions, automatic detection of common medical errors, and intelligent contextual chat that reads user notes and cross-references data. The Dr. Cannabis AI avatar is interactive and controls system activation.
 - **Audio Features**: Simulated mouth animation with active speech detection (isAvatarSpeaking), Text-to-Speech optimized for medical content.
 - **Search Interface Auto-Activation**: Searches automatically activate the Dr. AI (isDrAIActive) showing all chat, exploration, and study options.
 - **Fluxo Completo Implementado**: Full Patient→Medical Doctor→Platform→Admin flow documented and functional, with a continuous learning system (daily/weekly/monthly) to generate scientific knowledge automatically.
-- **Assistente de Estudos Científicos**: Integrated with full functionalities including real-time analytics and mini calendar. Interface allows generating complete studies, improving drafts, and continuing with AI.
+- **Dashboard Specialization**: Each dashboard has specific function:
+  - **Main Dashboard**: Central intelligence hub combining scientific data, clinical forum data, Dr. Cannabis IA + NOA ChatGPT-4
+  - **Dr. Cannabis IA Dashboard**: Maintains NOA intelligence for medical consultations and empathic anamnesis
+  - **Professional Dashboard**: Specialized tools for medical professionals
+  - **Patient Dashboard**: Patient-focused interface and tools
+  - **Education Dashboard**: Course system and certifications
+  - **Admin Dashboard**: Administrative controls and management
 
 ## External Dependencies
 - **Database**: Supabase PostgreSQL (primary for all users in production), MemStorage fallback completamente limpo para desenvolvimento (admin credentials: phpg69@gmail.com / n6n7n8N9!hours).
