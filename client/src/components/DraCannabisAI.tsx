@@ -143,44 +143,42 @@ export default function DraCannabisAI() {
     },
   });
 
-  // Gerar vídeo animado D-ID
+  // Usar agente D-ID diretamente com movimento labial integrado
   const generateDIDVideo = async (text: string) => {
     setIsGeneratingVideo(true);
     setDidVideoUrl(null);
     
     try {
-      const response = await apiRequest("/api/dra-cannabis/animate", "POST", { text });
+      const response = await apiRequest("/api/dra-cannabis/agent-chat", "POST", { message: text });
       const result = await response.json();
       
       if (result.success && result.videoUrl) {
         setDidVideoUrl(result.videoUrl);
         
-        // Reproduzir vídeo automaticamente quando estiver pronto
+        // Reproduzir vídeo com movimento labial automático
         if (videoRef.current) {
           videoRef.current.src = result.videoUrl;
           videoRef.current.play().catch(console.error);
           
-          // Quando vídeo acabar, continuar permitindo interação
           videoRef.current.onended = () => {
-            console.log('🎬 Vídeo D-ID concluído - Sistema de voz continua ativo');
-            // NÃO definir setIsTalking(false) aqui para manter interação
+            console.log('🎬 Agente D-ID NOA ESPERANÇA concluído');
+            setIsTalking(false);
           };
         }
         
         toast({
-          title: "Dra. Cannabis Animada!",
-          description: "Vídeo realista criado! Sistema de voz permanece ativo.",
+          title: "NOA ESPERANÇA Ativada!",
+          description: "Agente D-ID com movimento labial sincronizado!",
           variant: "default",
         });
       } else {
-        // Se D-ID falhar, garantir que voz normal continue funcionando
-        console.log('⚠️ D-ID falhou, mas sistema de voz normal continua funcionando');
+        console.log('⚠️ Agente D-ID não disponível, usando sistema local');
       }
     } catch (error) {
-      console.error('Erro ao gerar vídeo D-ID:', error);
+      console.error('Erro no agente D-ID:', error);
       toast({
-        title: "Erro na Animação",
-        description: "Não foi possível gerar o vídeo animado",
+        title: "Agente D-ID Indisponível",
+        description: "Usando sistema local como alternativa",
         variant: "destructive",
       });
     } finally {

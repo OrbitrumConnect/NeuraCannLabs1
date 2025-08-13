@@ -1233,6 +1233,55 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Endpoint para usar agente D-ID diretamente (com movimento labial integrado)
+  app.post("/api/dra-cannabis/agent-chat", async (req, res) => {
+    try {
+      const { message } = req.body;
+      
+      if (!message) {
+        return res.status(400).json({ error: 'Mensagem é obrigatória' });
+      }
+
+      if (!didAgentService) {
+        console.log("⚠️ Agente D-ID service não disponível");
+        return res.json({
+          success: false,
+          message: "Agente D-ID não configurado"
+        });
+      }
+
+      console.log('🎭 Enviando mensagem para agente D-ID NOA ESPERANÇA:', message.substring(0, 30));
+      
+      // Usar agente D-ID com movimento labial automático integrado
+      const result = await didAgentService.sendMessageToAgent(message);
+      
+      if (result.videoUrl) {
+        console.log('✅ Agente D-ID gerou vídeo com movimento labial:', result.videoUrl);
+        res.json({
+          success: true,
+          videoUrl: result.videoUrl,
+          audioUrl: result.audioUrl,
+          response: result.response,
+          message: "Agente D-ID NOA ESPERANÇA respondeu com movimento labial!"
+        });
+      } else {
+        console.log('⚠️ Agente D-ID sem vídeo, apenas resposta');
+        res.json({
+          success: false,
+          response: result.response,
+          message: "Agente D-ID respondeu apenas com texto"
+        });
+      }
+      
+    } catch (error: any) {
+      console.error('❌ Erro no agente D-ID:', error);
+      res.json({ 
+        success: false,
+        message: "Erro no agente D-ID - usando fallback"
+      });
+    }
+  });
+
   // ========================================
   // SISTEMA DE CONTEXTO CONVERSACIONAL INTELIGENTE
   // ========================================
