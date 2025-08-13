@@ -186,9 +186,31 @@ export default function DraCannabisAI() {
     }
   };
 
-  // Consulta médica por texto
+  // Consulta médica por texto - escolhe agente D-ID ou sistema local
   const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
+      // Se D-ID ativo, usar agente D-ID diretamente para resposta completa
+      if (useDIDAnimation) {
+        const response = await apiRequest('/api/dra-cannabis/agent-chat', 'POST', { message: data.question });
+        const result = await response.json();
+        
+        if (result.success && result.response) {
+          // Converter resposta do agente D-ID para formato esperado
+          return {
+            success: true,
+            response: result.response,
+            doctor: "NOA ESPERANÇA (Agente D-ID)",
+            specialty: "Cannabis Medicinal - IA Avançada",
+            sessionId: `agent-${Date.now()}`,
+            timestamp: new Date().toISOString(),
+            recommendations: ["Consulta via agente D-ID com movimento labial", "Resposta completa integrada"],
+            videoUrl: result.videoUrl,
+            audioUrl: result.audioUrl
+          } as ConsultResponse;
+        }
+      }
+      
+      // Sistema local (ChatGPT + interface)
       const payload = {
         question: data.question,
         conversationHistory: chatHistory.map(msg => ({
@@ -224,15 +246,24 @@ export default function DraCannabisAI() {
         }, 2000);
       }
       
-      // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema híbrido + D-ID)
+      // Ativar sistema de resposta da Dra. Cannabis
       if (data.response) {
         setIsTalking(true);
         
-        // Sistema com três opções: D-ID + Voz, ElevenLabs, ou nativo
-        if (useDIDAnimation) {
-          // Usar animação D-ID com vídeo realista + sistema de voz normal
-          generateDIDVideo(data.response);
-          // IMPORTANTE: Continuar com voz normal mesmo com D-ID ativo
+        // Se resposta veio do agente D-ID, mostrar vídeo diretamente
+        if (useDIDAnimation && (data as any).videoUrl) {
+          console.log('✅ Resposta do agente D-ID com vídeo:', (data as any).videoUrl);
+          setDidVideoUrl((data as any).videoUrl);
+          
+          if (videoRef.current) {
+            videoRef.current.src = (data as any).videoUrl;
+            videoRef.current.play().catch(console.error);
+            videoRef.current.onended = () => {
+              console.log('🎬 Agente D-ID NOA ESPERANÇA concluído');
+              setIsTalking(false);
+            };
+          }
+          return; // Agente D-ID já cuidou de tudo (resposta + vídeo + áudio)
         }
         
         // SEMPRE executar sistema de voz (independente do D-ID)

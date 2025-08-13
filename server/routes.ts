@@ -1233,7 +1233,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Endpoint para usar agente D-ID diretamente (com movimento labial integrado)
+  // Endpoint para usar agente D-ID completo (resposta + vídeo + movimento labial)
   app.post("/api/dra-cannabis/agent-chat", async (req, res) => {
     try {
       const { message } = req.body;
@@ -1250,22 +1250,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      console.log('🎭 Enviando mensagem para agente D-ID NOA ESPERANÇA:', message.substring(0, 30));
+      console.log('🎭 Consultando agente D-ID NOA ESPERANÇA completo:', message.substring(0, 30));
       
-      // Usar agente D-ID com movimento labial automático integrado
+      // Usar seu agente D-ID que já tem NOA ESPERANÇA + ChatGPT integrado
       const result = await didAgentService.sendMessageToAgent(message);
       
       if (result.videoUrl) {
-        console.log('✅ Agente D-ID gerou vídeo com movimento labial:', result.videoUrl);
+        console.log('✅ Agente D-ID NOA completo - Resposta + Vídeo + Movimento labial:', result.videoUrl);
         res.json({
           success: true,
           videoUrl: result.videoUrl,
           audioUrl: result.audioUrl,
           response: result.response,
-          message: "Agente D-ID NOA ESPERANÇA respondeu com movimento labial!"
+          message: "Agente D-ID NOA ESPERANÇA respondeu completamente!"
         });
       } else {
-        console.log('⚠️ Agente D-ID sem vídeo, apenas resposta');
+        console.log('⚠️ Agente D-ID disponível, mas sem vídeo gerado');
         res.json({
           success: false,
           response: result.response,
@@ -1274,10 +1274,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
     } catch (error: any) {
-      console.error('❌ Erro no agente D-ID:', error);
+      console.error('❌ Erro no agente D-ID NOA ESPERANÇA:', error);
       res.json({ 
         success: false,
-        message: "Erro no agente D-ID - usando fallback"
+        message: "Erro no agente D-ID - sistema local ativo"
       });
     }
   });
