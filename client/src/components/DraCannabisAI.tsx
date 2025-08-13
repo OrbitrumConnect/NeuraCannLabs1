@@ -501,7 +501,7 @@ export function DraCannabisAI() {
       <Card className="mx-2 md:mx-0">
         <CardHeader className="pb-3 md:pb-4">
           <CardTitle className="flex items-center space-x-2 text-base md:text-lg">
-            <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" />
+            <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-neon-green" />
             <span>Consulta com Dra. Cannabis</span>
           </CardTitle>
         </CardHeader>
@@ -509,7 +509,7 @@ export function DraCannabisAI() {
         <CardContent className="space-y-4 md:space-y-5 px-4 md:px-6 pb-6 md:pb-8">
           {/* Histórico da Conversa Mobile */}
           {chatHistory.length > 0 && (
-            <div className="max-h-64 md:max-h-80 overflow-y-auto space-y-2 md:space-y-3 p-4 md:p-5 bg-emerald-900/10 border border-emerald-600/20 rounded-lg backdrop-blur-sm">
+            <div className="max-h-64 md:max-h-80 overflow-y-auto space-y-2 md:space-y-3 p-4 md:p-5 bg-neon-green/10 border border-neon-green/20 rounded-lg backdrop-blur-sm">
               <h4 className="font-medium text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
               {chatHistory.map((entry, index) => (
                 <div
@@ -519,8 +519,8 @@ export function DraCannabisAI() {
                   <div
                     className={`max-w-[90%] md:max-w-[85%] p-2 md:p-3 rounded-lg ${
                       entry.type === 'user'
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200'
+                        ? 'bg-warning-yellow text-black'
+                        : 'bg-neon-green/20 text-neon-green dark:bg-neon-green/30 dark:text-neon-green'
                     }`}
                     data-testid={`chat-${entry.type}-${index}`}
                   >
@@ -563,9 +563,9 @@ export function DraCannabisAI() {
                 data-testid="button-voice-input"
               >
                 {isListening ? (
-                  <MicOff className="w-4 h-4 text-red-500" />
+                  <MicOff className="w-4 h-4 text-alert-red" />
                 ) : (
-                  <Mic className="w-4 h-4 text-emerald-500" />
+                  <Mic className="w-4 h-4 text-neon-green" />
                 )}
               </Button>
             </div>
@@ -576,7 +576,7 @@ export function DraCannabisAI() {
             <Button 
               onClick={handleSubmitQuestion}
               disabled={consultMutation.isPending || !question.trim()}
-              className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-sm md:text-base"
+              className="w-full md:w-auto bg-neon-green hover:bg-neon-green/90 text-black text-sm md:text-base drop-shadow-[0_0_8px_rgba(57,255,20,0.4)]"
               data-testid="button-submit-question"
             >
               {consultMutation.isPending ? (
@@ -600,7 +600,7 @@ export function DraCannabisAI() {
                 disabled={generateSummaryMutation.isPending || chatHistory.length === 0}
                 size="sm"
                 variant="outline"
-                className="text-blue-600 border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-950 text-xs md:text-sm"
+                className="text-warning-yellow border-warning-yellow hover:bg-warning-yellow/10 dark:hover:bg-warning-yellow/20 text-xs md:text-sm"
                 data-testid="button-generate-summary-quick"
               >
                 {generateSummaryMutation.isPending ? (
@@ -617,7 +617,7 @@ export function DraCannabisAI() {
                 disabled={referToMedicalMutation.isPending || chatHistory.length === 0}
                 size="sm"
                 variant="outline"
-                className="text-orange-600 border-orange-600 hover:bg-orange-50 dark:hover:bg-orange-950 text-xs md:text-sm"
+                className="text-alert-red border-alert-red hover:bg-alert-red/10 dark:hover:bg-alert-red/20 text-xs md:text-sm"
                 data-testid="button-refer-medical-quick"
               >
                 {referToMedicalMutation.isPending ? (
@@ -640,7 +640,7 @@ export function DraCannabisAI() {
         <Card className="mx-2 md:mx-0">
           <CardHeader className="pb-3 md:pb-4">
             <CardTitle className="flex items-center space-x-2 text-base md:text-lg">
-              <FileText className="w-4 h-4 md:w-5 md:h-5 text-blue-500" />
+              <FileText className="w-4 h-4 md:w-5 md:h-5 text-warning-yellow" />
               <span>Resumo da Consulta</span>
             </CardTitle>
           </CardHeader>
