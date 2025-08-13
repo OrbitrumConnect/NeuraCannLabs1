@@ -24,6 +24,21 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
   const [reviewNotes, setReviewNotes] = useState('');
   const [activeTab, setActiveTab] = useState<'overview' | 'pending' | 'approved' | 'rejected' | 'revision' | 'global-data' | 'ai-analysis'>('overview');
   
+  // Estados necessários para DashboardLayout
+  const [sideNavOpen, setSideNavOpen] = useState(false);
+  const [activeDashboard, setActiveDashboard] = useState('admin');
+  
+  // Handlers para DashboardLayout
+  const handleMenuClick = () => {
+    setSideNavOpen(!sideNavOpen);
+  };
+  
+  const handleDashboardChange = (dashboard: string) => {
+    if (dashboard === 'overview') {
+      window.location.href = '/dashboard/overview';
+    }
+  };
+  
   // Real-time global statistics
   const [globalStats, setGlobalStats] = useState({
     totalSubmissions: 0,
@@ -154,7 +169,13 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
   const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
 
   return (
-    <DashboardLayout>
+    <DashboardLayout
+      onMenuClick={handleMenuClick}
+      onDashboardChange={handleDashboardChange}
+      activeDashboard={activeDashboard}
+      sideNavOpen={sideNavOpen}
+      setSideNavOpen={setSideNavOpen}
+    >
       {/* Header da Central de Inteligência */}
       <div className="mb-8">
         <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 shadow-2xl">

@@ -92,6 +92,7 @@ function Router() {
         <Route path="/dashboard/module/:moduleId" component={ModuleDetailView} />
         <Route path="/dra-cannabis" component={DraCannabisPage} />
         <Route path="/admin" component={AdminDashboard} />
+        <Route path="/admin/global" component={GlobalAdminDashboard} />
         <Route path="/analytics" component={AnalyticsDashboard} />
         <Route path="/critical-modules" component={CriticalModulesDashboard} />
         <Route path="/education" component={EducationDashboard} />
