@@ -167,7 +167,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
         <div className="mb-8">
           <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
             <h1 className="text-xl sm:text-2xl font-bold text-white mb-2 flex items-center gap-3">
-              🧠 Central de Inteligência Cannabis Global
+              Central de Inteligência Cannabis Global
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30">
                 <Activity className="w-4 h-4 mr-1" />
                 TEMPO REAL
