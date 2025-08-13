@@ -397,7 +397,7 @@ export function DraCannabisAI() {
                 className={`
                   w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-[37.2rem] lg:h-[37.2rem] 
                   rounded-lg object-contain shadow-2xl 
-                  bg-gradient-to-br from-green-900/10 to-green-800/20 
+                  bg-background 
                   ${isTalking ? 'animate-pulse filter brightness-110' : ''}
                 `}
               />
