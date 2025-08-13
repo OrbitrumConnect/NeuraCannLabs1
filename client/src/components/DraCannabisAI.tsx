@@ -183,8 +183,14 @@ export default function DraCannabisAI() {
 
     console.log('🎭 Carregando widget oficial D-ID NOA ESPERANÇA...');
     console.log('🔗 Domínio atual:', window.location.hostname);
+    console.log('🌍 URL completa:', window.location.href);
     console.log('🔑 Client Key (primeiros 20):', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli'.substring(0, 20) + '...');
     console.log('🎭 Agent ID:', 'v2_agt_WAM9eh_P');
+    
+    // Verificar tipo de ambiente
+    const isDev = window.location.hostname.includes('spock.replit.dev');
+    const isProd = window.location.hostname.includes('replit.app');
+    console.log('🏗️ Ambiente:', isDev ? 'Desenvolvimento' : isProd ? 'Produção' : 'Desconhecido');
 
     // Limpar container completamente
     didContainerRef.current.innerHTML = '';
