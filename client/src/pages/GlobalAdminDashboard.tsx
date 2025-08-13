@@ -177,7 +177,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
       setSideNavOpen={setSideNavOpen}
     >
       {/* Header da Central de Inteligência */}
-      <div className="mb-8">
+      <div className="mb-8 scale-80">
         <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
           <h1 className="text-xl sm:text-2xl font-bold text-white mb-2 flex items-center gap-3">
             🧠 Central de Inteligência Cannabis Global
@@ -193,7 +193,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
       </div>
 
         {/* Global Real-Time Statistics - Mobile-optimized */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8 scale-80">
           <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
             <CardContent className="p-3 sm:p-4">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -252,7 +252,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
         </div>
 
         {/* Submission Statistics - Mobile-optimized */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8 scale-80">
           <Card className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
             <CardContent className="p-3 sm:p-4">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -311,7 +311,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
         </div>
 
         {/* Tabs - Mobile-optimized */}
-        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full">
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full scale-80">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 bg-white/5 h-auto p-1">
             <TabsTrigger value="overview" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400 text-xs sm:text-sm p-2">
               <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
@@ -350,7 +350,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="mt-6">
+          <TabsContent value="overview" className="mt-6 scale-80">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="bg-white/5 border-white/10">
                 <CardHeader>
@@ -412,7 +412,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
             </div>
           </TabsContent>
 
-          <TabsContent value="global-data" className="mt-6">
+          <TabsContent value="global-data" className="mt-6 scale-80">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="bg-white/5 border-white/10">
                 <CardHeader>
@@ -493,7 +493,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
 
           {/* Submissions Management Tabs */}
           {['pending', 'approved', 'rejected', 'revision'].map(tabValue => (
-            <TabsContent key={tabValue} value={tabValue} className="mt-6">
+            <TabsContent key={tabValue} value={tabValue} className="mt-6 scale-80">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Submissions List */}
                 <div className="lg:col-span-2">
@@ -651,7 +651,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
             </TabsContent>
           ))}
 
-          <TabsContent value="ai-analysis" className="mt-6">
+          <TabsContent value="ai-analysis" className="mt-6 scale-80">
             <Card className="bg-white/5 border-white/10">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
