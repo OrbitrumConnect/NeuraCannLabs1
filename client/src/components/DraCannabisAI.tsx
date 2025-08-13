@@ -255,10 +255,37 @@ export function DraCannabisAI() {
             } catch (error) {
               console.log('⚠️ Fallback para sistema nativo:', (error as Error).message);
               try {
-                await nativeAvatarService.makeAvatarSpeak(data.response, 'medical');
+                // Usar sistema nativo com voz feminina forçada
+                const utterance = new SpeechSynthesisUtterance(data.response);
+                
+                // FORÇA VOZ FEMININA para Dra. Cannabis
+                const voices = window.speechSynthesis.getVoices();
+                const femaleVoice = voices.find(voice => 
+                  voice.lang.includes('pt') && 
+                  (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana'))
+                ) || voices.find(voice => voice.lang.includes('pt'));
+                
+                if (femaleVoice) {
+                  utterance.voice = femaleVoice;
+                  console.log('🗣️ Dra. Cannabis - Voz feminina nativa:', femaleVoice.name);
+                }
+                
+                utterance.lang = 'pt-BR';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.2; // Pitch feminino
+                utterance.volume = 0.9;
+                
+                utterance.onstart = () => console.log('🗣️ Dra. Cannabis começou a falar');
+                utterance.onend = () => {
+                  console.log('✅ Dra. Cannabis terminou de falar');
+                  setIsTalking(false);
+                };
+                
+                window.speechSynthesis.speak(utterance);
                 console.log('✅ Sistema nativo reproduzido');
               } catch (nativeError) {
                 console.error('❌ Erro no sistema nativo:', nativeError);
+                setIsTalking(false);
               }
               setIsTalking(false);
             }

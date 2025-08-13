@@ -49,9 +49,22 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
       .trim();
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
+    
+    // FORÇA VOZ FEMININA - Dra. Cannabis IA sempre feminina
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice = voices.find(voice => 
+      voice.lang.includes('pt') && 
+      (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana'))
+    ) || voices.find(voice => voice.lang.includes('pt'));
+    
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+      console.log('🗣️ Usando voz feminina:', femaleVoice.name);
+    }
+    
     utterance.lang = 'pt-BR';
-    utterance.rate = 0.85; // Slightly slower for medical content
-    utterance.pitch = 1;
+    utterance.rate = 0.85; // Slightly slower for medical content  
+    utterance.pitch = 1.1; // Pitch mais alto para voz mais feminina
     utterance.volume = 0.9;
     
     utterance.onstart = () => setSpeaking(true);
