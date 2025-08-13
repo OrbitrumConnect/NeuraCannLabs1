@@ -3,17 +3,46 @@ import { pgTable, text, varchar, timestamp, integer } from "drizzle-orm/pg-core"
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Tabela de usuários (comum e profissional da saúde)
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
-  username: text("username").notNull().unique(),
-  password: text("password").notNull(),
+  email: text("email").notNull().unique(),
   name: text("name").notNull(),
-  email: text("email").notNull(),
-  specialty: text("specialty").notNull(),
-  crm: text("crm"),
+  role: text("role").default("paciente"), // admin, medico, paciente
+  plan: text("plan").default("free"), // free, premium, admin
+  
+  // Campos específicos para profissionais da saúde
+  crm: text("crm"), // Registro profissional (CRM, CRF, etc.)
+  crmState: text("crm_state"), // Estado do CRM
+  specialty: text("specialty"), // Especialidade médica
+  phone: text("phone"), // Telefone profissional
+  
+  // Campos comuns
+  cpf: text("cpf"), // CPF para brasileiros
+  birthDate: timestamp("birth_date"), // Data de nascimento
+  gender: text("gender"), // Gênero
+  addressData: text("address_data"), // Endereço completo em JSON
+  
+  // Dados médicos (para pacientes) - usando TEXT[] array
+  medicalConditions: text("medical_conditions").array(), // Condições médicas atuais
+  medications: text("medications").array(), // Medicações em uso
+  allergies: text("allergies").array(), // Alergias conhecidas
+  
+  // Configurações de conta
+  isActive: integer("is_active").default(1), // 1 = ativo, 0 = inativo
+  emailVerified: integer("email_verified").default(0), // 1 = verificado, 0 = não verificado
+  termsAccepted: integer("terms_accepted").default(0), // 1 = aceito, 0 = não aceito
+  privacyAccepted: integer("privacy_accepted").default(0), // 1 = aceito, 0 = não aceito
+  
+  // Dados extras em JSON flexível
+  profileData: text("profile_data"), // JSON string
+  
+  // Sistema de saudações de voz
   voiceGreetingsEnabled: integer("voice_greetings_enabled").default(1), // 1 = enabled, 0 = disabled
   lastLoginGreeting: timestamp("last_login_greeting"),
+  
   createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 export const scientificStudies = pgTable("scientific_studies", {

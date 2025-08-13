@@ -15,9 +15,35 @@ export interface SupabaseUser {
   name: string;
   role: 'admin' | 'medico' | 'paciente';
   plan: 'free' | 'premium' | 'admin';
+  
+  // Campos específicos para profissionais da saúde
+  crm?: string; // Registro profissional (CRM, CRF, etc.)
+  crm_state?: string; // Estado do CRM
+  specialty?: string; // Especialidade médica
+  phone?: string; // Telefone profissional
+  
+  // Campos comuns
+  cpf?: string; // CPF para brasileiros
+  birth_date?: string; // Data de nascimento
+  gender?: string; // Gênero
+  address_data?: any; // Endereço completo em JSON
+  
+  // Dados médicos (para pacientes)
+  medical_conditions?: string[]; // Condições médicas atuais
+  medications?: string[]; // Medicações em uso
+  allergies?: string[]; // Alergias conhecidas
+  
+  // Configurações de conta
+  is_active?: boolean;
+  email_verified?: boolean;
+  terms_accepted?: boolean;
+  privacy_accepted?: boolean;
+  
+  // Dados extras em JSON flexível
+  profile_data?: any;
+  
   created_at: string;
   updated_at: string;
-  profile_data?: any;
 }
 
 export interface SupabaseConversation {

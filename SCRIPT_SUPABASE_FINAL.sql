@@ -2,14 +2,40 @@
 -- Execute este script completo no SQL Editor do Supabase
 -- Credenciais Admin: phpg69@gmail.com / n6n7n8N9!horus
 
--- Tabela de usuários
+-- Tabela de usuários (comum e profissional da saúde)
 CREATE TABLE IF NOT EXISTS users (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   email VARCHAR(255) UNIQUE NOT NULL,
   name VARCHAR(255) NOT NULL,
   role VARCHAR(20) DEFAULT 'paciente' CHECK (role IN ('admin', 'medico', 'paciente')),
   plan VARCHAR(20) DEFAULT 'free' CHECK (plan IN ('free', 'premium', 'admin')),
+  
+  -- Campos específicos para profissionais da saúde
+  crm VARCHAR(20), -- Registro profissional (CRM, CRF, etc.)
+  crm_state VARCHAR(2), -- Estado do CRM
+  specialty VARCHAR(100), -- Especialidade médica
+  phone VARCHAR(20), -- Telefone profissional
+  
+  -- Campos comuns
+  cpf VARCHAR(14), -- CPF para brasileiros
+  birth_date DATE, -- Data de nascimento
+  gender VARCHAR(20), -- Gênero
+  address_data JSONB, -- Endereço completo em JSON
+  
+  -- Dados médicos (para pacientes)
+  medical_conditions TEXT[], -- Condições médicas atuais
+  medications TEXT[], -- Medicações em uso
+  allergies TEXT[], -- Alergias conhecidas
+  
+  -- Configurações de conta
+  is_active BOOLEAN DEFAULT true,
+  email_verified BOOLEAN DEFAULT false,
+  terms_accepted BOOLEAN DEFAULT false,
+  privacy_accepted BOOLEAN DEFAULT false,
+  
+  -- Dados extras em JSON flexível
   profile_data JSONB,
+  
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
