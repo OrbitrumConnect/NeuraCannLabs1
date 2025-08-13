@@ -2572,11 +2572,222 @@ PARÂMETROS TÉCNICOS:
     }
   });
 
+  // ========================================
+  // SISTEMA EDUCACIONAL - NEUROCANN ACADEMY
+  // ========================================
+  
+  // Rotas de cursos
+  app.get('/api/education/courses', async (req, res) => {
+    try {
+      const courses = [
+        {
+          id: '1',
+          title: 'Cannabis Medicinal: Fundamentos Científicos',
+          description: 'Introdução aos fundamentos científicos da cannabis medicinal, incluindo farmacocinética, dosagem e indicações terapêuticas.',
+          category: 'Básico',
+          level: 'iniciante',
+          duration: 120,
+          progress: 65,
+          status: 'in_progress',
+          modules: 8,
+          completedModules: 5,
+          coverImage: '/api/placeholder/400/200',
+          createdAt: new Date().toISOString()
+        },
+        {
+          id: '2',
+          title: 'Protocolos Clínicos Avançados',
+          description: 'Protocolos avançados para prescrição e acompanhamento de pacientes em tratamento com cannabis medicinal.',
+          category: 'Avançado',
+          level: 'avancado',
+          duration: 180,
+          progress: 0,
+          status: 'enrolled',
+          modules: 12,
+          completedModules: 0,
+          coverImage: '/api/placeholder/400/200',
+          createdAt: new Date().toISOString()
+        }
+      ];
+      
+      res.json(courses);
+    } catch (error) {
+      console.error('Erro ao buscar cursos:', error);
+      res.status(500).json({ message: 'Erro ao buscar cursos' });
+    }
+  });
+
+  // Rotas de progresso do usuário
+  app.get('/api/education/progress', async (req, res) => {
+    try {
+      const progress = [
+        {
+          id: '1',
+          courseId: '1',
+          userId: 'user-1',
+          completedModules: 5,
+          totalModules: 8,
+          progress: 65,
+          timeSpent: 45, // em minutos
+          lastAccessed: new Date().toISOString(),
+          status: 'in_progress'
+        }
+      ];
+      
+      res.json(progress);
+    } catch (error) {
+      console.error('Erro ao buscar progresso:', error);
+      res.status(500).json({ message: 'Erro ao buscar progresso' });
+    }
+  });
+
+  // Rotas de certificados
+  app.get('/api/education/certificates', async (req, res) => {
+    try {
+      const certificates = [
+        {
+          id: 'cert-1',
+          courseId: '3',
+          courseTitle: 'Pediatria e Cannabis: Casos Especiais',
+          userId: 'user-1',
+          certificateNumber: 'NCLAB-2025-001',
+          issuedAt: new Date('2025-01-10').toISOString(),
+          finalScore: 89,
+          isValid: true,
+          pdfUrl: '/api/certificates/cert-1/download'
+        }
+      ];
+      
+      res.json(certificates);
+    } catch (error) {
+      console.error('Erro ao buscar certificados:', error);
+      res.status(500).json({ message: 'Erro ao buscar certificados' });
+    }
+  });
+
+  // Rotas de analytics educacionais
+  app.get('/api/education/analytics', async (req, res) => {
+    try {
+      const analytics = {
+        totalTimeSpent: 45, // horas
+        completedCourses: 1,
+        averageScore: 89,
+        weakAreas: ['Dosagem Pediátrica', 'Interações Medicamentosas'],
+        strongAreas: ['Farmacocinética', 'Indicações Terapêuticas'],
+        learningStreak: 7, // dias consecutivos
+        certificatesEarned: 1,
+        coursesInProgress: 2,
+        monthlyProgress: {
+          january: 65,
+          february: 0
+        }
+      };
+      
+      res.json(analytics);
+    } catch (error) {
+      console.error('Erro ao buscar analytics:', error);
+      res.status(500).json({ message: 'Erro ao buscar analytics' });
+    }
+  });
+
+  // Endpoint para gerar PDF do certificado
+  app.post('/api/education/certificate/:certId/pdf', async (req, res) => {
+    try {
+      const { certId } = req.params;
+      
+      // Buscar dados do certificado
+      const certificateData = {
+        id: certId,
+        courseTitle: 'Cannabis Medicinal: Fundamentos Científicos',
+        userName: 'João Silva',
+        issuedAt: new Date().toISOString(),
+        finalScore: 89,
+        certificateNumber: `NCLAB-2025-${certId.substring(certId.length - 3).toUpperCase()}`
+      };
+
+      // Gerar PDF simples (em produção seria usado uma lib como jsPDF ou puppeteer)
+      const pdfContent = `
+        CERTIFICADO DE CONCLUSÃO
+        
+        Certificamos que ${certificateData.userName}
+        concluiu com sucesso o curso:
+        ${certificateData.courseTitle}
+        
+        Nota Final: ${certificateData.finalScore}%
+        Data: ${new Date(certificateData.issuedAt).toLocaleDateString('pt-BR')}
+        Certificado: ${certificateData.certificateNumber}
+        
+        NeuroCann Academy - Cannabis Medicinal
+      `;
+
+      // Retornar como blob PDF simulado
+      const buffer = Buffer.from(pdfContent, 'utf8');
+      
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="certificado_${certId}.pdf"`);
+      res.send(buffer);
+
+    } catch (error) {
+      console.error('Erro ao gerar PDF do certificado:', error);
+      res.status(500).json({ message: 'Erro ao gerar PDF do certificado' });
+    }
+  });
+
+  // Rota para download de certificado (mantida para compatibilidade)
+  app.get('/api/certificates/:certId/download', async (req, res) => {
+    try {
+      const { certId } = req.params;
+      
+      // Simulação de geração de PDF
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader('Content-Disposition', `attachment; filename="certificado-${certId}.pdf"`);
+      
+      // Em produção, aqui seria gerado o PDF real
+      res.json({
+        message: 'PDF gerado com sucesso',
+        downloadUrl: `/certificates/${certId}.pdf`
+      });
+    } catch (error) {
+      console.error('Erro ao gerar certificado:', error);
+      res.status(500).json({ message: 'Erro ao gerar certificado' });
+    }
+  });
+
+  // Rota para quiz e avaliações
+  app.post('/api/education/quiz/:quizId/submit', async (req, res) => {
+    try {
+      const { quizId } = req.params;
+      const { answers, timeSpent } = req.body;
+      
+      // Simular correção do quiz
+      const correctAnswers = 8; // de 10 questões
+      const score = (correctAnswers / 10) * 100;
+      
+      const result = {
+        quizId,
+        score,
+        correctAnswers,
+        totalQuestions: 10,
+        timeSpent,
+        passed: score >= 70,
+        feedback: score >= 80 ? 'Excelente desempenho!' : score >= 70 ? 'Bom trabalho!' : 'Recomendamos revisar o conteúdo.',
+        aiInsights: 'A Dra. Cannabis IA analisou suas respostas e sugere focar mais em dosagem pediátrica.',
+        submittedAt: new Date().toISOString()
+      };
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Erro ao submeter quiz:', error);
+      res.status(500).json({ message: 'Erro ao submeter quiz' });
+    }
+  });
+
   console.log("🎭 Dra. Cannabis IA - Assistente médico inicializado com sucesso!");
   console.log("🧠 Super IA Médica integrada - Pronta para receber conhecimento externo");
   console.log("💬 Funcionalidades: Consulta IA, Resumo de Consulta, Encaminhamento Médico");
   console.log("🧠 Sistema de Aprendizado Contínuo: ATIVO - Salvando todas as conversas para evolução da IA");
   console.log("🎭 Agente D-ID NOA ESPERANÇA: Integrado para interface visual avançada");
+  console.log("📚 NeuroCann Academy: Sistema educacional integrado com IA");
 
   const httpServer = createServer(app);
 

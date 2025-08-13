@@ -21,6 +21,7 @@ import PatientDashboard from "@/pages/PatientDashboard";
 import ProfessionalDashboard from "@/pages/ProfessionalDashboard";
 import ProfileDashboard from "@/pages/ProfileDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
+import EducationDashboard from "@/pages/EducationDashboard";
 import RoleSelector from "@/components/RoleSelector";
 import DashboardNavigation from "@/components/DashboardNavigation";
 import NotFound from "@/pages/not-found";
@@ -97,6 +98,7 @@ function Router() {
         <Route path="/admin" component={AdminDashboard} />
         <Route path="/analytics" component={AnalyticsDashboard} />
         <Route path="/critical-modules" component={CriticalModulesDashboard} />
+        <Route path="/education" component={EducationDashboard} />
         <Route component={NotFound} />
       </Switch>
     </div>

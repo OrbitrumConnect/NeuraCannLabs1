@@ -227,6 +227,198 @@ export const insertStudySubmissionSchema = createInsertSchema(studySubmissions).
   updatedAt: true,
 });
 
+// Sistema Educacional - Cursos
+export const courses = pgTable("courses", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  title: text("title").notNull(),
+  description: text("description").notNull(),
+  category: text("category").notNull(), // Básico, Avançado, Especialização
+  level: text("level").notNull(), // iniciante, intermediario, avancado
+  duration: integer("duration").notNull(), // duração em minutos
+  coverImage: text("cover_image"),
+  isActive: integer("is_active").default(1),
+  order: integer("order").default(0), // ordem de exibição
+  prerequisites: text("prerequisites").array(), // IDs de cursos pré-requisito
+  createdBy: varchar("created_by").references(() => users.id),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Módulos dos cursos
+export const courseModules = pgTable("course_modules", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  courseId: varchar("course_id").references(() => courses.id).notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  content: text("content").notNull(), // Conteúdo em markdown/HTML
+  videoUrl: text("video_url"),
+  duration: integer("duration").notNull(), // duração em minutos
+  order: integer("order").notNull(),
+  isRequired: integer("is_required").default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Quizzes dos módulos
+export const quizzes = pgTable("quizzes", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  moduleId: varchar("module_id").references(() => courseModules.id).notNull(),
+  title: text("title").notNull(),
+  description: text("description"),
+  passingScore: integer("passing_score").default(70), // % para passar
+  maxAttempts: integer("max_attempts").default(3),
+  timeLimit: integer("time_limit"), // tempo limite em minutos
+  isActive: integer("is_active").default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Questões dos quizzes
+export const quizQuestions = pgTable("quiz_questions", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  quizId: varchar("quiz_id").references(() => quizzes.id).notNull(),
+  question: text("question").notNull(),
+  type: text("type").notNull(), // multiple_choice, true_false, open_text
+  options: text("options").array(), // opções para multiple choice
+  correctAnswer: text("correct_answer").notNull(),
+  explanation: text("explanation"), // explicação da resposta
+  difficulty: text("difficulty").default("medium"), // easy, medium, hard
+  order: integer("order").notNull(),
+  points: integer("points").default(1),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Progresso dos usuários nos cursos
+export const userCourseProgress = pgTable("user_course_progress", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  courseId: varchar("course_id").references(() => courses.id).notNull(),
+  status: text("status").default("enrolled"), // enrolled, in_progress, completed, dropped
+  progressPercentage: integer("progress_percentage").default(0),
+  totalTimeSpent: integer("total_time_spent").default(0), // tempo em minutos
+  startedAt: timestamp("started_at").defaultNow(),
+  completedAt: timestamp("completed_at"),
+  lastAccessedAt: timestamp("last_accessed_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Progresso dos usuários nos módulos
+export const userModuleProgress = pgTable("user_module_progress", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  moduleId: varchar("module_id").references(() => courseModules.id).notNull(),
+  courseProgressId: varchar("course_progress_id").references(() => userCourseProgress.id).notNull(),
+  status: text("status").default("not_started"), // not_started, in_progress, completed
+  timeSpent: integer("time_spent").default(0), // tempo em minutos
+  completedAt: timestamp("completed_at"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Tentativas de quiz dos usuários
+export const userQuizAttempts = pgTable("user_quiz_attempts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  quizId: varchar("quiz_id").references(() => quizzes.id).notNull(),
+  moduleProgressId: varchar("module_progress_id").references(() => userModuleProgress.id).notNull(),
+  attemptNumber: integer("attempt_number").notNull(),
+  score: integer("score").notNull(), // pontuação obtida
+  maxScore: integer("max_score").notNull(), // pontuação máxima possível
+  percentage: integer("percentage").notNull(), // percentual de acertos
+  timeSpent: integer("time_spent").notNull(), // tempo gasto em segundos
+  passed: integer("passed").notNull(), // 1 = passou, 0 = não passou
+  answers: text("answers").notNull(), // JSON com respostas do usuário
+  aiAnalysis: text("ai_analysis"), // análise da IA sobre o desempenho
+  startedAt: timestamp("started_at").notNull(),
+  completedAt: timestamp("completed_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Certificados emitidos
+export const certificates = pgTable("certificates", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  courseId: varchar("course_id").references(() => courses.id).notNull(),
+  certificateNumber: text("certificate_number").notNull().unique(),
+  finalScore: integer("final_score").notNull(), // pontuação final do curso
+  completionTime: integer("completion_time").notNull(), // tempo total em minutos
+  pdfUrl: text("pdf_url"), // URL do certificado em PDF
+  isValid: integer("is_valid").default(1), // certificado válido
+  validUntil: timestamp("valid_until"), // validade do certificado
+  issuedAt: timestamp("issued_at").defaultNow(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Analytics do sistema educacional
+export const educationAnalytics = pgTable("education_analytics", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").references(() => users.id).notNull(),
+  courseId: varchar("course_id").references(() => courses.id),
+  moduleId: varchar("module_id").references(() => courseModules.id),
+  quizId: varchar("quiz_id").references(() => quizzes.id),
+  eventType: text("event_type").notNull(), // course_start, module_complete, quiz_attempt, etc.
+  eventData: text("event_data"), // JSON com dados específicos do evento
+  sessionId: text("session_id"),
+  deviceInfo: text("device_info"), // info do dispositivo
+  timeSpent: integer("time_spent"), // tempo gasto na ação
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Insert schemas para o sistema educacional
+export const insertCourseSchema = createInsertSchema(courses).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertCourseModuleSchema = createInsertSchema(courseModules).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertQuizSchema = createInsertSchema(quizzes).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertQuizQuestionSchema = createInsertSchema(quizQuestions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserCourseProgressSchema = createInsertSchema(userCourseProgress).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserModuleProgressSchema = createInsertSchema(userModuleProgress).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertUserQuizAttemptSchema = createInsertSchema(userQuizAttempts).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertCertificateSchema = createInsertSchema(certificates).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertEducationAnalyticsSchema = createInsertSchema(educationAnalytics).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Types para o sistema educacional
+export type Course = typeof courses.$inferSelect;
+export type CourseModule = typeof courseModules.$inferSelect;
+export type Quiz = typeof quizzes.$inferSelect;
+export type QuizQuestion = typeof quizQuestions.$inferSelect;
+export type UserCourseProgress = typeof userCourseProgress.$inferSelect;
+export type UserModuleProgress = typeof userModuleProgress.$inferSelect;
+export type UserQuizAttempt = typeof userQuizAttempts.$inferSelect;
+export type Certificate = typeof certificates.$inferSelect;
+export type EducationAnalytics = typeof educationAnalytics.$inferSelect;
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;

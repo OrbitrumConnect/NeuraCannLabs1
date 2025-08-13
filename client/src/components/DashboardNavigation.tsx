@@ -97,6 +97,22 @@ export default function DashboardNavigation({ userRole }: NavigationProps) {
         {/* Divider */}
         <div className="w-px h-6 bg-gray-600 mx-1"></div>
 
+        {/* Education */}
+        <Button
+          variant={location === '/education' ? 'default' : 'ghost'}
+          size="sm"
+          onClick={() => handleNavigate('/education')}
+          className={`text-xs px-3 ${
+            location === '/education' 
+              ? 'bg-yellow-600 text-white' 
+              : 'text-gray-300 hover:text-white hover:bg-gray-700'
+          }`}
+          data-testid="nav-education"
+        >
+          <i className="fas fa-graduation-cap mr-1" />
+          Academy
+        </Button>
+
         {/* Profile */}
         <Button
           variant={location === '/profile' ? 'default' : 'ghost'}
