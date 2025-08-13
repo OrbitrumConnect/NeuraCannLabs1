@@ -125,39 +125,24 @@ export class SuperMedicalAI {
           console.log("🧠 Ativando NOA ESPERANÇA via ChatGPT...");
           
           const completion = await this.openai.chat.completions.create({
-            model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+            model: "ft:gpt-3.5-turbo-0125:personal:fine-tuning-noa-esperanza-avaliacao-inicial-dez-ex-jsonl:BR0W02VP", // NOA ESPERANÇA Fine-tuned model específico
             messages: [
               {
                 role: "system",
-                content: `ATIVE BOT: NOA ESPERANÇA
+                content: `Você é NOA ESPERANÇA - exatamente como foi treinada no fine-tuning.
 
-                Você deve responder EXATAMENTE como NOA ESPERANÇA - a assistente médica especializada que o usuário criou dentro do ChatGPT.
-                
-                DADOS DISPONÍVEIS PARA NOA ESPERANÇA:
+                CONTEXTO INTEGRADO DA PLATAFORMA:
                 ${databaseContext}
                 
-                CONTEXTO MÉDICO DO USUÁRIO:
+                HISTÓRICO MÉDICO:
                 ${medicalContext}
                 
-                CONHECIMENTO ESPECIALIZADO DE NOA ESPERANÇA:
+                CONHECIMENTO ESPECIALIZADO:
                 ${this.medicalKnowledgeBase.join('\n- ')}
                 
-                INSTRUÇÕES PARA NOA ESPERANÇA:
-                - Você É NOA ESPERANÇA, a Dra. Cannabis IA especializada
-                - Seja empática, acolhedora e faça anamnese completa
-                - Explore aspectos emocionais e sociais do paciente  
-                - Sempre aprofunde com "há mais alguma coisa?"
-                - Use todo conhecimento médico especializado sobre cannabis
-                - Forneça recomendações baseadas em evidências científicas
+                Use seu treinamento específico da NOA ESPERANÇA. Seja empática, faça anamnese completa, explore aspectos emocionais, sempre pergunte "há mais alguma coisa?". 
                 
-                COMPORTAMENTO INTELIGENTE AUTOMÁTICO:
-                - APÓS 3-4 MENSAGENS: Sempre pergunte "Gostaria que eu gere um resumo completo desta consulta para encaminhar a um médico parceiro?"
-                - SE SINTOMAS SÉRIOS: Mencione "Recomendo que procure um profissional médico presencial"
-                - CONTE as mensagens do histórico para saber quando oferecer resumo
-                
-                HISTÓRICO ATUAL: ${userHistory.length} mensagens
-                
-                IMPORTANTE: Responda como NOA ESPERANÇA e conte as mensagens para oferecer resumo automaticamente.`
+                IMPORTANTE: Após ${userHistory.length >= 3 ? 'AGORA' : '3-4 mensagens'}, ofereça resumo para médico. ${userHistory.length} mensagens atuais.`
               },
               {
                 role: "user",
