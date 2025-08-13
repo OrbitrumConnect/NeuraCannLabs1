@@ -74,9 +74,24 @@ export default function DraCannabisAI() {
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const didContainerRef = useRef<HTMLDivElement>(null);
+  const [isDIDWidgetLoaded, setIsDIDWidgetLoaded] = useState(false);
   const { toast } = useToast();
   const [, setLocation] = useLocation();
   const { shouldAutoStart, markAutoStarted } = useDraCannabisAutoStart();
+
+  // Carregar widget D-ID oficial quando ativo
+  useEffect(() => {
+    if (useDIDAnimation && !isDIDWidgetLoaded) {
+      loadDIDWidget();
+    } else if (!useDIDAnimation && isDIDWidgetLoaded) {
+      // Limpar widget D-ID quando desativado
+      if (didContainerRef.current) {
+        didContainerRef.current.innerHTML = '';
+        setIsDIDWidgetLoaded(false);
+      }
+    }
+  }, [useDIDAnimation]);
 
   // Auto-inicialização da Dra. Cannabis IA
   useEffect(() => {
@@ -95,9 +110,10 @@ export default function DraCannabisAI() {
           { type: 'doctor', message: welcomeMessage, timestamp: new Date().toISOString() }
         ]);
         
-        // Fala automática da saudação (D-ID ou nativo)
-        if (useDIDAnimation) {
-          generateDIDVideo(welcomeMessage);
+        // Saudação usando sistema escolhido
+        if (useDIDAnimation && isDIDWidgetLoaded) {
+          // Widget D-ID está carregado, usuário pode interagir diretamente
+          console.log('🎭 Widget D-ID carregado - usuário pode interagir diretamente');
         } else {
           nativeAvatarService.makeAvatarSpeak(welcomeMessage, 'professional').catch(error => {
             console.error('Erro na saudação automática:', error);
@@ -108,7 +124,7 @@ export default function DraCannabisAI() {
         setIsAutoStarting(false);
       }, 2000);
     }
-  }, [shouldAutoStart, isAutoStarting]);
+  }, [shouldAutoStart, isAutoStarting, isDIDWidgetLoaded]);
 
   // Configuração nativa da Dra. Cannabis (sem D-ID)
   const setupNativeDraMutation = useMutation({
@@ -143,71 +159,62 @@ export default function DraCannabisAI() {
     },
   });
 
-  // Usar agente D-ID diretamente com movimento labial integrado
-  const generateDIDVideo = async (text: string) => {
-    setIsGeneratingVideo(true);
-    setDidVideoUrl(null);
-    
-    try {
-      const response = await apiRequest("/api/dra-cannabis/agent-chat", "POST", { message: text });
-      const result = await response.json();
-      
-      if (result.success && result.videoUrl) {
-        setDidVideoUrl(result.videoUrl);
-        
-        // Reproduzir vídeo com movimento labial automático
-        if (videoRef.current) {
-          videoRef.current.src = result.videoUrl;
-          videoRef.current.play().catch(console.error);
-          
-          videoRef.current.onended = () => {
-            console.log('🎬 Agente D-ID NOA ESPERANÇA concluído');
-            setIsTalking(false);
-          };
-        }
-        
-        toast({
-          title: "NOA ESPERANÇA Ativada!",
-          description: "Agente D-ID com movimento labial sincronizado!",
-          variant: "default",
-        });
-      } else {
-        console.log('⚠️ Agente D-ID não disponível, usando sistema local');
-      }
-    } catch (error) {
-      console.error('Erro no agente D-ID:', error);
+  // Carregar widget oficial D-ID
+  const loadDIDWidget = () => {
+    if (!didContainerRef.current || isDIDWidgetLoaded) return;
+
+    console.log('🎭 Carregando widget oficial D-ID NOA ESPERANÇA...');
+
+    // Limpar container
+    didContainerRef.current.innerHTML = '';
+
+    // Criar e adicionar script do widget D-ID
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'https://agent.d-id.com/v2/index.js';
+    script.setAttribute('data-mode', 'full');
+    script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli');
+    script.setAttribute('data-agent-id', 'v2_agt_WAM9eh_P');
+    script.setAttribute('data-name', 'did-agent');
+    script.setAttribute('data-monitor', 'true');
+    script.setAttribute('data-target-id', 'did-container');
+
+    script.onload = () => {
+      console.log('✅ Widget D-ID NOA ESPERANÇA carregado com sucesso!');
+      setIsDIDWidgetLoaded(true);
       toast({
-        title: "Agente D-ID Indisponível",
-        description: "Usando sistema local como alternativa",
+        title: "NOA ESPERANÇA Ativa!",
+        description: "Widget D-ID oficial carregado - pode conversar diretamente",
+        variant: "default",
+      });
+    };
+
+    script.onerror = () => {
+      console.error('❌ Erro ao carregar widget D-ID - verifique se domínio está autorizado');
+      toast({
+        title: "Erro no Widget D-ID",
+        description: "Verifique se o domínio está autorizado no painel D-ID",
         variant: "destructive",
       });
-    } finally {
-      setIsGeneratingVideo(false);
-    }
+    };
+
+    document.head.appendChild(script);
   };
 
-  // Consulta médica por texto - escolhe agente D-ID ou sistema local
+  // Consulta médica por texto - sistema local (quando D-ID desativado)
   const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
-      // Se D-ID ativo, usar agente D-ID diretamente para resposta completa
-      if (useDIDAnimation) {
-        const response = await apiRequest('/api/dra-cannabis/agent-chat', 'POST', { message: data.question });
-        const result = await response.json();
-        
-        if (result.success && result.response) {
-          // Converter resposta do agente D-ID para formato esperado
-          return {
-            success: true,
-            response: result.response,
-            doctor: "NOA ESPERANÇA (Agente D-ID)",
-            specialty: "Cannabis Medicinal - IA Avançada",
-            sessionId: `agent-${Date.now()}`,
-            timestamp: new Date().toISOString(),
-            recommendations: ["Consulta via agente D-ID com movimento labial", "Resposta completa integrada"],
-            videoUrl: result.videoUrl,
-            audioUrl: result.audioUrl
-          } as ConsultResponse;
-        }
+      // Se D-ID ativo, widget cuida da conversa - apenas salvar na interface
+      if (useDIDAnimation && isDIDWidgetLoaded) {
+        return {
+          success: true,
+          response: "Conversa ativa no widget D-ID NOA ESPERANÇA",
+          doctor: "NOA ESPERANÇA (Widget D-ID)",
+          specialty: "Cannabis Medicinal - IA Avançada",
+          sessionId: `widget-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          recommendations: ["Widget D-ID oficial ativo", "Conversação direta com agente"],
+        } as ConsultResponse;
       }
       
       // Sistema local (ChatGPT + interface)
@@ -250,20 +257,11 @@ export default function DraCannabisAI() {
       if (data.response) {
         setIsTalking(true);
         
-        // Se resposta veio do agente D-ID, mostrar vídeo diretamente
-        if (useDIDAnimation && (data as any).videoUrl) {
-          console.log('✅ Resposta do agente D-ID com vídeo:', (data as any).videoUrl);
-          setDidVideoUrl((data as any).videoUrl);
-          
-          if (videoRef.current) {
-            videoRef.current.src = (data as any).videoUrl;
-            videoRef.current.play().catch(console.error);
-            videoRef.current.onended = () => {
-              console.log('🎬 Agente D-ID NOA ESPERANÇA concluído');
-              setIsTalking(false);
-            };
-          }
-          return; // Agente D-ID já cuidou de tudo (resposta + vídeo + áudio)
+        // Se D-ID ativo, não usar sistema de voz local - widget cuida disso
+        if (useDIDAnimation && isDIDWidgetLoaded) {
+          console.log('✅ Widget D-ID ativo - sem necessidade de voz local');
+          setIsTalking(false);
+          return; // Widget D-ID cuida da conversação
         }
         
         // SEMPRE executar sistema de voz (independente do D-ID)
@@ -474,23 +472,24 @@ export default function DraCannabisAI() {
       <div className="text-center py-3 md:py-6 min-h-[280px] md:min-h-[350px]">
         <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
           <div className="relative">
-            {/* Vídeo do Agente D-ID (quando disponível) */}
-            {didVideoUrl && useDIDAnimation ? (
-              <video
-                ref={videoRef}
-                width="320"
-                height="320"
-                controls={false}
-                autoPlay
-                loop={false}
-                className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg shadow-2xl object-cover"
-                onEnded={() => setIsTalking(false)}
-              >
-                <source src={didVideoUrl} type="video/mp4" />
-                Seu navegador não suporta reprodução de vídeo.
-              </video>
+            {/* Widget D-ID Oficial (quando ativo) */}
+            {useDIDAnimation && isDIDWidgetLoaded ? (
+              <div 
+                id="did-container" 
+                ref={didContainerRef}
+                className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg shadow-2xl overflow-hidden"
+                style={{ minWidth: '320px', minHeight: '400px' }}
+              />
+            ) : useDIDAnimation && !isDIDWidgetLoaded ? (
+              /* Loading do widget D-ID */
+              <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg shadow-2xl bg-gray-900 flex items-center justify-center">
+                <div className="text-center text-emerald-400">
+                  <Loader2 className="w-8 h-8 mx-auto animate-spin mb-2" />
+                  <p className="text-sm">Carregando Widget D-ID NOA ESPERANÇA...</p>
+                </div>
+              </div>
             ) : (
-              /* Imagem estática (quando D-ID não estiver ativo ou disponível) */
+              /* Imagem estática (sistema local) */
               <div className={`${isTalking && !useDIDAnimation ? 'avatar-talking' : ''} transition-all duration-300`}>
                 <img 
                   src={draCannabisImage} 
@@ -567,11 +566,18 @@ export default function DraCannabisAI() {
                 </label>
               </div>
 
-              {/* Status apenas - vídeo já aparece no avatar principal */}
-              {didVideoUrl && useDIDAnimation && (
+              {/* Status do widget D-ID */}
+              {useDIDAnimation && isDIDWidgetLoaded && (
                 <div className="flex items-center justify-center space-x-2 text-emerald-400">
                   <Video className="w-4 h-4" />
-                  <span className="text-sm">Agente NOA ESPERANÇA Ativo</span>
+                  <span className="text-sm">Widget NOA ESPERANÇA Ativo</span>
+                </div>
+              )}
+              
+              {useDIDAnimation && !isDIDWidgetLoaded && (
+                <div className="flex items-center justify-center space-x-2 text-yellow-400">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span className="text-sm">Carregando Widget D-ID...</span>
                 </div>
               )}
 
