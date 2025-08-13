@@ -31,15 +31,16 @@ export default function Login() {
       const data = await response.json();
 
       if (response.ok) {
-        localStorage.setItem('user', JSON.stringify(data.user));
+        // Salvar dados do usuário no localStorage
+        localStorage.setItem('user', JSON.stringify(data));
         toast({
           title: "Login realizado com sucesso!",
           description: "Redirecionando para a plataforma...",
         });
-        // Usar window.location para forçar redirecionamento completo
+        // Forçar redirecionamento imediato
         setTimeout(() => {
           window.location.href = '/';
-        }, 1000);
+        }, 500);
       } else {
         toast({
           title: "Erro no login",
