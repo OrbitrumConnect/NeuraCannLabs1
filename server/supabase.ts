@@ -88,24 +88,56 @@ export interface SupabaseAiInsight {
 }
 
 // Funções auxiliares para criação das tabelas
-export async function initializeSupabaseTables() {
+export async function initializeSupabaseTables(): Promise<boolean> {
   console.log('🗄️ Inicializando tabelas do Supabase...');
   
   try {
-    // Verificar se as tabelas existem
-    const { data: tables, error } = await supabase
-      .from('information_schema.tables')
-      .select('table_name')
-      .eq('table_schema', 'public');
+    // Teste de conexão simples
+    const { data: testData, error: testError } = await supabase
+      .from('users')
+      .select('id')
+      .limit(1);
 
-    if (error) {
-      console.log('⚠️ Erro ao verificar tabelas existentes:', error);
+    if (testError && testError.code === 'PGRST116') {
+      console.log('⚠️ Tabela users não existe - execute o script SQL no Supabase');
+      return false;
     }
 
     console.log('✅ Supabase conectado com sucesso');
+    
+    // Criar usuário de teste se não existir
+    await createTestUser();
+    
     return true;
   } catch (error) {
-    console.error('❌ Erro ao inicializar Supabase:', error);
+    console.log('❌ Erro de conexão com Supabase:', error instanceof Error ? error.message : error);
     return false;
+  }
+}
+
+// Função para criar usuário de teste
+async function createTestUser(): Promise<void> {
+  try {
+    const testUser = {
+      id: 'test-user-123',
+      email: 'teste@neurocann.com',
+      name: 'Usuário Teste',
+      role: 'paciente',
+      plan: 'free'
+    };
+
+    const { data, error } = await supabase
+      .from('users')
+      .upsert(testUser)
+      .select()
+      .single();
+
+    if (error) {
+      console.log('⚠️ Erro ao criar usuário teste:', error.message);
+    } else {
+      console.log('✅ Usuário de teste criado/atualizado:', data.email);
+    }
+  } catch (error) {
+    console.log('⚠️ Falha ao criar usuário teste:', error instanceof Error ? error.message : error);
   }
 }

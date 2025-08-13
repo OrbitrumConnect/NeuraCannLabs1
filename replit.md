@@ -28,6 +28,14 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Botões de Ação**: Verde neon (principal), amarelo (resumo), vermelho (encaminhamento médico)
 - **Funcionalidade Mobile**: Voz funcionando com ElevenLabs + backup nativo, processamento automático
 
+**Integração Supabase (Agosto 2025)**:
+- **SUPABASE INTEGRADO**: Sistema de persistência de dados configurado com fallback MemStorage
+- **Credenciais Configuradas**: URL e chave anônima integradas ao sistema  
+- **Usuário de Teste**: teste@neurocann.com criado automaticamente para desenvolvimento
+- **Tabelas Preparadas**: Scripts SQL prontos para criação no painel Supabase
+- **Sistema Híbrido**: MemStorage para funcionamento imediato + Supabase para persistência
+- **Aprendizado Contínuo**: Conversas da NOA serão salvas no Supabase após execução do script
+
 **Atualizações Mais Recentes (Agosto 2025)**:
 - **NOA ESPERANÇA FINE-TUNED**: Modelo personalizado `ft:gpt-3.5-turbo-0125:personal:fine-tuning-noa-esperanza-avaliacao-inicial-dez-ex-jsonl:BR0W02VP` integrado
 - **Comportamento Médico Empático**: NOA treinada pelo usuário ativa com anamnese completa e exploração emocional
