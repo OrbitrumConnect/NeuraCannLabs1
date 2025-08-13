@@ -146,25 +146,11 @@ export function useVoiceGreeting() {
     console.log('🎤 Status reprodução:', { userId, lastPlayed, today, hasPlayedToday: lastPlayed === today });
   }, [user]);
 
-  // Sistema antigo de saudação DESABILITADO - Apenas log informativo
+  // Sistema de saudação automática TOTALMENTE DESABILITADO
   useEffect(() => {
-    // Funciona tanto para usuários autenticados quanto no modo free
-    const userId = user?.id || 'free-user';
-    
-    // Apenas marcar acesso mas NÃO reproduzir saudação robótica antiga
-    if (!hasPlayedToday) {
-      const lastLoginDate = localStorage.getItem(`last_login_${userId}`);
-      const today = new Date().toDateString();
-      
-      console.log('🎤 Verificando saudação:', { lastLoginDate, today, hasPlayedToday });
-      
-      if (lastLoginDate !== today) {
-        // SISTEMA ANTIGO DESABILITADO - Não reproduzir mais saudação automática robótica
-        console.log('🎤 Sistema de saudação automática DESABILITADO - Usando apenas voz moderna da Dra. Cannabis IA');
-        localStorage.setItem(`last_login_${userId}`, today);
-      }
-    }
-  }, [user, hasPlayedToday]);
+    console.log('🎤 Sistema de saudação automática DESABILITADO - voz apenas quando pesquisado');
+    // NÃO FAZER NADA - usuário não quer voz automática na entrada
+  }, []);
 
   // Função para reproduzir manualmente (sempre funciona)
   const playManualGreeting = useCallback(async () => {

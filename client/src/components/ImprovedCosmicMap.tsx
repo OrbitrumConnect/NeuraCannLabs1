@@ -240,9 +240,18 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       });
 
       const data = await response.json();
-      const assistantResponse = data.response || 'Resposta não disponível';
+      
+      // LIMPAR RESPOSTA - REMOVER CÓDIGOS JSON E TÉCNICOS
+      let assistantResponse = data.response || 'Resposta não disponível';
+      
+      // Remove códigos JSON da resposta
+      assistantResponse = assistantResponse.replace(/```json[\s\S]*?```/g, '');
+      assistantResponse = assistantResponse.replace(/"query":.*?"response":/g, '');
+      assistantResponse = assistantResponse.replace(/🤖 Análise de Dados Cruzados.*?(?=\n\n|\n[A-Z]|$)/s, '');
+      assistantResponse = assistantResponse.replace(/\{[^{}]*\}/g, ''); // Remove objetos JSON simples
+      assistantResponse = assistantResponse.trim();
 
-      // Adicionar resposta da IA
+      // Adicionar resposta LIMPA da IA
       addMessage({ role: 'assistant', content: assistantResponse, timestamp: Date.now() });
 
       // Estruturar dados completos para o MainCard
@@ -366,8 +375,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
   return (
     <div className="relative w-full min-h-screen">
       
-      {/* Dr. Cannabis IA - Mobile friendly positioning */}
-      <div className="flex justify-center pt-8 sm:absolute sm:top-8 sm:-left-28 sm:w-72 sm:h-72 z-20">
+      {/* Dr. Cannabis IA - Mobile friendly positioning - Z-INDEX AUMENTADO */}
+      <div className="flex justify-center pt-8 sm:absolute sm:top-8 sm:-left-28 sm:w-72 sm:h-72 z-50">
         <div 
           className={`cursor-pointer transition-all duration-500 flex items-center justify-center relative ${
             isDrAIActive 
@@ -381,15 +390,15 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               : 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.1))'
           }}
         >
-          {/* Avatar Thought Bubble */}
+          {/* Avatar Thought Bubble - Z-INDEX MELHORADO */}
           <AvatarThoughtBubble 
             isActive={isDrAIActive}
             context={isTyping ? 'searching' : (isDrAIActive ? 'overview' : 'idle')}
-            className="absolute"
+            className="absolute z-40"
           />
           
           <div 
-            className={`relative transition-all duration-300 ${
+            className={`relative transition-all duration-300 z-50 ${
               isAvatarSpeaking ? 'animate-pulse filter brightness-110' : ''
             }`}
             style={{
@@ -418,7 +427,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             
             {/* Badge IA Status */}
             {isDrAIActive && (
-              <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2">
+              <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2 z-50">
                 <div className="bg-green-500 text-white text-xs px-1 sm:px-2 py-0.5 rounded-full flex items-center space-x-1 shadow-lg">
                   <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></div>
                   <span className="text-xs sm:text-sm font-medium">IA</span>
@@ -498,9 +507,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
+      {/* Main Result Card - Mobile sequential, Desktop positioned - Z-INDEX REDUZIDO */}
       {isDrAIActive && formattedResult && (
-        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
+        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-10 sm:px-0">
           <MainCard 
             result={formattedResult} 
             isMinimized={isMainCardMinimized}
