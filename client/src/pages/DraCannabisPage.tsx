@@ -9,7 +9,7 @@ export default function DraCannabisPage() {
   const [, setLocation] = useLocation();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-950/50 via-black to-green-950/30">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-black">
       
       {/* Cabeçalho Principal - Padronizado com outros dashboards */}
       <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 border-b border-emerald-500/30">
@@ -28,17 +28,17 @@ export default function DraCannabisPage() {
               </Button>
               
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
-                  <Brain className="w-4 h-4 text-white" />
+                <div className="w-8 h-8 rounded-full bg-neon-cyan/20 border border-neon-cyan/50 flex items-center justify-center shadow-[0_0_15px_rgba(0,255,255,0.3)]">
+                  <Brain className="w-4 h-4 text-neon-cyan drop-shadow-[0_0_5px_rgba(0,255,255,0.5)]" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-emerald-400">Dra. Cannabis IA</h1>
-                  <p className="text-xs text-emerald-200">Assistente Médico Inteligente</p>
+                  <h1 className="text-xl font-bold text-neon-cyan drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]">Dra. Cannabis IA</h1>
+                  <p className="text-xs text-neon-cyan/80 drop-shadow-[0_0_5px_rgba(0,255,255,0.3)]">Assistente Médico Inteligente</p>
                 </div>
               </div>
             </div>
             
-            <Badge className="bg-emerald-600 text-white text-sm">
+            <Badge className="bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/50 text-sm drop-shadow-[0_0_8px_rgba(0,255,255,0.4)]">
               D-ID + ElevenLabs + ChatGPT
             </Badge>
           </div>
@@ -60,20 +60,20 @@ export default function DraCannabisPage() {
           <div className="space-y-4">
             
             {/* Header compacto */}
-            <Card className="border-emerald-500/30 bg-gradient-to-br from-emerald-900/20 to-green-900/20">
+            <Card className="border-neon-cyan/30 bg-gradient-to-br from-neon-cyan/5 to-black shadow-[0_0_20px_rgba(0,255,255,0.1)]">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
-                    <Brain className="w-5 h-5 text-white" />
+                  <div className="w-10 h-10 rounded-full bg-neon-cyan/20 border border-neon-cyan/50 flex items-center justify-center shadow-[0_0_20px_rgba(0,255,255,0.4)]">
+                    <Brain className="w-5 h-5 text-neon-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.6)]" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-emerald-400">Dra. Cannabis IA</CardTitle>
-                    <Badge className="bg-emerald-600 text-white text-xs mt-1">
+                    <CardTitle className="text-lg text-neon-cyan drop-shadow-[0_0_8px_rgba(0,255,255,0.5)]">Dra. Cannabis IA</CardTitle>
+                    <Badge className="bg-neon-cyan/20 text-neon-cyan border border-neon-cyan/50 text-xs mt-1 drop-shadow-[0_0_5px_rgba(0,255,255,0.4)]">
                       D-ID + ElevenLabs
                     </Badge>
                   </div>
                 </div>
-                <p className="text-xs text-emerald-200 mt-2">
+                <p className="text-xs text-neon-cyan/70 mt-2 drop-shadow-[0_0_3px_rgba(0,255,255,0.3)]">
                   Certificada ANVISA • CFM
                 </p>
               </CardHeader>
