@@ -10,6 +10,7 @@ import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
 import draCannabisImage from '@assets/20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png';
+import { RealisticMouthAnimation } from './RealisticMouthAnimation';
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 interface ConsultResponse {
@@ -146,11 +147,7 @@ export function DraCannabisAI() {
     setDidVideoUrl(null);
     
     try {
-      const response = await apiRequest("/api/dra-cannabis/animate", {
-        method: "POST",
-        body: JSON.stringify({ text }),
-        headers: { "Content-Type": "application/json" }
-      });
+      const response = await apiRequest("/api/dra-cannabis/animate", "POST", { text });
       
       if (response.success && response.videoUrl) {
         setDidVideoUrl(response.videoUrl);
@@ -394,28 +391,56 @@ export function DraCannabisAI() {
         <CardHeader className="text-center py-4 md:py-8">
           <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
             <div className="relative">
-              <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
-                <img 
-                  src={draCannabisImage} 
-                  alt="Dra. Cannabis IA" 
-                  className={`
-                    w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-[37.2rem] lg:h-[37.2rem] 
-                    rounded-lg object-contain shadow-2xl 
-                    bg-gradient-to-br from-green-900/10 to-green-800/20 
-                    ${isTalking ? 'animate-pulse filter brightness-110' : ''}
-                  `}
-                />
-                {isTalking && (
-                  <div className="absolute inset-0 rounded-lg border-4 border-green-400/50 animate-ping" />
-                )}
-              </div>
-              <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
-                isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
-              }`}>
-                {isTalking ? '🗣️ IA' : 'IA'}
-              </Badge>
+              {/* Avatar Principal - Imagem ou Vídeo D-ID */}
+              {didVideoUrl && useDIDAnimation ? (
+                // Vídeo D-ID Realista
+                <div className="relative">
+                  <video
+                    ref={videoRef}
+                    width="320"
+                    height="320"
+                    autoPlay
+                    loop={false}
+                    muted={false}
+                    className="rounded-full shadow-2xl border-4 border-green-500/30 object-cover"
+                    onEnded={() => setIsTalking(false)}
+                    style={{ maxWidth: '100%', height: 'auto' }}
+                  >
+                    <source src={didVideoUrl} type="video/mp4" />
+                    Seu navegador não suporta reprodução de vídeo.
+                  </video>
+                  <Badge className="absolute -bottom-2 -right-2 bg-green-400 text-white text-xs px-2 py-1 animate-pulse">
+                    🎬 D-ID
+                  </Badge>
+                </div>
+              ) : (
+                // Avatar com Animação Realista da Boca
+                <div className="relative">
+                  <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 mx-auto">
+                    <RealisticMouthAnimation
+                      imageUrl={draCannabisImage}
+                      isAnimating={isTalking}
+                      audioRef={audioRef}
+                      className="w-full h-full rounded-full object-cover shadow-2xl border-4 border-green-500/20"
+                    />
+                  </div>
+                  
+                  {/* Efeitos visuais quando falando */}
+                  {isTalking && (
+                    <div className="absolute inset-0 rounded-full border-4 border-green-400/40 animate-ping pointer-events-none" />
+                  )}
+                  
+                  <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
+                    isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
+                  }`}>
+                    {isTalking ? '🗣️ IA' : '🤖 IA'}
+                  </Badge>
+                </div>
+              )}
+              
+              {/* Loading de Inicialização */}
               {isAutoStarting && (
-                <div className="absolute inset-0 bg-green-500/20 rounded-lg flex items-center justify-center">
+                <div className="absolute inset-0 bg-green-500/20 rounded-full flex items-center justify-center backdrop-blur-sm">
                   <div className="text-center text-green-400">
                     <Loader2 className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin mb-2" />
                     <p className="text-xs md:text-sm">Inicializando...</p>
@@ -470,25 +495,7 @@ export function DraCannabisAI() {
                 </label>
               </div>
 
-              {/* Vídeo D-ID quando disponível */}
-              {didVideoUrl && useDIDAnimation && (
-                <div className="flex justify-center">
-                  <video
-                    ref={videoRef}
-                    width="240"
-                    height="240"
-                    controls
-                    autoPlay
-                    loop={false}
-                    className="rounded-lg shadow-lg border-2 border-green-500"
-                    onEnded={() => setIsTalking(false)}
-                    style={{ maxWidth: '100%', height: 'auto' }}
-                  >
-                    <source src={didVideoUrl} type="video/mp4" />
-                    Seu navegador não suporta reprodução de vídeo.
-                  </video>
-                </div>
-              )}
+
 
               {/* Status da geração de vídeo D-ID */}
               {isGeneratingVideo && (
