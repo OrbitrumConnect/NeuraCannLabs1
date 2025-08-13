@@ -30,8 +30,8 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
     }
   }, [text, autoPlay, supported]);
 
-  const handleSpeak = () => {
-    if (!supported || !text) return;
+  const handleSpeak = async () => {
+    if (!text) return;
 
     if (speaking) {
       window.speechSynthesis.cancel();
@@ -48,31 +48,81 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
       .replace(/\.\.\./g, '') // Remove ellipsis
       .trim();
 
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    
-    // FORÇA VOZ FEMININA - Dra. Cannabis IA sempre feminina
-    const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(voice => 
-      voice.lang.includes('pt') && 
-      (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana'))
-    ) || voices.find(voice => voice.lang.includes('pt'));
-    
-    if (femaleVoice) {
-      utterance.voice = femaleVoice;
-      console.log('🗣️ Usando voz feminina:', femaleVoice.name);
+    setSpeaking(true);
+
+    // Sistema híbrido: tenta ElevenLabs primeiro, fallback para nativo
+    try {
+      console.log('🎭 Avatar Estudos - Tentando ElevenLabs...');
+      const response = await fetch('/api/avatar/speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: cleanText })
+      });
+      
+      if (response.ok) {
+        const audioBlob = await response.blob();
+        if (audioBlob.size > 0) {
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+          
+          audio.onended = () => {
+            URL.revokeObjectURL(audioUrl);
+            setSpeaking(false);
+          };
+          
+          audio.onerror = () => {
+            URL.revokeObjectURL(audioUrl);
+            setSpeaking(false);
+          };
+          
+          await audio.play();
+          console.log('✅ Avatar Estudos - ElevenLabs reproduzido');
+          return;
+        }
+      }
+      throw new Error('ElevenLabs não disponível');
+    } catch (error) {
+      console.log('⚠️ Avatar Estudos - Fallback para sistema nativo:', (error as Error).message);
+      
+      // Fallback para sistema nativo
+      if (!supported) {
+        setSpeaking(false);
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(cleanText);
+      
+      // FORÇA VOZ FEMININA - Dra. Cannabis IA sempre feminina
+      const voices = window.speechSynthesis.getVoices();
+      const femaleVoice = voices.find(voice => 
+        voice.lang.includes('pt') && 
+        (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana'))
+      ) || voices.find(voice => voice.lang.includes('pt'));
+      
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+        console.log('🗣️ Avatar Estudos - Voz feminina nativa:', femaleVoice.name);
+      }
+      
+      utterance.lang = 'pt-BR';
+      utterance.rate = 0.85; // Slightly slower for medical content  
+      utterance.pitch = 1.2; // Pitch mais alto para voz mais feminina
+      utterance.volume = 0.9;
+      
+      utterance.onstart = () => console.log('🗣️ Avatar Estudos começou a falar');
+      utterance.onend = () => {
+        console.log('✅ Avatar Estudos terminou de falar');
+        setSpeaking(false);
+      };
+      utterance.onerror = () => {
+        console.error('❌ Erro no sistema nativo Avatar Estudos');
+        setSpeaking(false);
+      };
+      
+      utteranceRef.current = utterance;
+      window.speechSynthesis.speak(utterance);
+      console.log('✅ Avatar Estudos - Sistema nativo reproduzido');
     }
-    
-    utterance.lang = 'pt-BR';
-    utterance.rate = 0.85; // Slightly slower for medical content  
-    utterance.pitch = 1.1; // Pitch mais alto para voz mais feminina
-    utterance.volume = 0.9;
-    
-    utterance.onstart = () => setSpeaking(true);
-    utterance.onend = () => setSpeaking(false);
-    utterance.onerror = () => setSpeaking(false);
-    
-    utteranceRef.current = utterance;
-    window.speechSynthesis.speak(utterance);
   };
 
   const handleStop = () => {
