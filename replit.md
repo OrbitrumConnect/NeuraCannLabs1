@@ -60,6 +60,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
   - Otimização: 11 arquivos de teste de áudio ElevenLabs removidos, componentes obsoletos limpos
   - Documentação consolidada: 10 arquivos MD desnecessários removidos para melhor organização
 - **VOZ ELEVENLABS UNIFICADA (Agosto 2025)**: Correção crítica aplicada - Avatar de estudos cruzados agora usa mesmo sistema híbrido do avatar principal (ElevenLabs + fallback nativo feminino)
+- **NAVEGAÇÃO REORGANIZADA (Agosto 2025)**: Cabeçalho reordenado seguindo fluxo médico correto - Dra. Cannabis IA → Estudos Cruzados → Científico → Clínico → Fórum → Alertas → Perfil → Admin. Dropdowns organizados por categoria (Pesquisa e Sistema)
 
 ## System Architecture
 

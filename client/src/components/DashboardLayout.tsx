@@ -20,10 +20,10 @@ interface DashboardLayoutProps {
   avatarScanning?: boolean;
 }
 
-// Menu completo para mobile
+// Menu completo para mobile - FLUXO CORRETO
 const mobileMenuOptions = [
-  { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
   { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
+  { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
   { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
   { id: "clinical", name: "Clínico", icon: "fas fa-user-md" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
@@ -32,12 +32,10 @@ const mobileMenuOptions = [
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
 ];
 
-// Apenas itens essenciais para o cabeçalho desktop
+// Apenas itens essenciais para o cabeçalho desktop - FLUXO CORRETO
 const desktopHeaderOptions = [
-  { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
-  { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
 ];
 
 export default function DashboardLayout({
@@ -129,7 +127,10 @@ export default function DashboardLayout({
                   <span className="text-gray-300 text-xs">Pesquisa</span>
                   <i className="fas fa-chevron-down text-xs" />
                 </button>
-                <div className="absolute top-full left-0 mt-1 w-40 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                <div className="absolute top-full left-0 mt-1 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  <button onClick={() => handleDashboardClick("overview")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                    <i className="fas fa-chart-line mr-2" />Estudos Cruzados
+                  </button>
                   <button onClick={() => handleDashboardClick("scientific")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
                     <i className="fas fa-microscope mr-2" />Dados Científicos
                   </button>
@@ -139,16 +140,19 @@ export default function DashboardLayout({
                 </div>
               </div>
 
-              {/* Grupo Perfil & Estudo */}
+              {/* Grupo Sistema */}
               <div className="relative group">
                 <button className="flex items-center space-x-1 px-2 py-1 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
-                  <i className="fas fa-user text-gray-300 text-xs" />
-                  <span className="text-gray-300 text-xs">Perfil</span>
+                  <i className="fas fa-cog text-gray-300 text-xs" />
+                  <span className="text-gray-300 text-xs">Sistema</span>
                   <i className="fas fa-chevron-down text-xs" />
                 </button>
-                <div className="absolute top-full left-0 mt-1 w-32 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                <div className="absolute top-full left-0 mt-1 w-36 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
                   <button onClick={() => handleDashboardClick("profile")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
                     <i className="fas fa-user-circle mr-2" />Perfil
+                  </button>
+                  <button onClick={() => handleDashboardClick("admin")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
+                    <i className="fas fa-shield-alt mr-2" />Admin Global
                   </button>
                 </div>
               </div>
