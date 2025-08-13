@@ -217,27 +217,27 @@ export default function EducationDashboard() {
         </TabsList>
 
         {/* Aba Cursos */}
-        <TabsContent value="courses" className="space-y-6">
+        <TabsContent value="courses" className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">Meus Cursos</h2>
-            <Button className="bg-emerald-500 hover:bg-emerald-600" data-testid="button-browse-courses">
+            <h2 className="text-xl font-bold text-white">Meus Cursos</h2>
+            <Button className="bg-emerald-500 hover:bg-emerald-600 text-sm px-3 py-2" data-testid="button-browse-courses">
               Explorar Cursos
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3">
             {mockCourses.map((course) => (
-              <Card key={course.id} className="bg-gray-800/50 border-gray-700 hover:border-emerald-500/50 transition-all">
+              <Card key={course.id} className="bg-gray-800/50 border-gray-700 hover:border-emerald-500/50 transition-all scale-90">
                 <div className="aspect-video bg-gradient-to-br from-emerald-900/50 to-blue-900/50 rounded-t-lg flex items-center justify-center">
-                  <PlayCircle className="w-8 h-8 text-emerald-400" />
+                  <PlayCircle className="w-6 h-6 text-emerald-400" />
                 </div>
                 
-                <CardHeader className="pb-3">
+                <CardHeader className="pb-2 px-3 pt-3">
                   <div className="flex items-start justify-between">
-                    <CardTitle className="text-white text-base leading-5">{course.title}</CardTitle>
+                    <CardTitle className="text-white text-sm leading-4">{course.title}</CardTitle>
                     <Badge 
                       variant="outline" 
-                      className={`
+                      className={`text-xs px-1 py-0
                         ${course.category === 'Básico' ? 'border-green-500 text-green-400' : ''}
                         ${course.category === 'Avançado' ? 'border-yellow-500 text-yellow-400' : ''}
                         ${course.category === 'Especialização' ? 'border-purple-500 text-purple-400' : ''}
@@ -246,24 +246,24 @@ export default function EducationDashboard() {
                       {course.category}
                     </Badge>
                   </div>
-                  <CardDescription className="text-gray-400 text-xs">
+                  <CardDescription className="text-gray-400 text-xs leading-3">
                     {course.description}
                   </CardDescription>
                 </CardHeader>
                 
-                <CardContent className="space-y-3 pt-0">
+                <CardContent className="space-y-2 pt-0 px-3 pb-3">
                   <div className="flex items-center justify-between text-xs text-gray-400">
-                    <span>⏱️ {course.duration} min</span>
-                    <span>📚 {course.completedModules}/{course.modules} módulos</span>
+                    <span>⏱️ {course.duration}min</span>
+                    <span>📚 {course.completedModules}/{course.modules}</span>
                   </div>
                   
-                  <Progress value={course.progress} className="w-full" />
+                  <Progress value={course.progress} className="w-full h-1" />
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-xs text-emerald-400">{course.progress}% concluído</span>
+                    <span className="text-xs text-emerald-400">{course.progress}%</span>
                     <Button 
                       size="sm"
-                      className={`
+                      className={`text-xs px-2 py-1
                         ${course.status === 'completed' ? 'bg-green-600 hover:bg-green-700' : ''}
                         ${course.status === 'in_progress' ? 'bg-emerald-500 hover:bg-emerald-600' : ''}
                         ${course.status === 'not_started' ? 'bg-gray-600 hover:bg-gray-700' : ''}
