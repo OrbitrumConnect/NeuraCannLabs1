@@ -132,23 +132,24 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
                   <p className="text-gray-300 text-sm">Gere estudos completos ou melhore rascunhos usando dados reais da plataforma</p>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  {/* Geração Completa */}
-                  <div className="border border-emerald-500/20 rounded-lg p-4 bg-emerald-900/10">
-                    <h4 className="text-emerald-300 font-medium mb-3 flex items-center">
-                      <i className="fas fa-magic mr-2" />
-                      Gerar Estudo Completo
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                      <div>
-                        <label className="block text-sm text-gray-300 mb-1">Título do Estudo</label>
-                        <Input
-                          value={studyTitle}
-                          onChange={(e) => setStudyTitle(e.target.value)}
-                          placeholder="Ex: Eficácia do CBD em Epilepsia Refratária"
-                          className="bg-gray-800 border-gray-600 text-white"
-                          data-testid="input-noa-title"
-                        />
-                      </div>
+                  {/* Interface Unificada NOA */}
+                  <div className="space-y-4">
+                    {/* Título Único */}
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-2 font-medium">
+                        📝 Título do Estudo ou Ideia Principal
+                      </label>
+                      <Input
+                        value={studyTitle}
+                        onChange={(e) => setStudyTitle(e.target.value)}
+                        placeholder="Ex: Eficácia do CBD em Epilepsia Refratária"
+                        className="bg-gray-800 border-gray-600 text-white"
+                        data-testid="input-unified-title"
+                      />
+                    </div>
+
+                    {/* Configurações do Estudo */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm text-gray-300 mb-1">Tipo de Estudo</label>
                         <select
@@ -164,76 +165,60 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
                           <option value="caso-controle">Caso-Controle</option>
                         </select>
                       </div>
-                    </div>
-                    <div className="mb-4">
-                      <label className="block text-sm text-gray-300 mb-1">Palavras-chave (opcional)</label>
-                      <Input
-                        value={studyKeywords}
-                        onChange={(e) => setStudyKeywords(e.target.value)}
-                        placeholder="Ex: CBD, THC, epilepsia, cannabis medicinal"
-                        className="bg-gray-800 border-gray-600 text-white"
-                        data-testid="input-keywords"
-                      />
-                    </div>
-                    <Button
-                      onClick={handleGenerateStudyWithNoa}
-                      disabled={noaGenerating || generateStudyMutation.isPending}
-                      className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3"
-                      data-testid="button-generate-with-noa"
-                    >
-                      {noaGenerating || generateStudyMutation.isPending ? (
-                        <i className="fas fa-brain fa-spin mr-2" />
-                      ) : (
-                        <i className="fas fa-brain mr-2" />
-                      )}
-                      Gerar Estudo Completo com NOA
-                    </Button>
-                  </div>
-
-                  {/* Draft Improvement */}
-                  <div className="border border-blue-500/20 rounded-lg p-4 bg-blue-900/10">
-                    <h4 className="text-blue-300 font-medium mb-3 flex items-center">
-                      <i className="fas fa-edit mr-2" />
-                      Melhorar Rascunho Existente
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                       <div>
-                        <label className="block text-sm text-gray-300 mb-1">Ideia/Rascunho</label>
-                        <Textarea
-                          value={draftIdea}
-                          onChange={(e) => setDraftIdea(e.target.value)}
-                          placeholder="Cole seu rascunho ou descreva sua ideia..."
-                          className="bg-gray-800 border-gray-600 text-white min-h-20"
-                          data-testid="textarea-draft-idea"
+                        <label className="block text-sm text-gray-300 mb-1">Palavras-chave (opcional)</label>
+                        <Input
+                          value={studyKeywords}
+                          onChange={(e) => setStudyKeywords(e.target.value)}
+                          placeholder="Ex: CBD, THC, epilepsia"
+                          className="bg-gray-800 border-gray-600 text-white"
+                          data-testid="input-keywords"
                         />
                       </div>
-                      <div>
-                        <label className="block text-sm text-gray-300 mb-1">Tipo de Melhoria</label>
-                        <select
-                          value={improvementType}
-                          onChange={(e) => setImprovementType(e.target.value as any)}
-                          className="w-full bg-gray-800 border border-gray-600 text-white p-2 rounded mb-2"
-                          data-testid="select-improvement-type"
-                        >
-                          <option value="general">Melhoria Geral</option>
-                          <option value="expand">Expandir Conteúdo</option>
-                          <option value="improve">Melhorar Qualidade</option>
-                          <option value="structure">Estruturar Melhor</option>
-                        </select>
-                        <Button
-                          onClick={handleImproveDraftWithNoa}
-                          disabled={improveDraftMutation.isPending}
-                          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2"
-                          data-testid="button-improve-draft"
-                        >
-                          {improveDraftMutation.isPending ? (
-                            <i className="fas fa-brain fa-spin mr-2" />
-                          ) : (
-                            <i className="fas fa-brain mr-2" />
-                          )}
-                          Melhorar com NOA
-                        </Button>
-                      </div>
+                    </div>
+
+                    {/* Rascunho/Ideia Opcional */}
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-2 font-medium">
+                        💡 Rascunho ou Ideia (opcional - para melhoramento)
+                      </label>
+                      <Textarea
+                        value={draftIdea}
+                        onChange={(e) => setDraftIdea(e.target.value)}
+                        placeholder="Cole seu rascunho existente ou descreva sua ideia detalhadamente..."
+                        className="bg-gray-800 border-gray-600 text-white min-h-24"
+                        data-testid="textarea-draft-idea"
+                      />
+                    </div>
+
+                    {/* Botões de Ação */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <Button
+                        onClick={handleGenerateStudyWithNoa}
+                        disabled={!studyTitle.trim() || noaGenerating || generateStudyMutation.isPending}
+                        className="bg-emerald-600 hover:bg-emerald-700 text-white py-3"
+                        data-testid="button-generate-complete"
+                      >
+                        {noaGenerating || generateStudyMutation.isPending ? (
+                          <i className="fas fa-brain fa-spin mr-2" />
+                        ) : (
+                          <i className="fas fa-magic mr-2" />
+                        )}
+                        Gerar Estudo Completo
+                      </Button>
+                      <Button
+                        onClick={handleImproveDraftWithNoa}
+                        disabled={!draftIdea.trim() || improveDraftMutation.isPending}
+                        className="bg-blue-600 hover:bg-blue-700 text-white py-3"
+                        data-testid="button-improve-draft"
+                      >
+                        {improveDraftMutation.isPending ? (
+                          <i className="fas fa-brain fa-spin mr-2" />
+                        ) : (
+                          <i className="fas fa-edit mr-2" />
+                        )}
+                        Melhorar Rascunho
+                      </Button>
                     </div>
                   </div>
 
