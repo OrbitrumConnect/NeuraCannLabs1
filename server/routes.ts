@@ -2146,14 +2146,13 @@ PARÂMETROS TÉCNICOS:
       };
 
       // Salvar no sistema de aprendizado
-      await storage.saveConversation({
-        userId: userId || 'anonymous',
+      await storage.createConversation({
+        sessionId: userId || 'anonymous',
         userMessage: `Geração de estudo: ${topic}`,
         aiResponse: studyGeneration.response,
         context: `study_generation_${studyType}`,
         medicalTopic: topic,
-        successRating: 0.9, // Alta confiança para geração de estudos
-        timestamp: new Date()
+        successRating: 0.9 // Alta confiança para geração de estudos
       });
 
       console.log(`✅ Estudo gerado com ${generatedStudy.wordCount} palavras`);

@@ -776,7 +776,7 @@ export class SuperMedicalAI {
 
         // Salva a conversa no sistema de aprendizado
         try {
-          await this.saveLearningData(question, response, context);
+          await this.saveConversationForLearning('free-user', question, response, { context, confidence: 0.8 });
         } catch (error) {
           console.log("⚠️ Erro ao salvar dados de aprendizado:", error);
         }

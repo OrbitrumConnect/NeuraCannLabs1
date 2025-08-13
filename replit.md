@@ -41,6 +41,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **CONTROLES AVANÇADOS DE CARDS**: Botões minimizar (amarelo) e fechar (vermelho) com abertura automática ao pesquisar
 - **RASCUNHO AUTOMÁTICO (Agosto 2025)**: Estudos de dados cruzados agora mostram rascunho automaticamente quando há conversação ativa - não precisa mais clicar "Ver"
 - **GERADOR DE ESTUDOS COLABORATIVO (Agosto 2025)**: Sistema totalmente integrado com contexto da NOA - usa todas as conversas, estudos e casos da plataforma para criar estudos colaborativos. Chat em tempo real no rascunho permite criação conjunta usuário+NOA
+- **FLUXO COMPLETO IMPLEMENTADO (Agosto 2025)**: Fluxo Paciente→Médico→Plataforma→Admin documentado e funcional. Sistema de aprendizado contínuo (diário/semanal/mensal) com potência de dados para gerar conhecimento científico automaticamente.
 - **UNIFICAÇÃO ESTUDOS CIENTÍFICOS (Agosto 2025)**: Sistema unificado no "Estudos de Dados Cruzados" (ImprovedCosmicMap)
   - Migração completa do "Meu Estudo" para a Visão Geral 
   - Assistente de Estudos Científicos integrado com funcionalidades completas
