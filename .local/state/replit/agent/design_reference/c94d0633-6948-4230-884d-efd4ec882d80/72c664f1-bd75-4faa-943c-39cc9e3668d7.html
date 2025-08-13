@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannabis Clinical Hub - Medical Cannabis Research Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'medical': {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in-right': 'slideInRight 0.3s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(100%)' },
+                            '100%': { transform: 'translateX(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans">
+    <!-- @COMPONENT: App [main application container] -->
+    <div class="min-h-screen bg-gray-900 text-gray-50 flex flex-col">
+        
+        <!-- @COMPONENT: Header [fixed navigation header] -->
+        <header class="flex items-center justify-between bg-gray-800 px-6 py-4 shadow-lg fixed w-full z-20 top-0 border-b border-gray-700">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-medical-500 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-leaf text-white text-lg"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-cyan-400 cursor-default select-none">
+                    Cannabis Clinical Hub
+                </h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <!-- Notification Bell -->
+                <button class="relative p-2 text-gray-400 hover:text-cyan-400 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50 rounded-lg" data-event="click:handleNotifications">
+                    <i class="fas fa-bell text-lg"></i>
+                    <!-- @STATE: hasNotifications:boolean = true -->
+                    <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse" data-bind="notificationCount > 0"></span>
+                </button>
+                
+                <!-- Profile Avatar -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-medical-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-md text-white text-sm"></i>
+                    </div>
+                    <span class="hidden md:block text-sm font-medium" data-bind="user.name">Dr. João Silva</span>
+                </div>
+                
+                <!-- Mobile Menu Button -->
+                <button
+                    aria-label="Toggle Navigation Menu"
+                    class="md:hidden focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50 rounded-lg p-2"
+                    data-event="click:toggleMenu"
+                >
+                    <i class="fas fa-bars text-cyan-400 text-lg"></i>
+                </button>
+            </div>
+        </header>
+        <!-- @END_COMPONENT: Header -->
+
+        <div class="flex pt-20">
+            <!-- @COMPONENT: Sidebar [navigation sidebar] -->
+            <!-- Desktop Sidebar -->
+            <nav class="hidden md:flex flex-col w-64 bg-gray-800 shadow-xl min-h-screen border-r border-gray-700">
+                <div class="p-6">
+                    <h2 class="text-lg font-semibold text-cyan-400 mb-6 select-none flex items-center">
+                        <i class="fas fa-chart-bar mr-2"></i>
+                        Dashboards
+                    </h2>
+                    
+                    <!-- @MAP: dashboardItems.map(item => ( -->
+                    <ul class="space-y-2">
+                        <li>
+                            <button
+                                class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3 bg-cyan-600 font-semibold shadow-md"
+                                data-event="click:setActiveTab"
+                                data-bind="activeTab === 'scientific'"
+                            >
+                                <i class="fas fa-flask text-cyan-300 w-5"></i>
+                                <span>Dados Científicos</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3"
+                                data-event="click:setActiveTab"
+                                data-bind="activeTab === 'clinical'"
+                            >
+                                <i class="fas fa-user-injured text-gray-400 w-5"></i>
+                                <span>Casos Clínicos</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3"
+                                data-event="click:setActiveTab"
+                                data-bind="activeTab === 'alerts'"
+                            >
+                                <i class="fas fa-exclamation-triangle text-gray-400 w-5"></i>
+                                <span>Alertas</span>
+                                <span class="ml-auto bg-red-500 text-xs px-2 py-1 rounded-full" data-bind="alertCount">2</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3"
+                                data-event="click:setActiveTab"
+                                data-bind="activeTab === 'profile'"
+                            >
+                                <i class="fas fa-user text-gray-400 w-5"></i>
+                                <span>Perfil</span>
+                            </button>
+                        </li>
+                    </ul>
+                    <!-- @END_MAP )) -->
+                </div>
+                
+                <!-- Sidebar Footer -->
+                <div class="mt-auto p-6 border-t border-gray-700">
+                    <div class="flex items-center space-x-3 text-sm text-gray-400">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span>Sistema Online</span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Mobile Sidebar Overlay -->
+            <!-- @STATE: isMobileMenuOpen:boolean = false -->
+            <nav
+                class="md:hidden fixed top-0 left-0 h-full w-64 bg-gray-800 shadow-xl transform transition-transform duration-300 z-30 -translate-x-full border-r border-gray-700"
+                data-bind="isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'"
+            >
+                <div class="p-6 pt-24">
+                    <h2 class="text-lg font-semibold text-cyan-400 mb-6 select-none flex items-center">
+                        <i class="fas fa-chart-bar mr-2"></i>
+                        Dashboards
+                    </h2>
+                    
+                    <ul class="space-y-2">
+                        <li>
+                            <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3 bg-cyan-600 font-semibold">
+                                <i class="fas fa-flask text-cyan-300 w-5"></i>
+                                <span>Dados Científicos</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3">
+                                <i class="fas fa-user-injured text-gray-400 w-5"></i>
+                                <span>Casos Clínicos</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3">
+                                <i class="fas fa-exclamation-triangle text-gray-400 w-5"></i>
+                                <span>Alertas</span>
+                                <span class="ml-auto bg-red-500 text-xs px-2 py-1 rounded-full">2</span>
+                            </button>
+                        </li>
+                        <li>
+                            <button class="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition-all duration-200 flex items-center space-x-3">
+                                <i class="fas fa-user text-gray-400 w-5"></i>
+                                <span>Perfil</span>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Mobile Overlay Background -->
+            <div 
+                class="md:hidden fixed inset-0 bg-black bg-opacity-50 z-20 hidden"
+                data-bind="isMobileMenuOpen"
+                data-event="click:closeMobileMenu"
+            ></div>
+            <!-- @END_COMPONENT: Sidebar -->
+
+            <!-- @COMPONENT: MainContent [main dashboard content area] -->
+            <main class="flex-1 px-6 pb-10 max-w-none">
+                
+                <!-- Dashboard Header -->
+                <section class="mb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-cyan-400 to-medical-500 rounded-xl flex items-center justify-center animate-pulse-slow">
+                                <i class="fas fa-flask text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-3xl font-bold text-cyan-400 select-none">
+                                    Dados Científicos
+                                </h2>
+                                <p class="text-gray-400 text-sm mt-1">Pesquisas e estudos sobre cannabis medicinal</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <div class="flex items-center space-x-3">
+                            <button class="px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors duration-200 flex items-center space-x-2" data-event="click:refreshData">
+                                <i class="fas fa-sync-alt text-sm"></i>
+                                <span class="hidden sm:block">Atualizar</span>
+                            </button>
+                            <button class="px-4 py-2 bg-cyan-600 hover:bg-cyan-700 text-white rounded-lg transition-colors duration-200 flex items-center space-x-2" data-event="click:addNewStudy">
+                                <i class="fas fa-plus text-sm"></i>
+                                <span class="hidden sm:block">Novo Estudo</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-gray-600 transition-colors duration-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Total de Estudos</p>
+                                    <p class="text-2xl font-bold text-cyan-400" data-bind="totalStudies">156</p>
+                                </div>
+                                <div class="w-10 h-10 bg-cyan-600 bg-opacity-20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-flask text-cyan-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-gray-600 transition-colors duration-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Em Andamento</p>
+                                    <p class="text-2xl font-bold text-amber-400" data-bind="ongoingStudies">23</p>
+                                </div>
+                                <div class="w-10 h-10 bg-amber-600 bg-opacity-20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-hourglass-half text-amber-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-gray-600 transition-colors duration-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Publicados</p>
+                                    <p class="text-2xl font-bold text-green-400" data-bind="publishedStudies">89</p>
+                                </div>
+                                <div class="w-10 h-10 bg-green-600 bg-opacity-20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-check-circle text-green-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 hover:border-gray-600 transition-colors duration-200">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-400 text-sm">Eficácia Média</p>
+                                    <p class="text-2xl font-bold text-medical-400" data-bind="averageEfficacy">78%</p>
+                                </div>
+                                <div class="w-10 h-10 bg-medical-600 bg-opacity-20 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-chart-line text-medical-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Main Content Cards -->
+                <section class="grid grid-cols-1 xl:grid-cols-2 gap-8 mb-8">
+                    
+                    <!-- Scientific Studies Card -->
+                    <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                        <div class="p-6 border-b border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-semibold text-gray-100 flex items-center">
+                                    <i class="fas fa-microscope text-cyan-400 mr-3"></i>
+                                    Estudos Recentes
+                                </h3>
+                                <button class="text-cyan-400 hover:text-cyan-300 transition-colors duration-200" data-event="click:viewAllStudies">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <!-- @STATE: isLoadingScientific:boolean = false -->
+                            <div data-bind="isLoadingScientific" class="hidden">
+                                <!-- Loading Skeleton -->
+                                <div class="space-y-4">
+                                    <div class="animate-pulse flex space-x-4">
+                                        <div class="rounded-lg bg-gray-700 h-12 w-12"></div>
+                                        <div class="flex-1 space-y-2 py-1">
+                                            <div class="h-4 bg-gray-700 rounded w-3/4"></div>
+                                            <div class="h-4 bg-gray-700 rounded w-1/2"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Studies List -->
+                            <div class="space-y-4" data-bind="!isLoadingScientific">
+                                <!-- @MAP: scientificData.map(study => ( -->
+                                <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700 transition-colors duration-200 cursor-pointer" data-event="click:viewStudyDetails">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-medical-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-flask text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-gray-100 font-medium" data-bind="study.title">Estudo A sobre CBD e Epilepsia</h4>
+                                        <p class="text-gray-400 text-sm mt-1" data-bind="study.date">2025-07-01</p>
+                                        <div class="flex items-center space-x-4 mt-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900 text-green-300">
+                                                <i class="fas fa-check-circle mr-1 text-xs"></i>
+                                                Publicado
+                                            </span>
+                                            <span class="text-gray-500 text-xs" data-bind="study.participants">142 participantes</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-medium text-cyan-400" data-bind="study.efficacy">85%</div>
+                                        <div class="text-xs text-gray-500">eficácia</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700 transition-colors duration-200 cursor-pointer" data-event="click:viewStudyDetails">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-flask text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-gray-100 font-medium">Pesquisa B sobre THC e dor crônica</h4>
+                                        <p class="text-gray-400 text-sm mt-1">2025-07-05</p>
+                                        <div class="flex items-center space-x-4 mt-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900 text-amber-300">
+                                                <i class="fas fa-hourglass-half mr-1 text-xs"></i>
+                                                Em Andamento
+                                            </span>
+                                            <span class="text-gray-500 text-xs">67 participantes</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-sm font-medium text-amber-400">72%</div>
+                                        <div class="text-xs text-gray-500">eficácia</div>
+                                    </div>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-700">
+                                <button class="w-full text-center text-cyan-400 hover:text-cyan-300 font-medium transition-colors duration-200 flex items-center justify-center space-x-2" data-event="click:loadMoreStudies">
+                                    <span>Ver Todos os Estudos</span>
+                                    <i class="fas fa-arrow-right text-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clinical Cases Card -->
+                    <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                        <div class="p-6 border-b border-gray-700">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xl font-semibold text-gray-100 flex items-center">
+                                    <i class="fas fa-user-injured text-green-400 mr-3"></i>
+                                    Casos Clínicos
+                                </h3>
+                                <button class="text-green-400 hover:text-green-300 transition-colors duration-200" data-event="click:viewAllCases">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                <!-- @MAP: clinicalCases.map(case => ( -->
+                                <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700 transition-colors duration-200 cursor-pointer" data-event="click:viewCaseDetails">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-user-injured text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-gray-100 font-medium" data-bind="case.description">Paciente X melhorou após uso de CBD</h4>
+                                        <p class="text-gray-400 text-sm mt-1" data-bind="case.doctor">Dr. Silva</p>
+                                        <div class="flex items-center space-x-4 mt-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-900 text-green-300">
+                                                <i class="fas fa-thumbs-up mr-1 text-xs"></i>
+                                                Melhoria Significativa
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">há 2 dias</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700 transition-colors duration-200 cursor-pointer" data-event="click:viewCaseDetails">
+                                    <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-user-injured text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-gray-100 font-medium">Paciente Y apresentou efeitos adversos leves</h4>
+                                        <p class="text-gray-400 text-sm mt-1">Dra. Souza</p>
+                                        <div class="flex items-center space-x-4 mt-2">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-900 text-amber-300">
+                                                <i class="fas fa-exclamation-triangle mr-1 text-xs"></i>
+                                                Efeitos Leves
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-xs text-gray-500">há 1 semana</div>
+                                    </div>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                            
+                            <div class="mt-6 pt-4 border-t border-gray-700">
+                                <button class="w-full text-center text-green-400 hover:text-green-300 font-medium transition-colors duration-200 flex items-center justify-center space-x-2" data-event="click:addNewCase">
+                                    <i class="fas fa-plus text-sm"></i>
+                                    <span>Adicionar Novo Caso</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Alerts Section -->
+                <section class="mb-8">
+                    <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                        <div class="p-6 border-b border-gray-700">
+                            <h3 class="text-xl font-semibold text-gray-100 flex items-center">
+                                <i class="fas fa-bell text-amber-400 mr-3"></i>
+                                Alertas e Atualizações
+                            </h3>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="space-y-4">
+                                <!-- @MAP: alerts.map(alert => ( -->
+                                <div class="flex items-start space-x-4 p-4 rounded-lg bg-amber-900 bg-opacity-20 border border-amber-800">
+                                    <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 animate-pulse">
+                                        <i class="fas fa-exclamation text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-amber-300 font-medium" data-bind="alert.message">Novo protocolo aprovado para uso de cannabis em SP</h4>
+                                        <p class="text-amber-200 text-sm mt-1" data-bind="alert.date">2025-07-10</p>
+                                    </div>
+                                    <button class="text-amber-400 hover:text-amber-300 transition-colors duration-200" data-event="click:markAsRead">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+
+                                <div class="flex items-start space-x-4 p-4 rounded-lg bg-cyan-900 bg-opacity-20 border border-cyan-800">
+                                    <div class="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                        <i class="fas fa-info text-white text-sm"></i>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <h4 class="text-cyan-300 font-medium">Artigo importante publicado sobre CBG</h4>
+                                        <p class="text-cyan-200 text-sm mt-1">2025-07-11</p>
+                                    </div>
+                                    <button class="text-cyan-400 hover:text-cyan-300 transition-colors duration-200" data-event="click:markAsRead">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <!-- @END_MAP )) -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Recent Activity Feed -->
+                <section class="mb-8">
+                    <div class="bg-gray-800 rounded-xl shadow-lg border border-gray-700 animate-fade-in">
+                        <div class="p-6 border-b border-gray-700">
+                            <h3 class="text-xl font-semibold text-gray-100 flex items-center">
+                                <i class="fas fa-history text-gray-400 mr-3"></i>
+                                Atividade Recente
+                            </h3>
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="flow-root">
+                                <ul class="-mb-8">
+                                    <li>
+                                        <div class="relative pb-8">
+                                            <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-600"></span>
+                                            <div class="relative flex space-x-3">
+                                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-plus text-white text-xs"></i>
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="text-sm text-gray-300">
+                                                        <span class="font-medium text-green-400">Dr. Silva</span> adicionou novo caso clínico
+                                                    </div>
+                                                    <div class="text-xs text-gray-500 mt-1">há 30 minutos</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="relative pb-8">
+                                            <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-600"></span>
+                                            <div class="relative flex space-x-3">
+                                                <div class="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-edit text-white text-xs"></i>
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="text-sm text-gray-300">
+                                                        <span class="font-medium text-cyan-400">Dra. Souza</span> atualizou protocolo de tratamento
+                                                    </div>
+                                                    <div class="text-xs text-gray-500 mt-1">há 2 horas</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                    <li>
+                                        <div class="relative">
+                                            <div class="relative flex space-x-3">
+                                                <div class="w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center">
+                                                    <i class="fas fa-bell text-white text-xs"></i>
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <div class="text-sm text-gray-300">
+                                                        Novo alerta sobre <span class="font-medium text-amber-400">regulamentação estadual</span>
+                                                    </div>
+                                                    <div class="text-xs text-gray-500 mt-1">há 4 horas</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <!-- @END_COMPONENT: MainContent -->
+        </div>
+
+        <!-- @COMPONENT: Footer [application footer] -->
+        <footer class="bg-gray-800 border-t border-gray-700 text-center text-gray-400 text-sm p-6 select-none">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-leaf text-cyan-400"></i>
+                    <span>&copy; 2025 Cannabis Clinical Hub — Todos os direitos reservados</span>
+                </div>
+                <div class="flex items-center space-x-6 text-xs">
+                    <a href="#" class="hover:text-cyan-400 transition-colors duration-200">Política de Privacidade</a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors duration-200">Termos de Uso</a>
+                    <a href="#" class="hover:text-cyan-400 transition-colors duration-200">Suporte</a>
+                </div>
+            </div>
+        </footer>
+        <!-- @END_COMPONENT: Footer -->
+    </div>
+    <!-- @END_COMPONENT: App -->
+
+    <script>
+        (() => {
+            // TODO: Implement business logic, API calls, and state management
+            
+            // Sample state management for demo purposes
+            let state = {
+                isMobileMenuOpen: false,
+                activeTab: 'scientific',
+                isLoadingScientific: false,
+                notificationCount: 2,
+                alerts: [],
+                scientificData: [],
+                clinicalCases: [],
+                user: { name: 'Dr. João Silva' }
+            };
+
+            // Mobile menu toggle functionality
+            function toggleMobileMenu() {
+                state.isMobileMenuOpen = !state.isMobileMenuOpen;
+                const sidebar = document.querySelector('nav[data-bind*="isMobileMenuOpen"]');
+                const overlay = document.querySelector('div[data-bind*="isMobileMenuOpen"]');
+                
+                if (state.isMobileMenuOpen) {
+                    sidebar?.classList.remove('-translate-x-full');
+                    sidebar?.classList.add('translate-x-0');
+                    overlay?.classList.remove('hidden');
+                } else {
+                    sidebar?.classList.add('-translate-x-full');
+                    sidebar?.classList.remove('translate-x-0');
+                    overlay?.classList.add('hidden');
+                }
+            }
+
+            // Close mobile menu
+            function closeMobileMenu() {
+                state.isMobileMenuOpen = false;
+                toggleMobileMenu();
+            }
+
+            // Event delegation for all interactive elements
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('[data-event]');
+                if (!target) return;
+
+                const eventData = target.dataset.event;
+                const [event, handler] = eventData.split(':');
+
+                if (event === 'click') {
+                    switch (handler) {
+                        case 'toggleMenu':
+                            toggleMobileMenu();
+                            break;
+                        case 'closeMobileMenu':
+                            closeMobileMenu();
+                            break;
+                        case 'handleNotifications':
+                            console.log('Handle notifications clicked');
+                            break;
+                        case 'setActiveTab':
+                            console.log('Tab switch clicked');
+                            break;
+                        case 'refreshData':
+                            console.log('Refresh data clicked');
+                            break;
+                        case 'addNewStudy':
+                            console.log('Add new study clicked');
+                            break;
+                        case 'viewStudyDetails':
+                            console.log('View study details clicked');
+                            break;
+                        case 'loadMoreStudies':
+                            console.log('Load more studies clicked');
+                            break;
+                        case 'viewAllStudies':
+                            console.log('View all studies clicked');
+                            break;
+                        case 'viewCaseDetails':
+                            console.log('View case details clicked');
+                            break;
+                        case 'viewAllCases':
+                            console.log('View all cases clicked');
+                            break;
+                        case 'addNewCase':
+                            console.log('Add new case clicked');
+                            break;
+                        case 'markAsRead':
+                            console.log('Mark as read clicked');
+                            break;
+                        default:
+                            console.log(`Handler ${handler} not implemented`);
+                    }
+                }
+            });
+
+            // Initialize application
+            console.log('Cannabis Clinical Hub initialized');
+        })();
+    </script>
+</body>
+</html>

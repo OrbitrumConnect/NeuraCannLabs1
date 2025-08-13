@@ -1,0 +1,603 @@
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cannabis Clinical Hub - Plataforma Médica Futurista</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'sans-serif']
+                    },
+                    animation: {
+                        'pulse-glow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #06b6d4, 0 0 10px #06b6d4, 0 0 15px #06b6d4' },
+                            '100%': { boxShadow: '0 0 10px #06b6d4, 0 0 20px #06b6d4, 0 0 30px #06b6d4' }
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+    <style>
+        .cyber-grid {
+            background-image: 
+                linear-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 182, 212, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .neon-border {
+            border: 1px solid #06b6d4;
+            box-shadow: 
+                0 0 5px rgba(6, 182, 212, 0.3),
+                inset 0 0 5px rgba(6, 182, 212, 0.1);
+        }
+        .neon-glow:hover {
+            box-shadow: 
+                0 0 10px rgba(6, 182, 212, 0.6),
+                0 0 20px rgba(6, 182, 212, 0.4),
+                0 0 30px rgba(6, 182, 212, 0.2);
+            transform: translateY(-2px);
+        }
+        .data-card {
+            backdrop-filter: blur(10px);
+            background: rgba(31, 41, 55, 0.8);
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-900 text-gray-100 font-sans cyber-grid">
+    
+    <!-- @COMPONENT: Header [Fixed header with navigation toggle] -->
+    <header class="flex items-center justify-between bg-gray-800/90 backdrop-blur-md px-6 py-4 shadow-lg fixed w-full z-20 top-0 neon-border">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-cyan-500 rounded-full animate-pulse"></div>
+            <h1 class="text-2xl font-bold text-cyan-400 cursor-default select-none tracking-wider">
+                Cannabis Clinical Hub
+            </h1>
+        </div>
+        <button
+            id="menuToggle"
+            aria-label="Menu de Navegação"
+            class="focus:outline-none p-2 rounded-lg hover:bg-cyan-500/20 transition-colors neon-glow"
+        >
+            <!-- Hamburger menu icon using CSS -->
+            <div class="w-6 h-6 flex flex-col justify-center space-y-1">
+                <div class="w-full h-0.5 bg-cyan-400 transition-all duration-300" id="line1"></div>
+                <div class="w-full h-0.5 bg-cyan-400 transition-all duration-300" id="line2"></div>
+                <div class="w-full h-0.5 bg-cyan-400 transition-all duration-300" id="line3"></div>
+            </div>
+        </button>
+    </header>
+    <!-- @END_COMPONENT: Header -->
+
+    <!-- @COMPONENT: NavigationOverlay [3D-style navigation menu] -->
+    <nav id="navigationMenu" class="fixed top-0 left-0 h-full w-80 bg-gray-800/95 backdrop-blur-lg shadow-2xl transform -translate-x-full transition-transform duration-500 z-30 neon-border">
+        <div class="p-8">
+            <h2 class="text-2xl font-semibold text-cyan-400 mb-8 select-none tracking-wider">
+                Dashboards Médicos
+            </h2>
+            
+            <!-- @MAP: dashboardOptions.map(option => ( -->
+            <ul class="space-y-4">
+                <li>
+                    <button data-dashboard="scientific" class="dashboard-btn w-full text-left px-4 py-3 rounded-lg hover:bg-cyan-600/30 transition-all duration-300 neon-glow border border-cyan-500/20">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                            <span class="font-medium">Dados Científicos</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1 ml-5">Estudos e pesquisas sobre cannabis medicinal</p>
+                    </button>
+                </li>
+                <li>
+                    <button data-dashboard="clinical" class="dashboard-btn w-full text-left px-4 py-3 rounded-lg hover:bg-cyan-600/30 transition-all duration-300 neon-glow border border-cyan-500/20">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                            <span class="font-medium">Casos Clínicos</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1 ml-5">Histórico e resultados de pacientes</p>
+                    </button>
+                </li>
+                <li>
+                    <button data-dashboard="alerts" class="dashboard-btn w-full text-left px-4 py-3 rounded-lg hover:bg-cyan-600/30 transition-all duration-300 neon-glow border border-cyan-500/20">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                            <span class="font-medium">Alertas Médicos</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1 ml-5">Protocolos e atualizações importantes</p>
+                    </button>
+                </li>
+                <li>
+                    <button data-dashboard="profile" class="dashboard-btn w-full text-left px-4 py-3 rounded-lg hover:bg-cyan-600/30 transition-all duration-300 neon-glow border border-cyan-500/20">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
+                            <span class="font-medium">Perfil Médico</span>
+                        </div>
+                        <p class="text-sm text-gray-400 mt-1 ml-5">Informações do profissional</p>
+                    </button>
+                </li>
+            </ul>
+            <!-- @END_MAP -->
+        </div>
+    </nav>
+    <!-- @END_COMPONENT: NavigationOverlay -->
+
+    <!-- @COMPONENT: MainContent [Primary dashboard content area] -->
+    <main class="flex-grow pt-24 px-8 pb-10 max-w-7xl mx-auto">
+        
+        <!-- @COMPONENT: HeroSection [Avatar and title display] -->
+        <section class="flex items-center justify-center space-x-8 mb-12">
+            <!-- 3D Avatar Container -->
+            <div class="relative">
+                <div id="avatar3d" class="w-32 h-32 rounded-full overflow-hidden neon-border animate-float"></div>
+                <div class="absolute -bottom-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-gray-900 animate-pulse"></div>
+            </div>
+            
+            <div class="text-center">
+                <h2 id="dashboardTitle" class="text-4xl font-bold text-cyan-400 select-none tracking-wider mb-2">
+                    Dados Científicos
+                </h2>
+                <p class="text-gray-400 text-lg">
+                    Plataforma integrada de cannabis medicinal
+                </p>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: HeroSection -->
+
+        <!-- @COMPONENT: DashboardContent [Main content display area] -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+            
+            <!-- @COMPONENT: StatsCards [Key metrics display] -->
+            <div class="lg:col-span-2 xl:col-span-3">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                    <div class="data-card rounded-xl p-6 neon-border neon-glow transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm font-medium">Estudos Ativos</p>
+                                <p class="text-3xl font-bold text-cyan-400">24</p>
+                            </div>
+                            <div class="w-12 h-12 bg-cyan-500/20 rounded-full flex items-center justify-center">
+                                <div class="w-6 h-6 bg-cyan-400 rounded-full animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card rounded-xl p-6 neon-border neon-glow transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm font-medium">Pacientes</p>
+                                <p class="text-3xl font-bold text-cyan-400">156</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-500/20 rounded-full flex items-center justify-center">
+                                <div class="w-6 h-6 bg-green-400 rounded-full animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="data-card rounded-xl p-6 neon-border neon-glow transition-all duration-300">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-gray-400 text-sm font-medium">Taxa de Sucesso</p>
+                                <p class="text-3xl font-bold text-cyan-400">89%</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-full flex items-center justify-center">
+                                <div class="w-6 h-6 bg-purple-400 rounded-full animate-pulse"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: StatsCards -->
+        </section>
+
+        <!-- @COMPONENT: DataDisplay [Dynamic content based on selected dashboard] -->
+        <section id="dashboardContent" class="data-card rounded-2xl p-8 neon-border min-h-[400px]">
+            <!-- @STATE: isLoading:boolean = false -->
+            <div id="loadingState" class="hidden flex items-center justify-center h-64">
+                <div class="flex flex-col items-center space-y-4">
+                    <div class="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin"></div>
+                    <p class="text-cyan-400 animate-pulse">Carregando dados médicos...</p>
+                </div>
+            </div>
+            
+            <!-- Scientific Data Content -->
+            <div id="scientificContent" class="dashboard-content">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-6 tracking-wide">Estudos Científicos Recentes</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- @MAP: scientificData.map(study => ( -->
+                    <div class="bg-gray-700/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 neon-glow" data-mock="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <h4 class="text-lg font-semibold text-white" data-bind="study.title">Estudo A sobre CBD e Epilepsia</h4>
+                            <span class="text-xs text-cyan-400 bg-cyan-500/20 px-2 py-1 rounded-full">NOVO</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-3" data-bind="study.description">Análise dos efeitos do CBD no tratamento de epilepsia refratária em pacientes pediátricos.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-400" data-bind="study.date">07/01/2025</span>
+                            <button class="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors" data-event="click:viewStudy">
+                                Ver Detalhes →
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-700/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 neon-glow" data-mock="true">
+                        <div class="flex items-start justify-between mb-4">
+                            <h4 class="text-lg font-semibold text-white">Pesquisa B sobre THC e dor crônica</h4>
+                            <span class="text-xs text-green-400 bg-green-500/20 px-2 py-1 rounded-full">CONCLUÍDO</span>
+                        </div>
+                        <p class="text-gray-300 text-sm mb-3">Eficácia do THC no manejo da dor crônica em pacientes oncológicos.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-gray-400">05/01/2025</span>
+                            <button class="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors">
+                                Ver Detalhes →
+                            </button>
+                        </div>
+                    </div>
+                    <!-- @END_MAP -->
+                    
+                </div>
+            </div>
+
+            <!-- Clinical Cases Content -->
+            <div id="clinicalContent" class="dashboard-content hidden">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-6 tracking-wide">Casos Clínicos em Acompanhamento</h3>
+                <div class="space-y-4">
+                    
+                    <!-- @MAP: clinicalCases.map(case => ( -->
+                    <div class="bg-gray-700/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 neon-glow" data-mock="true">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-semibold text-white" data-bind="case.patient">Paciente X - CBD para Epilepsia</h4>
+                            <span class="text-xs text-green-400 bg-green-500/20 px-2 py-1 rounded-full">MELHORIA</span>
+                        </div>
+                        <p class="text-gray-300 mb-3" data-bind="case.description">Paciente apresentou redução de 75% nas crises epiléticas após 3 meses de tratamento com CBD.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-cyan-400" data-bind="case.doctor">Dr. Silva - Neurologia</span>
+                            <button class="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors">
+                                Ver Prontuário →
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-700/50 rounded-lg p-6 border border-cyan-500/20 hover:border-cyan-400/50 transition-all duration-300 neon-glow" data-mock="true">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="text-lg font-semibold text-white">Paciente Y - THC para Dor Crônica</h4>
+                            <span class="text-xs text-yellow-400 bg-yellow-500/20 px-2 py-1 rounded-full">OBSERVAÇÃO</span>
+                        </div>
+                        <p class="text-gray-300 mb-3">Paciente relatou efeitos adversos leves, ajuste de dosagem necessário.</p>
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm text-cyan-400">Dra. Souza - Oncologia</span>
+                            <button class="text-cyan-400 hover:text-cyan-300 text-sm font-medium transition-colors">
+                                Ver Prontuário →
+                            </button>
+                        </div>
+                    </div>
+                    <!-- @END_MAP -->
+                    
+                </div>
+            </div>
+
+            <!-- Alerts Content -->
+            <div id="alertsContent" class="dashboard-content hidden">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-6 tracking-wide">Alertas e Atualizações</h3>
+                <div class="space-y-4">
+                    
+                    <!-- @MAP: alerts.map(alert => ( -->
+                    <div class="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-lg p-6 border border-cyan-400/30 neon-glow" data-mock="true">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-3 h-3 bg-cyan-400 rounded-full mt-2 animate-pulse"></div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-semibold text-white mb-2" data-bind="alert.title">Novo Protocolo Aprovado</h4>
+                                <p class="text-gray-300 mb-3" data-bind="alert.message">Novo protocolo aprovado para uso de cannabis medicinal em São Paulo - atualização das diretrizes de prescrição.</p>
+                                <span class="text-xs text-cyan-400" data-bind="alert.date">10/01/2025</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-6 border border-purple-400/30 neon-glow" data-mock="true">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-3 h-3 bg-purple-400 rounded-full mt-2 animate-pulse"></div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-semibold text-white mb-2">Artigo Científico Importante</h4>
+                                <p class="text-gray-300 mb-3">Nova pesquisa sobre CBG publicada no Journal of Medical Cannabis - potencial para tratamento de doenças neurodegenerativas.</p>
+                                <span class="text-xs text-purple-400">11/01/2025</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_MAP -->
+                    
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="profileContent" class="dashboard-content hidden">
+                <h3 class="text-2xl font-semibold text-cyan-400 mb-6 tracking-wide">Perfil Profissional</h3>
+                <div class="bg-gray-700/50 rounded-lg p-8 border border-cyan-500/20">
+                    <div class="flex items-center space-x-6 mb-8">
+                        <div class="w-20 h-20 bg-gradient-to-br from-cyan-400 to-blue-500 rounded-full flex items-center justify-center">
+                            <span class="text-2xl font-bold text-white" data-bind="profile.initials">DJ</span>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-semibold text-white" data-bind="profile.name">Dr. João Silva</h4>
+                            <p class="text-cyan-400 text-lg" data-bind="profile.specialty">Neurologia</p>
+                            <p class="text-gray-400" data-bind="profile.crm">CRM: 123456-SP</p>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <h5 class="text-lg font-semibold text-cyan-400 mb-3">Informações de Contato</h5>
+                            <div class="space-y-2">
+                                <p class="text-gray-300"><span class="text-gray-400">Email:</span> <span data-bind="profile.email">joao@example.com</span></p>
+                                <p class="text-gray-300"><span class="text-gray-400">Telefone:</span> <span data-mock="true">(11) 9999-9999</span></p>
+                                <p class="text-gray-300"><span class="text-gray-400">Hospital:</span> <span data-mock="true">Hospital das Clínicas</span></p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h5 class="text-lg font-semibold text-cyan-400 mb-3">Estatísticas</h5>
+                            <div class="space-y-2">
+                                <p class="text-gray-300"><span class="text-gray-400">Pacientes Ativos:</span> <span data-mock="true">47</span></p>
+                                <p class="text-gray-300"><span class="text-gray-400">Casos Concluídos:</span> <span data-mock="true">109</span></p>
+                                <p class="text-gray-300"><span class="text-gray-400">Taxa de Sucesso:</span> <span data-mock="true">91%</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- @END_COMPONENT: DataDisplay -->
+        
+    </main>
+    <!-- @END_COMPONENT: MainContent -->
+
+    <!-- @COMPONENT: Footer [Simple footer with copyright] -->
+    <footer class="text-center text-gray-500 text-sm p-6 select-none border-t border-cyan-500/20">
+        <p>&copy; 2025 Cannabis Clinical Hub — Plataforma médica futurista para cannabis medicinal</p>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        (function() {
+            // State management
+            let isMenuOpen = false;
+            let currentDashboard = 'scientific';
+            let isLoading = false;
+
+            // DOM elements
+            const menuToggle = document.getElementById('menuToggle');
+            const navigationMenu = document.getElementById('navigationMenu');
+            const dashboardButtons = document.querySelectorAll('.dashboard-btn');
+            const dashboardTitle = document.getElementById('dashboardTitle');
+            const dashboardContents = document.querySelectorAll('.dashboard-content');
+            const loadingState = document.getElementById('loadingState');
+
+            // Dashboard configuration
+            const dashboards = {
+                scientific: {
+                    title: 'Dados Científicos',
+                    contentId: 'scientificContent'
+                },
+                clinical: {
+                    title: 'Casos Clínicos', 
+                    contentId: 'clinicalContent'
+                },
+                alerts: {
+                    title: 'Alertas Médicos',
+                    contentId: 'alertsContent'
+                },
+                profile: {
+                    title: 'Perfil Médico',
+                    contentId: 'profileContent'
+                }
+            };
+
+            // Initialize 3D Avatar
+            function init3DAvatar() {
+                const container = document.getElementById('avatar3d');
+                
+                // Create Three.js scene
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+                
+                renderer.setSize(128, 128);
+                renderer.setClearColor(0x000000, 0);
+                container.appendChild(renderer.domElement);
+
+                // Create spinning sphere with wireframe
+                const geometry = new THREE.SphereGeometry(1, 32, 32);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0x06b6d4, 
+                    wireframe: true,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const sphere = new THREE.Mesh(geometry, material);
+                scene.add(sphere);
+
+                // Add inner sphere for glow effect
+                const innerGeometry = new THREE.SphereGeometry(0.8, 16, 16);
+                const innerMaterial = new THREE.MeshBasicMaterial({ 
+                    color: 0x22d3ee, 
+                    transparent: true,
+                    opacity: 0.3
+                });
+                const innerSphere = new THREE.Mesh(innerGeometry, innerMaterial);
+                scene.add(innerSphere);
+
+                camera.position.z = 3;
+
+                // Animation loop
+                function animate() {
+                    requestAnimationFrame(animate);
+                    
+                    // Rotate spheres
+                    sphere.rotation.y += 0.01;
+                    sphere.rotation.x += 0.005;
+                    innerSphere.rotation.y -= 0.008;
+                    innerSphere.rotation.x -= 0.003;
+                    
+                    renderer.render(scene, camera);
+                }
+                animate();
+            }
+
+            // Toggle menu function
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                
+                if (isMenuOpen) {
+                    navigationMenu.classList.remove('-translate-x-full');
+                    navigationMenu.classList.add('translate-x-0');
+                } else {
+                    navigationMenu.classList.remove('translate-x-0');
+                    navigationMenu.classList.add('-translate-x-full');
+                }
+                
+                // Animate hamburger menu
+                const lines = [
+                    document.getElementById('line1'),
+                    document.getElementById('line2'),
+                    document.getElementById('line3')
+                ];
+                
+                if (isMenuOpen) {
+                    lines[0].style.transform = 'rotate(45deg) translate(3px, 3px)';
+                    lines[1].style.opacity = '0';
+                    lines[2].style.transform = 'rotate(-45deg) translate(3px, -3px)';
+                } else {
+                    lines[0].style.transform = 'rotate(0deg) translate(0px, 0px)';
+                    lines[1].style.opacity = '1';
+                    lines[2].style.transform = 'rotate(0deg) translate(0px, 0px)';
+                }
+            }
+
+            // Switch dashboard function
+            function switchDashboard(dashboardKey) {
+                if (dashboardKey === currentDashboard) return;
+                
+                // Show loading state
+                showLoading(true);
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    currentDashboard = dashboardKey;
+                    const dashboard = dashboards[dashboardKey];
+                    
+                    // Update title
+                    dashboardTitle.textContent = dashboard.title;
+                    
+                    // Hide all content sections
+                    dashboardContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    
+                    // Show selected content
+                    const selectedContent = document.getElementById(dashboard.contentId);
+                    if (selectedContent) {
+                        selectedContent.classList.remove('hidden');
+                    }
+                    
+                    // Update button states
+                    dashboardButtons.forEach(btn => {
+                        btn.classList.remove('bg-cyan-600', 'font-bold');
+                        btn.classList.add('font-normal');
+                    });
+                    
+                    const activeButton = document.querySelector(`[data-dashboard="${dashboardKey}"]`);
+                    if (activeButton) {
+                        activeButton.classList.add('bg-cyan-600', 'font-bold');
+                        activeButton.classList.remove('font-normal');
+                    }
+                    
+                    showLoading(false);
+                    
+                    // Close menu on mobile
+                    if (isMenuOpen) {
+                        toggleMenu();
+                    }
+                }, 800); // Simulate network delay
+            }
+
+            // Show/hide loading state
+            function showLoading(show) {
+                isLoading = show;
+                if (show) {
+                    loadingState.classList.remove('hidden');
+                    loadingState.classList.add('flex');
+                    dashboardContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                } else {
+                    loadingState.classList.add('hidden');
+                    loadingState.classList.remove('flex');
+                }
+            }
+
+            // Event listeners
+            menuToggle.addEventListener('click', toggleMenu);
+            
+            dashboardButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const dashboardKey = e.currentTarget.dataset.dashboard;
+                    switchDashboard(dashboardKey);
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (isMenuOpen && !navigationMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    toggleMenu();
+                }
+            });
+
+            // Handle escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isMenuOpen) {
+                    toggleMenu();
+                }
+            });
+
+            // Initialize the application
+            function initializeApp() {
+                // Initialize 3D avatar
+                init3DAvatar();
+                
+                // Set initial dashboard state
+                switchDashboard('scientific');
+                
+                // Add smooth scroll behavior for better UX
+                document.documentElement.style.scrollBehavior = 'smooth';
+            }
+
+            // Start the app when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeApp);
+            } else {
+                initializeApp();
+            }
+
+            // TODO: Implement API integration for real data fetching
+            // TODO: Add WebSocket for real-time updates
+            // TODO: Implement authentication and authorization
+            // TODO: Add data visualization charts using Chart.js or D3
+            // TODO: Implement voice command recognition
+            // TODO: Add notification system
+            // TODO: Implement file upload for medical documents
+            // TODO: Add patient search and filtering functionality
+        })();
+    </script>
+</body>
+</html>
