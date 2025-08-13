@@ -205,9 +205,15 @@ export default function DashboardLayout({
                   <span className="text-gray-300 text-sm">Sistema</span>
                   <i className="fas fa-chevron-down text-sm" />
                 </button>
-                <div className="absolute top-full left-0 mt-1 w-44 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                <div className="absolute top-full left-0 mt-1 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
                   <button onClick={() => handleDashboardClick("profile")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
-                    <i className="fas fa-user-circle mr-2" />Perfil
+                    <i className="fas fa-user-circle mr-2" />Perfil Usuário
+                  </button>
+                  <button onClick={() => window.location.href = '/patient'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-heart mr-2" />Perfil Paciente
+                  </button>
+                  <button onClick={() => window.location.href = '/professional'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-user-md mr-2" />Perfil Profissional
                   </button>
                   <button onClick={() => handleDashboardClick("admin")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-shield-alt mr-2" />Admin Global
