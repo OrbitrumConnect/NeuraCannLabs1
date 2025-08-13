@@ -206,16 +206,13 @@ export default function DashboardLayout({
                   <i className="fas fa-chevron-down text-sm" />
                 </button>
                 <div className="absolute top-full left-0 mt-1 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
-                  <button onClick={() => handleDashboardClick("profile")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
-                    <i className="fas fa-user-circle mr-2" />Perfil Usuário
-                  </button>
                   <button onClick={() => window.location.href = '/patient'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-heart mr-2" />Perfil Paciente
                   </button>
                   <button onClick={() => window.location.href = '/professional'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-user-md mr-2" />Perfil Profissional
                   </button>
-                  <button onClick={() => handleDashboardClick("admin")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                  <button onClick={() => window.location.href = '/dashboard/overview'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-shield-alt mr-2" />Admin Global
                   </button>
                 </div>
