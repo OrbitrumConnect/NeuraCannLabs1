@@ -816,6 +816,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Avatar Estudos Cruzados NOA - Especializado para médicos especialistas
+  app.post('/api/cross-studies/consult', async (req, res) => {
+    try {
+      const { userId, question, userContext } = req.body;
+      
+      if (!question) {
+        return res.status(400).json({ error: "Pergunta é obrigatória" });
+      }
+      
+      const sessionId = userId || `guest-${Date.now()}`;
+      
+      console.log(`🔬 Consulta Estudos Cruzados NOA: ${question.substring(0, 50)}...`);
+      
+      // Força contexto de estudos cruzados para acessar dados completos da plataforma
+      const consultation = await superMedicalAI.consult(question, 'cross_study_research');
+      
+      res.json({
+        success: true,
+        response: consultation.response,
+        medicalInsights: consultation.medicalInsights || [],
+        confidence: consultation.confidence || 0.8,
+        recommendations: consultation.recommendations || [],
+        needsSpecialist: consultation.needsSpecialist || false,
+        sourceType: 'cross_study_research',
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error("❌ Erro na consulta de estudos cruzados:", error);
+      res.status(500).json({
+        success: false,
+        error: "Erro interno do servidor na consulta de estudos cruzados",
+        details: error.message
+      });
+    }
+  });
+
   // Endpoint para estatísticas da Super IA
   app.get('/api/super-ai/stats', (req, res) => {
     try {

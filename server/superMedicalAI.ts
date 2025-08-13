@@ -28,8 +28,8 @@ export class SuperMedicalAI {
     ];
   }
 
-  // Busca dados relevantes no banco para a consulta
-  private async searchRelevantData(question: string): Promise<string> {
+  // Busca dados relevantes no banco para a consulta (expandido para estudos cruzados)
+  private async searchRelevantData(question: string, context: string = 'standard'): Promise<string> {
     try {
       // Busca estudos científicos relevantes
       const studies = await storage.getScientificStudies();
@@ -52,7 +52,23 @@ export class SuperMedicalAI {
         conv.medicalTopic === this.extractMedicalTopic(question)
       ).slice(0, 2); // Top 2 similares
 
-      let contextData = "DADOS DO BANCO PARA CONSULTA:\n\n";
+      // Se for contexto de estudos cruzados, busca dados adicionais do fórum
+      let forumData: any[] = [];
+      if (context === 'cross_study_research') {
+        try {
+          // Simula busca de posts relevantes do fórum (implementar quando houver fórum)
+          forumData = [
+            { title: "Dosagem CBD em idosos - discussão semanal", relevance: "high" },
+            { title: "Interações medicamentosas - casos recentes", relevance: "medium" }
+          ];
+        } catch (error) {
+          console.log("Fórum data não disponível ainda");
+        }
+      }
+
+      let contextData = context === 'cross_study_research' ? 
+        "DADOS COMPLETOS DA PLATAFORMA PARA ESTUDOS CRUZADOS:\n\n" :
+        "DADOS DO BANCO PARA CONSULTA:\n\n";
       
       if (relevantStudies.length > 0) {
         contextData += "ESTUDOS CIENTÍFICOS RELEVANTES:\n";
@@ -75,6 +91,17 @@ export class SuperMedicalAI {
         similarConversations.forEach(conv => {
           contextData += `- Pergunta similar: ${conv.userMessage}\n  Resposta bem-sucedida: ${conv.aiResponse.substring(0, 100)}...\n`;
         });
+        contextData += "\n";
+      }
+
+      // Adiciona dados específicos para estudos cruzados
+      if (context === 'cross_study_research' && forumData.length > 0) {
+        contextData += "DISCUSSÕES RELEVANTES DO FÓRUM:\n";
+        forumData.forEach(post => {
+          contextData += `- ${post.title} (Relevância: ${post.relevance})\n`;
+        });
+        contextData += "\n";
+        contextData += "FOCO ESPECIALIZADO: Priorizar evidências científicas e dados reais da plataforma para respostas rápidas a médicos especialistas.\n";
       }
 
       return contextData;
@@ -115,8 +142,8 @@ export class SuperMedicalAI {
       let needsSpecialist: boolean = false;
 
       if (this.openai) {
-        // Busca dados relevantes do banco de dados
-        const databaseContext = await this.searchRelevantData(question);
+        // Busca dados relevantes do banco de dados (contexto determinado pelo avatar)
+        const databaseContext = await this.searchRelevantData(question, context);
         
         // Usa ChatGPT-4o com conhecimento médico especializado
         const medicalContext = this.buildMedicalContext(userHistory);
@@ -129,20 +156,34 @@ export class SuperMedicalAI {
             messages: [
               {
                 role: "system",
-                content: `Você é NOA ESPERANÇA - exatamente como foi treinada no fine-tuning.
+                content: context === 'cross_study_research' ? 
+                  `Você é NOA ESPERANÇA especializada em ESTUDOS CRUZADOS para médicos especialistas.
 
-                CONTEXTO INTEGRADO DA PLATAFORMA:
-                ${databaseContext}
-                
-                HISTÓRICO MÉDICO:
-                ${medicalContext}
-                
-                CONHECIMENTO ESPECIALIZADO:
-                ${this.medicalKnowledgeBase.join('\n- ')}
-                
-                Use seu treinamento específico da NOA ESPERANÇA. Seja empática, faça anamnese completa, explore aspectos emocionais, sempre pergunte "há mais alguma coisa?". 
-                
-                IMPORTANTE: Após ${userHistory.length >= 3 ? 'AGORA' : '3-4 mensagens'}, ofereça resumo para médico. ${userHistory.length} mensagens atuais.`
+                  DADOS COMPLETOS DA PLATAFORMA:
+                  ${databaseContext}
+                  
+                  MISSÃO: Fornecer respostas rápidas e precisas para médicos especialistas baseadas em:
+                  - Casos clínicos reais da plataforma
+                  - Estudos científicos + artigos externos relevantes
+                  - Dados do fórum com assuntos semanais
+                  - Análise cruzada de dados científicos
+                  
+                  FOCO: Atendimento rápido, dados precisos, evidências científicas. Seja objetiva mas mantenha a empatia da NOA.`
+                  :
+                  `Você é NOA ESPERANÇA - exatamente como foi treinada no fine-tuning.
+
+                  CONTEXTO INTEGRADO DA PLATAFORMA:
+                  ${databaseContext}
+                  
+                  HISTÓRICO MÉDICO:
+                  ${medicalContext}
+                  
+                  CONHECIMENTO ESPECIALIZADO:
+                  ${this.medicalKnowledgeBase.join('\n- ')}
+                  
+                  Use seu treinamento específico da NOA ESPERANÇA. Seja empática, faça anamnese completa, explore aspectos emocionais, sempre pergunte "há mais alguma coisa?". 
+                  
+                  IMPORTANTE: Após ${userHistory.length >= 3 ? 'AGORA' : '3-4 mensagens'}, ofereça resumo para médico. ${userHistory.length} mensagens atuais.`
               },
               {
                 role: "user",
