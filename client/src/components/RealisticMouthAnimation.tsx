@@ -18,26 +18,9 @@ export function RealisticMouthAnimation({
   const animationId = useRef<number>();
 
   useEffect(() => {
-    // CORREÇÃO CRÍTICA: só animar quando há áudio REAL tocando
-    const shouldAnimate = isAnimating && audioRef?.current && !audioRef.current.paused;
-    
-    if (!shouldAnimate || !canvasRef.current) {
+    if (!isAnimating || !canvasRef.current) {
       if (animationId.current) {
         cancelAnimationFrame(animationId.current);
-      }
-      // Desenhar imagem estática quando não está falando
-      if (canvasRef.current && !shouldAnimate) {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const img = new Image();
-        img.crossOrigin = "anonymous";
-        img.onload = () => {
-          canvas.width = img.width;
-          canvas.height = img.height;
-          ctx?.clearRect(0, 0, canvas.width, canvas.height);
-          ctx?.drawImage(img, 0, 0);
-        };
-        img.src = imageUrl;
       }
       return;
     }
@@ -51,9 +34,6 @@ export function RealisticMouthAnimation({
     img.onload = () => {
       canvas.width = img.width;
       canvas.height = img.height;
-      
-      // Limpar canvas com transparência total
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       const animate = () => {
         if (!isAnimating) return;
@@ -146,15 +126,21 @@ export function RealisticMouthAnimation({
   }, [imageUrl, isAnimating, audioRef]);
 
   return (
-    <canvas 
-      ref={canvasRef}
-      className={`${className} transition-all duration-300`}
-      style={{ 
-        maxWidth: '100%', 
-        height: 'auto',
-        filter: isAnimating ? 'brightness(110%) contrast(105%)' : 'none',
-        backgroundColor: 'transparent'
-      }}
-    />
+    <div className="relative">
+      <canvas 
+        ref={canvasRef}
+        className={`${className} transition-all duration-300`}
+        style={{ 
+          maxWidth: '100%', 
+          height: 'auto',
+          filter: isAnimating ? 'brightness(110%) contrast(105%)' : 'none'
+        }}
+      />
+      {isAnimating && (
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-green-400/80 text-white px-3 py-1 rounded-full text-xs animate-pulse">
+          🗣️ Falando
+        </div>
+      )}
+    </div>
   );
 }

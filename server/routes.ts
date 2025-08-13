@@ -11,7 +11,6 @@ import "./types";
 export async function registerRoutes(app: Express): Promise<Server> {
   // Static files
   app.use(express.static('client/public'));
-  app.use('/attached_assets', express.static('attached_assets'));
   
   // Session setup
   const MemStore = MemoryStore(session);
@@ -666,57 +665,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // ========================================
-  // SISTEMA AVANÇADO DE AVATAR - MÚLTIPLAS APIs
-  // ========================================
-  
-  // Importar serviço avançado
-  const { AdvancedAvatarService } = await import('./advancedAvatarService');
-  const advancedAvatarService = new AdvancedAvatarService();
-
-  // Endpoint para criar avatar animado com múltiplas APIs
-  app.post('/api/avatar/create-animated', async (req, res) => {
-    try {
-      const { text, preferredService } = req.body;
-      
-      if (!text) {
-        return res.status(400).json({ error: 'Texto é obrigatório' });
-      }
-
-      // URL da nossa imagem médica perfeita
-      const imageUrl = `${req.protocol}://${req.get('host')}/attached_assets/image_1755025319400.png`;
-      
-      const result = await advancedAvatarService.createTalkingAvatar({
-        imageUrl,
-        text,
-        preferredService
-      });
-
-      res.json(result);
-
-    } catch (error: any) {
-      console.error('❌ Erro no sistema avançado de avatar:', error);
-      res.status(500).json({ 
-        error: 'Erro interno do servidor',
-        details: error.message 
-      });
-    }
-  });
-
-  // Endpoint para verificar status do vídeo
-  app.get('/api/avatar/status/:videoId/:service', async (req, res) => {
-    try {
-      const { videoId, service } = req.params;
-      const result = await advancedAvatarService.checkVideoStatus(videoId, service);
-      res.json(result);
-    } catch (error: any) {
-      res.status(500).json({ 
-        error: 'Erro ao verificar status',
-        details: error.message 
-      });
-    }
-  });
-
-  // ========================================
   // AVATAR PROFISSIONAL - ElevenLabs + D-ID
   // ========================================
   
@@ -812,7 +760,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const fs = require('fs');
       const path = require('path');
       
-      const imagePath = path.join(process.cwd(), 'attached_assets', 'image_1755025319400.png');
+      const imagePath = path.join(process.cwd(), 'attached_assets', '20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png');
       
       if (!fs.existsSync(imagePath)) {
         return res.status(404).json({ 
