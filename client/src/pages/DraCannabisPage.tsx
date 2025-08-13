@@ -69,9 +69,7 @@ export default function DraCannabisPage() {
 
                   </div>
                 </div>
-                <p className="text-xs text-neon-green/70 mt-2 drop-shadow-[0_0_3px_rgba(57,255,20,0.3)]">
-                  Certificada ANVISA • CFM
-                </p>
+
               </CardHeader>
             </Card>
 
