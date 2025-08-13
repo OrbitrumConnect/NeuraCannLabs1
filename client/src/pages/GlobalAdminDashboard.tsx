@@ -179,6 +179,18 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
       {/* Header da Central de Inteligência */}
       <div className="mb-8 scale-[0.65]">
         <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
+          <div className="flex items-center justify-between mb-4">
+            <Button 
+              onClick={() => window.location.href = '/dashboard/overview'}
+              variant="outline"
+              size="sm"
+              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+            >
+              <i className="fas fa-arrow-left mr-2" />
+              Voltar
+            </Button>
+            <div></div>
+          </div>
           <h1 className="text-xl sm:text-2xl font-bold text-white mb-2 flex items-center gap-3">
             🧠 Central de Inteligência Cannabis Global
             <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30">

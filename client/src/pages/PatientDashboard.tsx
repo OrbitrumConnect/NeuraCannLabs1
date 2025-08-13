@@ -64,6 +64,18 @@ export default function PatientDashboard() {
   return (
     <DashboardLayout>
       <div className="mb-8 text-center">
+        <div className="flex items-center justify-between mb-4">
+          <Button 
+            onClick={() => window.location.href = '/dashboard/overview'}
+            variant="outline"
+            size="sm"
+            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+          >
+            <i className="fas fa-arrow-left mr-2" />
+            Voltar
+          </Button>
+          <div></div>
+        </div>
         <h1 className="text-2xl font-bold text-white mb-2">Meu Perfil - Paciente</h1>
         <p className="text-gray-400">Histórico médico e tratamento com cannabis</p>
       </div>
