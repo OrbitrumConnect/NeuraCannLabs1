@@ -13,9 +13,9 @@ export function useVoiceGreeting() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasPlayedToday, setHasPlayedToday] = useState(false);
   
-  // Configuração da voz (carregada do localStorage)
+  // Configuração da voz (DESABILITADA - Sistema modernizado)
   const [config, setConfig] = useState<VoiceGreetingConfig>({
-    enabled: true,
+    enabled: false, // DESABILITADO - voz antiga removida
     volume: 0.7,
     rate: 0.9,
     pitch: 1.0
@@ -146,30 +146,25 @@ export function useVoiceGreeting() {
     console.log('🎤 Status reprodução:', { userId, lastPlayed, today, hasPlayedToday: lastPlayed === today });
   }, [user]);
 
-  // Auto-reproduzir APENAS na primeira entrada do dia  
+  // Sistema antigo de saudação DESABILITADO - Apenas log informativo
   useEffect(() => {
     // Funciona tanto para usuários autenticados quanto no modo free
     const userId = user?.id || 'free-user';
     
-    if (config.enabled && !hasPlayedToday && !isPlaying) {
-      // Verificar se é realmente o primeiro acesso do dia
+    // Apenas marcar acesso mas NÃO reproduzir saudação robótica antiga
+    if (!hasPlayedToday) {
       const lastLoginDate = localStorage.getItem(`last_login_${userId}`);
       const today = new Date().toDateString();
       
       console.log('🎤 Verificando saudação:', { lastLoginDate, today, hasPlayedToday });
       
       if (lastLoginDate !== today) {
-        // Aguardar um pouco após o carregamento para melhor experiência
-        const timer = setTimeout(() => {
-          console.log('🎤 Reproduzindo saudação automática');
-          playGreeting();
-          localStorage.setItem(`last_login_${userId}`, today);
-        }, 3000);
-        
-        return () => clearTimeout(timer);
+        // SISTEMA ANTIGO DESABILITADO - Não reproduzir mais saudação automática robótica
+        console.log('🎤 Sistema de saudação automática DESABILITADO - Usando apenas voz moderna da Dra. Cannabis IA');
+        localStorage.setItem(`last_login_${userId}`, today);
       }
     }
-  }, [isAuthenticated, user, config.enabled, hasPlayedToday, isPlaying, playGreeting]);
+  }, [user, hasPlayedToday]);
 
   // Função para reproduzir manualmente (sempre funciona)
   const playManualGreeting = useCallback(async () => {

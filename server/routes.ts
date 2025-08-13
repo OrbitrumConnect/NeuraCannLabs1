@@ -708,10 +708,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
               style: 0.8,             // Mais estilo conversacional
               use_speaker_boost: true
             },
-            pronunciation_dictionary_locators: [{
-              pronunciation_dictionary_id: "pt_BR_natural",
-              version_id: "1.0.0"
-            }]
+
           })
         }
       );
