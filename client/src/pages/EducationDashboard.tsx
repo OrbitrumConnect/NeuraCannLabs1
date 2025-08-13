@@ -227,7 +227,7 @@ export default function EducationDashboard() {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 gap-2">
             {mockCourses.map((course) => (
-              <Card key={course.id} className="bg-gray-800/50 border-gray-700 hover:border-emerald-500/50 transition-all scale-75">
+              <Card key={course.id} className="bg-gray-800/50 border-gray-700 hover:border-emerald-500/50 transition-all scale-[0.85]">
                 <div className="aspect-video bg-gradient-to-br from-emerald-900/50 to-blue-900/50 rounded-t-lg flex items-center justify-center">
                   <PlayCircle className="w-4 h-4 text-emerald-400" />
                 </div>
