@@ -196,12 +196,25 @@ export function DraCannabisAI() {
       const now = new Date().toISOString();
       console.log('✅ Resposta completa da API:', data);
       console.log('✅ Texto da resposta:', data.response);
-      setChatHistory(prev => [
-        ...prev,
+      const newChatHistory = [
+        ...chatHistory,
         { type: 'user', message: variables.question, timestamp: now },
         { type: 'doctor', message: data.response || 'Erro: resposta não encontrada', timestamp: now }
-      ]);
+      ];
+      
+      setChatHistory(newChatHistory);
       setQuestion('');
+
+      // Gerar resumo automático após 6+ mensagens (3+ trocas completas)
+      if (newChatHistory.length >= 6 && !consultationSummary) {
+        setTimeout(() => {
+          toast({
+            title: "Consulta Prolongada Detectada",
+            description: "A Dra. Cannabis sugere gerar um resumo da consulta. Clique em 'Gerar Resumo' abaixo.",
+            variant: "default",
+          });
+        }, 2000);
+      }
       
       // Automaticamente ativar resposta em voz da Dra. Cannabis (sistema híbrido + D-ID)
       if (data.response) {
