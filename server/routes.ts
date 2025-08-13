@@ -679,7 +679,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // 1. Gerar áudio com ElevenLabs (qualidade profissional)
       const elevenApiKey = process.env.ELEVENLABS_API_KEY;
-      const voiceId = '21m00Tcm4TlvDq8ikWAM'; // Voz Rachel (padrão ElevenLabs)
+      const voiceId = 'EXAVITQu4vr4xnSDxMaL'; // Voz Bella - Mais adequada para contexto médico profissional
       
       if (!elevenApiKey) {
         console.log('⚠️ ElevenLabs API key não encontrada, usando sistema nativo');
@@ -702,8 +702,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             text,
             model_id: 'eleven_multilingual_v2',
             voice_settings: voice_settings || {
-              stability: 0.75,
-              similarity_boost: 0.9
+              stability: 0.8,
+              similarity_boost: 0.85,
+              style: 0.15,
+              use_speaker_boost: true
             }
           })
         }
