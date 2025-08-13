@@ -390,11 +390,11 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               : 'drop-shadow(0 0 8px rgba(34, 211, 238, 0.1))'
           }}
         >
-          {/* Avatar Thought Bubble - Z-INDEX MELHORADO */}
+          {/* Avatar Thought Bubble - ACIMA DA CABEÇA COMO BOLHA REAL */}
           <AvatarThoughtBubble 
             isActive={isDrAIActive}
             context={isTyping ? 'searching' : (isDrAIActive ? 'overview' : 'idle')}
-            className="absolute z-40"
+            className="absolute z-60"
           />
           
           <div 
