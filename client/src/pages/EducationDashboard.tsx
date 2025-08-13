@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import UnifiedHeader from "@/components/UnifiedHeader";
 import DraCannabisAI from "@/components/DraCannabisAI";
 import CertificateComponent from "@/components/CertificateComponent";
 import { 
@@ -110,32 +111,19 @@ export default function EducationDashboard() {
     strongAreas: ["Farmacocinética", "Indicações Terapêuticas"]
   };
 
+  // Obter dados do usuário para o cabeçalho
+  const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyber-dark via-gray-900 to-cyber-gray">
-      {/* Header do Sistema Educacional */}
-      <div className="bg-gradient-to-r from-emerald-900/50 to-blue-900/50 border-b border-emerald-500/30 p-6">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-emerald-400 mb-2 flex items-center gap-3">
-              <BookOpen className="w-8 h-8" />
-              NeuroCann Academy
-            </h1>
-            <p className="text-gray-300">Sistema Educacional Avançado com IA Integrada</p>
-          </div>
-          
-          {/* Botão para ativar Dra. Cannabis IA */}
-          <Button
-            onClick={() => setIsDrAIActive(true)}
-            className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-6 py-3 rounded-lg shadow-lg"
-            data-testid="button-activate-dra"
-          >
-            <Brain className="w-5 h-5 mr-2" />
-            Ativar Dra. Cannabis IA
-          </Button>
-        </div>
-      </div>
+      {/* Cabeçalho Unificado */}
+      <UnifiedHeader 
+        userRole={currentUser.role}
+        userName={currentUser.name || "Usuário"}
+        currentPage="Academy"
+      />
 
-      {/* Avatar da Dra. Cannabis IA */}
+      {/* Avatar da Dra. Cannabis IA - Posicionado ACIMA dos triggers */}
       {isDrAIActive && (
         <DraCannabisAI
           isActive={isDrAIActive}
@@ -145,57 +133,81 @@ export default function EducationDashboard() {
         />
       )}
 
-      {/* Conteúdo Principal */}
-      <div className="max-w-7xl mx-auto p-6">
-        {/* Dashboard Estatísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-emerald-900/30 to-emerald-800/30 border-emerald-500/30">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-emerald-300 text-sm font-medium">Cursos Ativos</p>
-                  <p className="text-3xl font-bold text-emerald-400">2</p>
-                </div>
-                <BookOpen className="w-8 h-8 text-emerald-400" />
-              </div>
-            </CardContent>
-          </Card>
+      {/* Trigger para Ativar Dra. IA - Posicionado APÓS o avatar */}
+      <div className="pt-20 pb-6">
+        <div className="max-w-7xl mx-auto px-6 flex justify-center">
+          <Button
+            onClick={() => setIsDrAIActive(true)}
+            className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-8 py-4 rounded-xl shadow-2xl border border-purple-400/20 transition-all duration-300 hover:scale-105"
+            data-testid="button-activate-dra"
+            disabled={isDrAIActive}
+          >
+            <Brain className="w-6 h-6 mr-3" />
+            {isDrAIActive ? 'Dra. Cannabis IA Ativa' : 'Ativar Dra. Cannabis IA'}
+          </Button>
+        </div>
+      </div>
 
-          <Card className="bg-gradient-to-br from-blue-900/30 to-blue-800/30 border-blue-500/30">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-blue-300 text-sm font-medium">Tempo Total</p>
-                  <p className="text-3xl font-bold text-blue-400">45h</p>
+      {/* Conteúdo Principal - Estrutura Fixa e Organizada */}
+      <div className="max-w-7xl mx-auto px-6 pb-12">
+        
+        {/* Dashboard de Estatísticas - Cards Organizados */}
+        <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-8 shadow-2xl">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">📊 Painel de Progresso</h2>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Card Cursos Ativos */}
+            <Card className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/40 border-emerald-500/40 backdrop-blur-sm hover:shadow-emerald-500/20 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-emerald-300 text-sm font-medium">Cursos Ativos</p>
+                    <p className="text-3xl font-bold text-emerald-400">2</p>
+                  </div>
+                  <BookOpen className="w-8 h-8 text-emerald-400" />
                 </div>
-                <Clock className="w-8 h-8 text-blue-400" />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-gradient-to-br from-purple-900/30 to-purple-800/30 border-purple-500/30">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-purple-300 text-sm font-medium">Certificados</p>
-                  <p className="text-3xl font-bold text-purple-400">1</p>
+            {/* Card Tempo Total */}
+            <Card className="bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/40 backdrop-blur-sm hover:shadow-blue-500/20 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-blue-300 text-sm font-medium">Tempo Total</p>
+                    <p className="text-3xl font-bold text-blue-400">45h</p>
+                  </div>
+                  <Clock className="w-8 h-8 text-blue-400" />
                 </div>
-                <Award className="w-8 h-8 text-purple-400" />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
 
-          <Card className="bg-gradient-to-br from-yellow-900/30 to-orange-800/30 border-yellow-500/30">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-yellow-300 text-sm font-medium">Média Geral</p>
-                  <p className="text-3xl font-bold text-yellow-400">89%</p>
+            {/* Card Certificados */}
+            <Card className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/40 backdrop-blur-sm hover:shadow-purple-500/20 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-purple-300 text-sm font-medium">Certificados</p>
+                    <p className="text-3xl font-bold text-purple-400">1</p>
+                  </div>
+                  <Award className="w-8 h-8 text-purple-400" />
                 </div>
-                <TrendingUp className="w-8 h-8 text-yellow-400" />
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            {/* Card Média Geral */}
+            <Card className="bg-gradient-to-br from-yellow-900/40 to-orange-800/40 border-yellow-500/40 backdrop-blur-sm hover:shadow-yellow-500/20 hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-yellow-300 text-sm font-medium">Média Geral</p>
+                    <p className="text-3xl font-bold text-yellow-400">89%</p>
+                  </div>
+                  <TrendingUp className="w-8 h-8 text-yellow-400" />
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
 
         {/* Tabs do Sistema Educacional */}
