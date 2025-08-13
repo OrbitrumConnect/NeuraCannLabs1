@@ -397,7 +397,7 @@ export function DraCannabisAI() {
                   w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
                   avatar-glow relative flex items-center justify-center
                   ${isTalking ? 'avatar-scanning scale-105' : ''}
-                  ${isDrAIActive ? 'scale-110' : ''}
+                  ${setupNativeDraMutation.data ? 'scale-110' : ''}
                 `}
               >
                 {/* Efeitos de scanning quando ativo */}
@@ -417,10 +417,10 @@ export function DraCannabisAI() {
                     xmlns="http://www.w3.org/2000/svg"
                     style={{ 
                       filter: isTalking 
-                        ? `drop-shadow(0 0 20px #00ff00) brightness(1.5)` 
-                        : isDrAIActive 
-                        ? `drop-shadow(0 0 10px #00ff00) brightness(1.2)` 
-                        : `drop-shadow(0 0 5px #22c55e) brightness(1.1)` 
+                        ? `drop-shadow(0 0 20px #22c55e) brightness(1.5)` 
+                        : setupNativeDraMutation.data
+                        ? `drop-shadow(0 0 10px #22c55e) brightness(1.2)` 
+                        : `drop-shadow(0 0 5px #22c55e) brightness(1.0)` 
                     }}
                   >
                     {/* Anel holográfico externo */}
