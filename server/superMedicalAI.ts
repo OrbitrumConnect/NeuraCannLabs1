@@ -31,19 +31,42 @@ export class SuperMedicalAI {
   // Busca dados relevantes no banco para a consulta (expandido para estudos cruzados)
   private async searchRelevantData(question: string, context: string = 'standard'): Promise<string> {
     try {
+      console.log(`🔍 Buscando dados para: "${question}" | Contexto: ${context}`);
+      
+      // Expande termos de busca para melhor precisão
+      const searchTerms = this.expandSearchTerms(question.toLowerCase());
+      console.log(`🎯 Termos expandidos: ${searchTerms.join(', ')}`);
+      
       // Busca estudos científicos relevantes
       const studies = await storage.getScientificStudies();
-      const relevantStudies = studies.filter(study => 
-        study.title.toLowerCase().includes(question.toLowerCase()) ||
-        study.keywords?.some(keyword => question.toLowerCase().includes(keyword.toLowerCase()))
-      ).slice(0, 3); // Top 3 mais relevantes
+      console.log(`📚 Total de estudos disponíveis: ${studies.length}`);
+      
+      const relevantStudies = studies.filter(study => {
+        const matches = searchTerms.some(term => 
+          study.title.toLowerCase().includes(term) ||
+          study.description?.toLowerCase().includes(term) ||
+          study.compound?.toLowerCase().includes(term) ||
+          study.indication?.toLowerCase().includes(term) ||
+          study.keywords?.some(keyword => keyword.toLowerCase().includes(term))
+        );
+        if (matches) console.log(`✅ Estudo encontrado: ${study.title}`);
+        return matches;
+      }).slice(0, 3); // Top 3 mais relevantes
 
       // Busca casos clínicos similares
       const cases = await storage.getClinicalCases();
-      const relevantCases = cases.filter(case_ => 
-        case_.description.toLowerCase().includes(question.toLowerCase()) ||
-        case_.diagnosis?.toLowerCase().includes(question.toLowerCase())
-      ).slice(0, 2); // Top 2 mais relevantes
+      console.log(`🏥 Total de casos disponíveis: ${cases.length}`);
+      
+      const relevantCases = cases.filter(case_ => {
+        const matches = searchTerms.some(term =>
+          case_.description.toLowerCase().includes(term) ||
+          case_.diagnosis?.toLowerCase().includes(term) ||
+          case_.indication?.toLowerCase().includes(term) ||
+          case_.compound?.toLowerCase().includes(term)
+        );
+        if (matches) console.log(`✅ Caso encontrado: ${case_.caseNumber}`);
+        return matches;
+      }).slice(0, 2); // Top 2 mais relevantes
 
       // Busca conversas anteriores do sistema de aprendizado
       const conversations = await storage.getConversations();
@@ -104,11 +127,41 @@ export class SuperMedicalAI {
         contextData += "FOCO ESPECIALIZADO: Priorizar evidências científicas e dados reais da plataforma para respostas rápidas a médicos especialistas.\n";
       }
 
+      console.log(`📊 Dados encontrados - Estudos: ${relevantStudies.length}, Casos: ${relevantCases.length}, Conversas: ${similarConversations.length}`);
+      
       return contextData;
     } catch (error) {
       console.error("❌ Erro ao buscar dados do banco:", error);
       return "";
     }
+  }
+
+  // Expande termos de busca para melhor precisão
+  private expandSearchTerms(query: string): string[] {
+    const terms = [query];
+    
+    // Mapeamento de termos relacionados
+    const termMap: Record<string, string[]> = {
+      'dosagem': ['dose', 'dosagem', 'posologia', 'mg', 'ml', 'titulação', 'administração'],
+      'dose': ['dose', 'dosagem', 'posologia', 'mg', 'ml', 'titulação'],
+      'cbd': ['cbd', 'cannabidiol', 'canabidiol'],
+      'thc': ['thc', 'tetrahydrocannabinol', 'tetrahidrocanabinol'],
+      'epilepsia': ['epilepsia', 'convulsão', 'convulsões', 'seizure'],
+      'ansiedade': ['ansiedade', 'anxiety', 'estresse', 'stress'],
+      'dor': ['dor', 'pain', 'analgesia', 'analgésico'],
+      'cannabis': ['cannabis', 'marijuana', 'canabis', 'maconha'],
+      'efeitos': ['efeitos', 'efeito', 'effects', 'reação', 'reações'],
+      'colaterais': ['colaterais', 'adversos', 'side effects', 'unwanted']
+    };
+    
+    // Adiciona termos relacionados
+    Object.keys(termMap).forEach(key => {
+      if (query.includes(key)) {
+        terms.push(...termMap[key]);
+      }
+    });
+    
+    return [...new Set(terms)]; // Remove duplicatas
   }
 
   // Processa consulta médica com conhecimento especializado
@@ -143,7 +196,7 @@ export class SuperMedicalAI {
 
       if (this.openai) {
         // Busca dados relevantes do banco de dados (contexto determinado pelo avatar)
-        const databaseContext = await this.searchRelevantData(question, context);
+        const databaseContext = await this.searchRelevantData(question, 'standard');
         
         // Usa ChatGPT-4o com conhecimento médico especializado
         const medicalContext = this.buildMedicalContext(userHistory);
@@ -654,6 +707,101 @@ export class SuperMedicalAI {
     }
 
     console.log(`✅ Conhecimento integrado - Total: ${this.medicalKnowledgeBase.length} itens`);
+  }
+
+  // Método principal para consulta médica (compatibilidade com endpoint de estudos cruzados)
+  async consult(question: string, context: string = 'standard'): Promise<{
+    response: string;
+    medicalInsights: string[];
+    confidence: number;
+    recommendations: string[];
+    needsSpecialist: boolean;
+  }> {
+    try {
+      console.log(`🧠 Método consult - Contexto: ${context} | Pergunta: ${question.substring(0, 50)}...`);
+      
+      if (this.openai) {
+        // Busca dados relevantes do banco de dados
+        const databaseContext = await this.searchRelevantData(question, context);
+        
+        console.log("🧠 Usando ChatGPT com NOA ESPERANÇA...");
+        
+        const completion = await this.openai.chat.completions.create({
+          model: "ft:gpt-3.5-turbo-0125:personal:fine-tuning-noa-esperanza-avaliacao-inicial-dez-ex-jsonl:BR0W02VP",
+          messages: [
+            {
+              role: "system",
+              content: context === 'cross_study_research' ? 
+                `Você é NOA ESPERANÇA especializada em ESTUDOS CRUZADOS para médicos especialistas.
+
+                DADOS COMPLETOS DA PLATAFORMA:
+                ${databaseContext}
+                
+                MISSÃO: Fornecer respostas rápidas e precisas para médicos especialistas baseadas em:
+                - Casos clínicos reais da plataforma
+                - Estudos científicos + artigos externos relevantes
+                - Dados do fórum com assuntos semanais
+                - Análise cruzada de dados científicos
+                
+                FOCO: Atendimento rápido, dados precisos, evidências científicas. Seja objetiva mas mantenha a empatia da NOA.`
+                :
+                `Você é NOA ESPERANÇA - exatamente como foi treinada no fine-tuning.
+
+                CONTEXTO INTEGRADO DA PLATAFORMA:
+                ${databaseContext}
+                
+                CONHECIMENTO ESPECIALIZADO:
+                ${this.medicalKnowledgeBase.join('\n- ')}
+                
+                Use seu treinamento específico da NOA ESPERANÇA. Seja empática, faça anamnese completa, explore aspectos emocionais, sempre pergunte "há mais alguma coisa?"
+                
+                Responda de forma acolhedora e investigativa sobre cannabis medicinal.`
+            },
+            {
+              role: "user",
+              content: question
+            }
+          ],
+          max_tokens: 800,
+          temperature: 0.7
+        });
+
+        const response = completion.choices[0]?.message?.content || "Desculpe, não consegui processar sua pergunta.";
+        console.log("✅ Resposta ChatGPT gerada com sucesso");
+
+        // Salva a conversa no sistema de aprendizado
+        try {
+          await this.saveLearningData(question, response, context);
+        } catch (error) {
+          console.log("⚠️ Erro ao salvar dados de aprendizado:", error);
+        }
+
+        return {
+          response,
+          medicalInsights: await this.extractMedicalInsights(question, response),
+          confidence: await this.calculateConfidence(question, response),
+          recommendations: await this.generateRecommendations(question, response, []),
+          needsSpecialist: await this.assessSpecialistNeed(question, response, [])
+        };
+      } else {
+        return {
+          response: "Sistema em modo limitado. Por favor, configure a chave da API.",
+          medicalInsights: [],
+          confidence: 0,
+          recommendations: [],
+          needsSpecialist: false
+        };
+      }
+    } catch (error) {
+      console.error("❌ Erro na consulta:", error);
+      return {
+        response: "Desculpe, houve um erro técnico. Por favor, tente novamente.",
+        medicalInsights: [],
+        confidence: 0,
+        recommendations: [],
+        needsSpecialist: false
+      };
+    }
   }
 
   // Obtém estatísticas do sistema
