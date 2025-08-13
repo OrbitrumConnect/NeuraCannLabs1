@@ -498,25 +498,13 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         </div>
       )}
 
-      {/* Main Result Card - Mobile sequential, Desktop positioned - Only show when Dr AI is active */}
+      {/* Layout em Grade: Cards Lado a Lado - Only show when Dr AI is active */}
       {isDrAIActive && formattedResult && (
-        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0">
-          <MainCard 
-            result={formattedResult} 
-            isMinimized={isMainCardMinimized}
-            onToggleMinimize={() => setIsMainCardMinimized(!isMainCardMinimized)}
-            onClose={() => {
-              // Fechar o card principal
-              setSearchTabs([]);
-              setCurrentResult(null);
-              setSearchTerm("");
-              setMainCardMode('search');
-              setIsMainCardMinimized(false);
-            }}
-          />
-          {/* Mode Toggle Buttons - Mostrar apenas quando o card está minimizado */}
+        <div className="relative mt-4 mx-3 sm:absolute sm:top-64 sm:left-1/2 sm:transform sm:-translate-x-1/2 z-20 sm:px-0 w-full max-w-6xl">
+          
+          {/* Mode Toggle Buttons - Movido para o topo */}
           {isMainCardMinimized && (
-            <div className="mt-2 flex gap-1.5 sm:gap-2 justify-center">
+            <div className="mb-4 flex gap-1.5 sm:gap-2 justify-center">
               <button
                 onClick={() => {
                   setMainCardMode('search');
@@ -546,46 +534,67 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
               </button>
             </div>
           )}
-          
-          {/* Suggestions for Sub-search - Responsive layout - Mostrar apenas no modo pesquisa */}
-          {mainCardMode === 'search' && searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
-            <div className="mt-3 p-2 sm:p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
-              <h4 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-wrap gap-2">
-                {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => handleSubSearch(suggestion)}
-                    className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all text-left sm:text-center"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
 
-          {/* Study Notes - Focused on drafting studies - Mostrar quando no modo study OU quando showConversationHistory está ativo */}
-          {(mainCardMode === 'study' || showConversationHistory) && (
-            <div className="mt-3 bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative">
-              <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
-                <h4 className="text-sm font-medium text-blue-300">
-                  📝 Rascunho de Estudo - {studyTitle || "Novo Estudo"}
-                </h4>
-                <button
-                  onClick={() => {
-                    setShowConversationHistory(false);
-                    setMainCardMode('search'); // Volta para o modo pesquisa
-                  }}
-                  className="text-gray-400 hover:text-gray-300 p-1 rounded hover:bg-gray-800/50"
-                  title="Fechar rascunho"
-                >
-                  ✕
-                </button>
-              </div>
+          {/* Grid Layout: 2 Cards Lado a Lado */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
+            
+            {/* Card 1: Análise Técnica (MainCard) */}
+            <div className="w-full">
+              <MainCard 
+                result={formattedResult} 
+                isMinimized={isMainCardMinimized}
+                onToggleMinimize={() => setIsMainCardMinimized(!isMainCardMinimized)}
+                onClose={() => {
+                  // Fechar o card principal
+                  setSearchTabs([]);
+                  setCurrentResult(null);
+                  setSearchTerm("");
+                  setMainCardMode('search');
+                  setIsMainCardMinimized(false);
+                }}
+              />
               
-              {/* Single column - only study notes */}
-              <div className="p-4 space-y-3">
+              {/* Suggestions for Sub-search - Mostrar apenas no modo pesquisa */}
+              {mainCardMode === 'search' && searchTabs.find(tab => tab.type === 'main')?.suggestions && searchTabs.find(tab => tab.type === 'main')!.suggestions.length > 0 && (
+                <div className="mt-3 p-2 sm:p-3 bg-black/40 backdrop-blur-lg rounded-lg border border-white/10">
+                  <h4 className="text-xs sm:text-sm font-medium text-gray-300 mb-2">🧠 Explore mais:</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {searchTabs.find(tab => tab.type === 'main')!.suggestions.slice(0, 4).map((suggestion, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleSubSearch(suggestion)}
+                        className="px-2 py-1 bg-purple-600/20 text-purple-300 border border-purple-500/30 rounded text-xs hover:bg-purple-600/30 transition-all text-left sm:text-center"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Card 2: Rascunho de Estudo - Mostrar quando no modo study OU quando showConversationHistory está ativo */}
+            {(mainCardMode === 'study' || showConversationHistory) && (
+              <div className="w-full">
+                <div className="bg-gray-900/40 backdrop-blur-lg rounded-lg border border-gray-600/30 relative h-full">
+                  <div className="flex items-center justify-between p-3 border-b border-gray-600/30">
+                    <h4 className="text-sm font-medium text-blue-300">
+                      📝 Rascunho de Estudo - {studyTitle || "Novo Estudo"}
+                    </h4>
+                    <button
+                      onClick={() => {
+                        setShowConversationHistory(false);
+                        setMainCardMode('search'); // Volta para o modo pesquisa
+                      }}
+                      className="text-gray-400 hover:text-gray-300 p-1 rounded hover:bg-gray-800/50"
+                      title="Fechar rascunho"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  
+                  {/* Single column - only study notes */}
+                  <div className="p-4 space-y-3 h-full overflow-y-auto">
                 {/* Study Title */}
                 <input
                   type="text"
@@ -865,8 +874,8 @@ ${studyNotes || 'Nenhuma anotação'}`;
                 </div>
               </div>
             </div>
-          )}
-
+            )}
+          </div>
         </div>
       )}
 
