@@ -140,6 +140,21 @@ export default function UnifiedHeader({
             </>
           )}
 
+          {/* NeuroCann Academy */}
+          <Button
+            variant={location === '/education' ? 'default' : 'ghost'}
+            size="sm"
+            onClick={() => handleNavigate('/education')}
+            className={`text-xs px-3 ${
+              location === '/education' 
+                ? 'bg-purple-600 text-white' 
+                : 'text-gray-300 hover:text-white hover:bg-gray-700'
+            }`}
+            data-testid="nav-academy"
+          >
+            📚 Academy
+          </Button>
+
           {/* Separador */}
           <div className="w-px h-6 bg-gray-600 mx-1"></div>
 
