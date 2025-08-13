@@ -46,6 +46,23 @@ interface MainCardProps {
 export default function MainCard({ result, isMinimized = false, onToggleMinimize, onCardExpand, onClose }: MainCardProps & { onCardExpand?: (content: string, title: string, autoStartTTS?: boolean) => void; onClose?: () => void }) {
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
 
+  // Função para truncar resposta para máximo de 8 frases
+  const truncateToMaxSentences = (text: string, maxSentences: number = 8): string => {
+    if (!text) return '';
+    
+    // Divide o texto em frases usando pontos, exclamações e interrogações
+    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+    
+    // Se tem 8 frases ou menos, retorna o texto original
+    if (sentences.length <= maxSentences) {
+      return text;
+    }
+    
+    // Pega as primeiras 8 frases e reconstrói o texto
+    const truncatedSentences = sentences.slice(0, maxSentences);
+    return truncatedSentences.join('. ') + '.';
+  };
+
   // Auto-reprodução da resposta integrada (Plataforma + NOA ESPERANÇA)
   useEffect(() => {
     if (result && !hasAutoPlayed && !isMinimized) {
@@ -211,10 +228,10 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
                 }
                 
                 // Resposta integrada da plataforma + NOA
-                const integratedResponse = `${originalText}
+                const integratedResponse = `${truncateToMaxSentences(originalText)}
 
 **🤖 Análise Complementar NOA ESPERANÇA:**
-${result.crossDataSummary || `Com base nos ${result.categories.scientific?.length || 0} estudos científicos, ${result.categories.clinical?.length || 0} casos clínicos e ${result.categories.alerts?.length || 0} alertas na base de dados, posso identificar correlações específicas e padrões médicos relevantes para otimizar o tratamento proposto.`}`;
+${truncateToMaxSentences(result.crossDataSummary || `Com base nos ${result.categories.scientific?.length || 0} estudos científicos, ${result.categories.clinical?.length || 0} casos clínicos e ${result.categories.alerts?.length || 0} alertas na base de dados, posso identificar correlações específicas e padrões médicos relevantes para otimizar o tratamento proposto.`)}`;
                 
                 return integratedResponse.split('\n').map((line, i) => (
                   <div key={i} dangerouslySetInnerHTML={{

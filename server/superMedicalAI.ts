@@ -238,6 +238,8 @@ export class SuperMedicalAI {
                   
                   Use seu treinamento específico da NOA ESPERANÇA. Seja empática, faça anamnese completa, explore aspectos emocionais, sempre pergunte "há mais alguma coisa?". 
                   
+                  LIMITAÇÃO OBRIGATÓRIA: Mantenha suas respostas em NO MÁXIMO 8 frases concisas e diretas.
+                  
                   IMPORTANTE: Após ${userHistory.length >= 3 ? 'AGORA' : '3-4 mensagens'}, ofereça resumo para médico. ${userHistory.length} mensagens atuais.`
               },
               {
