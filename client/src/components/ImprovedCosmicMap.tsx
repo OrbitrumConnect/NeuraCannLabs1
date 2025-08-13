@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useQuery } from '@tanstack/react-query';
 import { useScan } from "@/contexts/ScanContext";
 import { Search, Filter, Brain, Microscope, Pill, AlertTriangle, MessageCircle, Send, Bot } from "lucide-react";
-import MedicalAvatar3D from "./MedicalAvatar3D";
+// import MedicalAvatar3D from "./MedicalAvatar3D"; // Substituído pela imagem da Dra. Cannabis IA
 import MainCard from "./MainCard";
 import TextToSpeech from "./TextToSpeech";
 import { AvatarThoughtBubble } from "./AvatarThoughtBubble";
@@ -353,18 +353,42 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           />
           
           <div 
+            className={`relative transition-all duration-300 ${
+              isAvatarSpeaking ? 'animate-pulse filter brightness-110' : ''
+            }`}
             style={{
               filter: isDrAIActive 
                 ? 'brightness(0.75) saturate(0.5) grayscale(30%)' 
                 : 'none'
             }}
           >
-            <MedicalAvatar3D 
-              className="w-16 sm:w-40" 
-              isScanning={avatarScanning} 
-              isSpeaking={isAvatarSpeaking}
-              isActive={isDrAIActive}
+            <img 
+              src="/dra-cannabis.png" 
+              alt="Dra. Cannabis IA - Estudos Cruzados" 
+              className={`
+                w-16 sm:w-40 h-16 sm:h-40
+                rounded-lg object-contain shadow-2xl 
+                bg-transparent
+                transition-all duration-500
+                ${avatarScanning ? 'drop-shadow-lg animate-pulse' : ''}
+                ${isDrAIActive ? 'filter brightness-75 saturate-50 grayscale-[30%]' : ''}
+              `}
+              style={{
+                filter: avatarScanning 
+                  ? 'drop-shadow(0 0 15px rgba(255, 235, 59, 0.6))' 
+                  : 'none'
+              }}
             />
+            
+            {/* Badge IA Status */}
+            {isDrAIActive && (
+              <div className="absolute -top-1 -right-1 sm:-top-2 sm:-right-2">
+                <div className="bg-green-500 text-white text-xs px-1 sm:px-2 py-0.5 rounded-full flex items-center space-x-1 shadow-lg">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse"></div>
+                  <span className="text-xs sm:text-sm font-medium">IA</span>
+                </div>
+              </div>
+            )}
           </div>
           
           {/* Texto "Toque para ativar" removido - interface limpa */}
