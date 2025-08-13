@@ -131,18 +131,23 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+DROP TRIGGER IF EXISTS update_users_updated_at ON users;
 CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_scientific_studies_updated_at ON scientific_studies;
 CREATE TRIGGER update_scientific_studies_updated_at BEFORE UPDATE ON scientific_studies
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_clinical_cases_updated_at ON clinical_cases;
 CREATE TRIGGER update_clinical_cases_updated_at BEFORE UPDATE ON clinical_cases
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_learning_patterns_updated_at ON learning_patterns;
 CREATE TRIGGER update_learning_patterns_updated_at BEFORE UPDATE ON learning_patterns
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_ai_insights_updated_at ON ai_insights;
 CREATE TRIGGER update_ai_insights_updated_at BEFORE UPDATE ON ai_insights
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -155,19 +160,59 @@ ALTER TABLE learning_patterns ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ai_insights ENABLE ROW LEVEL SECURITY;
 
 -- Políticas de acesso público (para desenvolvimento)
+DROP POLICY IF EXISTS "Allow public read access" ON users;
 CREATE POLICY "Allow public read access" ON users FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read access" ON conversations;
 CREATE POLICY "Allow public read access" ON conversations FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read access" ON scientific_studies;
 CREATE POLICY "Allow public read access" ON scientific_studies FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read access" ON clinical_cases;
 CREATE POLICY "Allow public read access" ON clinical_cases FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read access" ON learning_patterns;
 CREATE POLICY "Allow public read access" ON learning_patterns FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "Allow public read access" ON ai_insights;
 CREATE POLICY "Allow public read access" ON ai_insights FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Allow public insert access" ON users;
 CREATE POLICY "Allow public insert access" ON users FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public insert access" ON conversations;
 CREATE POLICY "Allow public insert access" ON conversations FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public insert access" ON scientific_studies;
 CREATE POLICY "Allow public insert access" ON scientific_studies FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public insert access" ON clinical_cases;
 CREATE POLICY "Allow public insert access" ON clinical_cases FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public insert access" ON learning_patterns;
 CREATE POLICY "Allow public insert access" ON learning_patterns FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public insert access" ON ai_insights;
 CREATE POLICY "Allow public insert access" ON ai_insights FOR INSERT WITH CHECK (true);
+
+DROP POLICY IF EXISTS "Allow public update access" ON users;
+CREATE POLICY "Allow public update access" ON users FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Allow public update access" ON conversations;
+CREATE POLICY "Allow public update access" ON conversations FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Allow public update access" ON scientific_studies;
+CREATE POLICY "Allow public update access" ON scientific_studies FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Allow public update access" ON clinical_cases;
+CREATE POLICY "Allow public update access" ON clinical_cases FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Allow public update access" ON learning_patterns;
+CREATE POLICY "Allow public update access" ON learning_patterns FOR UPDATE USING (true);
+
+DROP POLICY IF EXISTS "Allow public update access" ON ai_insights;
+CREATE POLICY "Allow public update access" ON ai_insights FOR UPDATE USING (true);
 
 -- Inserir usuário admin principal (ÚNICO USUÁRIO REAL)
 INSERT INTO users (email, name, role, plan) 
