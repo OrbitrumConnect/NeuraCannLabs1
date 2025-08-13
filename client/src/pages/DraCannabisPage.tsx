@@ -58,14 +58,14 @@ export default function DraCannabisPage() {
           <div className="space-y-4">
             
             {/* Header compacto */}
-            <Card className="border-neon-green/30 bg-gradient-to-br from-neon-green/5 to-black shadow-[0_0_20px_rgba(57,255,20,0.1)]">
+            <Card className="border-emerald-400/30 bg-gradient-to-br from-emerald-400/5 to-black shadow-[0_0_20px_rgba(34,197,94,0.1)]">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-neon-green/20 border border-neon-green/50 flex items-center justify-center shadow-[0_0_20px_rgba(57,255,20,0.4)]">
-                    <Brain className="w-5 h-5 text-neon-green drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]" />
+                  <div className="w-10 h-10 rounded-full bg-emerald-400/20 border border-emerald-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                    <Brain className="w-5 h-5 text-emerald-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-neon-green drop-shadow-[0_0_8px_rgba(57,255,20,0.5)]">Dra. Cannabis IA</CardTitle>
+                    <CardTitle className="text-lg text-emerald-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">Dra. Cannabis IA</CardTitle>
 
                   </div>
                 </div>
@@ -74,37 +74,37 @@ export default function DraCannabisPage() {
             </Card>
 
             {/* Recursos disponíveis integrados */}
-            <Card className="border-neon-green/30 bg-neon-green/5 shadow-[0_0_10px_rgba(57,255,20,0.1)]">
+            <Card className="border-emerald-400/30 bg-emerald-400/5 shadow-[0_0_10px_rgba(34,197,94,0.1)]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-neon-green drop-shadow-[0_0_5px_rgba(57,255,20,0.4)] flex items-center space-x-2">
+                <CardTitle className="text-sm text-emerald-400 drop-shadow-[0_0_5px_rgba(34,197,94,0.4)] flex items-center space-x-2">
                   <BookOpen className="w-4 h-4" />
                   <span>Recursos Médicos</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0 space-y-2">
                 <div className="flex items-center space-x-2 text-xs">
-                  <Stethoscope className="w-3 h-3 text-neon-green drop-shadow-[0_0_3px_rgba(57,255,20,0.4)]" />
+                  <Stethoscope className="w-3 h-3 text-emerald-400 drop-shadow-[0_0_3px_rgba(34,197,94,0.4)]" />
                   <span className="text-gray-300">Consultas IA instantâneas</span>
                 </div>
                 <div className="flex items-center space-x-2 text-xs">
-                  <BookOpen className="w-3 h-3 text-yellow-400 drop-shadow-[0_0_3px_rgba(255,235,59,0.4)]" />
+                  <BookOpen className="w-3 h-3 text-warning-yellow drop-shadow-[0_0_3px_rgba(255,235,59,0.4)]" />
                   <span className="text-gray-300">15.000+ estudos científicos</span>
                 </div>
                 <div className="flex items-center space-x-2 text-xs">
-                  <Shield className="w-3 h-3 text-neon-green drop-shadow-[0_0_3px_rgba(57,255,20,0.4)]" />
+                  <Shield className="w-3 h-3 text-emerald-400 drop-shadow-[0_0_3px_rgba(34,197,94,0.4)]" />
                   <span className="text-gray-300">Compliance total BR</span>
                 </div>
                 <div className="flex items-center space-x-2 text-xs">
-                  <AlertCircle className="w-3 h-3 text-red-400 drop-shadow-[0_0_3px_rgba(239,68,68,0.4)]" />
+                  <AlertCircle className="w-3 h-3 text-alert-red drop-shadow-[0_0_3px_rgba(239,68,68,0.4)]" />
                   <span className="text-gray-300">Alertas em tempo real</span>
                 </div>
               </CardContent>
             </Card>
 
             {/* Exemplos de Consultas */}
-            <Card className="border-yellow-400/30 bg-yellow-400/5 shadow-[0_0_10px_rgba(255,235,59,0.1)]">
+            <Card className="border-warning-yellow/30 bg-warning-yellow/5 shadow-[0_0_10px_rgba(255,235,59,0.1)]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-yellow-400 drop-shadow-[0_0_5px_rgba(255,235,59,0.4)] flex items-center space-x-2">
+                <CardTitle className="text-sm text-warning-yellow drop-shadow-[0_0_5px_rgba(255,235,59,0.4)] flex items-center space-x-2">
                   <Brain className="w-4 h-4" />
                   <span>Exemplos de Consultas</span>
                 </CardTitle>
@@ -112,7 +112,7 @@ export default function DraCannabisPage() {
               <CardContent className="pt-0 space-y-1">
                 <div className="text-xs text-gray-300 space-y-1">
                   <button 
-                    className="text-left w-full hover:text-yellow-300 hover:bg-yellow-400/10 p-1 rounded transition-colors cursor-pointer"
+                    className="text-left w-full hover:text-warning-yellow hover:bg-warning-yellow/10 p-1 rounded transition-colors cursor-pointer"
                     onClick={() => {
                       const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
                       if (input) {
@@ -124,7 +124,7 @@ export default function DraCannabisPage() {
                     • Como o CBD ajuda no tratamento da epilepsia?
                   </button>
                   <button 
-                    className="text-left w-full hover:text-yellow-300 hover:bg-yellow-400/10 p-1 rounded transition-colors cursor-pointer"
+                    className="text-left w-full hover:text-warning-yellow hover:bg-warning-yellow/10 p-1 rounded transition-colors cursor-pointer"
                     onClick={() => {
                       const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
                       if (input) {
@@ -136,7 +136,7 @@ export default function DraCannabisPage() {
                     • Qual a dosagem recomendada para dor crônica?
                   </button>
                   <button 
-                    className="text-left w-full hover:text-yellow-300 hover:bg-yellow-400/10 p-1 rounded transition-colors cursor-pointer"
+                    className="text-left w-full hover:text-warning-yellow hover:bg-warning-yellow/10 p-1 rounded transition-colors cursor-pointer"
                     onClick={() => {
                       const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
                       if (input) {
@@ -148,7 +148,7 @@ export default function DraCannabisPage() {
                     • Cannabis medicinal é eficaz para ansiedade?
                   </button>
                   <button 
-                    className="text-left w-full hover:text-yellow-300 hover:bg-yellow-400/10 p-1 rounded transition-colors cursor-pointer"
+                    className="text-left w-full hover:text-warning-yellow hover:bg-warning-yellow/10 p-1 rounded transition-colors cursor-pointer"
                     onClick={() => {
                       const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
                       if (input) {
@@ -160,7 +160,7 @@ export default function DraCannabisPage() {
                     • Efeitos colaterais do THC em oncologia?
                   </button>
                   <button 
-                    className="text-left w-full hover:text-yellow-300 hover:bg-yellow-400/10 p-1 rounded transition-colors cursor-pointer"
+                    className="text-left w-full hover:text-warning-yellow hover:bg-warning-yellow/10 p-1 rounded transition-colors cursor-pointer"
                     onClick={() => {
                       const input = document.querySelector('[data-testid="chat-input"]') as HTMLInputElement;
                       if (input) {
@@ -176,14 +176,14 @@ export default function DraCannabisPage() {
             </Card>
 
             {/* Disclaimer médico compacto */}
-            <Card className="border-red-400/30 bg-red-400/5 shadow-[0_0_10px_rgba(239,68,68,0.1)]">
+            <Card className="border-alert-red/30 bg-alert-red/5 shadow-[0_0_10px_rgba(239,68,68,0.1)]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-red-400 drop-shadow-[0_0_5px_rgba(239,68,68,0.4)] flex items-center space-x-2">
+                <CardTitle className="text-sm text-alert-red drop-shadow-[0_0_5px_rgba(239,68,68,0.4)] flex items-center space-x-2">
                   <AlertCircle className="w-4 h-4" />
                   <span>Aviso Médico</span>
                 </CardTitle>
               </CardHeader>
-              <CardContent className="pt-0 text-xs text-red-200 space-y-1">
+              <CardContent className="pt-0 text-xs text-alert-red/80 space-y-1">
                 <p>• IA para fins educacionais</p>
                 <p>• Não substitui consulta médica</p>
                 <p>• Sempre consulte seu médico</p>
