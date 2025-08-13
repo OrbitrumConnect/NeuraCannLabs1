@@ -178,25 +178,19 @@ export function DraCannabisAI() {
     }
   };
 
-  // Consulta médica por texto usando NOA ESPERANÇA como cérebro
+  // Consulta médica por texto
   const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
-      // Usa o serviço NOA ESPERANÇA como sistema inteligente da Dra. Cannabis
-      const response = await apiRequest('/api/noa-agent/chat', 'POST', { 
-        message: data.question,
-        sessionId: 'dra-cannabis-session'
-      });
-      const result = await response.json();
-      
-      // Converte resposta para formato ConsultResponse
-      return {
-        success: true,
-        response: result.response || 'Houve um problema na resposta. Tente novamente.',
-        doctor: 'Dra. Cannabis IA (NOA ESPERANÇA)',
-        specialty: 'Cannabis Medicinal',
-        timestamp: new Date().toISOString(),
-        recommendations: []
-      } as ConsultResponse;
+      const payload = {
+        question: data.question,
+        conversationHistory: chatHistory.map(msg => ({
+          type: msg.type === 'user' ? 'user' : 'assistant',
+          message: msg.message,
+          timestamp: msg.timestamp
+        }))
+      };
+      const response = await apiRequest('/api/doctor/consult', 'POST', payload);
+      return await response.json() as ConsultResponse;
     },
     onSuccess: (data: ConsultResponse, variables) => {
       const now = new Date().toISOString();
