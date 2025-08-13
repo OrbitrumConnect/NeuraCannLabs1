@@ -28,6 +28,12 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Botões de Ação**: Verde neon (principal), amarelo (resumo), vermelho (encaminhamento médico)
 - **Funcionalidade Mobile**: Voz funcionando com ElevenLabs + backup nativo, processamento automático
 
+**Atualizações Mais Recentes (Agosto 2025)**:
+- **Super IA Médica Ativada**: ChatGPT-4o totalmente integrado e funcionando
+- **Interface Limpa**: Removido texto "Certificada ANVISA • CFM" do card para design mais clean
+- **Chat Otimizado**: Mensagens com caixas pretas e texto branco para melhor contraste e legibilidade
+- **Voz Profissional**: ElevenLabs configurado com voz Bella (mais adequada para contexto médico)
+
 ## System Architecture
 
 ### Frontend Architecture
