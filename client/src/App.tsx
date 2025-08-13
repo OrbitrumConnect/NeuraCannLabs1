@@ -32,8 +32,11 @@ function Router() {
   const getDashboardComponent = () => {
     if (!isLoggedIn) return Landing;
     
-    // Se não tem role definido, mostrar seletor
-    if (!userRole) {
+    // Admin sempre vai para painel admin
+    if (userRole === 'admin') return AdminDashboard;
+    
+    // Se não tem role definido (e não é admin), mostrar seletor
+    if (!userRole || userRole === 'undefined') {
       return () => (
         <RoleSelector 
           onRoleSelected={(role) => {
@@ -44,8 +47,6 @@ function Router() {
     }
     
     switch (userRole) {
-      case 'admin':
-        return AdminDashboard;
       case 'medico':
         return MedicalDashboard;
       case 'paciente':

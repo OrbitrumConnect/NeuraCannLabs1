@@ -16,7 +16,21 @@ export default function RoleSelector({ onRoleSelected }: RoleSelectorProps) {
 
   const selectRole = async (role: 'medico' | 'paciente') => {
     setIsLoading(true);
+    
     try {
+      // Primeiro verificar se há usuário logado
+      const user = localStorage.getItem('user');
+      if (!user) {
+        toast({
+          title: "Erro",
+          description: "Você precisa fazer login primeiro.",
+          variant: "destructive"
+        });
+        // Redirecionar para página de login
+        window.location.href = '/login';
+        return;
+      }
+
       const response = await fetch('/api/set-role', {
         method: 'POST',
         headers: {
@@ -26,19 +40,25 @@ export default function RoleSelector({ onRoleSelected }: RoleSelectorProps) {
       });
       
       if (!response.ok) {
+        if (response.status === 401) {
+          toast({
+            title: "Erro de autenticação",
+            description: "Faça login novamente.",
+            variant: "destructive"
+          });
+          window.location.href = '/login';
+          return;
+        }
         throw new Error('Falha ao definir role');
       }
       
       // Salvar no localStorage para redirecionamento
-      const user = localStorage.getItem('user');
-      if (user) {
-        const userData = JSON.parse(user);
-        localStorage.setItem('user', JSON.stringify({ ...userData, role }));
-      }
+      const userData = JSON.parse(user);
+      localStorage.setItem('user', JSON.stringify({ ...userData, role }));
       
       toast({
         title: "Perfil definido",
-        description: `Você será redirecionado para o painel ${role === 'medico' ? 'médico' : 'do usuário'}.`
+        description: `Redirecionando para o painel ${role === 'medico' ? 'médico' : 'do usuário'}...`
       });
       
       onRoleSelected(role);
