@@ -156,18 +156,7 @@ export class MemStorage implements IStorage {
   }
 
   private initializeSampleData() {
-    // Sample user
-    const sampleUser: User = {
-      id: "user-1",
-      username: "dr.joao",
-      password: "hashed_password",
-      name: "Dr. João Silva",
-      email: "joao.silva@hospital.com",
-      specialty: "Neurologia",
-      crm: "12345-SP",
-      createdAt: new Date(),
-    };
-    this.users.set(sampleUser.id, sampleUser);
+    // Sem usuários de exemplo - sistema real usando Supabase
 
     // 🔬 ESTUDOS CIENTÍFICOS REAIS VERIFICADOS - Baseados em publicações reais
     const studies: ScientificStudy[] = [
@@ -424,13 +413,33 @@ export class MemStorage implements IStorage {
     );
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.email === email,
+    );
+  }
+
+  async getUserByEmailAndPassword(email: string, password: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.email === email && user.password === password,
+    );
+  }
+
+  async createUser(insertUser: InsertUser & { password?: string }): Promise<User> {
     const id = randomUUID();
     const user: User = { 
       ...insertUser,
-      crm: insertUser.crm ?? null,
       id,
       createdAt: new Date(),
+      updatedAt: new Date(),
+      // Campos obrigatórios com valores padrão
+      role: insertUser.role || 'paciente',
+      plan: insertUser.plan || 'free',
+      isActive: insertUser.isActive || 1,
+      emailVerified: insertUser.emailVerified || 0,
+      termsAccepted: insertUser.termsAccepted || 1,
+      privacyAccepted: insertUser.privacyAccepted || 1,
+      voiceGreetingsEnabled: insertUser.voiceGreetingsEnabled || 1,
     };
     this.users.set(id, user);
     return user;

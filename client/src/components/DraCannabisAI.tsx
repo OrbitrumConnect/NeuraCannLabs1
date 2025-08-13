@@ -54,7 +54,7 @@ interface MedicalReferral {
   message: string;
 }
 
-export function DraCannabisAI() {
+export default function DraCannabisAI() {
   const [question, setQuestion] = useState('');
   const [chatHistory, setChatHistory] = useState<Array<{
     type: 'user' | 'doctor';

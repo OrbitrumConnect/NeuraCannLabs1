@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { getStorage } from "./storage";
 import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchema } from "@shared/schema";
 import { z } from "zod";
 import session from "express-session";
@@ -54,7 +54,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Verificar no sistema de usuários
-      const user = await storage.getUserByEmailAndPassword(email, password);
+      const storageInstance = await getStorage();
+      const user = await storageInstance.getUserByEmailAndPassword(email, password);
       
       if (user) {
         (req.session as any).user = user;
@@ -99,22 +100,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Verificar se email já existe
-      const existingUser = await storage.getUserByEmail(email);
+      const storageInstance = await getStorage();
+      const existingUser = await storageInstance.getUserByEmail(email);
       if (existingUser) {
         return res.status(409).json({ message: "Email já cadastrado" });
       }
       
       // Criar novo usuário
-      const newUser = await storage.createUser({
+      const newUser = await storageInstance.createUser({
         email,
-        password,
         name,
         role,
         crm,
         crmState,
         specialty,
         phone,
-        plan: role === 'medico' ? 'professional' : 'free'
+        plan: role === 'medico' ? 'professional' : 'free',
+        password
       });
       
       // Login automático após registro
@@ -130,10 +132,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Endpoint para definir role do usuário
+  app.post("/api/set-role", async (req, res) => {
+    try {
+      const { role } = req.body;
+      const user = (req.session as any)?.user;
+      
+      if (!user) {
+        return res.status(401).json({ message: "Usuário não autenticado" });
+      }
+
+      if (!role || !["medico", "paciente"].includes(role)) {
+        return res.status(400).json({ message: "Role deve ser 'medico' ou 'paciente'" });
+      }
+
+      // Atualizar role na sessão
+      (req.session as any).user = { ...user, role };
+      
+      res.json({ 
+        success: true, 
+        message: "Role atualizado com sucesso",
+        user: { ...user, role }
+      });
+    } catch (error) {
+      console.error("Erro ao definir role:", error);
+      res.status(500).json({ message: "Erro interno do servidor" });
+    }
+  });
+
   // Scientific studies routes
   app.get("/api/scientific", async (req, res) => {
     try {
-      const studies = await storage.getScientificStudies();
+      const storageInstance = await getStorage();
+      const studies = await storageInstance.getScientificStudies();
       res.json(studies);
     } catch (error) {
       res.status(500).json({ message: "Erro ao buscar estudos científicos" });
