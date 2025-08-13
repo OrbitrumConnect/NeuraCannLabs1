@@ -735,6 +735,88 @@ export async function registerRoutes(app: Express): Promise<Server> {
   console.log("✅ Módulos críticos inicializados: Encaminhamentos, Anamnese Digital, Labs, Equipe, Compliance");
 
   // ========================================
+  // SUPER IA MÉDICA - INTEGRAÇÃO EXTERNA
+  // ========================================
+
+  // Endpoint para receber a nova Super IA com conhecimento médico
+  app.post('/api/super-ai/integrate', async (req, res) => {
+    try {
+      const { apiData, knowledgeBase, protocols, studies } = req.body;
+      
+      console.log("🧠 Integrando Super IA Médica Externa...");
+      
+      // Integra conhecimento externo na Super IA
+      await superMedicalAI.integrateExternalKnowledge({
+        studies: studies || [],
+        protocols: protocols || [],
+        ...apiData
+      });
+      
+      const stats = superMedicalAI.getSystemStats();
+      
+      res.json({
+        success: true,
+        message: "Super IA Médica integrada com sucesso",
+        stats: stats,
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error("❌ Erro ao integrar Super IA:", error);
+      res.status(500).json({
+        error: "Erro na integração da Super IA",
+        details: error.message
+      });
+    }
+  });
+
+  // Endpoint principal - Consulta com a Super IA Médica
+  app.post('/api/super-ai/consult', async (req, res) => {
+    try {
+      const { userId, question, userContext } = req.body;
+      
+      if (!question) {
+        return res.status(400).json({ error: "Pergunta é obrigatória" });
+      }
+      
+      const sessionId = userId || `guest-${Date.now()}`;
+      
+      console.log(`🩺 Consulta Super IA para usuário: ${sessionId}`);
+      
+      // Processa consulta com a Super IA
+      const consultation = await superMedicalAI.processConsultation(
+        sessionId,
+        question,
+        userContext || {}
+      );
+      
+      res.json({
+        success: true,
+        consultation,
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error("❌ Erro na consulta Super IA:", error);
+      res.status(500).json({
+        error: "Erro na consulta médica",
+        details: error.message
+      });
+    }
+  });
+
+  // Endpoint para estatísticas da Super IA
+  app.get('/api/super-ai/stats', (req, res) => {
+    try {
+      const stats = superMedicalAI.getSystemStats();
+      res.json(stats);
+    } catch (error) {
+      console.error("❌ Erro ao obter estatísticas:", error);
+      res.status(500).json({ error: "Erro interno" });
+    }
+  });
+
+  // ========================================
   // DRA. CANNABIS IA - ASSISTENTE MÉDICO
   // ========================================
   
@@ -1875,7 +1957,7 @@ ${relevantPatterns.length > 0 ?
   }
 
   console.log("🎭 Dra. Cannabis IA - Assistente médico inicializado com sucesso!");
-  console.log("🧠 Sistema preparado para integração ChatGPT (aguardando OPENAI_API_KEY)");
+  console.log("🧠 Super IA Médica integrada - Pronta para receber conhecimento externo");
   console.log("💬 Funcionalidades: Consulta IA, Resumo de Consulta, Encaminhamento Médico");
   console.log("🧠 Sistema de Aprendizado Contínuo: ATIVO - Salvando todas as conversas para evolução da IA");
 
