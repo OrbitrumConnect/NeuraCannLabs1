@@ -1,10 +1,35 @@
 import { type User, type InsertUser, type ScientificStudy, type InsertScientificStudy, type ClinicalCase, type InsertClinicalCase, type Alert, type InsertAlert, type StudySubmission, type InsertStudySubmission, type PatientData, type InsertPatientData, type PatientEvolution, type InsertPatientEvolution, type PatientReferral, type UpsertPatientReferral, type DigitalAnamnesis, type UpsertDigitalAnamnesis, type LabIntegration, type LabResult, type MedicalTeamMember, type ComplianceAudit, type Conversation, type InsertConversation, type LearningPattern, type InsertLearningPattern, type AiInsight, type InsertAiInsight } from "@shared/schema";
 import { comprehensiveStudies, comprehensiveClinicalCases, comprehensiveAlerts } from './comprehensive-medical-database';
+import { SupabaseStorage } from './supabaseStorage';
+import { initializeSupabaseTables } from './supabase';
 import { randomUUID } from "crypto";
 
 // ⚠️ AVISO CRÍTICO: Todos os dados científicos são baseados em estudos REAIS e VERIFICADOS
 // Fontes: PubMed (PMID verificados), ClinicalTrials.gov (NCT verificados), ANVISA, NEJM
 // Nenhum dado fictício ou inventado é permitido nesta plataforma médica
+
+// Instância global do storage - alternar entre MemStorage e SupabaseStorage
+let globalStorage: IStorage | null = null;
+
+export async function getStorage(): Promise<IStorage> {
+  if (!globalStorage) {
+    try {
+      // Tentar conectar ao Supabase
+      console.log('🗄️ Tentando conectar ao Supabase...');
+      const isSupabaseReady = await initializeSupabaseTables();
+      if (isSupabaseReady) {
+        console.log('✅ Supabase conectado - Usando para persistência de dados');
+        globalStorage = new SupabaseStorage();
+      } else {
+        throw new Error('Supabase não disponível');
+      }
+    } catch (error) {
+      console.log('⚠️ Supabase indisponível, usando MemStorage:', error.message);
+      globalStorage = new MemStorage();
+    }
+  }
+  return globalStorage;
+}
 
 export interface IStorage {
   // Users
@@ -1083,4 +1108,14 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// Inicializar storage de forma síncrona para evitar problemas
+export const storage = new MemStorage(); // Padrão para funcionamento imediato
+
+// Tentar migrar para Supabase em background
+getStorage().then(storageInstance => {
+  if (storageInstance instanceof SupabaseStorage) {
+    console.log('🔄 Migração para Supabase preparada - Use getStorage() para acessar');
+  }
+}).catch(error => {
+  console.log('ℹ️ Continuando com MemStorage:', error.message);
+});
