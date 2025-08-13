@@ -18,6 +18,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import MedicalDashboard from "@/pages/MedicalDashboard";
 import PatientDashboard from "@/pages/PatientDashboard";
+import AdminDashboard from "@/pages/AdminDashboard";
 import RoleSelector from "@/components/RoleSelector";
 import NotFound from "@/pages/not-found";
 
@@ -43,6 +44,8 @@ function Router() {
     }
     
     switch (userRole) {
+      case 'admin':
+        return AdminDashboard;
       case 'medico':
         return MedicalDashboard;
       case 'paciente':
