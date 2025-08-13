@@ -4,7 +4,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
 import { registerRoutes } from "./routes.js";
-import { startViteServer } from "./vite.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,17 +25,32 @@ app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 // Register API routes
 const server = await registerRoutes(app);
 
+// Static assets in all environments
+app.use('/attached_assets', express.static(path.join(__dirname, '../attached_assets')));
+
 // Production static files
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist/client')));
-  app.use('/attached_assets', express.static(path.join(__dirname, '../attached_assets')));
   
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../dist/client/index.html'));
   });
 } else {
   // Development with Vite
-  await startViteServer(app, server);
+  try {
+    const { setupVite } = await import('./vite.js');
+    await setupVite(app, server);
+    console.log('✅ Vite development server configured');
+  } catch (error) {
+    console.log('⚠️ Vite server not available, serving basic frontend');
+    
+    // Fallback: serve client files directly in development
+    app.use(express.static(path.join(__dirname, '../client')));
+    
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/index.html'));
+    });
+  }
 }
 
 // For Vercel serverless
