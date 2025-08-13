@@ -160,6 +160,19 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     }
   }, []);
 
+  // Auto-abrir rascunho quando há conversação ativa (CORREÇÃO CRÍTICA)
+  useEffect(() => {
+    const hasActiveConversation = currentConversation?.messages && currentConversation.messages.length > 0;
+    
+    if (hasActiveConversation && isDrAIActive) {
+      // Automaticamente ativa o modo estudo e mostra o rascunho SEM clicar "Ver"
+      setMainCardMode('study');
+      setShowConversationHistory(true);
+      // Mantém o card aberto para mostrar o rascunho diretamente
+      setIsMainCardMinimized(false);
+    }
+  }, [currentConversation?.messages, isDrAIActive]);
+
   // Remover useEffect - voice commands agora é direto no input
 
   // Escuta evento para forçar abertura do card principal

@@ -39,6 +39,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **LIMITAÇÃO DE RESPOSTAS IMPLEMENTADA**: Card principal limitado a 8 frases, estudos cruzados a 10 frases com análise técnica detalhada
 - **ANÁLISE DE DADOS CRUZADOS APERFEIÇOADA**: Foco em dosagens específicas, correlações quantificadas, protocolos de titulação e padrões terapêuticos
 - **CONTROLES AVANÇADOS DE CARDS**: Botões minimizar (amarelo) e fechar (vermelho) com abertura automática ao pesquisar
+- **RASCUNHO AUTOMÁTICO (Agosto 2025)**: Estudos de dados cruzados agora mostram rascunho automaticamente quando há conversação ativa - não precisa mais clicar "Ver"
 - **UNIFICAÇÃO ESTUDOS CIENTÍFICOS (Agosto 2025)**: Sistema unificado no "Estudos de Dados Cruzados" (ImprovedCosmicMap)
   - Migração completa do "Meu Estudo" para a Visão Geral 
   - Assistente de Estudos Científicos integrado com funcionalidades completas
