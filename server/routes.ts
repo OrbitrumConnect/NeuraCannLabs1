@@ -153,9 +153,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Admin stats endpoint
   app.get("/api/admin/stats", async (req, res) => {
-    const sessionUser = (req.session as any).user;
+    const sessionUser = (req.session as any)?.user;
     
-    if (!sessionUser || sessionUser.role !== 'admin') {
+    // Verificar se é admin por role ou email específico
+    if (!sessionUser || (sessionUser.role !== 'admin' && sessionUser.email !== ADMIN_EMAIL)) {
+      console.log('Admin check failed:', { 
+        hasUser: !!sessionUser, 
+        role: sessionUser?.role, 
+        email: sessionUser?.email,
+        expectedEmail: ADMIN_EMAIL 
+      });
       return res.status(403).json({ message: "Acesso negado - apenas admins" });
     }
     

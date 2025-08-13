@@ -51,18 +51,27 @@ export default function AdminDashboard() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-emerald-400">
-              Painel Administrativo
+              Painel Administrativo NeuroCann Lab
             </h1>
             <p className="text-slate-400 mt-2">
-              Gestão completa do NeuroCann Lab
+              Gestão completa do sistema médico
             </p>
           </div>
           
-          <div className="flex items-center space-x-2">
-            <Shield className="h-6 w-6 text-red-400" />
-            <Badge variant="destructive">
-              ADMIN
-            </Badge>
+          <div className="flex items-center space-x-4">
+            <Button 
+              onClick={() => window.location.href = '/'} 
+              className="bg-emerald-600 hover:bg-emerald-500"
+            >
+              <Brain className="h-4 w-4 mr-2" />
+              Acessar App Principal
+            </Button>
+            <div className="flex items-center space-x-2">
+              <Shield className="h-6 w-6 text-red-400" />
+              <Badge variant="destructive">
+                ADMIN
+              </Badge>
+            </div>
           </div>
         </div>
 
@@ -324,6 +333,48 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
+        
+        {/* Quick Access Panel - Integração com o dashboard principal */}
+        <Card className="bg-slate-900 border-slate-800 mt-6">
+          <CardHeader>
+            <CardTitle className="text-emerald-400 flex items-center space-x-2">
+              <Brain className="h-5 w-5" />
+              <span>Acesso Rápido ao Sistema Principal</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Button 
+                onClick={() => window.location.href = '/dashboard?section=overview'} 
+                className="bg-emerald-600 hover:bg-emerald-500 h-16 flex-col"
+              >
+                <Brain className="h-6 w-6 mb-2" />
+                <span className="text-sm">Dra. Cannabis IA</span>
+              </Button>
+              <Button 
+                onClick={() => window.location.href = '/dashboard?section=scientific'} 
+                className="bg-blue-600 hover:bg-blue-500 h-16 flex-col"
+              >
+                <FileText className="h-6 w-6 mb-2" />
+                <span className="text-sm">Científico</span>
+              </Button>
+              <Button 
+                onClick={() => window.location.href = '/dashboard?section=clinical'} 
+                className="bg-purple-600 hover:bg-purple-500 h-16 flex-col"
+              >
+                <Activity className="h-6 w-6 mb-2" />
+                <span className="text-sm">Clínico</span>
+              </Button>
+              <Button 
+                onClick={() => window.location.href = '/dashboard?section=alerts'} 
+                className="bg-yellow-600 hover:bg-yellow-500 h-16 flex-col"
+              >
+                <AlertTriangle className="h-6 w-6 mb-2" />
+                <span className="text-sm">Alertas</span>
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
