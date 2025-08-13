@@ -309,22 +309,42 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     }
   };
 
-  // Gerar objeto formatatado para MainCard baseado no currentResult
+  // Gerar objeto formatado com dados REAIS da plataforma para MainCard  
   const formattedResult = currentResult ? {
     query: searchTabs.find(tab => tab.type === 'main')?.query || '',
     response: currentResult,
     meta: {
       counts: {
-        studies: searchTabs.find(tab => tab.type === 'main')?.results?.studies?.length || 0,
-        trials: searchTabs.find(tab => tab.type === 'main')?.results?.cases?.length || 0
+        studies: scientificData.length, // Dados reais da API
+        trials: clinicalData.length,    // Dados reais da API
+        alerts: alertsData.length       // Dados reais da API
       }
     },
     categories: {
-      scientific: searchTabs.find(tab => tab.type === 'main')?.results?.studies || [],
-      clinical: searchTabs.find(tab => tab.type === 'main')?.results?.cases || [],
-      alerts: searchTabs.find(tab => tab.type === 'main')?.results?.alerts || []
-    }
-  } : null;
+      scientific: scientificData,  // Dados reais completos
+      clinical: clinicalData,      // Dados reais completos 
+      alerts: alertsData           // Dados reais completos
+    },
+    // Resumo automático dos dados cruzados
+    crossDataSummary: `Análise cruzada atual: ${scientificData.length} estudos científicos, ${clinicalData.length} casos clínicos e ${alertsData.length} alertas regulatórios. NOA ESPERANÇA identifica correlações entre ${scientificData.filter(s => s.compound?.includes('CBD')).length} estudos com CBD, ${clinicalData.filter(c => c.indication?.includes('epilepsia')).length} casos de epilepsia e alertas recentes da ANVISA.`
+  } : {
+    // Dados iniciais quando não há pesquisa ativa
+    query: 'Dashboard de Estudos Cruzados',
+    response: 'NOA ESPERANÇA - Inteligência Principal ativa. Dados da plataforma carregados para análise cruzada.',
+    meta: {
+      counts: {
+        studies: scientificData.length,
+        trials: clinicalData.length,
+        alerts: alertsData.length
+      }
+    },
+    categories: {
+      scientific: scientificData,
+      clinical: clinicalData,
+      alerts: alertsData
+    },
+    crossDataSummary: `Base de conhecimento atual: ${scientificData.length} estudos científicos, ${clinicalData.length} casos clínicos e ${alertsData.length} alertas. NOA está preparada para análise cruzada e correlações médicas precisas.`
+  };
 
   return (
     <div className="relative w-full min-h-screen">

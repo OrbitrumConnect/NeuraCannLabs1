@@ -1,15 +1,16 @@
-import React from "react";
-import { Microscope, Pill, AlertTriangle } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Microscope, Pill, AlertTriangle, Bot, Volume2 } from "lucide-react";
 import TextToSpeech from "./TextToSpeech";
 
 interface MainCardProps {
   result: {
     query: string;
-    response: string;
+    response: string | any;
     meta: {
       counts: {
         studies: number;
         trials: number;
+        alerts?: number;
       };
     };
     categories: {
@@ -33,14 +34,43 @@ interface MainCardProps {
         type: string;
         message: string;
         priority: string;
+        readStatus?: boolean;
       }>;
     };
+    crossDataSummary?: string;
   } | null;
   isMinimized?: boolean;
   onToggleMinimize?: () => void;
 }
 
 export default function MainCard({ result, isMinimized = false, onToggleMinimize, onCardExpand }: MainCardProps & { onCardExpand?: (content: string, title: string, autoStartTTS?: boolean) => void }) {
+  const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
+
+  // Auto-reprodução da NOA ESPERANÇA ao carregar dados
+  useEffect(() => {
+    if (result && !hasAutoPlayed && !isMinimized) {
+      const noaResponse = `NOA ESPERANÇA ativa! Dashboard de estudos cruzados carregado com ${result.meta.counts.studies} estudos científicos, ${result.meta.counts.trials} casos clínicos e ${result.meta.counts.alerts || 0} alertas. ${result.crossDataSummary || 'Análise cruzada pronta para consulta.'}`;
+      
+      // Reprodução automática usando TTS
+      const utterance = new SpeechSynthesisUtterance(noaResponse);
+      utterance.lang = 'pt-BR';
+      utterance.rate = 0.9;
+      utterance.pitch = 1.1;
+      
+      // Priorizar voz feminina Microsoft Maria
+      const voices = speechSynthesis.getVoices();
+      const femaleVoice = voices.find(voice => 
+        voice.name.includes('Maria') || 
+        voice.name.includes('female') || 
+        voice.lang.includes('pt-BR')
+      );
+      if (femaleVoice) utterance.voice = femaleVoice;
+      
+      speechSynthesis.speak(utterance);
+      setHasAutoPlayed(true);
+    }
+  }, [result, hasAutoPlayed, isMinimized]);
+
   if (!result) {
     return (
       <div style={{ 
@@ -130,16 +160,23 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
       ) : (
         /* Full View */
         <>
-          {/* Header */}
-          <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-blue-900/20 rounded border border-blue-500/30">
-            <h3 className="text-base sm:text-lg font-semibold text-blue-300">📊 Consulta: {result.query}</h3>
-            <p className="text-xs sm:text-sm text-blue-200 mt-1">
-              Bases consultadas: {result.categories.scientific?.length || 0} estudos • {result.categories.clinical?.length || 0} casos clínicos • {result.categories.alerts?.length || 0} alertas
+          {/* NOA ESPERANÇA Header */}
+          <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gradient-to-r from-green-900/30 to-emerald-900/30 rounded border border-green-500/40">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Bot className="w-5 h-5 text-green-400 animate-pulse" />
+                <h3 className="text-base sm:text-lg font-bold text-green-300">NOA ESPERANÇA</h3>
+                <div className="px-2 py-0.5 bg-green-500/20 text-green-300 text-xs rounded-full">Inteligência Principal</div>
+              </div>
+              <Volume2 className="w-4 h-4 text-green-400" />
+            </div>
+            <p className="text-xs sm:text-sm text-green-200 mt-1">
+              📊 {result.query} • Base: {result.categories.scientific?.length || 0} estudos • {result.categories.clinical?.length || 0} casos • {result.categories.alerts?.length || 0} alertas
             </p>
           </div>
 
-          {/* AI Response */}
-          <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gray-800/30 rounded">
+          {/* NOA ESPERANÇA Response */}
+          <div className="mb-3 p-2 sm:mb-4 sm:p-3 bg-gray-800/30 rounded border border-green-500/20">
             <div className="text-xs sm:text-sm text-gray-300 leading-relaxed">
               {(() => {
                 let text = '';
@@ -150,12 +187,29 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
                 }
                 return text.split('\n').map((line, i) => (
                   <div key={i} dangerouslySetInnerHTML={{
-                    __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>')
+                    __html: line.replace(/\*\*(.*?)\*\*/g, '<strong class="text-green-300">$1</strong>')
                   }} />
                 ));
               })()}
             </div>
+            
+            {/* Reprodução automática sem botão manual */}
+            <div className="mt-2 flex items-center text-xs text-green-400">
+              <Volume2 className="w-3 h-3 mr-1 animate-pulse" />
+              Áudio reproduzido automaticamente pela NOA
+            </div>
           </div>
+          
+          {/* Resumo Automático dos Dados Cruzados */}
+          {result.crossDataSummary && (
+            <div className="mb-3 p-2 sm:p-3 bg-emerald-900/20 rounded border border-emerald-500/30">
+              <h4 className="text-sm font-semibold text-emerald-300 mb-1 flex items-center">
+                <Bot className="w-4 h-4 mr-1" />
+                Análise Cruzada Automática
+              </h4>
+              <p className="text-xs text-emerald-200">{result.crossDataSummary}</p>
+            </div>
+          )}
 
           {/* Data Categories Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 mt-3">
