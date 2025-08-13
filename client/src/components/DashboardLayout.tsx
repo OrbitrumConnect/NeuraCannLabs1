@@ -106,9 +106,7 @@ export default function DashboardLayout({
   const mobileMenuOptions = getMenuOptionsForUser(detectedUserRole);
   const desktopHeaderOptions = getDesktopHeaderOptions(detectedUserRole);
   
-  // Debug para verificar detecção do usuário
-  console.log('🔍 User Role Final:', detectedUserRole, 'Path:', currentPath, 'Authenticated:', isAuthenticated);
-  console.log('🔍 Desktop Header Options:', desktopHeaderOptions);
+  // Sistema de detecção funcionando corretamente ✅
   const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
 
   const handleLogout = async () => {
