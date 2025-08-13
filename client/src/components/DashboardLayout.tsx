@@ -29,7 +29,7 @@ const mobileMenuOptions = [
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
-  { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
+  { id: "admin", name: "Painel Admin", icon: "fas fa-shield-alt" },
 ];
 
 // Apenas itens essenciais para o cabeçalho desktop - FLUXO CORRETO

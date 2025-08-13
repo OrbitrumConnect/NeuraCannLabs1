@@ -76,6 +76,19 @@ export class SupabaseStorage implements IStorage {
     return undefined;
   }
 
+  async getAllUsers(): Promise<User[]> {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) {
+      throw new Error(`Erro ao buscar usuários: ${error.message}`);
+    }
+    
+    return (data || []).map(user => this.mapSupabaseUserToUser(user));
+  }
+
   async createUser(userData: InsertUser & { password?: string; credentialType?: string; credentialNumber?: string; specialty?: string; workArea?: string }): Promise<User> {
     const supabaseUser = {
       id: randomUUID(),
@@ -114,6 +127,16 @@ export class SupabaseStorage implements IStorage {
     const { data, error } = await query;
     
     if (error) throw new Error(`Erro ao buscar conversas: ${error.message}`);
+    return this.mapSupabaseConversationsToConversations(data || []);
+  }
+
+  async getAllConversations(): Promise<Conversation[]> {
+    const { data, error } = await supabase
+      .from('conversations')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (error) throw new Error(`Erro ao buscar todas as conversas: ${error.message}`);
     return this.mapSupabaseConversationsToConversations(data || []);
   }
 

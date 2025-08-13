@@ -37,6 +37,7 @@ export interface IStorage {
   getUserByUsername(username: string): Promise<User | undefined>;
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByEmailAndPassword(email: string, password: string): Promise<User | undefined>;
+  getAllUsers(): Promise<User[]>;
   createUser(user: InsertUser & { password?: string }): Promise<User>;
   
   // Scientific Studies
@@ -97,6 +98,7 @@ export interface IStorage {
   
   // Sistema de Aprendizado Contínuo
   getConversations(sessionId?: string): Promise<Conversation[]>;
+  getAllConversations(): Promise<Conversation[]>;
   createConversation(conversation: InsertConversation): Promise<Conversation>;
   updateConversation(id: string, updates: Partial<Conversation>): Promise<Conversation | undefined>;
   
@@ -443,6 +445,10 @@ export class MemStorage implements IStorage {
     };
     this.users.set(id, user);
     return user;
+  }
+
+  async getAllUsers(): Promise<User[]> {
+    return Array.from(this.users.values());
   }
 
   // Scientific Studies
@@ -1046,6 +1052,10 @@ export class MemStorage implements IStorage {
       return conversations.filter(conv => conv.sessionId === sessionId);
     }
     return conversations;
+  }
+
+  async getAllConversations(): Promise<Conversation[]> {
+    return Array.from(this.conversations.values());
   }
 
   async createConversation(conversationData: InsertConversation): Promise<Conversation> {
