@@ -96,7 +96,7 @@ export default function AdminDashboard() {
         totalUsers: users.length,
         medicos: users.filter((u: any) => u.role === 'medico').length,
         pacientes: users.filter((u: any) => u.role === 'paciente').length,
-        consultasHoje: Math.floor(Math.random() * 200), // Implementar busca real
+        consultasHoje: 0, // PRODUÇÃO: Dados reais quando implementadas consultas
         estudosCriados: submissions ? submissions.length : 0,
         alertasAtivos: 3
       });
@@ -120,13 +120,13 @@ export default function AdminDashboard() {
         setStats(data);
       } else {
         console.log('Erro de permissão admin:', response.status);
-        // Se não conseguir acessar como admin, usar stats mock
+        // PRODUÇÃO: Sem dados de teste - apenas dados reais
         setStats({
-          totalUsers: 42,
-          medicos: 15, 
-          pacientes: 27,
-          consultasHoje: 128,
-          estudosCriados: 8,
+          totalUsers: 1,
+          medicos: 0,
+          pacientes: 0,
+          consultasHoje: 0,
+          estudosCriados: 0,
           alertasAtivos: 3
         });
       }

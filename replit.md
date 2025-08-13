@@ -51,7 +51,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Runtime & Framework**: Node.js with Express.js for RESTful API endpoints, using ES modules.
 - **Development Setup**: Custom Vite integration for HMR and seamless frontend-backend integration.
 - **API Design**: RESTful endpoints for scientific studies (`/api/scientific`), clinical cases (`/api/clinical`), alerts (`/api/alerts`), user profiles (`/api/profile`), and the continuous learning system (`/api/learning/*`).
-- **Data Storage**: Primary storage via Supabase for production deployment. All users (admin, médicos, pacientes) authenticate through Supabase. Fallback local hardcoded admin apenas para desenvolvimento.
+- **Data Storage**: Primary storage via Supabase for production deployment. All users (admin, médicos, pacientes) authenticate through Supabase. MemStorage fallback completamente limpo para desenvolvimento - sem dados de teste.
 - **Authentication**: Sistema unificado via Supabase - todos os perfis (admin, professional, patient) cadastram e fazem login pelo banco de dados. Preparado para deployment em servidor externo.
 - **Admin Access**: Painel administrativo unificado em `/admin` com acesso total ao sistema. Admin pode navegar para o app principal via botão dedicado ou rota `/dashboard/overview`.
 - **Continuous Learning System**: Automatically saves and analyzes all user conversations to improve AI responses over time. Includes pattern recognition, success rate tracking, and AI-generated insights. This system implements "Conversa Sensorial Recíproca" to capture, analyze, and learn from all user interactions, identifying medical patterns and generating insights.
@@ -76,7 +76,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Assistente de Estudos Científicos**: Integrated with full functionalities including real-time analytics and mini calendar. Interface allows generating complete studies, improving drafts, and continuing with AI.
 
 ## External Dependencies
-- **Database**: Supabase PostgreSQL (primary for all users in production), fallback local para desenvolvimento (admin credentials: phpg69@gmail.com / n6n7n8N9!hours).
+- **Database**: Supabase PostgreSQL (primary for all users in production), MemStorage fallback completamente limpo para desenvolvimento (admin credentials: phpg69@gmail.com / n6n7n8N9!hours).
 - **UI Components**: Radix UI primitives, Lucide React for icons.
 - **3D Libraries**: Three.js, @react-three/fiber, @react-three/drei.
 - **Development Tools**: Replit-specific plugins, ESBuild, PostCSS with Autoprefixer.
