@@ -102,18 +102,18 @@ export default function StudySubmissionSystem({ userId, activeTab }: StudySubmis
   const renderNOAInterface = () => {
     return (
       <div className="space-y-6">
-        {/* NOA ESPERANÇA Study Generator */}
+        {/* Assistente de Estudos */}
         {showNoaHelper && (
           <Card className="bg-gradient-to-br from-emerald-900/30 to-blue-900/30 border border-emerald-500/30">
             <CardHeader className="pb-3">
               <CardTitle className="text-emerald-400 text-lg flex items-center">
                 <i className="fas fa-brain mr-3 text-2xl" />
-                NOA ESPERANÇA - Assistente de Estudos Científicos
+                Assistente de Estudos Científicos
               </CardTitle>
               <p className="text-gray-300 text-sm">Gere estudos completos ou melhore rascunhos usando dados reais da plataforma</p>
             </CardHeader>
             <CardContent className="space-y-6">
-              {/* Interface Unificada NOA */}
+              {/* Interface Unificada do Assistente */}
               <div className="space-y-4">
                 {/* Título Único */}
                 <div>
@@ -209,7 +209,7 @@ export default function StudySubmissionSystem({ userId, activeTab }: StudySubmis
                   <div className="flex items-center justify-between mb-3">
                     <h4 className="text-emerald-400 font-medium flex items-center">
                       <i className="fas fa-file-alt mr-2" />
-                      Estudo Gerado por NOA ESPERANÇA
+                      Estudo Gerado pelo Assistente
                     </h4>
                     <Button
                       onClick={() => setStudyContent('')}
@@ -265,7 +265,7 @@ export default function StudySubmissionSystem({ userId, activeTab }: StudySubmis
                   data-testid="button-hide-noa"
                 >
                   <i className="fas fa-times mr-2" />
-                  Ocultar Assistente NOA
+                  Ocultar Assistente
                 </Button>
               </div>
             </CardContent>
@@ -280,7 +280,7 @@ export default function StudySubmissionSystem({ userId, activeTab }: StudySubmis
               data-testid="button-show-noa"
             >
               <i className="fas fa-brain mr-2" />
-              Mostrar Assistente NOA ESPERANÇA
+              Mostrar Assistente de Estudos
             </Button>
           </div>
         )}
