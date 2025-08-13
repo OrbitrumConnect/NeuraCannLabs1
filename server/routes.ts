@@ -30,7 +30,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Admin credentials - atualizadas com Supabase
   const ADMIN_EMAIL = 'phpg69@gmail.com';
-  const ADMIN_PASSWORD = 'n6n7n8N9!horus';
+  const ADMIN_PASSWORD = 'n6n7n8N9!hours';
 
   // Auth routes - Sistema completo com múltiplos perfis
   app.post("/api/auth/login", async (req, res) => {

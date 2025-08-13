@@ -39,6 +39,35 @@ export class SupabaseStorage implements IStorage {
     return data ? this.mapSupabaseUserToUser(data) : undefined;
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+    
+    if (error && error.code !== 'PGRST116') {
+      throw new Error(`Erro ao buscar usuário: ${error.message}`);
+    }
+    
+    return data ? this.mapSupabaseUserToUser(data) : undefined;
+  }
+
+  async getUserByEmailAndPassword(email: string, password: string): Promise<User | undefined> {
+    // Para Supabase, vamos usar apenas email por enquanto (password será implementado com hash depois)
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('email', email)
+      .single();
+    
+    if (error && error.code !== 'PGRST116') {
+      throw new Error(`Erro ao buscar usuário: ${error.message}`);
+    }
+    
+    return data ? this.mapSupabaseUserToUser(data) : undefined;
+  }
+
   async createUser(userData: InsertUser): Promise<User> {
     const supabaseUser = {
       id: randomUUID(),
