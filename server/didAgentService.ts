@@ -17,51 +17,95 @@ export class DIDAgentService {
     }
   }
 
-  // Conecta NOA ESPERANÇA com o agente D-ID
+  // Conecta NOA ESPERANÇA com o agente D-ID (ou ChatGPT como fallback)
   async sendMessageToAgent(message: string, sessionId?: string): Promise<{
     response: string;
     videoUrl?: string;
     audioUrl?: string;
   }> {
     try {
-      if (!this.apiKey) {
-        return {
-          response: "Agente D-ID não configurado - aguardando API key"
-        };
+      // Tenta primeiro o agente D-ID se API key disponível
+      if (this.apiKey) {
+        const response = await fetch(`${this.baseUrl}/agents/${this.agentId}/chat`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Basic ${this.apiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            message,
+            session_id: sessionId || `session-${Date.now()}`,
+            source_url: "https://neurocann-lab.replit.app"
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('🎭 Resposta do agente D-ID:', data.response?.substring(0, 100));
+          return {
+            response: data.response || "Agente não respondeu",
+            videoUrl: data.video_url,
+            audioUrl: data.audio_url
+          };
+        }
       }
 
-      // Envia mensagem para o agente D-ID
-      const response = await fetch(`${this.baseUrl}/agents/${this.agentId}/chat`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Basic ${this.apiKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message,
-          session_id: sessionId || `session-${Date.now()}`,
-          source_url: "https://neurocann-lab.replit.app"
-        })
-      });
-
-      if (!response.ok) {
-        throw new Error(`Erro D-ID Agent: ${response.status}`);
-      }
-
-      const data = await response.json();
+      // Fallback: Usar ChatGPT como NOA ESPERANÇA
+      console.log('🧠 Usando ChatGPT como NOA ESPERANÇA (fallback)');
       
-      console.log('🎭 Resposta do agente D-ID:', data.response?.substring(0, 100));
+      const openaiKey = process.env.OPENAI_API_KEY;
+      if (openaiKey) {
+        const chatResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${openaiKey}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: 'gpt-4o',
+            messages: [
+              {
+                role: 'system',
+                content: `Você é NOA ESPERANÇA, a assistente médica especializada em cannabis medicinal criada pelo usuário.
 
+                PERSONALIDADE DA NOA ESPERANÇA:
+                - Extremamente empática e acolhedora
+                - Especialista em cannabis medicinal
+                - Faz anamnese completa e detalhada
+                - Explora aspectos emocionais e sociais
+                - Sempre pergunta "há mais alguma coisa?"
+                - Educativa e baseada em evidências
+                - Identifica quando precisa encaminhamento médico
+                
+                IMPORTANTE: Você É a NOA ESPERANÇA, não a Dra. Cannabis. Responda como NOA.`
+              },
+              {
+                role: 'user',
+                content: message
+              }
+            ],
+            temperature: 0.7,
+            max_tokens: 500
+          })
+        });
+
+        if (chatResponse.ok) {
+          const chatData = await chatResponse.json();
+          const response = chatData.choices[0].message.content;
+          console.log('✅ NOA ESPERANÇA (ChatGPT) respondeu:', response.substring(0, 100));
+          return { response };
+        }
+      }
+
+      // Último fallback: resposta fixa
       return {
-        response: data.response || "Agente não respondeu",
-        videoUrl: data.video_url,
-        audioUrl: data.audio_url
+        response: "Olá! Sou NOA ESPERANÇA. No momento estou com limitações técnicas, mas posso ajudá-lo com questões sobre cannabis medicinal. Me conte sobre sua situação?"
       };
 
     } catch (error) {
-      console.error('❌ Erro no agente D-ID:', error);
+      console.error('❌ Erro na NOA ESPERANÇA:', error);
       return {
-        response: "Erro ao conectar com agente D-ID"
+        response: "Desculpe, houve um problema técnico. Tente novamente em alguns momentos."
       };
     }
   }
