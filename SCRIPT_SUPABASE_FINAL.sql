@@ -1,5 +1,6 @@
--- Script SQL para criar as tabelas no Supabase
--- Execute este script no SQL Editor do Supabase
+-- SCRIPT SQL FINAL PARA SUPABASE
+-- Execute este script completo no SQL Editor do Supabase
+-- Credenciais Admin: phpg69@gmail.com / n6n7n8N9!horus
 
 -- Tabela de usuários
 CREATE TABLE IF NOT EXISTS users (
@@ -13,7 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Tabela de conversações (sistema de aprendizado)
+-- Tabela de conversações (sistema de aprendizado NOA)
 CREATE TABLE IF NOT EXISTS conversations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   session_id VARCHAR(255) NOT NULL,
@@ -59,7 +60,7 @@ CREATE TABLE IF NOT EXISTS clinical_cases (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Tabela de padrões de aprendizado
+-- Tabela de padrões de aprendizado (IA NOA)
 CREATE TABLE IF NOT EXISTS learning_patterns (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   pattern VARCHAR(500) NOT NULL,
@@ -72,7 +73,7 @@ CREATE TABLE IF NOT EXISTS learning_patterns (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Tabela de insights da IA
+-- Tabela de insights da IA NOA
 CREATE TABLE IF NOT EXISTS ai_insights (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   insight TEXT NOT NULL,
@@ -85,7 +86,7 @@ CREATE TABLE IF NOT EXISTS ai_insights (
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Índices para performance
+-- Índices para performance otimizada
 CREATE INDEX IF NOT EXISTS idx_conversations_session_id ON conversations(session_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_user_id ON conversations(user_id);
 CREATE INDEX IF NOT EXISTS idx_conversations_medical_topic ON conversations(medical_topic);
@@ -119,7 +120,7 @@ FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_ai_insights_updated_at BEFORE UPDATE ON ai_insights
 FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Políticas RLS (Row Level Security) - básicas
+-- Políticas RLS (Row Level Security)
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
 ALTER TABLE conversations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE scientific_studies ENABLE ROW LEVEL SECURITY;
@@ -127,7 +128,7 @@ ALTER TABLE clinical_cases ENABLE ROW LEVEL SECURITY;
 ALTER TABLE learning_patterns ENABLE ROW LEVEL SECURITY;
 ALTER TABLE ai_insights ENABLE ROW LEVEL SECURITY;
 
--- Política para permitir leitura pública (ajustar conforme necessário)
+-- Políticas de acesso público (para desenvolvimento)
 CREATE POLICY "Allow public read access" ON users FOR SELECT USING (true);
 CREATE POLICY "Allow public read access" ON conversations FOR SELECT USING (true);
 CREATE POLICY "Allow public read access" ON scientific_studies FOR SELECT USING (true);
@@ -135,7 +136,6 @@ CREATE POLICY "Allow public read access" ON clinical_cases FOR SELECT USING (tru
 CREATE POLICY "Allow public read access" ON learning_patterns FOR SELECT USING (true);
 CREATE POLICY "Allow public read access" ON ai_insights FOR SELECT USING (true);
 
--- Política para permitir inserção pública (ajustar conforme necessário)
 CREATE POLICY "Allow public insert access" ON users FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public insert access" ON conversations FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public insert access" ON scientific_studies FOR INSERT WITH CHECK (true);
@@ -143,7 +143,7 @@ CREATE POLICY "Allow public insert access" ON clinical_cases FOR INSERT WITH CHE
 CREATE POLICY "Allow public insert access" ON learning_patterns FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public insert access" ON ai_insights FOR INSERT WITH CHECK (true);
 
--- Inserir usuário admin padrão
+-- Inserir usuário admin principal
 INSERT INTO users (id, email, name, role, plan) 
 VALUES (
   'admin-phpg69', 
@@ -163,5 +163,7 @@ VALUES (
   'free'
 ) ON CONFLICT (email) DO NOTHING;
 
--- Feedback para confirmação
-SELECT 'Tabelas criadas com sucesso no Supabase!' as status;
+-- Confirmação final
+SELECT 'Supabase NeuroCann Lab configurado com sucesso!' as status,
+       'Admin: phpg69@gmail.com' as admin_user,
+       'Teste: teste@neurocann.com' as test_user;

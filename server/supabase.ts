@@ -115,9 +115,30 @@ export async function initializeSupabaseTables(): Promise<boolean> {
   }
 }
 
-// Função para criar usuário de teste
+// Função para criar usuário admin real
 async function createTestUser(): Promise<void> {
   try {
+    const adminUser = {
+      id: 'admin-phpg69',
+      email: 'phpg69@gmail.com',
+      name: 'Administrador NeuroCann',
+      role: 'admin',
+      plan: 'admin'
+    };
+
+    const { data, error } = await supabase
+      .from('users')
+      .upsert(adminUser)
+      .select()
+      .single();
+
+    if (error) {
+      console.log('⚠️ Erro ao criar usuário admin:', error.message);
+    } else {
+      console.log('✅ Usuário admin criado/atualizado:', data.email);
+    }
+
+    // Também criar usuário de teste para desenvolvimento
     const testUser = {
       id: 'test-user-123',
       email: 'teste@neurocann.com',
@@ -126,18 +147,18 @@ async function createTestUser(): Promise<void> {
       plan: 'free'
     };
 
-    const { data, error } = await supabase
+    const { data: testData, error: testError } = await supabase
       .from('users')
       .upsert(testUser)
       .select()
       .single();
 
-    if (error) {
-      console.log('⚠️ Erro ao criar usuário teste:', error.message);
+    if (testError) {
+      console.log('⚠️ Erro ao criar usuário teste:', testError.message);
     } else {
-      console.log('✅ Usuário de teste criado/atualizado:', data.email);
+      console.log('✅ Usuário teste criado/atualizado:', testData.email);
     }
   } catch (error) {
-    console.log('⚠️ Falha ao criar usuário teste:', error instanceof Error ? error.message : error);
+    console.log('⚠️ Falha ao criar usuários:', error instanceof Error ? error.message : error);
   }
 }
