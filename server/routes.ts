@@ -713,10 +713,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
 
       if (!elevenResponse.ok) {
-        console.log(`⚠️ ElevenLabs falhou (${elevenResponse.status}), usando sistema nativo`);
+        const errorText = await elevenResponse.text();
+        console.log(`⚠️ ElevenLabs falhou (${elevenResponse.status}): ${errorText}`);
+        console.log('💡 Chave válida mas sem permissão para TTS - usando voz nativa feminina');
         return res.status(200).json({
           type: 'native',
-          message: 'Fallback para sistema nativo'
+          message: 'Usando voz nativa feminina - ElevenLabs sem permissão TTS',
+          details: `Status ${elevenResponse.status}: ${errorText}`
         });
       }
 
