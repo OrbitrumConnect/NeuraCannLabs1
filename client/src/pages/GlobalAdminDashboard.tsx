@@ -363,7 +363,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="overview" className="mt-6 scale-[0.38]">
+          <TabsContent value="overview" className="mt-4 sm:mt-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="bg-white/5 border-white/10">
                 <CardHeader>
@@ -425,7 +425,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
             </div>
           </TabsContent>
 
-          <TabsContent value="global-data" className="mt-6 scale-[0.38]">
+          <TabsContent value="global-data" className="mt-4 sm:mt-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="bg-white/5 border-white/10">
                 <CardHeader>
@@ -506,7 +506,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
 
           {/* Submissions Management Tabs */}
           {['pending', 'approved', 'rejected', 'revision'].map(tabValue => (
-            <TabsContent key={tabValue} value={tabValue} className="mt-6 scale-[0.38]">
+            <TabsContent key={tabValue} value={tabValue} className="mt-4 sm:mt-6">
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Submissions List */}
                 <div className="lg:col-span-2">
@@ -664,7 +664,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
             </TabsContent>
           ))}
 
-          <TabsContent value="ai-analysis" className="mt-6 scale-[0.38]">
+          <TabsContent value="ai-analysis" className="mt-4 sm:mt-6">
             <Card className="bg-white/5 border-white/10">
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
