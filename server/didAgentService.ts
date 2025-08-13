@@ -17,14 +17,14 @@ export class DIDAgentService {
     }
   }
 
-  // Conecta NOA ESPERANÇA com o agente D-ID (ou ChatGPT como fallback)
+  // Conecta NOA ESPERANÇA com o agente D-ID (mulher profissional com movimento labial sincronizado)
   async sendMessageToAgent(message: string, sessionId?: string): Promise<{
     response: string;
     videoUrl?: string;
     audioUrl?: string;
   }> {
     try {
-      // Tenta primeiro o agente D-ID se API key disponível
+      // Usa o agente D-ID pré-configurado com imagem da mulher profissional
       if (this.apiKey) {
         const response = await fetch(`${this.baseUrl}/agents/${this.agentId}/chat`, {
           method: 'POST',
@@ -41,7 +41,7 @@ export class DIDAgentService {
 
         if (response.ok) {
           const data = await response.json();
-          console.log('🎭 Resposta do agente D-ID:', data.response?.substring(0, 100));
+          console.log('🎭 Dra. Cannabis (agente original) respondeu:', data.response?.substring(0, 100));
           return {
             response: data.response || "Agente não respondeu",
             videoUrl: data.video_url,

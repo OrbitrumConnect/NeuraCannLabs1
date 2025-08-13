@@ -1097,8 +1097,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Usar nova imagem personalizada da Dra. Cannabis
-      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis-nova.png`;
+      // Usar imagem oficial do agente D-ID para consistência visual
+      const imageUrl = "https://create-images-results.d-id.com/DefaultPresenters/Vanessa_f/image.jpeg";
       
       console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...');
       
@@ -1206,8 +1206,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Usar nova imagem personalizada da Dra. Cannabis
-      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis-nova.png`;
+      // Usar imagem oficial do agente D-ID para consistência visual
+      const imageUrl = "https://create-images-results.d-id.com/DefaultPresenters/Vanessa_f/image.jpeg";
       
       console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...', text.substring(0, 30));
       

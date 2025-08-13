@@ -9,7 +9,8 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-import draCannabisImage from '@assets/image_1755106007929.png';
+// Usando a imagem oficial do agente D-ID v2_agt_WAM9eh_P
+const draCannabisImage = "https://create-images-results.d-id.com/DefaultPresenters/Vanessa_f/image.jpeg";
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 
