@@ -9,7 +9,7 @@ export default function DraCannabisPage() {
   const [, setLocation] = useLocation();
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-950/50 via-black to-green-950/30">
       
       {/* Cabeçalho Principal - Padronizado com outros dashboards */}
       <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 border-b border-emerald-500/30">
