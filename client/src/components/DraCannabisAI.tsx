@@ -427,25 +427,7 @@ export function DraCannabisAI() {
   };
 
   return (
-    <div className="space-y-4 md:space-y-6 px-2 md:px-0 relative">
-      {/* Background com círculos sutis - igual ao dashboard principal */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-0"
-        style={{
-          background: `
-            radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(0, 255, 0, 0.025) 0%, transparent 50%),
-            radial-gradient(circle at 90% 70%, rgba(0, 255, 0, 0.015) 0%, transparent 50%),
-            radial-gradient(circle at 10% 20%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
-            radial-gradient(circle at 60% 40%, rgba(0, 255, 0, 0.018) 0%, transparent 50%),
-            linear-gradient(135deg, hsl(0, 0%, 4%) 0%, hsl(0, 0%, 6%) 50%, hsl(0, 0%, 4%) 100%)
-          `
-        }}
-      />
-      
-      {/* Conteúdo da Dra. Cannabis IA com z-index relativo */}
-      <div className="relative z-10">
+    <div className="space-y-4 md:space-y-6 px-2 md:px-0">
       {/* Header da Dra. Cannabis - SEM CARD - Livre */}
       <div className="text-center py-3 md:py-6 min-h-[280px] md:min-h-[350px]">
         <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
@@ -462,17 +444,17 @@ export function DraCannabisAI() {
                 `}
               />
               {isTalking && (
-                <div className="absolute inset-0 rounded-lg border-4 border-emerald-400/50 animate-ping" />
+                <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
               )}
             </div>
-            <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-black text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 drop-shadow-[0_0_5px_rgba(34,197,94,0.4)] ${
-              isTalking ? 'bg-emerald-400 animate-pulse' : 'bg-emerald-400'
+            <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-black text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 drop-shadow-[0_0_5px_rgba(57,255,20,0.4)] ${
+              isTalking ? 'bg-neon-green animate-pulse' : 'bg-neon-green'
             }`}>
               {isTalking ? '🗣️ IA' : 'IA'}
             </Badge>
             {isAutoStarting && (
-              <div className="absolute inset-0 bg-emerald-400/20 rounded-lg flex items-center justify-center">
-                <div className="text-center text-emerald-400">
+              <div className="absolute inset-0 bg-neon-green/20 rounded-lg flex items-center justify-center">
+                <div className="text-center text-neon-green">
                   <Loader2 className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin mb-2" />
                   <p className="text-xs md:text-sm">Inicializando...</p>
                 </div>
@@ -486,7 +468,7 @@ export function DraCannabisAI() {
             <Button 
               onClick={() => setupNativeDraMutation.mutate()}
               disabled={setupNativeDraMutation.isPending}
-              className="bg-emerald-400 hover:bg-emerald-400/90 w-full max-w-xs mx-auto text-sm md:text-base drop-shadow-[0_0_8px_rgba(34,197,94,0.4)] shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+              className="bg-neon-green hover:bg-neon-green/90 w-full max-w-xs mx-auto text-sm md:text-base drop-shadow-[0_0_8px_rgba(57,255,20,0.4)] shadow-[0_0_15px_rgba(57,255,20,0.3)]"
               data-testid="button-activate-doctor"
             >
               {setupNativeDraMutation.isPending ? (
@@ -558,10 +540,10 @@ export function DraCannabisAI() {
       </div>
 
       {/* Interface de Consulta - Mobile Otimizada */}
-      <Card className="mx-2 md:mx-0 border-emerald-400/30 bg-emerald-400/5">
+      <Card className="mx-2 md:mx-0">
         <CardHeader className="pb-3 md:pb-4">
-          <CardTitle className="flex items-center space-x-2 text-base md:text-lg text-emerald-400">
-            <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-emerald-400" />
+          <CardTitle className="flex items-center space-x-2 text-base md:text-lg">
+            <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-neon-green" />
             <span>Consulta com Dra. Cannabis</span>
           </CardTitle>
         </CardHeader>
@@ -569,7 +551,7 @@ export function DraCannabisAI() {
         <CardContent className="space-y-4 md:space-y-5 px-4 md:px-6 pb-6 md:pb-8">
           {/* Histórico da Conversa Mobile */}
           {chatHistory.length > 0 && (
-            <div className="max-h-64 md:max-h-80 overflow-y-auto space-y-2 md:space-y-3 p-4 md:p-5 bg-emerald-400/10 border border-emerald-400/20 rounded-lg backdrop-blur-sm">
+            <div className="max-h-64 md:max-h-80 overflow-y-auto space-y-2 md:space-y-3 p-4 md:p-5 bg-neon-green/10 border border-neon-green/20 rounded-lg backdrop-blur-sm">
               <h4 className="font-medium text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
               {chatHistory.map((entry, index) => (
                 <div
@@ -579,8 +561,8 @@ export function DraCannabisAI() {
                   <div
                     className={`max-w-[90%] md:max-w-[85%] p-2 md:p-3 rounded-lg ${
                       entry.type === 'user'
-                        ? 'bg-black text-white border border-emerald-400/30'
-                        : 'bg-black text-white border border-emerald-400/50'
+                        ? 'bg-black text-white border border-neon-green/30'
+                        : 'bg-black text-white border border-neon-green/50'
                     }`}
                     data-testid={`chat-${entry.type}-${index}`}
                   >
@@ -697,9 +679,9 @@ export function DraCannabisAI() {
 
       {/* Resumo da Consulta - Mobile Otimizado */}
       {consultationSummary && (
-        <Card className="mx-2 md:mx-0 border-warning-yellow/30 bg-warning-yellow/5">
+        <Card className="mx-2 md:mx-0">
           <CardHeader className="pb-3 md:pb-4">
-            <CardTitle className="flex items-center space-x-2 text-base md:text-lg text-warning-yellow">
+            <CardTitle className="flex items-center space-x-2 text-base md:text-lg">
               <FileText className="w-4 h-4 md:w-5 md:h-5 text-warning-yellow" />
               <span>Resumo da Consulta</span>
             </CardTitle>
@@ -747,20 +729,20 @@ export function DraCannabisAI() {
 
       {/* Dialog de Encaminhamento Médico */}
       {showReferralDialog && (
-        <Card className="border-alert-red/30 bg-alert-red/5">
+        <Card className="border-orange-200 bg-orange-50 dark:bg-orange-950">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2 text-alert-red">
+            <CardTitle className="flex items-center space-x-2 text-orange-700">
               <AlertTriangle className="w-5 h-5" />
               <span>Encaminhamento para Médico Especialista</span>
             </CardTitle>
           </CardHeader>
           
           <CardContent className="space-y-4">
-            <div className="p-4 bg-alert-red/10 rounded-lg">
-              <p className="text-sm text-alert-red">
+            <div className="p-4 bg-orange-100 dark:bg-orange-900 rounded-lg">
+              <p className="text-sm text-orange-800 dark:text-orange-200">
                 <strong>📋 Resumo do prontuário será enviado ao médico especialista</strong>
               </p>
-              <p className="text-sm text-alert-red/80 mt-2">
+              <p className="text-sm text-orange-700 dark:text-orange-300 mt-2">
                 Todas as informações da sua consulta com a Dra. Cannabis IA foram organizadas 
                 em um resumo detalhado que será encaminhado para facilitar a leitura e 
                 compreensão do médico especialista sobre seu caso.
@@ -782,7 +764,6 @@ export function DraCannabisAI() {
 
 
 
-      </div>
     </div>
   );
 }
