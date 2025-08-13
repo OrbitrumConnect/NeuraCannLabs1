@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
-import VoiceSettings from "@/components/VoiceSettings";
+
 import { PatientDataModal } from "@/components/PatientDataModal";
 import { useState } from "react";
 
@@ -388,9 +388,6 @@ export default function ProfessionalDashboard() {
 
         {/* Right Sidebar */}
         <div className="space-y-6 scale-80">
-          {/* Voice Settings */}
-          <VoiceSettings />
-
           {/* Professional Preferences */}
           <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
             <CardContent className="p-6">
