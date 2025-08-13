@@ -2030,10 +2030,10 @@ ${relevantPatterns.length > 0 ?
   // NOA ESPERANÇA + CRIAÇÃO DE ESTUDOS CIENTÍFICOS
   // ========================================
   
-  // Endpoint para geração de estudos científicos com NOA ESPERANÇA
+  // Endpoint para geração de estudos científicos com NOA ESPERANÇA + Chat colaborativo
   app.post("/api/generate-study", async (req, res) => {
     try {
-      const { topic, keywords, studyType, maxWords = 300, userId } = req.body;
+      const { topic, keywords, studyType, maxWords = 400, userId, currentNotes, conversationContext } = req.body;
       
       if (!topic) {
         return res.status(400).json({ 
@@ -2070,39 +2070,54 @@ ${relevantPatterns.length > 0 ?
         conv.aiResponse.toLowerCase().includes(searchTerm)
       );
 
-      // Montar contexto rico para NOA
+      // Contexto da conversa atual (chat colaborativo)
+      const conversationText = conversationContext && conversationContext.length > 0 
+        ? conversationContext.map(msg => `${msg.role}: ${msg.content}`).join('\n') 
+        : 'Primeira interação';
+
+      // Montar contexto rico para NOA com chat colaborativo
       const contextData = `
-DADOS DA PLATAFORMA NEUROCANN:
+DADOS DA PLATAFORMA NEUROCANN + CHAT COLABORATIVO:
       
-Estudos Relacionados (${relatedStudies.length}):
+NOTAS ATUAIS DO USUÁRIO:
+${currentNotes || 'Nenhuma nota específica'}
+
+CONTEXTO DA CONVERSA ATUAL:
+${conversationText}
+
+ESTUDOS RELACIONADOS NA PLATAFORMA (${relatedStudies.length}):
 ${relatedStudies.slice(0, 3).map(s => `- ${s.title}: ${s.description?.substring(0, 100)}...`).join('\n')}
 
-Casos Clínicos Relacionados (${relatedCases.length}):
+CASOS CLÍNICOS RELACIONADOS (${relatedCases.length}):
 ${relatedCases.slice(0, 3).map(c => `- ${c.caseNumber}: ${c.description.substring(0, 100)}...`).join('\n')}
 
-Consultas Anteriores (${relatedConversations.length}):
+CONSULTAS ANTERIORES COM NOA (${relatedConversations.length}):
 ${relatedConversations.slice(0, 2).map(c => `- Pergunta: ${c.userMessage.substring(0, 80)}...\n  Resposta NOA: ${c.aiResponse.substring(0, 80)}...`).join('\n')}
 
-Keywords Solicitadas: ${keywords || 'Não especificadas'}
-Tipo de Estudo: ${studyType || 'Geral'}
-Limite de Palavras: ${maxWords}
+PARÂMETROS TÉCNICOS:
+- Keywords: ${keywords || 'Baseadas no contexto'}
+- Tipo de Estudo: ${studyType || 'Observacional'}
+- Limite de Palavras: ${maxWords}
       `;
 
-      // Usar NOA ESPERANÇA para gerar o estudo
+      // Usar NOA ESPERANÇA para gerar o estudo colaborativo
       const studyGeneration = await superMedicalAI.consult(
-        `Crie um estudo científico sobre "${topic}" com máximo de ${maxWords} palavras. 
+        `Como NOA ESPERANÇA, crie um estudo científico COLABORATIVO sobre "${topic}" integrando notas do usuário.
         
-        INSTRUÇÕES ESPECÍFICAS:
-        - Baseie-se nos dados reais da plataforma NeuroCann apresentados
+        SISTEMA COLABORATIVO - INSTRUÇÕES ESPECÍFICAS:
+        - INTEGRE as notas atuais do usuário com conhecimento da plataforma
+        - Baseie-se nos dados reais da NeuroCann Lab apresentados
+        - Continue a conversa de forma natural e colaborativa
+        - Se há notas do usuário, APRIMORE e EXPANDA essas ideias
         - Inclua referências aos estudos e casos relacionados encontrados
         - Mantenha rigor científico mas linguagem acessível
         - Estruture como: Introdução, Metodologia, Resultados, Conclusão
         - Use evidências dos dados da plataforma quando disponíveis
-        - Se não há dados suficientes, indique claramente as limitações
+        - Máximo de ${maxWords} palavras, focado e objetivo
         
-        Dados disponíveis:
+        CONTEXTO COMPLETO INTEGRADO:
         ${contextData}`,
-        'scientific_study_creation'
+        'scientific_study_collaborative_creation'
       );
 
       // Estruturar resposta do estudo

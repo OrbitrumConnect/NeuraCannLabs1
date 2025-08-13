@@ -262,8 +262,8 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
         }
       };
 
-      // Atualizar resultado atual com dados estruturados
-      setCurrentResult(structuredResult);
+      // Atualizar resultado atual com dados estruturados (convert to string)
+      setCurrentResult(JSON.stringify(structuredResult));
       setMainCardMode('search'); // Força modo pesquisa ao fazer nova pesquisa
 
       const newTab: SearchTab = {
@@ -707,7 +707,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                     {/* Continuar com IA */}
                     <button
                       onClick={async () => {
-                        const notesToSend = studyNotes.trim() || 'Gerar sugestões para estudo sobre cannabis medicinal';
+                        // Usar o título ou tópico atual da conversa como base
+                        const topicToUse = studyTitle || currentStudyTopic || 'cannabis medicinal';
+                        const notesToSend = studyNotes.trim() || `Análise sobre ${topicToUse}`;
                         
                         try {
                           setIsTyping(true);
@@ -715,21 +717,23 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
-                              userNotes: notesToSend,
-                              studyTitle: studyTitle,
-                              researchTopic: studyTitle || 'cannabis medicinal',
-                              searchHistory: currentConversation?.messages || [],
-                              conversationType: 'continuation'
+                              topic: topicToUse, // Parâmetro correto que o backend espera
+                              keywords: [], // Baseado na conversa atual
+                              studyType: 'observacional',
+                              maxWords: 400,
+                              userId: 'free-user',
+                              currentNotes: notesToSend, // Notas atuais do usuário
+                              conversationContext: currentConversation?.messages || [] // Contexto completo
                             })
                           });
                           
                           const data = await response.json();
                           
-                          if (data.generatedStudy) {
-                            setStudyNotes(prev => prev + '\n\n---\n\n' + data.generatedStudy);
-                            alert(`Análise adicionada! (${data.wordCount} palavras)`);
+                          if (data.success && data.study) {
+                            setStudyNotes(prev => prev + '\n\n---\n\n**🤖 NOA ESPERANÇA - Análise Colaborativa:**\n\n' + data.study.content);
+                            alert(`Estudo gerado! (${data.study.wordCount} palavras, ${data.study.relatedDataSources.studies + data.study.relatedDataSources.cases + data.study.relatedDataSources.conversations} fontes integradas)`);
                           } else {
-                            alert('Erro ao gerar análise. Tente novamente.');
+                            alert('Erro ao gerar estudo: ' + (data.error || 'Erro desconhecido'));
                           }
                         } catch (error) {
                           alert('Erro ao conectar com IA. Verifique sua conexão.');
