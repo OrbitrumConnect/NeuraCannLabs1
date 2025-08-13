@@ -41,28 +41,19 @@ export class DIDService {
     }
   }
 
-  // Cria um vídeo animado da Dra. Cannabis falando
+  // Cria um vídeo usando o agente D-ID específico (v2_agt_GXoEyw-r)
   async createTalkingVideo(imageUrl: string, text: string): Promise<DIDVideoResponse> {
     try {
-      const requestData: DIDVideoRequest = {
-        source_url: imageUrl,
-        script: {
-          type: 'text',
-          input: text,
-          provider: {
-            type: 'microsoft',
-            voice_id: 'pt-BR-FranciscaNeural' // Voz feminina brasileira natural
-          }
-        },
-        config: {
-          fluent: true,
-          pad_audio: 0.1,
-          stitch: true,
-          result_format: 'mp4'
-        }
+      // Usa o agente D-ID específico fornecido pelo usuário
+      const agentId = 'v2_agt_GXoEyw-r';
+      
+      const requestData = {
+        message: text,
+        session_id: `dra-cannabis-${Date.now()}`,
+        source_url: "https://neurocann-lab.replit.app"
       };
 
-      const response = await fetch(`${this.baseUrl}/talks`, {
+      const response = await fetch(`${this.baseUrl}/agents/${agentId}/chat`, {
         method: 'POST',
         headers: {
           'Authorization': `Basic ${this.apiKey}`,
@@ -74,12 +65,21 @@ export class DIDService {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ D-ID API Error:', response.status, errorText);
-        throw new Error(`D-ID API Error: ${response.status} - ${errorText}`);
+        console.error('❌ D-ID Agent Error:', response.status, errorText);
+        throw new Error(`D-ID Agent Error: ${response.status} - ${errorText}`);
       }
 
-      const result = await response.json() as DIDVideoResponse;
-      console.log('🎬 Vídeo D-ID criado:', result.id);
+      const agentData = await response.json();
+      console.log('🎬 Resposta do agente D-ID:', agentData);
+      
+      // Converte resposta do agente para formato DIDVideoResponse
+      const result: DIDVideoResponse = {
+        id: `agent-${Date.now()}`,
+        object: 'talk',
+        created_at: new Date().toISOString(),
+        status: agentData.video_url ? 'done' : 'created',
+        result_url: agentData.video_url || agentData.result_url
+      };
       
       return result;
       
