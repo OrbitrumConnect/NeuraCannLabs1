@@ -678,9 +678,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Texto é obrigatório' });
       }
 
-      // Gerar áudio com ElevenLabs - Voz feminina profissional Bella
+      // Gerar áudio com ElevenLabs - Voz feminina brasileira profissional médica
       const elevenApiKey = process.env.ELEVENLABS_API_KEY;
-      const voiceId = 'EXAVITQu4vr4xnSDxMaL'; // Voz Bella - mais adequada para contexto médico
+      const voiceId = '21m00Tcm4TlvDq8ikWAM'; // Rachel - Voz feminina calma e profissional
       
       if (!elevenApiKey) {
         console.log('⚠️ ElevenLabs API key não encontrada, usando sistema nativo');
@@ -703,11 +703,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
             text,
             model_id: 'eleven_multilingual_v2',
             voice_settings: voice_settings || {
-              stability: 0.75,
-              similarity_boost: 0.8,
-              style: 0.2,
+              stability: 0.45,        // Menos estável = mais natural
+              similarity_boost: 0.65, // Menos artificial
+              style: 0.8,             // Mais estilo conversacional
               use_speaker_boost: true
-            }
+            },
+            pronunciation_dictionary_locators: [{
+              pronunciation_dictionary_id: "pt_BR_natural",
+              version_id: "1.0.0"
+            }]
           })
         }
       );
@@ -723,7 +727,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      console.log('✅ Áudio ElevenLabs gerado - Voz Bella para:', text.substring(0, 50) + '...');
+      console.log('✅ Áudio ElevenLabs gerado - Voz feminina natural para:', text.substring(0, 50) + '...');
       
       const audioBuffer = await elevenResponse.arrayBuffer();
       

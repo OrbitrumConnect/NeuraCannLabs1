@@ -92,12 +92,12 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
 
       const utterance = new SpeechSynthesisUtterance(cleanText);
       
-      // FORÇA VOZ FEMININA - Dra. Cannabis IA sempre feminina
+      // FORÇA VOZ FEMININA BRASILEIRA - Dra. Cannabis IA sempre feminina
       const voices = window.speechSynthesis.getVoices();
       const femaleVoice = voices.find(voice => 
-        voice.lang.includes('pt') && 
-        (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana'))
-      ) || voices.find(voice => voice.lang.includes('pt'));
+        voice.lang === 'pt-BR' && 
+        (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana') || voice.name.includes('Fiona'))
+      ) || voices.find(voice => voice.lang.includes('pt-BR')) || voices.find(voice => voice.lang.includes('pt'));
       
       if (femaleVoice) {
         utterance.voice = femaleVoice;
@@ -105,9 +105,9 @@ export default function TextToSpeech({ text, autoPlay = false, className = "" }:
       }
       
       utterance.lang = 'pt-BR';
-      utterance.rate = 0.85; // Slightly slower for medical content  
-      utterance.pitch = 1.2; // Pitch mais alto para voz mais feminina
-      utterance.volume = 0.9;
+      utterance.rate = 0.9;  // Velocidade natural mais rápida
+      utterance.pitch = 1.3; // Pitch feminino mais acentuado
+      utterance.volume = 0.85; // Volume suave
       
       utterance.onstart = () => console.log('🗣️ Avatar Estudos começou a falar');
       utterance.onend = () => {
