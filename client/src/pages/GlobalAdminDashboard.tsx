@@ -177,35 +177,36 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
       setSideNavOpen={setSideNavOpen}
     >
       {/* Header da Central de Inteligência */}
-      <div className="mb-8 scale-[0.38]">
-        <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 shadow-2xl">
-          <div className="flex items-center justify-between mb-4">
-            <Button 
-              onClick={() => window.location.href = '/dashboard/overview'}
-              variant="outline"
-              size="sm"
-              className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
-            >
-              <i className="fas fa-arrow-left mr-2" />
-              Voltar
-            </Button>
-            <div></div>
-          </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-white mb-2 flex items-center gap-3">
+      <div className="mb-4 sm:mb-8">
+        {/* Botão Voltar separado - sem scale para não ficar cortado */}
+        <div className="mb-4">
+          <Button 
+            onClick={() => window.location.href = '/dashboard/overview'}
+            variant="outline"
+            size="sm"
+            className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+          >
+            <i className="fas fa-arrow-left mr-2" />
+            Voltar
+          </Button>
+        </div>
+        
+        <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-4 sm:p-6 shadow-2xl scale-90 sm:scale-100">
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white mb-2 flex items-center gap-2 sm:gap-3">
             🧠 Central de Inteligência Cannabis Global
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-500/20 text-green-400 border border-green-500/30">
-              <Activity className="w-4 h-4 mr-1" />
+            <span className="inline-flex items-center px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm bg-green-500/20 text-green-400 border border-green-500/30">
+              <Activity className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
               TEMPO REAL
             </span>
           </h1>
-          <p className="text-sm text-slate-300">
+          <p className="text-xs sm:text-sm text-slate-300">
             Monitoramento científico mundial • Dados da ANVISA, PubMed, ClinicalTrials.gov • Alimentando Dr. Cannabis IA
           </p>
         </div>
       </div>
 
         {/* Global Real-Time Statistics - Mobile-optimized */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8 scale-[0.38]">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 lg:gap-4 mb-4 sm:mb-6 lg:mb-8 scale-75 sm:scale-90 lg:scale-100">
           <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
             <CardContent className="p-3 sm:p-4">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -264,7 +265,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
         </div>
 
         {/* Submission Statistics - Mobile-optimized */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8 scale-[0.38]">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3 lg:gap-6 mb-4 sm:mb-6 lg:mb-8 scale-75 sm:scale-90 lg:scale-100">
           <Card className="bg-gradient-to-br from-yellow-500/10 to-yellow-600/5 border-yellow-500/20">
             <CardContent className="p-3 sm:p-4">
               <div className="flex items-center gap-2 sm:gap-3">
@@ -323,7 +324,7 @@ export default function GlobalAdminDashboard({ onBackToOverview }: GlobalAdminDa
         </div>
 
         {/* Tabs - Mobile-optimized */}
-        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full scale-[0.38]">
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)} className="w-full scale-90 sm:scale-95 lg:scale-100">
           <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 bg-white/5 h-auto p-1">
             <TabsTrigger value="overview" className="data-[state=active]:bg-green-500/20 data-[state=active]:text-green-400 text-xs sm:text-sm p-2">
               <BarChart3 className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
