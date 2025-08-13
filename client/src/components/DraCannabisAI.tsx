@@ -9,7 +9,8 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-import draCannabisImage from '@assets/image_1755025319400.png';
+// Nova imagem médica PERFEITA - mulher médica real
+const draCannabisImage = '/dra-cannabis-medica.png';
 import { RealisticMouthAnimation } from './RealisticMouthAnimation';
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 

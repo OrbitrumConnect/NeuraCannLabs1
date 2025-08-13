@@ -18,9 +18,26 @@ export function RealisticMouthAnimation({
   const animationId = useRef<number>();
 
   useEffect(() => {
-    if (!isAnimating || !canvasRef.current) {
+    // CORREÇÃO CRÍTICA: só animar quando há áudio REAL tocando
+    const shouldAnimate = isAnimating && audioRef?.current && !audioRef.current.paused;
+    
+    if (!shouldAnimate || !canvasRef.current) {
       if (animationId.current) {
         cancelAnimationFrame(animationId.current);
+      }
+      // Desenhar imagem estática quando não está falando
+      if (canvasRef.current && !shouldAnimate) {
+        const canvas = canvasRef.current;
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        img.onload = () => {
+          canvas.width = img.width;
+          canvas.height = img.height;
+          ctx?.clearRect(0, 0, canvas.width, canvas.height);
+          ctx?.drawImage(img, 0, 0);
+        };
+        img.src = imageUrl;
       }
       return;
     }
