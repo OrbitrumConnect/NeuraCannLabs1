@@ -26,33 +26,41 @@ function Router() {
   // Verificar se existe usuário logado e seu role
   const user = localStorage.getItem('user');
   const isLoggedIn = user && JSON.parse(user).id;
-  const userRole = isLoggedIn ? JSON.parse(user).role : null;
+  const userData = isLoggedIn ? JSON.parse(user) : null;
+  const userRole = userData?.role;
 
   // Função para determinar dashboard baseado no role
   const getDashboardComponent = () => {
     if (!isLoggedIn) return Landing;
     
-    // Verificar roles específicos primeiro
-    switch (userRole) {
-      case 'admin':
-        return AdminDashboard;
-      case 'medico':
-        return MedicalDashboard;
-      case 'paciente':
-        return PatientDashboard;
-      default:
-        // Se não tem role definido, mostrar seletor APENAS para não-admins
-        if (!userRole || userRole === 'undefined') {
-          return () => (
-            <RoleSelector 
-              onRoleSelected={(role) => {
-                window.location.reload();
-              }} 
-            />
-          );
-        }
-        return Dashboard;
+    // SE É ADMIN - vai direto para AdminDashboard
+    if (userRole === 'admin' || userData?.email === 'phpg69@gmail.com') {
+      return AdminDashboard;
     }
+    
+    // SE É MÉDICO - vai para Dashboard principal
+    if (userRole === 'medico') {
+      return Dashboard;
+    }
+    
+    // SE É PACIENTE - vai para PatientDashboard  
+    if (userRole === 'paciente') {
+      return PatientDashboard;
+    }
+    
+    // SE NÃO TEM ROLE E NÃO É ADMIN - mostra seletor
+    if (!userRole && userData?.email !== 'phpg69@gmail.com') {
+      return () => (
+        <RoleSelector 
+          onRoleSelected={(role) => {
+            window.location.reload();
+          }} 
+        />
+      );
+    }
+    
+    // DEFAULT - dashboard normal
+    return Dashboard;
   };
 
   return (
