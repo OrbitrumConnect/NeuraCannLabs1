@@ -196,22 +196,22 @@ export default function EducationDashboard() {
       </div>
 
       {/* Tabs do Sistema Educacional */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4 bg-gray-800/50 border border-gray-700">
-          <TabsTrigger value="courses" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400">
-            <BookOpen className="w-4 h-4 mr-2" />
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 scale-90">
+        <TabsList className="grid w-full grid-cols-4 bg-gray-800/50 border border-gray-700 h-8">
+          <TabsTrigger value="courses" className="data-[state=active]:bg-emerald-500/20 data-[state=active]:text-emerald-400 text-xs px-2 py-1">
+            <BookOpen className="w-3 h-3 mr-1" />
             Cursos
           </TabsTrigger>
-          <TabsTrigger value="certificates" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400">
-            <Award className="w-4 h-4 mr-2" />
+          <TabsTrigger value="certificates" className="data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400 text-xs px-2 py-1">
+            <Award className="w-3 h-3 mr-1" />
             Certificados
           </TabsTrigger>
-          <TabsTrigger value="analytics" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400">
-            <TrendingUp className="w-4 h-4 mr-2" />
+          <TabsTrigger value="analytics" className="data-[state=active]:bg-blue-500/20 data-[state=active]:text-blue-400 text-xs px-2 py-1">
+            <TrendingUp className="w-3 h-3 mr-1" />
             Analytics
           </TabsTrigger>
-          <TabsTrigger value="research" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-400">
-            <FileText className="w-4 h-4 mr-2" />
+          <TabsTrigger value="research" className="data-[state=active]:bg-yellow-500/20 data-[state=active]:text-yellow-400 text-xs px-2 py-1">
+            <FileText className="w-3 h-3 mr-1" />
             Pesquisa
           </TabsTrigger>
         </TabsList>
@@ -294,38 +294,38 @@ export default function EducationDashboard() {
         </TabsContent>
 
         {/* Aba Certificados */}
-        <TabsContent value="certificates" className="space-y-6">
+        <TabsContent value="certificates" className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">Certificados Obtidos</h2>
-            <Badge variant="outline" className="border-purple-500 text-purple-400">
+            <h2 className="text-xl font-bold text-white">Certificados Obtidos</h2>
+            <Badge variant="outline" className="border-purple-500 text-purple-400 text-xs">
               Total: {mockCertificates.length}
             </Badge>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
             {mockCertificates.map((cert) => (
-              <Card key={cert.id} className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/40">
-                <CardHeader>
+              <Card key={cert.id} className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/40 scale-90">
+                <CardHeader className="pb-2 px-3 pt-3">
                   <div className="flex items-start justify-between">
-                    <Award className="w-8 h-8 text-purple-400" />
-                    <Badge variant="outline" className="border-green-500 text-green-400">
+                    <Award className="w-5 h-5 text-purple-400" />
+                    <Badge variant="outline" className="border-green-500 text-green-400 text-xs px-1">
                       Válido
                     </Badge>
                   </div>
-                  <CardTitle className="text-white text-lg">{cert.courseTitle}</CardTitle>
-                  <CardDescription className="text-purple-300">
+                  <CardTitle className="text-white text-sm leading-4">{cert.courseTitle}</CardTitle>
+                  <CardDescription className="text-purple-300 text-xs">
                     {cert.certificateNumber}
                   </CardDescription>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-purple-300">Emitido em:</span>
+                <CardContent className="space-y-2 pt-0 px-3 pb-3">
+                  <div className="flex justify-between text-xs">
+                    <span className="text-purple-300">Emitido:</span>
                     <span className="text-white">{new Date(cert.issuedAt).toLocaleDateString('pt-BR')}</span>
                   </div>
                   
-                  <div className="flex justify-between text-sm">
-                    <span className="text-purple-300">Nota Final:</span>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-purple-300">Nota:</span>
                     <span className="text-yellow-400 font-bold">{cert.finalScore}%</span>
                   </div>
                   
@@ -337,49 +337,49 @@ export default function EducationDashboard() {
         </TabsContent>
 
         {/* Aba Analytics */}
-        <TabsContent value="analytics" className="space-y-6">
-          <h2 className="text-2xl font-bold text-white mb-6">Analytics de Aprendizado</h2>
+        <TabsContent value="analytics" className="space-y-4">
+          <h2 className="text-xl font-bold text-white mb-4">Analytics de Aprendizado</h2>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Estatísticas Gerais */}
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <TrendingUp className="w-5 h-5 mr-2 text-blue-400" />
+            <Card className="bg-gray-800/50 border-gray-700 scale-90">
+              <CardHeader className="pb-2 px-3 pt-3">
+                <CardTitle className="text-white flex items-center text-sm">
+                  <TrendingUp className="w-4 h-4 mr-2 text-blue-400" />
                   Estatísticas Gerais
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Tempo Total de Estudo:</span>
+              <CardContent className="space-y-2 pt-0 px-3 pb-3">
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-400">Tempo Total:</span>
                   <span className="text-blue-400 font-bold">{mockAnalytics.totalTimeSpent}h</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Cursos Concluídos:</span>
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-400">Cursos:</span>
                   <span className="text-green-400 font-bold">{mockAnalytics.completedCourses}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-400">Média Geral:</span>
+                <div className="flex justify-between text-xs">
+                  <span className="text-gray-400">Média:</span>
                   <span className="text-yellow-400 font-bold">{mockAnalytics.averageScore}%</span>
                 </div>
               </CardContent>
             </Card>
 
             {/* Áreas de Força e Melhoria */}
-            <Card className="bg-gray-800/50 border-gray-700">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center">
-                  <Target className="w-5 h-5 mr-2 text-purple-400" />
-                  Análise de Performance
+            <Card className="bg-gray-800/50 border-gray-700 scale-90">
+              <CardHeader className="pb-2 px-3 pt-3">
+                <CardTitle className="text-white flex items-center text-sm">
+                  <Target className="w-4 h-4 mr-2 text-purple-400" />
+                  Performance
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-2 pt-0 px-3 pb-3">
                 <div>
-                  <p className="text-green-400 font-medium mb-2">✅ Pontos Fortes:</p>
-                  <ul className="space-y-1 text-sm text-gray-300">
+                  <p className="text-green-400 font-medium mb-1 text-xs">✅ Fortes:</p>
+                  <ul className="space-y-1 text-xs text-gray-300">
                     {mockAnalytics.strongAreas.map((area, index) => (
                       <li key={index} className="flex items-center">
-                        <Star className="w-3 h-3 mr-2 text-green-400" />
+                        <Star className="w-2 h-2 mr-1 text-green-400" />
                         {area}
                       </li>
                     ))}
@@ -387,11 +387,11 @@ export default function EducationDashboard() {
                 </div>
                 
                 <div>
-                  <p className="text-yellow-400 font-medium mb-2">⚠️ Áreas para Melhoria:</p>
-                  <ul className="space-y-1 text-sm text-gray-300">
+                  <p className="text-yellow-400 font-medium mb-1 text-xs">⚠️ Melhorar:</p>
+                  <ul className="space-y-1 text-xs text-gray-300">
                     {mockAnalytics.weakAreas.map((area, index) => (
                       <li key={index} className="flex items-center">
-                        <Target className="w-3 h-3 mr-2 text-yellow-400" />
+                        <Target className="w-2 h-2 mr-1 text-yellow-400" />
                         {area}
                       </li>
                     ))}
@@ -403,21 +403,21 @@ export default function EducationDashboard() {
         </TabsContent>
 
         {/* Aba Pesquisa */}
-        <TabsContent value="research" className="space-y-6">
+        <TabsContent value="research" className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white">Pesquisa Colaborativa</h2>
-            <Button className="bg-yellow-500 hover:bg-yellow-600" data-testid="button-new-research">
-              <FileText className="w-4 h-4 mr-2" />
+            <h2 className="text-xl font-bold text-white">Pesquisa Colaborativa</h2>
+            <Button className="bg-yellow-500 hover:bg-yellow-600 text-sm px-3 py-2" data-testid="button-new-research">
+              <FileText className="w-3 h-3 mr-2" />
               Nova Pesquisa
             </Button>
           </div>
           
-          <Card className="bg-gray-800/50 border-gray-700">
-            <CardContent className="p-6">
+          <Card className="bg-gray-800/50 border-gray-700 scale-90">
+            <CardContent className="p-4">
               <div className="text-center text-gray-400">
-                <FileText className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                <p className="text-lg mb-2">Sistema de Pesquisa em Desenvolvimento</p>
-                <p className="text-sm">
+                <FileText className="w-12 h-12 mx-auto mb-3 text-gray-600" />
+                <p className="text-base mb-2">Sistema de Pesquisa em Desenvolvimento</p>
+                <p className="text-xs">
                   Em breve você poderá colaborar em pesquisas científicas e contribuir para o avanço da medicina canábica.
                 </p>
               </div>
