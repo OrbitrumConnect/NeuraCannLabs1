@@ -137,58 +137,58 @@ export default function EducationDashboard() {
       </div>
 
       {/* Dashboard de Estatísticas - Cards Organizados */}
-      <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 mb-6 shadow-2xl">
-        <h2 className="text-xl font-bold text-white mb-4 text-center">📊 Painel de Progresso</h2>
+      <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-4 mb-4 shadow-2xl scale-90">
+        <h2 className="text-lg font-bold text-white mb-3 text-center">📊 Painel de Progresso</h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Card Cursos Ativos */}
-          <Card className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/40 border-emerald-500/40 backdrop-blur-sm hover:shadow-emerald-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-4">
+          <Card className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/40 border-emerald-500/40 backdrop-blur-sm hover:shadow-emerald-500/20 hover:shadow-lg transition-all duration-300 scale-90">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-emerald-300 text-sm font-medium">Cursos Ativos</p>
-                  <p className="text-2xl font-bold text-emerald-400">2</p>
+                  <p className="text-emerald-300 text-xs font-medium">Cursos Ativos</p>
+                  <p className="text-lg font-bold text-emerald-400">2</p>
                 </div>
-                <BookOpen className="w-6 h-6 text-emerald-400" />
+                <BookOpen className="w-4 h-4 text-emerald-400" />
               </div>
             </CardContent>
           </Card>
 
           {/* Card Tempo Total */}
-          <Card className="bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/40 backdrop-blur-sm hover:shadow-blue-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-4">
+          <Card className="bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/40 backdrop-blur-sm hover:shadow-blue-500/20 hover:shadow-lg transition-all duration-300 scale-90">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-blue-300 text-sm font-medium">Tempo Total</p>
-                  <p className="text-2xl font-bold text-blue-400">45h</p>
+                  <p className="text-blue-300 text-xs font-medium">Tempo Total</p>
+                  <p className="text-lg font-bold text-blue-400">45h</p>
                 </div>
-                <Clock className="w-6 h-6 text-blue-400" />
+                <Clock className="w-4 h-4 text-blue-400" />
               </div>
             </CardContent>
           </Card>
 
           {/* Card Certificados */}
-          <Card className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/40 backdrop-blur-sm hover:shadow-purple-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-4">
+          <Card className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/40 backdrop-blur-sm hover:shadow-purple-500/20 hover:shadow-lg transition-all duration-300 scale-90">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-300 text-sm font-medium">Certificados</p>
-                  <p className="text-2xl font-bold text-purple-400">1</p>
+                  <p className="text-purple-300 text-xs font-medium">Certificados</p>
+                  <p className="text-lg font-bold text-purple-400">1</p>
                 </div>
-                <Award className="w-6 h-6 text-purple-400" />
+                <Award className="w-4 h-4 text-purple-400" />
               </div>
             </CardContent>
           </Card>
 
           {/* Card Média Geral */}
-          <Card className="bg-gradient-to-br from-yellow-900/40 to-orange-800/40 border-yellow-500/40 backdrop-blur-sm hover:shadow-yellow-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-4">
+          <Card className="bg-gradient-to-br from-yellow-900/40 to-orange-800/40 border-yellow-500/40 backdrop-blur-sm hover:shadow-yellow-500/20 hover:shadow-lg transition-all duration-300 scale-90">
+            <CardContent className="p-3">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-yellow-300 text-sm font-medium">Média Geral</p>
-                  <p className="text-2xl font-bold text-yellow-400">89%</p>
+                  <p className="text-yellow-300 text-xs font-medium">Média Geral</p>
+                  <p className="text-lg font-bold text-yellow-400">89%</p>
                 </div>
-                <TrendingUp className="w-6 h-6 text-yellow-400" />
+                <TrendingUp className="w-4 h-4 text-yellow-400" />
               </div>
             </CardContent>
           </Card>
