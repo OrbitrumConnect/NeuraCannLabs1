@@ -367,7 +367,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     <div className="relative w-full min-h-screen">
       
       {/* Dr. Cannabis IA - Mobile friendly positioning */}
-      <div className="flex justify-center pt-8 sm:absolute sm:top-8 sm:-left-4 sm:w-72 sm:h-72 z-20">
+      <div className="flex justify-center pt-8 sm:absolute sm:top-8 sm:-left-28 sm:w-72 sm:h-72 z-20">
         <div 
           className={`cursor-pointer transition-all duration-500 flex items-center justify-center relative ${
             isDrAIActive 
