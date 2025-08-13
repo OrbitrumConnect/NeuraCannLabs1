@@ -672,26 +672,69 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   app.post('/api/avatar/speak', async (req, res) => {
     try {
-      const { text } = req.body;
+      const { text, voice_settings } = req.body;
       
       if (!text) {
         return res.status(400).json({ error: 'Texto é obrigatório' });
       }
 
-      // Sistema de voz nativo - consistente e confiável
-      console.log('🗣️ Usando sistema de voz nativo para:', text.substring(0, 50) + '...');
+      // Gerar áudio com ElevenLabs - Voz feminina profissional Bella
+      const elevenApiKey = process.env.ELEVENLABS_API_KEY;
+      const voiceId = 'EXAVITQu4vr4xnSDxMaL'; // Voz Bella - mais adequada para contexto médico
       
-      return res.status(200).json({
-        type: 'native',
-        message: 'Sistema de voz nativo ativo',
-        text: text
-      });
+      if (!elevenApiKey) {
+        console.log('⚠️ ElevenLabs API key não encontrada, usando sistema nativo');
+        return res.status(200).json({
+          type: 'native',
+          message: 'Sistema nativo ativo'
+        });
+      }
+
+      const elevenResponse = await fetch(
+        `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
+        {
+          method: 'POST',
+          headers: {
+            'xi-api-key': elevenApiKey,
+            'Content-Type': 'application/json',
+            'Accept': 'audio/mpeg'
+          },
+          body: JSON.stringify({
+            text,
+            model_id: 'eleven_multilingual_v2',
+            voice_settings: voice_settings || {
+              stability: 0.75,
+              similarity_boost: 0.8,
+              style: 0.2,
+              use_speaker_boost: true
+            }
+          })
+        }
+      );
+
+      if (!elevenResponse.ok) {
+        console.log(`⚠️ ElevenLabs falhou (${elevenResponse.status}), usando sistema nativo`);
+        return res.status(200).json({
+          type: 'native',
+          message: 'Fallback para sistema nativo'
+        });
+      }
+
+      console.log('✅ Áudio ElevenLabs gerado - Voz Bella para:', text.substring(0, 50) + '...');
+      
+      const audioBuffer = await elevenResponse.arrayBuffer();
+      
+      // Retornar áudio feminino profissional
+      res.setHeader('Content-Type', 'audio/mpeg');
+      res.setHeader('Content-Disposition', 'inline; filename="dra_cannabis_speech.mp3"');
+      res.send(Buffer.from(audioBuffer));
 
     } catch (error: any) {
-      console.error('❌ Erro no sistema de voz:', error);
-      res.status(500).json({ 
-        error: 'Erro interno do servidor',
-        details: error.message 
+      console.error('❌ Erro ElevenLabs, usando fallback nativo:', error);
+      res.status(200).json({
+        type: 'native',
+        message: 'Fallback para sistema nativo',
+        error: error.message
       });
     }
   });
