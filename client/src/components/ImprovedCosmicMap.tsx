@@ -879,8 +879,6 @@ ${studyNotes || 'Nenhuma anotação'}`;
         </div>
       )}
 
-
-
       {/* Sub-search Results - Responsive positioning com mais espaçamento - Only show when Dr AI is active */}
       {isDrAIActive && searchTabs.filter(tab => tab.type === 'sub').map((subTab, index) => (
         <div
