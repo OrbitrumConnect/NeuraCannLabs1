@@ -264,58 +264,64 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
               </div>
             )}
 
-            {/* Study Creation Form */}
-            <Card className="bg-gray-800/50 border border-green-500/20">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-white text-base flex items-center">
-                  <i className="fas fa-edit mr-2" />
-                  Criação Manual de Estudo
-                </CardTitle>
-                <p className="text-gray-400 text-sm">Ou crie seu estudo de forma tradicional</p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Título do Estudo
-                  </label>
-                  <Input
-                    value={studyTitle}
-                    onChange={(e) => setStudyTitle(e.target.value)}
-                    placeholder="Ex: Eficácia do CBD em Síndrome de Down - Estudo Observacional"
-                    className="bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                    data-testid="input-study-title"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-2">
-                    Conteúdo do Estudo
-                  </label>
-                  <Textarea
-                    value={studyContent}
-                    onChange={(e) => setStudyContent(e.target.value)}
-                    placeholder="Descreva sua metodologia, resultados, conclusões..."
-                    className="bg-gray-800 border-gray-600 text-white placeholder-gray-400 min-h-32"
-                    data-testid="textarea-study-content"
-                  />
-                </div>
-
-                <Button
-                  onClick={() => {
-                    toast({
-                      title: "Estudo Salvo",
-                      description: "Seu estudo foi salvo como rascunho com sucesso!",
-                      variant: "default",
-                    });
-                  }}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-3"
-                  data-testid="button-save-study"
-                >
-                  <i className="fas fa-save mr-2" />
-                  Salvar como Rascunho
-                </Button>
-              </CardContent>
-            </Card>
+            {/* Área de Resultado do Estudo Gerado */}
+            {studyContent && (
+              <Card className="bg-gray-800/50 border border-green-500/20">
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-white text-base flex items-center">
+                    <i className="fas fa-file-alt mr-2 text-green-400" />
+                    Estudo Gerado por NOA ESPERANÇA
+                  </CardTitle>
+                  <p className="text-gray-400 text-sm">Conteúdo científico baseado em dados reais da plataforma</p>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="bg-gray-900/50 p-4 rounded border border-emerald-500/20">
+                    <pre className="text-white text-sm whitespace-pre-wrap font-sans leading-relaxed">
+                      {studyContent}
+                    </pre>
+                  </div>
+                  <div className="flex gap-3">
+                    <Button
+                      onClick={() => {
+                        navigator.clipboard.writeText(studyContent);
+                        toast({
+                          title: "Copiado!",
+                          description: "Estudo copiado para a área de transferência.",
+                          variant: "default",
+                        });
+                      }}
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      data-testid="button-copy-study"
+                    >
+                      <i className="fas fa-copy mr-2" />
+                      Copiar Estudo
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        toast({
+                          title: "Estudo Salvo",
+                          description: "Seu estudo foi salvo como rascunho com sucesso!",
+                          variant: "default",
+                        });
+                      }}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                      data-testid="button-save-study"
+                    >
+                      <i className="fas fa-save mr-2" />
+                      Salvar Rascunho
+                    </Button>
+                    <Button
+                      onClick={() => setStudyContent('')}
+                      className="bg-gray-600 hover:bg-gray-700 text-white"
+                      data-testid="button-clear-study"
+                    >
+                      <i className="fas fa-trash mr-2" />
+                      Limpar
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         );
 
