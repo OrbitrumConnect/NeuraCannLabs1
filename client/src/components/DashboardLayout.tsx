@@ -20,8 +20,8 @@ interface DashboardLayoutProps {
   avatarScanning?: boolean;
 }
 
-// Apenas itens individuais que aparecem soltos no cabeçalho
-const dashboardOptions = [
+// Menu completo para mobile
+const mobileMenuOptions = [
   { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
   { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
   { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
@@ -30,6 +30,14 @@ const dashboardOptions = [
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
+  { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
+];
+
+// Apenas itens essenciais para o cabeçalho desktop
+const desktopHeaderOptions = [
+  { id: "overview", name: "Estudo de Dados Cruzados", icon: "fas fa-chart-line" },
+  { id: "forum", name: "Fórum", icon: "fas fa-comments" },
+  { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
 ];
 
@@ -152,8 +160,7 @@ export default function DashboardLayout({
             
           {/* Botões individuais normais */}
           <nav className="hidden lg:flex items-center space-x-2">
-            {dashboardOptions
-              .filter(option => !option.group) // Apenas itens sem grupo
+            {desktopHeaderOptions
               .map((option) => (
               <button
                 key={option.id}
@@ -229,7 +236,7 @@ export default function DashboardLayout({
           </div>
           
           <div className="space-y-2">
-            {dashboardOptions.map((option) => (
+            {mobileMenuOptions.map((option) => (
               <button
                 key={option.id}
                 onClick={() => handleDashboardClick(option.id)}
