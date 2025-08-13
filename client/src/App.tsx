@@ -18,6 +18,7 @@ import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import MedicalDashboard from "@/pages/MedicalDashboard";
 import PatientDashboard from "@/pages/PatientDashboard";
+import RoleSelector from "@/components/RoleSelector";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -29,6 +30,17 @@ function Router() {
   // Função para determinar dashboard baseado no role
   const getDashboardComponent = () => {
     if (!isLoggedIn) return Landing;
+    
+    // Se não tem role definido, mostrar seletor
+    if (!userRole) {
+      return () => (
+        <RoleSelector 
+          onRoleSelected={(role) => {
+            window.location.reload(); // Recarregar para aplicar o redirecionamento
+          }} 
+        />
+      );
+    }
     
     switch (userRole) {
       case 'medico':
