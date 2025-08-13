@@ -34,6 +34,8 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Voz Feminina Garantida**: Microsoft Maria (português) configurada como padrão para manter consistência
 - **Cruzamento de Dados**: NOA acessa estudos científicos, casos clínicos e conversas da plataforma em tempo real
 - **Interface Limpa**: Chat otimizado com mensagens contrastadas e design profissional
+- **SISTEMA DUAL NOA (Agosto 2025)**: Avatar principal + Avatar estudos cruzados compartilham mesma inteligência NOA ESPERANÇA
+- **Aprendizado Contínuo Ativo**: Ambos avatares aprendem automaticamente com todos os dados da plataforma (estudos, casos, conversas anteriores)
 
 ## System Architecture
 
