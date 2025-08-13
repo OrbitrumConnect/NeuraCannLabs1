@@ -163,7 +163,7 @@ interface OverviewDashboardProps {
 
 function OverviewDashboard({ onPlanetClick, activeDashboard, onSearch }: OverviewDashboardProps) {
   return (
-    <section className="relative container mx-auto px-1 sm:px-4 py-3 sm:py-8 scale-75">
+    <section className="relative container mx-auto px-1 sm:px-4 py-3 sm:py-8 scale-90">
       {/* Cosmic Knowledge Map */}
       <div className="mb-8">
         <ImprovedCosmicMap 
