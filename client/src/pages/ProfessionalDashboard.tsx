@@ -88,7 +88,7 @@ export default function ProfessionalDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Professional Profile Info */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="lg:col-span-2 space-y-6 scale-80">
           <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
             <CardContent className="p-6">
               <div className="flex items-center justify-between mb-6">
@@ -387,7 +387,7 @@ export default function ProfessionalDashboard() {
         </div>
 
         {/* Right Sidebar */}
-        <div className="space-y-6">
+        <div className="space-y-6 scale-80">
           {/* Voice Settings */}
           <VoiceSettings />
 

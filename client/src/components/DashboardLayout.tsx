@@ -11,11 +11,11 @@ import { ThemeToggle } from "./ThemeToggle";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  onMenuClick: () => void;
-  onDashboardChange: (dashboard: string) => void;
-  activeDashboard: string;
-  sideNavOpen: boolean;
-  setSideNavOpen: (open: boolean) => void;
+  onMenuClick?: () => void;
+  onDashboardChange?: (dashboard: string) => void;
+  activeDashboard?: string;
+  sideNavOpen?: boolean;
+  setSideNavOpen?: (open: boolean) => void;
   onSearchQuery?: (query: string) => void;
   avatarScanning?: boolean;
 }
@@ -135,8 +135,12 @@ export default function DashboardLayout({
     }
   };
   const handleDashboardClick = (dashboardId: string) => {
-    onDashboardChange(dashboardId);
-    setSideNavOpen(false);
+    if (onDashboardChange) {
+      onDashboardChange(dashboardId);
+    }
+    if (setSideNavOpen) {
+      setSideNavOpen(false);
+    }
   };
 
   // Avatar: sincronização perfeita - exatamente durante linha amarela (32%-42%)
