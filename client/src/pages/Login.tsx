@@ -36,7 +36,10 @@ export default function Login() {
           title: "Login realizado com sucesso!",
           description: "Redirecionando para a plataforma...",
         });
-        setLocation('/');
+        // Usar window.location para forçar redirecionamento completo
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1000);
       } else {
         toast({
           title: "Erro no login",
