@@ -133,12 +133,26 @@ export default function EducationDashboard() {
         />
       )}
 
-      {/* Trigger para Ativar Dra. IA - Posicionado APÓS o avatar */}
+      {/* Triggers Centrais - Posicionado APÓS o avatar */}
       <div className="pt-20 pb-6">
-        <div className="max-w-7xl mx-auto px-6 flex justify-center">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+          
+          {/* Botão Voltar ao App Principal */}
+          <Button
+            onClick={() => window.location.href = '/dashboard/overview'}
+            className="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white px-8 py-4 rounded-xl shadow-2xl border border-emerald-400/20 transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+            data-testid="button-back-main-app"
+          >
+            <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Voltar ao App Principal
+          </Button>
+
+          {/* Botão Ativar Dra. IA */}
           <Button
             onClick={() => setIsDrAIActive(true)}
-            className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-8 py-4 rounded-xl shadow-2xl border border-purple-400/20 transition-all duration-300 hover:scale-105"
+            className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white px-8 py-4 rounded-xl shadow-2xl border border-purple-400/20 transition-all duration-300 hover:scale-105 w-full sm:w-auto"
             data-testid="button-activate-dra"
             disabled={isDrAIActive}
           >
