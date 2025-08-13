@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -22,9 +22,12 @@ import ProfessionalDashboard from "@/pages/ProfessionalDashboard";
 import ProfileDashboard from "@/pages/ProfileDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import RoleSelector from "@/components/RoleSelector";
+import DashboardNavigation from "@/components/DashboardNavigation";
 import NotFound from "@/pages/not-found";
 
 function Router() {
+  const [location] = useLocation();
+  
   // Verificar se existe usuário logado e seu role
   const user = localStorage.getItem('user');
   let userData = null;
@@ -68,29 +71,35 @@ function Router() {
     return Dashboard;
   };
 
+  const showNavigation = isLoggedIn && !['/landing', '/login', '/register'].some(path => location.startsWith(path));
+
   return (
-    <Switch>
-      <Route path="/landing" component={Landing} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/plans" component={PlansPage} />
+    <div className="relative">
+      {/* Dashboard Navigation - Only show when logged in */}
+      {showNavigation && <DashboardNavigation userRole={userRole} />}
       
-      {/* Dashboard Routes */}
-      <Route path="/patient" component={PatientDashboard} />
-      <Route path="/professional" component={ProfessionalDashboard} />
-      <Route path="/profile" component={ProfileDashboard} />
-      
-      <Route path="/" component={getDashboardComponent()} />
-      <Route path="/dashboard/:section?" component={Dashboard} />
-      <Route path="/medical" component={MedicalDashboard} />
-      <Route path="/patient" component={PatientDashboard} />
-      <Route path="/dashboard/module/:moduleId" component={ModuleDetailView} />
-      <Route path="/dra-cannabis" component={DraCannabisPage} />
-      <Route path="/admin" component={AdminDashboard} />
-      <Route path="/analytics" component={AnalyticsDashboard} />
-      <Route path="/critical-modules" component={CriticalModulesDashboard} />
-      <Route component={NotFound} />
-    </Switch>
+      <Switch>
+        <Route path="/landing" component={Landing} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
+        <Route path="/plans" component={PlansPage} />
+        
+        {/* Dashboard Routes */}
+        <Route path="/patient" component={PatientDashboard} />
+        <Route path="/professional" component={ProfessionalDashboard} />
+        <Route path="/profile" component={ProfileDashboard} />
+        
+        <Route path="/" component={getDashboardComponent()} />
+        <Route path="/dashboard/:section?" component={Dashboard} />
+        <Route path="/medical" component={MedicalDashboard} />
+        <Route path="/dashboard/module/:moduleId" component={ModuleDetailView} />
+        <Route path="/dra-cannabis" component={DraCannabisPage} />
+        <Route path="/admin" component={AdminDashboard} />
+        <Route path="/analytics" component={AnalyticsDashboard} />
+        <Route path="/critical-modules" component={CriticalModulesDashboard} />
+        <Route component={NotFound} />
+      </Switch>
+    </div>
   );
 }
 
