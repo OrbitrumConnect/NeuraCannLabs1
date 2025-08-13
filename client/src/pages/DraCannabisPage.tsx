@@ -20,7 +20,7 @@ export default function DraCannabisPage() {
                 onClick={() => setLocation('/')}
                 variant="ghost"
                 size="sm"
-                className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-900/20"
+                className="text-neon-green hover:text-neon-green/80 hover:bg-neon-green/10 drop-shadow-[0_0_5px_rgba(57,255,20,0.3)]"
                 data-testid="button-back-home"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -38,9 +38,7 @@ export default function DraCannabisPage() {
               </div>
             </div>
             
-            <Badge className="bg-neon-green/20 text-neon-green border border-neon-green/50 text-sm drop-shadow-[0_0_8px_rgba(57,255,20,0.4)]">
-              D-ID + ElevenLabs + ChatGPT
-            </Badge>
+
           </div>
         </div>
       </div>
@@ -68,9 +66,7 @@ export default function DraCannabisPage() {
                   </div>
                   <div>
                     <CardTitle className="text-lg text-neon-green drop-shadow-[0_0_8px_rgba(57,255,20,0.5)]">Dra. Cannabis IA</CardTitle>
-                    <Badge className="bg-neon-green/20 text-neon-green border border-neon-green/50 text-xs mt-1 drop-shadow-[0_0_5px_rgba(57,255,20,0.4)]">
-                      D-ID + ElevenLabs
-                    </Badge>
+
                   </div>
                 </div>
                 <p className="text-xs text-neon-green/70 mt-2 drop-shadow-[0_0_3px_rgba(57,255,20,0.3)]">

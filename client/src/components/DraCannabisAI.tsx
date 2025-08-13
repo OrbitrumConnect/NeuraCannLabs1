@@ -402,17 +402,17 @@ export function DraCannabisAI() {
                 `}
               />
               {isTalking && (
-                <div className="absolute inset-0 rounded-lg border-4 border-emerald-400/50 animate-ping" />
+                <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
               )}
             </div>
-            <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
-              isTalking ? 'bg-emerald-400 animate-pulse' : 'bg-emerald-500'
+            <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-black text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 drop-shadow-[0_0_5px_rgba(57,255,20,0.4)] ${
+              isTalking ? 'bg-neon-green animate-pulse' : 'bg-neon-green'
             }`}>
               {isTalking ? '🗣️ IA' : 'IA'}
             </Badge>
             {isAutoStarting && (
-              <div className="absolute inset-0 bg-emerald-500/20 rounded-lg flex items-center justify-center">
-                <div className="text-center text-emerald-400">
+              <div className="absolute inset-0 bg-neon-green/20 rounded-lg flex items-center justify-center">
+                <div className="text-center text-neon-green">
                   <Loader2 className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin mb-2" />
                   <p className="text-xs md:text-sm">Inicializando...</p>
                 </div>
@@ -426,7 +426,7 @@ export function DraCannabisAI() {
             <Button 
               onClick={() => setupNativeDraMutation.mutate()}
               disabled={setupNativeDraMutation.isPending}
-              className="bg-emerald-600 hover:bg-emerald-700 w-full max-w-xs mx-auto text-sm md:text-base"
+              className="bg-neon-green hover:bg-neon-green/90 w-full max-w-xs mx-auto text-sm md:text-base drop-shadow-[0_0_8px_rgba(57,255,20,0.4)] shadow-[0_0_15px_rgba(57,255,20,0.3)]"
               data-testid="button-activate-doctor"
             >
               {setupNativeDraMutation.isPending ? (
