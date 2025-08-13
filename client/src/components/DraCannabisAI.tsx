@@ -220,29 +220,45 @@ export default function DraCannabisAI() {
 
       script.onload = () => {
         clearTimeout(loadingTimeout);
-        console.log('✅ Widget D-ID NOA ESPERANÇA carregado com sucesso!');
+        console.log('✅ Script D-ID carregado!');
+        console.log('🔍 Verificando inicialização do widget...');
         
         // Aguardar widget aparecer no DOM
-        setTimeout(() => {
-          const widgetElement = didContainerRef.current?.querySelector('iframe, div[data-testid]');
+        let checkCount = 0;
+        const checkWidget = () => {
+          checkCount++;
+          console.log(`🔎 Tentativa ${checkCount}/10 - Procurando widget no DOM...`);
+          
+          const widgetElement = document.querySelector('iframe[src*="d-id"], div[data-agent-id], #did-agent, [data-name="did-agent"]');
+          console.log('🎯 Widget encontrado:', widgetElement);
+          
           if (widgetElement) {
+            console.log('✅ Widget D-ID encontrado no DOM!');
             setIsDIDWidgetLoaded(true);
             toast({
               title: "NOA ESPERANÇA Ativa!",
-              description: "Widget D-ID oficial carregado - pode conversar diretamente",
+              description: "Widget D-ID oficial funcionando",
               variant: "default",
             });
+          } else if (checkCount < 10) {
+            setTimeout(checkWidget, 500);
           } else {
-            console.warn('⚠️ Script carregado mas widget não apareceu - possível problema de autorização');
+            console.error('❌ Widget não apareceu após 10 tentativas');
+            console.log('🔧 Debug - Client Key válida?', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli'.length, 'caracteres');
+            console.log('🔧 Debug - Agent ID:', 'v2_agt_WAM9eh_P');
+            console.log('🔧 Debug - Domínio atual:', window.location.hostname);
+            
             setIsDIDWidgetLoaded(false);
             setUseDIDAnimation(false);
             toast({
-              title: "Widget D-ID Não Inicializado", 
-              description: "Domínio pode não estar autorizado no painel D-ID",
+              title: "Erro de Autorização D-ID", 
+              description: `Verifique se ${window.location.hostname} está autorizado no painel D-ID`,
               variant: "destructive",
             });
           }
-        }, 2000);
+        };
+        
+        setTimeout(checkWidget, 1000);
       };
 
       script.onerror = () => {
