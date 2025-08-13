@@ -78,7 +78,7 @@ function Router() {
       <Route path="/patient" component={PatientDashboard} />
       <Route path="/dashboard/module/:moduleId" component={ModuleDetailView} />
       <Route path="/dra-cannabis" component={DraCannabisPage} />
-      <Route path="/admin" component={() => <GlobalAdminDashboard onBackToOverview={() => {}} />} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route path="/analytics" component={AnalyticsDashboard} />
       <Route path="/critical-modules" component={CriticalModulesDashboard} />
       <Route component={NotFound} />
