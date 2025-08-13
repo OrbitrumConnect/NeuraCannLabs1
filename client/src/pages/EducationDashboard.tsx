@@ -137,58 +137,58 @@ export default function EducationDashboard() {
       </div>
 
       {/* Dashboard de Estatísticas - Cards Organizados */}
-      <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-8 shadow-2xl">
-        <h2 className="text-2xl font-bold text-white mb-6 text-center">📊 Painel de Progresso</h2>
+      <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-6 mb-6 shadow-2xl">
+        <h2 className="text-xl font-bold text-white mb-4 text-center">📊 Painel de Progresso</h2>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card Cursos Ativos */}
           <Card className="bg-gradient-to-br from-emerald-900/40 to-emerald-800/40 border-emerald-500/40 backdrop-blur-sm hover:shadow-emerald-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-emerald-300 text-sm font-medium">Cursos Ativos</p>
-                  <p className="text-3xl font-bold text-emerald-400">2</p>
+                  <p className="text-2xl font-bold text-emerald-400">2</p>
                 </div>
-                <BookOpen className="w-8 h-8 text-emerald-400" />
+                <BookOpen className="w-6 h-6 text-emerald-400" />
               </div>
             </CardContent>
           </Card>
 
           {/* Card Tempo Total */}
           <Card className="bg-gradient-to-br from-blue-900/40 to-blue-800/40 border-blue-500/40 backdrop-blur-sm hover:shadow-blue-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-blue-300 text-sm font-medium">Tempo Total</p>
-                  <p className="text-3xl font-bold text-blue-400">45h</p>
+                  <p className="text-2xl font-bold text-blue-400">45h</p>
                 </div>
-                <Clock className="w-8 h-8 text-blue-400" />
+                <Clock className="w-6 h-6 text-blue-400" />
               </div>
             </CardContent>
           </Card>
 
           {/* Card Certificados */}
           <Card className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/40 backdrop-blur-sm hover:shadow-purple-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-purple-300 text-sm font-medium">Certificados</p>
-                  <p className="text-3xl font-bold text-purple-400">1</p>
+                  <p className="text-2xl font-bold text-purple-400">1</p>
                 </div>
-                <Award className="w-8 h-8 text-purple-400" />
+                <Award className="w-6 h-6 text-purple-400" />
               </div>
             </CardContent>
           </Card>
 
           {/* Card Média Geral */}
           <Card className="bg-gradient-to-br from-yellow-900/40 to-orange-800/40 border-yellow-500/40 backdrop-blur-sm hover:shadow-yellow-500/20 hover:shadow-lg transition-all duration-300">
-            <CardContent className="p-6">
+            <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-yellow-300 text-sm font-medium">Média Geral</p>
-                  <p className="text-3xl font-bold text-yellow-400">89%</p>
+                  <p className="text-2xl font-bold text-yellow-400">89%</p>
                 </div>
-                <TrendingUp className="w-8 h-8 text-yellow-400" />
+                <TrendingUp className="w-6 h-6 text-yellow-400" />
               </div>
             </CardContent>
           </Card>
@@ -225,16 +225,16 @@ export default function EducationDashboard() {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {mockCourses.map((course) => (
               <Card key={course.id} className="bg-gray-800/50 border-gray-700 hover:border-emerald-500/50 transition-all">
                 <div className="aspect-video bg-gradient-to-br from-emerald-900/50 to-blue-900/50 rounded-t-lg flex items-center justify-center">
-                  <PlayCircle className="w-12 h-12 text-emerald-400" />
+                  <PlayCircle className="w-8 h-8 text-emerald-400" />
                 </div>
                 
-                <CardHeader>
+                <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
-                    <CardTitle className="text-white text-lg">{course.title}</CardTitle>
+                    <CardTitle className="text-white text-base leading-5">{course.title}</CardTitle>
                     <Badge 
                       variant="outline" 
                       className={`
@@ -246,13 +246,13 @@ export default function EducationDashboard() {
                       {course.category}
                     </Badge>
                   </div>
-                  <CardDescription className="text-gray-400 text-sm">
+                  <CardDescription className="text-gray-400 text-xs">
                     {course.description}
                   </CardDescription>
                 </CardHeader>
                 
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between text-sm text-gray-400">
+                <CardContent className="space-y-3 pt-0">
+                  <div className="flex items-center justify-between text-xs text-gray-400">
                     <span>⏱️ {course.duration} min</span>
                     <span>📚 {course.completedModules}/{course.modules} módulos</span>
                   </div>
@@ -260,7 +260,7 @@ export default function EducationDashboard() {
                   <Progress value={course.progress} className="w-full" />
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-emerald-400">{course.progress}% concluído</span>
+                    <span className="text-xs text-emerald-400">{course.progress}% concluído</span>
                     <Button 
                       size="sm"
                       className={`
@@ -302,7 +302,7 @@ export default function EducationDashboard() {
             </Badge>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {mockCertificates.map((cert) => (
               <Card key={cert.id} className="bg-gradient-to-br from-purple-900/40 to-purple-800/40 border-purple-500/40">
                 <CardHeader>
