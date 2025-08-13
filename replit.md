@@ -53,6 +53,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **API Design**: RESTful endpoints for scientific studies (`/api/scientific`), clinical cases (`/api/clinical`), alerts (`/api/alerts`), user profiles (`/api/profile`), and the continuous learning system (`/api/learning/*`).
 - **Data Storage**: Primary storage via Supabase for production deployment. All users (admin, médicos, pacientes) authenticate through Supabase. Fallback local hardcoded admin apenas para desenvolvimento.
 - **Authentication**: Sistema unificado via Supabase - todos os perfis (admin, professional, patient) cadastram e fazem login pelo banco de dados. Preparado para deployment em servidor externo.
+- **Admin Access**: Painel administrativo unificado em `/admin` com acesso total ao sistema. Admin pode navegar para o app principal via botão dedicado ou rota `/dashboard/overview`.
 - **Continuous Learning System**: Automatically saves and analyzes all user conversations to improve AI responses over time. Includes pattern recognition, success rate tracking, and AI-generated insights. This system implements "Conversa Sensorial Recíproca" to capture, analyze, and learn from all user interactions, identifying medical patterns and generating insights.
 
 ### Database Schema Design

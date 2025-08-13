@@ -19,12 +19,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.use(session({
     secret: 'neurocann-lab-secret-key',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true, // Permitir cookies não inicializados
     store: new MemStore({
       checkPeriod: 86400000 // prune expired entries every 24h
     }),
     cookie: {
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      httpOnly: false, // Permitir acesso via JavaScript se necessário
+      secure: false // Não exigir HTTPS em desenvolvimento
     }
   }));
 
@@ -154,6 +156,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin stats endpoint
   app.get("/api/admin/stats", async (req, res) => {
     const sessionUser = (req.session as any)?.user;
+    
+    // Debug da sessão completa
+    console.log('Session debug:', {
+      sessionExists: !!req.session,
+      sessionUser: sessionUser,
+      sessionId: req.sessionID,
+      cookies: req.headers.cookie
+    });
     
     // Verificar se é admin por role ou email específico
     if (!sessionUser || (sessionUser.role !== 'admin' && sessionUser.email !== ADMIN_EMAIL)) {
