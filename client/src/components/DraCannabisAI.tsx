@@ -395,7 +395,7 @@ export function DraCannabisAI() {
                 src={draCannabisImage} 
                 alt="Dra. Cannabis IA" 
                 className={`
-                  w-40 h-40 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 
+                  w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
                   rounded-lg object-contain shadow-2xl 
                   bg-transparent
                   ${isTalking ? 'animate-pulse filter brightness-110' : ''}
@@ -506,10 +506,10 @@ export function DraCannabisAI() {
           </CardTitle>
         </CardHeader>
         
-        <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+        <CardContent className="space-y-4 md:space-y-5 px-4 md:px-6 pb-6 md:pb-8">
           {/* Histórico da Conversa Mobile */}
           {chatHistory.length > 0 && (
-            <div className="max-h-48 md:max-h-64 overflow-y-auto space-y-2 md:space-y-3 p-3 md:p-4 bg-green-900/10 border border-green-600/20 rounded-lg backdrop-blur-sm">
+            <div className="max-h-64 md:max-h-80 overflow-y-auto space-y-2 md:space-y-3 p-4 md:p-5 bg-green-900/10 border border-green-600/20 rounded-lg backdrop-blur-sm">
               <h4 className="font-medium text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
               {chatHistory.map((entry, index) => (
                 <div
@@ -548,7 +548,7 @@ export function DraCannabisAI() {
                   handleSubmitQuestion();
                 }
               }}
-              className="w-full min-h-16 md:min-h-20 text-sm md:text-base resize-none"
+              className="w-full min-h-20 md:min-h-24 text-sm md:text-base resize-none"
               data-testid="textarea-medical-question"
             />
             
