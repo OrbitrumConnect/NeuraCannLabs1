@@ -28,6 +28,62 @@ export class SuperMedicalAI {
     ];
   }
 
+  // Busca dados relevantes no banco para a consulta
+  private async searchRelevantData(question: string): Promise<string> {
+    try {
+      // Busca estudos científicos relevantes
+      const studies = await storage.getScientificStudies();
+      const relevantStudies = studies.filter(study => 
+        study.title.toLowerCase().includes(question.toLowerCase()) ||
+        study.keywords?.some(keyword => question.toLowerCase().includes(keyword.toLowerCase()))
+      ).slice(0, 3); // Top 3 mais relevantes
+
+      // Busca casos clínicos similares
+      const cases = await storage.getClinicalCases();
+      const relevantCases = cases.filter(case_ => 
+        case_.description.toLowerCase().includes(question.toLowerCase()) ||
+        case_.diagnosis?.toLowerCase().includes(question.toLowerCase())
+      ).slice(0, 2); // Top 2 mais relevantes
+
+      // Busca conversas anteriores do sistema de aprendizado
+      const conversations = await storage.getConversations();
+      const similarConversations = conversations.filter(conv =>
+        conv.userMessage.toLowerCase().includes(question.toLowerCase()) ||
+        conv.medicalTopic === this.extractMedicalTopic(question)
+      ).slice(0, 2); // Top 2 similares
+
+      let contextData = "DADOS DO BANCO PARA CONSULTA:\n\n";
+      
+      if (relevantStudies.length > 0) {
+        contextData += "ESTUDOS CIENTÍFICOS RELEVANTES:\n";
+        relevantStudies.forEach(study => {
+          contextData += `- ${study.title} (${study.year})\n  Resultado: ${study.conclusion}\n`;
+        });
+        contextData += "\n";
+      }
+
+      if (relevantCases.length > 0) {
+        contextData += "CASOS CLÍNICOS SIMILARES:\n";
+        relevantCases.forEach(case_ => {
+          contextData += `- Caso ${case_.caseNumber}: ${case_.description}\n  Diagnóstico: ${case_.diagnosis}\n`;
+        });
+        contextData += "\n";
+      }
+
+      if (similarConversations.length > 0) {
+        contextData += "EXPERIÊNCIAS ANTERIORES DO SISTEMA:\n";
+        similarConversations.forEach(conv => {
+          contextData += `- Pergunta similar: ${conv.userMessage}\n  Resposta bem-sucedida: ${conv.aiResponse.substring(0, 100)}...\n`;
+        });
+      }
+
+      return contextData;
+    } catch (error) {
+      console.error("❌ Erro ao buscar dados do banco:", error);
+      return "";
+    }
+  }
+
   // Processa consulta médica com conhecimento especializado
   async processConsultation(
     userId: string,
@@ -59,6 +115,9 @@ export class SuperMedicalAI {
       let needsSpecialist: boolean = false;
 
       if (this.openai) {
+        // Busca dados relevantes do banco de dados
+        const databaseContext = await this.searchRelevantData(question);
+        
         // Usa ChatGPT-4o com conhecimento médico especializado
         const medicalContext = this.buildMedicalContext(userHistory);
         
@@ -74,6 +133,8 @@ export class SuperMedicalAI {
               
               CONTEXTO MÉDICO DO USUÁRIO:
               ${medicalContext}
+              
+              ${databaseContext}
               
               DIRETRIZES:
               - Seja empática e acolhedora, sempre aprofunde a conversa
