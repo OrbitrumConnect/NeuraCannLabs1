@@ -41,19 +41,29 @@ export class DIDService {
     }
   }
 
-  // Cria um vídeo usando o agente D-ID com movimento labial sincronizado (v2_agt_WAM9eh_P)
+  // Cria um vídeo usando imagem customizada com movimento labial sincronizado
   async createTalkingVideo(imageUrl: string, text: string): Promise<DIDVideoResponse> {
     try {
-      // Usa o agente D-ID com movimento labial sincronizado
-      const agentId = 'v2_agt_WAM9eh_P';
-      
+      // Usa a imagem customizada da Dra. Cannabis para melhor sincronização
       const requestData = {
-        message: text,
-        session_id: `dra-cannabis-${Date.now()}`,
-        source_url: "https://neurocann-lab.replit.app"
+        source_url: imageUrl,
+        script: {
+          type: 'text',
+          subtitles: 'false',
+          provider: {
+            type: 'microsoft',
+            voice_id: 'pt-BR-FranciscaNeural'
+          },
+          ssml: 'false',
+          input: text
+        },
+        config: {
+          fluent: 'false',
+          pad_audio: '0.0'
+        }
       };
 
-      const response = await fetch(`${this.baseUrl}/agents/${agentId}/chat`, {
+      const response = await fetch(`${this.baseUrl}/talks`, {
         method: 'POST',
         headers: {
           'Authorization': `Basic ${this.apiKey}`,
@@ -65,23 +75,14 @@ export class DIDService {
 
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ D-ID Agent Error:', response.status, errorText);
-        throw new Error(`D-ID Agent Error: ${response.status} - ${errorText}`);
+        console.error('❌ D-ID Video Creation Error:', response.status, errorText);
+        throw new Error(`D-ID Video Creation Error: ${response.status} - ${errorText}`);
       }
 
-      const agentData = await response.json();
-      console.log('🎬 Resposta do agente D-ID:', agentData);
+      const videoData = await response.json();
+      console.log('🎬 Vídeo D-ID criado:', videoData.id);
       
-      // Converte resposta do agente para formato DIDVideoResponse
-      const result: DIDVideoResponse = {
-        id: `agent-${Date.now()}`,
-        object: 'talk',
-        created_at: new Date().toISOString(),
-        status: agentData.video_url ? 'done' : 'created',
-        result_url: agentData.video_url || agentData.result_url
-      };
-      
-      return result;
+      return videoData;
       
     } catch (error) {
       console.error('❌ Erro ao criar vídeo D-ID:', error);

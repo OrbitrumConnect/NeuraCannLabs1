@@ -1051,11 +1051,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Para usar a imagem anexada pelo usuário
+      // Para usar a nova imagem personalizada da Dra. Cannabis
       const fs = require('fs');
       const path = require('path');
       
-      const imagePath = path.join(process.cwd(), 'attached_assets', '20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png');
+      const imagePath = path.join(process.cwd(), 'attached_assets', 'image_1755106007929.png');
       
       if (!fs.existsSync(imagePath)) {
         return res.status(404).json({ 
@@ -1097,8 +1097,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Usar imagem estática da Dra. Cannabis (hospedada no projeto)
-      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis.png`;
+      // Usar nova imagem personalizada da Dra. Cannabis
+      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis-nova.png`;
       
       console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...');
       
@@ -1206,8 +1206,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Usar imagem estática da Dra. Cannabis
-      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis.png`;
+      // Usar nova imagem personalizada da Dra. Cannabis
+      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis-nova.png`;
       
       console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...', text.substring(0, 30));
       

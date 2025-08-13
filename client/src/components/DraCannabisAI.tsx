@@ -9,7 +9,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-import draCannabisImage from '@assets/20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png';
+import draCannabisImage from '@assets/image_1755106007929.png';
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 
