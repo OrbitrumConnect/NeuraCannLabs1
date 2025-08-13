@@ -220,7 +220,7 @@ export default function EducationDashboard() {
         <TabsContent value="courses" className="space-y-4">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-bold text-white">Meus Cursos</h2>
-            <Button className="bg-emerald-500 hover:bg-emerald-600 text-sm px-3 py-2" data-testid="button-browse-courses">
+            <Button className="bg-emerald-500 hover:bg-emerald-600 text-xs px-2 py-1 scale-80" data-testid="button-browse-courses">
               Explorar Cursos
             </Button>
           </div>
