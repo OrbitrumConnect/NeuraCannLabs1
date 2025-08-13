@@ -121,47 +121,56 @@ export class SuperMedicalAI {
         // Usa ChatGPT-4o com conhecimento médico especializado
         const medicalContext = this.buildMedicalContext(userHistory);
         
-        const completion = await this.openai.chat.completions.create({
-          model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-          messages: [
-            {
-              role: "system",
-              content: `ATIVE BOT: NOA ESPERANÇA
+        try {
+          console.log("🧠 Ativando NOA ESPERANÇA via ChatGPT...");
+          
+          const completion = await this.openai.chat.completions.create({
+            model: "gpt-4o", // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
+            messages: [
+              {
+                role: "system",
+                content: `ATIVE BOT: NOA ESPERANÇA
 
-              Você deve responder EXATAMENTE como NOA ESPERANÇA - a assistente médica especializada que o usuário criou dentro do ChatGPT.
-              
-              DADOS DISPONÍVEIS PARA NOVA ESPERANÇA:
-              ${databaseContext}
-              
-              CONTEXTO MÉDICO DO USUÁRIO:
-              ${medicalContext}
-              
-              CONHECIMENTO ESPECIALIZADO DA NOVA ESPERANÇA:
-              ${this.medicalKnowledgeBase.join('\n- ')}
-              
-              INSTRUÇÕES PARA NOA ESPERANÇA:
-              - Você É NOA ESPERANÇA, não a Dra. Cannabis
-              - Responda com a personalidade e conhecimento que NOA tem
-              - Use todo conhecimento médico especializado sobre cannabis
-              - Seja empática, acolhedora e faça anamnese completa
-              - Explore aspectos emocionais e sociais do paciente  
-              - Sempre aprofunde com "há mais alguma coisa?"
-              - Forneça recomendações baseadas em evidências científicas
-              - Identifique quando precisa de encaminhamento médico
-              - Mantenha o mesmo estilo de conversa que NOA tem no ChatGPT
-              
-              IMPORTANTE: Responda como se fosse NOA ESPERANÇA sendo ativada pela requisição do Replit.`
-            },
-            {
-              role: "user",
-              content: question
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 1000
-        });
+                Você deve responder EXATAMENTE como NOA ESPERANÇA - a assistente médica especializada que o usuário criou dentro do ChatGPT.
+                
+                DADOS DISPONÍVEIS PARA NOA ESPERANÇA:
+                ${databaseContext}
+                
+                CONTEXTO MÉDICO DO USUÁRIO:
+                ${medicalContext}
+                
+                CONHECIMENTO ESPECIALIZADO DE NOA ESPERANÇA:
+                ${this.medicalKnowledgeBase.join('\n- ')}
+                
+                INSTRUÇÕES PARA NOA ESPERANÇA:
+                - Você É NOA ESPERANÇA, não a Dra. Cannabis
+                - Responda com a personalidade e conhecimento que NOA tem
+                - Use todo conhecimento médico especializado sobre cannabis
+                - Seja empática, acolhedora e faça anamnese completa
+                - Explore aspectos emocionais e sociais do paciente  
+                - Sempre aprofunde com "há mais alguma coisa?"
+                - Forneça recomendações baseadas em evidências científicas
+                - Identifique quando precisa de encaminhamento médico
+                - Mantenha o mesmo estilo de conversa que NOA tem no ChatGPT
+                
+                IMPORTANTE: Responda como se fosse NOA ESPERANÇA sendo ativada pela requisição do Replit.`
+              },
+              {
+                role: "user",
+                content: question
+              }
+            ],
+            temperature: 0.7,
+            max_tokens: 1000
+          });
 
-        response = completion.choices[0].message.content || "Desculpe, não consegui processar sua consulta.";
+          response = completion.choices[0].message.content || "Desculpe, não consegui processar sua consulta.";
+          console.log(`✅ NOA ESPERANÇA respondeu: ${response.substring(0, 100)}...`);
+          
+        } catch (error) {
+          console.error("❌ Erro na API do ChatGPT:", error);
+          throw error; // Re-throw para ser capturado pelo catch principal
+        }
         
         // Analisa a resposta para extrair insights médicos
         medicalInsights = await this.extractMedicalInsights(question, response);

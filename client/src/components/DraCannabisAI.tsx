@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
 import draCannabisImage from '@assets/20250812_1435_Flor de Cannabis Realista_remix_01k2fnf8n7ez0tf90qz4rrj3nc_1755020566579.png';
 import { nativeAvatarService } from '@/services/nativeAvatarService';
+import { NOAAgentChat } from './NOAAgentChat';
 
 interface ConsultResponse {
   success: boolean;
@@ -69,6 +70,7 @@ export function DraCannabisAI() {
   const [didVideoUrl, setDidVideoUrl] = useState<string | null>(null);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
   const [useDIDAnimation, setUseDIDAnimation] = useState(false);
+  const [showNOAChat, setShowNOAChat] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { toast } = useToast();
@@ -720,6 +722,23 @@ export function DraCannabisAI() {
         </Card>
       )}
 
+      {/* Botão NOA ESPERANÇA - Agente D-ID */}
+      <div className="fixed bottom-4 right-4">
+        <Button
+          onClick={() => setShowNOAChat(true)}
+          className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg"
+          size="lg"
+        >
+          <Video className="w-5 h-5 mr-2" />
+          Chat NOA ESPERANÇA
+        </Button>
+      </div>
+
+      {/* Chat NOA ESPERANÇA */}
+      <NOAAgentChat 
+        isActive={showNOAChat} 
+        onClose={() => setShowNOAChat(false)} 
+      />
 
     </div>
   );

@@ -7,6 +7,7 @@ import { z } from "zod";
 import session from "express-session";
 import MemoryStore from "memorystore";
 import { superMedicalAI } from "./superMedicalAI";
+import { didAgentService } from "./didAgentService";
 import "./types";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -1980,10 +1981,88 @@ ${relevantPatterns.length > 0 ?
     }
   }
 
+  // ========================================
+  // AGENTE D-ID - NOA ESPERANÇA VISUAL
+  // ========================================
+
+  // Endpoint para chat com agente D-ID (interface visual da NOA)
+  app.post("/api/noa-agent/chat", async (req, res) => {
+    try {
+      const { message, sessionId } = req.body;
+      
+      if (!message) {
+        return res.status(400).json({ error: "Mensagem é obrigatória" });
+      }
+
+      console.log('🎭 Enviando mensagem para agente D-ID NOA:', message.substring(0, 50));
+      
+      // Envia para agente D-ID
+      const agentResponse = await didAgentService.sendMessageToAgent(message, sessionId);
+      
+      res.json({
+        success: true,
+        response: agentResponse.response,
+        videoUrl: agentResponse.videoUrl,
+        audioUrl: agentResponse.audioUrl,
+        sessionId: sessionId || `session-${Date.now()}`,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('❌ Erro no chat com agente D-ID:', error);
+      res.status(500).json({ 
+        error: "Erro no chat com NOA",
+        details: error.message 
+      });
+    }
+  });
+
+  // Verificar status do agente D-ID
+  app.get("/api/noa-agent/status", async (req, res) => {
+    try {
+      const status = await didAgentService.getAgentStatus();
+      
+      res.json({
+        success: true,
+        agent: status,
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('❌ Erro ao verificar status do agente:', error);
+      res.status(500).json({ 
+        error: "Erro ao verificar status",
+        details: error.message 
+      });
+    }
+  });
+
+  // Criar nova sessão com agente D-ID
+  app.post("/api/noa-agent/session", async (req, res) => {
+    try {
+      const sessionId = await didAgentService.createChatSession();
+      
+      res.json({
+        success: true,
+        sessionId,
+        message: "Nova sessão criada com NOA ESPERANÇA",
+        timestamp: new Date().toISOString()
+      });
+
+    } catch (error) {
+      console.error('❌ Erro ao criar sessão:', error);
+      res.status(500).json({ 
+        error: "Erro ao criar sessão",
+        details: error.message 
+      });
+    }
+  });
+
   console.log("🎭 Dra. Cannabis IA - Assistente médico inicializado com sucesso!");
   console.log("🧠 Super IA Médica integrada - Pronta para receber conhecimento externo");
   console.log("💬 Funcionalidades: Consulta IA, Resumo de Consulta, Encaminhamento Médico");
   console.log("🧠 Sistema de Aprendizado Contínuo: ATIVO - Salvando todas as conversas para evolução da IA");
+  console.log("🎭 Agente D-ID NOA ESPERANÇA: Integrado para interface visual avançada");
 
   const httpServer = createServer(app);
 
