@@ -66,11 +66,11 @@
 /* Night Mode (Padrão) - PALETA NEUROCANN RIGOROSA: 70% Verde, 20% Amarelo, 10% Vermelho */
 :root,
 .night {
-  --background: hsl(0, 0%, 8%);
+  --background: hsl(0, 0%, 4%);
   --foreground: hsl(200, 6.6667%, 91.1765%);
-  --card: hsl(0, 0%, 12%);
+  --card: hsl(0, 0%, 8%);
   --card-foreground: hsl(0, 0%, 85.0980%);
-  --popover: hsl(0, 0%, 8%);
+  --popover: hsl(0, 0%, 4%);
   --popover-foreground: hsl(200, 6.6667%, 91.1765%);
   /* VERDE NEON - Cor principal (70%) */
   --primary: hsl(120, 100%, 50%);
@@ -289,7 +289,7 @@ html, body, #root {
       radial-gradient(circle at 45% 10%, rgba(0, 255, 0, 0.02) 0%, transparent 40%),
       radial-gradient(circle at 70% 90%, rgba(0, 255, 0, 0.018) 0%, transparent 40%),
       radial-gradient(circle at 25% 80%, rgba(0, 255, 0, 0.015) 0%, transparent 40%),
-      linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 10%) 50%, hsl(0, 0%, 8%) 100%);
+      linear-gradient(135deg, hsl(0, 0%, 4%) 0%, hsl(0, 0%, 6%) 50%, hsl(0, 0%, 4%) 100%);
   }
 
   .holographic-border {

@@ -427,7 +427,25 @@ export function DraCannabisAI() {
   };
 
   return (
-    <div className="space-y-4 md:space-y-6 px-2 md:px-0">
+    <div className="space-y-4 md:space-y-6 px-2 md:px-0 relative">
+      {/* Background com círculos sutis - igual ao dashboard principal */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 50%, rgba(0, 255, 0, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 80% 20%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+            radial-gradient(circle at 40% 80%, rgba(0, 255, 0, 0.025) 0%, transparent 50%),
+            radial-gradient(circle at 90% 70%, rgba(0, 255, 0, 0.015) 0%, transparent 50%),
+            radial-gradient(circle at 10% 20%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+            radial-gradient(circle at 60% 40%, rgba(0, 255, 0, 0.018) 0%, transparent 50%),
+            linear-gradient(135deg, hsl(0, 0%, 4%) 0%, hsl(0, 0%, 6%) 50%, hsl(0, 0%, 4%) 100%)
+          `
+        }}
+      />
+      
+      {/* Conteúdo da Dra. Cannabis IA com z-index relativo */}
+      <div className="relative z-10">
       {/* Header da Dra. Cannabis - SEM CARD - Livre */}
       <div className="text-center py-3 md:py-6 min-h-[280px] md:min-h-[350px]">
         <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
@@ -764,6 +782,7 @@ export function DraCannabisAI() {
 
 
 
+      </div>
     </div>
   );
 }

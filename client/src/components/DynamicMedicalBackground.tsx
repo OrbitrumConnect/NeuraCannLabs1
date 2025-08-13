@@ -248,7 +248,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
             radial-gradient(circle at 90% 70%, rgba(0, 255, 0, 0.015) 0%, transparent 50%),
             radial-gradient(circle at 10% 20%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
             radial-gradient(circle at 60% 40%, rgba(0, 255, 0, 0.018) 0%, transparent 50%),
-            linear-gradient(135deg, hsl(0, 0%, 8%) 0%, hsl(0, 0%, 10%) 50%, hsl(0, 0%, 8%) 100%)
+            linear-gradient(135deg, hsl(0, 0%, 4%) 0%, hsl(0, 0%, 6%) 50%, hsl(0, 0%, 4%) 100%)
           `
         }}
       />
