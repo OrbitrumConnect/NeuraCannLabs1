@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useLocation } from "wouter";
 import { useState } from "react";
-import { LogOut, User, ChevronDown, ArrowLeft } from "lucide-react";
+import { LogOut, User, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,17 +16,13 @@ interface UnifiedHeaderProps {
   userName?: string;
   currentPage?: string;
   onLogout?: () => void;
-  showBackButton?: boolean;
-  onBack?: () => void;
 }
 
 export default function UnifiedHeader({ 
   userRole = null, 
   userName = "Usuário", 
   currentPage = "Dashboard",
-  onLogout,
-  showBackButton = false,
-  onBack
+  onLogout 
 }: UnifiedHeaderProps) {
   const [location, navigate] = useLocation();
 
@@ -49,7 +45,6 @@ export default function UnifiedHeader({
       case '/professional': return 'Dashboard Profissional';
       case '/patient': return 'Dashboard Paciente';
       case '/profile': return 'Perfil do Usuário';
-      case '/': return 'NeuroCann Lab - Home';
       default: return 'NeuroCann Lab';
     }
   };
@@ -63,16 +58,16 @@ export default function UnifiedHeader({
   const role = getRoleIndicator();
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[60] bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-700">
       <div className="flex items-center justify-between px-4 py-3 max-w-7xl mx-auto">
         
-        {/* Logo, Botão Home e Título da Página */}
+        {/* Logo e Título da Página */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => handleNavigate('/')}>
-            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center hover:shadow-lg transition-all">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-sm">N</span>
             </div>
-            <h1 className="text-xl font-bold text-white hover:text-emerald-400 transition-colors">{getPageTitle()}</h1>
+            <h1 className="text-xl font-bold text-white">{getPageTitle()}</h1>
           </div>
           
           {/* Indicador de Status */}
@@ -147,50 +142,6 @@ export default function UnifiedHeader({
 
           {/* Separador */}
           <div className="w-px h-6 bg-gray-600 mx-1"></div>
-
-          {/* Dra. Cannabis IA */}
-          <Button
-            variant={location === '/dra-cannabis' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => handleNavigate('/dra-cannabis')}
-            className={`text-xs px-3 ${
-              location === '/dra-cannabis' 
-                ? 'bg-green-600 text-white' 
-                : 'text-gray-300 hover:text-white hover:bg-gray-700'
-            }`}
-            data-testid="nav-dra-cannabis"
-          >
-            🧬 Dra. IA
-          </Button>
-
-          {/* Módulos Médicos */}
-          <Button
-            variant={location === '/medical' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => handleNavigate('/medical')}
-            className={`text-xs px-3 ${
-              location === '/medical' 
-                ? 'bg-cyan-600 text-white' 
-                : 'text-gray-300 hover:text-white hover:bg-gray-700'
-            }`}
-            data-testid="nav-medical"
-          >
-            🩺 Clínico
-          </Button>
-
-          <Button
-            variant={location === '/analytics' ? 'default' : 'ghost'}
-            size="sm"
-            onClick={() => handleNavigate('/analytics')}
-            className={`text-xs px-3 ${
-              location === '/analytics' 
-                ? 'bg-orange-600 text-white' 
-                : 'text-gray-300 hover:text-white hover:bg-gray-700'
-            }`}
-            data-testid="nav-analytics"
-          >
-            📊 Analytics
-          </Button>
 
           {/* Academy - Destaque especial */}
           <Button
