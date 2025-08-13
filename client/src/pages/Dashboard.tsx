@@ -6,7 +6,7 @@ import LabIntegrationModule from "@/components/LabIntegrationModule";
 import ScientificDashboard from "./ScientificDashboard";
 import ClinicalDashboard from "./ClinicalDashboard";
 import AlertsDashboard from "./AlertsDashboard";
-import MyStudyDashboard from "./MyStudyDashboard";
+// MyStudyDashboard removido - funcionalidades migradas para ImprovedCosmicMap
 import ForumDashboard from "./ForumDashboard";
 import ProfileDashboard from "./ProfileDashboard";
 

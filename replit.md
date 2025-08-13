@@ -43,6 +43,8 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
   - Mini calendário para próximas sessões de estudo
   - Interface unificada: gerar estudos completos, melhorar rascunhos, continuar com IA
   - Endpoints `/api/generate-study` e `/api/study-draft` mantidos com contexto cruzado
+  - Otimização: 11 arquivos de teste de áudio ElevenLabs removidos, componentes obsoletos limpos
+  - Documentação consolidada: 10 arquivos MD desnecessários removidos para melhor organização
 
 ## System Architecture
 
