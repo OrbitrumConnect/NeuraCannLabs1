@@ -7,13 +7,13 @@ export class DIDAgentService {
   private baseUrl: string = 'https://api.d-id.com';
 
   constructor() {
-    this.agentId = 'v2_agt_GXoEyw-r'; // ID do agente compartilhado
+    this.agentId = 'v2_agt_WAM9eh_P'; // ID do agente com movimento labial sincronizado
     this.apiKey = process.env.DID_API_KEY || '';
     
     if (!this.apiKey) {
       console.warn('⚠️ DID_API_KEY não encontrada - Agente D-ID em modo limitado');
     } else {
-      console.log('🎭 Agente D-ID inicializado:', this.agentId);
+      console.log('🎭 Agente D-ID inicializado com movimento labial sincronizado:', this.agentId);
     }
   }
 

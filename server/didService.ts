@@ -41,11 +41,11 @@ export class DIDService {
     }
   }
 
-  // Cria um vídeo usando o agente D-ID específico (v2_agt_GXoEyw-r)
+  // Cria um vídeo usando o agente D-ID com movimento labial sincronizado (v2_agt_WAM9eh_P)
   async createTalkingVideo(imageUrl: string, text: string): Promise<DIDVideoResponse> {
     try {
-      // Usa o agente D-ID específico fornecido pelo usuário
-      const agentId = 'v2_agt_GXoEyw-r';
+      // Usa o agente D-ID com movimento labial sincronizado
+      const agentId = 'v2_agt_WAM9eh_P';
       
       const requestData = {
         message: text,
