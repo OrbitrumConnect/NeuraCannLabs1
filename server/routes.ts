@@ -2027,6 +2027,225 @@ ${relevantPatterns.length > 0 ?
   }
 
   // ========================================
+  // NOA ESPERANÇA + CRIAÇÃO DE ESTUDOS CIENTÍFICOS
+  // ========================================
+  
+  // Endpoint para geração de estudos científicos com NOA ESPERANÇA
+  app.post("/api/generate-study", async (req, res) => {
+    try {
+      const { topic, keywords, studyType, maxWords = 300, userId } = req.body;
+      
+      if (!topic) {
+        return res.status(400).json({ 
+          error: "Tópico do estudo é obrigatório" 
+        });
+      }
+
+      console.log(`📚 NOA gerando estudo sobre: ${topic}`);
+      
+      // Buscar dados relevantes da plataforma para contexto
+      const [studies, cases, alerts] = await Promise.all([
+        storage.getScientificStudies(),
+        storage.getClinicalCases(),
+        storage.getAlerts()
+      ]);
+
+      // Filtrar dados relacionados ao tópico
+      const searchTerm = topic.toLowerCase();
+      const relatedStudies = studies.filter(study => 
+        study.title.toLowerCase().includes(searchTerm) ||
+        (study.description?.toLowerCase() || '').includes(searchTerm) ||
+        (study.compound?.toLowerCase() || '').includes(searchTerm)
+      );
+
+      const relatedCases = cases.filter(case_ => 
+        case_.description.toLowerCase().includes(searchTerm) ||
+        (case_.indication?.toLowerCase() || '').includes(searchTerm)
+      );
+
+      // Buscar conversas anteriores relacionadas
+      const conversations = await storage.getConversations();
+      const relatedConversations = conversations.filter(conv =>
+        conv.userMessage.toLowerCase().includes(searchTerm) ||
+        conv.aiResponse.toLowerCase().includes(searchTerm)
+      );
+
+      // Montar contexto rico para NOA
+      const contextData = `
+DADOS DA PLATAFORMA NEUROCANN:
+      
+Estudos Relacionados (${relatedStudies.length}):
+${relatedStudies.slice(0, 3).map(s => `- ${s.title}: ${s.description?.substring(0, 100)}...`).join('\n')}
+
+Casos Clínicos Relacionados (${relatedCases.length}):
+${relatedCases.slice(0, 3).map(c => `- ${c.caseNumber}: ${c.description.substring(0, 100)}...`).join('\n')}
+
+Consultas Anteriores (${relatedConversations.length}):
+${relatedConversations.slice(0, 2).map(c => `- Pergunta: ${c.userMessage.substring(0, 80)}...\n  Resposta NOA: ${c.aiResponse.substring(0, 80)}...`).join('\n')}
+
+Keywords Solicitadas: ${keywords || 'Não especificadas'}
+Tipo de Estudo: ${studyType || 'Geral'}
+Limite de Palavras: ${maxWords}
+      `;
+
+      // Usar NOA ESPERANÇA para gerar o estudo
+      const studyGeneration = await superMedicalAI.consult(
+        `Crie um estudo científico sobre "${topic}" com máximo de ${maxWords} palavras. 
+        
+        INSTRUÇÕES ESPECÍFICAS:
+        - Baseie-se nos dados reais da plataforma NeuroCann apresentados
+        - Inclua referências aos estudos e casos relacionados encontrados
+        - Mantenha rigor científico mas linguagem acessível
+        - Estruture como: Introdução, Metodologia, Resultados, Conclusão
+        - Use evidências dos dados da plataforma quando disponíveis
+        - Se não há dados suficientes, indique claramente as limitações
+        
+        Dados disponíveis:
+        ${contextData}`,
+        'scientific_study_creation'
+      );
+
+      // Estruturar resposta do estudo
+      const generatedStudy = {
+        id: `study-${Date.now()}`,
+        title: `Estudo sobre ${topic}`,
+        content: studyGeneration.response,
+        topic,
+        keywords: keywords || [],
+        studyType: studyType || 'observacional',
+        wordCount: studyGeneration.response.split(' ').length,
+        maxWords,
+        relatedDataSources: {
+          studies: relatedStudies.length,
+          cases: relatedCases.length,
+          conversations: relatedConversations.length
+        },
+        confidence: studyGeneration.confidence,
+        medicalInsights: studyGeneration.medicalInsights,
+        recommendations: studyGeneration.recommendations,
+        needsReview: studyGeneration.needsSpecialist,
+        generatedBy: 'NOA ESPERANÇA',
+        userId,
+        createdAt: new Date().toISOString(),
+        status: 'draft'
+      };
+
+      // Salvar no sistema de aprendizado
+      await storage.saveConversation({
+        userId: userId || 'anonymous',
+        userMessage: `Geração de estudo: ${topic}`,
+        aiResponse: studyGeneration.response,
+        context: `study_generation_${studyType}`,
+        medicalTopic: topic,
+        successRating: 0.9, // Alta confiança para geração de estudos
+        timestamp: new Date()
+      });
+
+      console.log(`✅ Estudo gerado com ${generatedStudy.wordCount} palavras`);
+      
+      res.json({
+        success: true,
+        study: generatedStudy,
+        message: `Estudo sobre "${topic}" gerado com sucesso pela NOA ESPERANÇA`,
+        dataIntegration: {
+          platformDataUsed: true,
+          sourcesFound: relatedStudies.length + relatedCases.length + relatedConversations.length,
+          noaEnhanced: true
+        }
+      });
+
+    } catch (error) {
+      console.error("❌ Erro na geração de estudo com NOA:", error);
+      res.status(500).json({
+        success: false,
+        error: "Erro interno na geração de estudo",
+        details: error.message
+      });
+    }
+  });
+
+  // Endpoint para rascunhos e sugestões de estudos com NOA
+  app.post("/api/study-draft", async (req, res) => {
+    try {
+      const { idea, currentContent, improvementType, userId } = req.body;
+      
+      if (!idea && !currentContent) {
+        return res.status(400).json({ 
+          error: "Ideia inicial ou conteúdo atual é obrigatório" 
+        });
+      }
+
+      console.log(`📝 NOA ajudando com rascunho: ${improvementType || 'melhoria geral'}`);
+      
+      let prompt = '';
+      
+      if (improvementType === 'expand') {
+        prompt = `Expanda este rascunho de estudo mantendo máximo 300 palavras: "${currentContent}"`;
+      } else if (improvementType === 'improve') {
+        prompt = `Melhore este rascunho científico: "${currentContent}"`;
+      } else if (improvementType === 'structure') {
+        prompt = `Estruture melhor este conteúdo científico: "${currentContent}"`;
+      } else {
+        prompt = `Ajude a desenvolver um rascunho de estudo sobre: "${idea}". Máximo 300 palavras.`;
+      }
+
+      // Buscar contexto da plataforma
+      const conversations = await storage.getConversations();
+      const recentMedicalTopics = conversations
+        .slice(-10)
+        .map(c => c.medicalTopic)
+        .filter(Boolean)
+        .join(', ');
+
+      const contextualPrompt = `${prompt}
+      
+      CONTEXTO DA PLATAFORMA:
+      - Tópicos médicos recentes na plataforma: ${recentMedicalTopics}
+      - Base-se no conhecimento médico da NOA ESPERANÇA
+      - Mantenha rigor científico mas seja prático
+      - Máximo 300 palavras SEMPRE
+      `;
+
+      // Usar NOA para melhorar o rascunho
+      const draftImprovement = await superMedicalAI.consult(
+        contextualPrompt,
+        'draft_improvement'
+      );
+
+      const draft = {
+        id: `draft-${Date.now()}`,
+        originalIdea: idea,
+        originalContent: currentContent,
+        improvedContent: draftImprovement.response,
+        improvementType: improvementType || 'general',
+        wordCount: draftImprovement.response.split(' ').length,
+        suggestions: draftImprovement.recommendations,
+        confidence: draftImprovement.confidence,
+        generatedBy: 'NOA ESPERANÇA',
+        userId,
+        createdAt: new Date().toISOString()
+      };
+
+      console.log(`✅ Rascunho melhorado com ${draft.wordCount} palavras`);
+      
+      res.json({
+        success: true,
+        draft,
+        message: "Rascunho melhorado pela NOA ESPERANÇA",
+        noaEnhanced: true
+      });
+
+    } catch (error) {
+      console.error("❌ Erro no rascunho com NOA:", error);
+      res.status(500).json({
+        success: false,
+        error: "Erro interno no rascunho",
+        details: error.message
+      });
+    }
+  });
+
+  // ========================================
   // AGENTE D-ID - NOA ESPERANÇA VISUAL
   // ========================================
 

@@ -24,6 +24,14 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
   const [isRecording, setIsRecording] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  
+  // NOA ESPERANÇA Integration States
+  const [noaGenerating, setNoaGenerating] = useState(false);
+  const [studyKeywords, setStudyKeywords] = useState('');
+  const [studyType, setStudyType] = useState('observacional');
+  const [showNoaHelper, setShowNoaHelper] = useState(true);
+  const [draftIdea, setDraftIdea] = useState('');
+  const [improvementType, setImprovementType] = useState<'expand' | 'improve' | 'structure' | 'general'>('general');
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -118,6 +126,74 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
     },
   });
 
+  // NOA ESPERANÇA: Generate complete study
+  const generateStudyMutation = useMutation({
+    mutationFn: async (data: {
+      topic: string;
+      keywords?: string;
+      studyType?: string;
+      maxWords?: number;
+      userId: string;
+    }) => {
+      const response = await fetch('/api/generate-study', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to generate study');
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setStudyTitle(data.study.title);
+      setStudyContent(data.study.content);
+      toast({
+        title: "🧠 NOA ESPERANÇA",
+        description: `Estudo sobre "${data.study.topic}" gerado com ${data.study.wordCount} palavras baseado em ${data.dataIntegration.sourcesFound} fontes da plataforma!`,
+        variant: "default",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erro na Geração",
+        description: "NOA não conseguiu gerar o estudo. Tente novamente.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // NOA ESPERANÇA: Improve drafts and suggestions
+  const improveDraftMutation = useMutation({
+    mutationFn: async (data: {
+      idea?: string;
+      currentContent?: string;
+      improvementType: string;
+      userId: string;
+    }) => {
+      const response = await fetch('/api/study-draft', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Failed to improve draft');
+      return response.json();
+    },
+    onSuccess: (data) => {
+      setStudyContent(data.draft.improvedContent);
+      toast({
+        title: "🧠 NOA ESPERANÇA",
+        description: `Rascunho melhorado com ${data.draft.wordCount} palavras!`,
+        variant: "default",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Erro na Melhoria",
+        description: "NOA não conseguiu melhorar o rascunho. Tente novamente.",
+        variant: "destructive",
+      });
+    },
+  });
+
   const handleCreateStudy = () => {
     if (!studyTitle.trim() || !studyContent.trim()) {
       toast({
@@ -145,6 +221,48 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
         editedContent: contentCorrection || editingSubmission.originalContent,
         correctedAnalysis: aiAnalysisCorrection || editingSubmission.aiAnalysis || undefined,
       },
+    });
+  };
+
+  // NOA ESPERANÇA Functions
+  const handleGenerateStudyWithNoa = () => {
+    if (!studyTitle.trim()) {
+      toast({
+        title: "Título Obrigatório",
+        description: "Digite um título/tópico para NOA gerar o estudo.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setNoaGenerating(true);
+    generateStudyMutation.mutate({
+      topic: studyTitle,
+      keywords: studyKeywords,
+      studyType,
+      maxWords: 300,
+      userId,
+    });
+    
+    // Reset generating state after mutation
+    setTimeout(() => setNoaGenerating(false), 5000);
+  };
+
+  const handleImproveDraftWithNoa = () => {
+    if (!studyContent.trim() && !draftIdea.trim()) {
+      toast({
+        title: "Conteúdo Necessário",
+        description: "Digite uma ideia ou conteúdo para NOA melhorar.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    improveDraftMutation.mutate({
+      idea: draftIdea,
+      currentContent: studyContent,
+      improvementType,
+      userId,
     });
   };
 
@@ -316,9 +434,161 @@ export default function StudySubmissionSystem({ userId }: StudySubmissionSystemP
             </CardContent>
           </Card>
 
+          {/* NOA ESPERANÇA Study Generator */}
+          {showNoaHelper && (
+            <Card className="bg-gradient-to-r from-emerald-900/30 to-blue-900/30 border border-emerald-500/40">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-emerald-400 text-lg flex items-center">
+                  <i className="fas fa-brain mr-3 text-emerald-400" />
+                  🧠 NOA ESPERANÇA - Assistente de Estudos Científicos
+                </CardTitle>
+                <p className="text-gray-300 text-sm">
+                  A NOA pode gerar estudos completos ou melhorar seus rascunhos usando dados da plataforma (máximo 300 palavras)
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Quick Study Generation */}
+                <div className="border border-emerald-500/20 rounded-lg p-4 bg-emerald-900/10">
+                  <h4 className="text-emerald-300 font-medium mb-3 flex items-center">
+                    <i className="fas fa-magic mr-2" />
+                    Geração Completa de Estudo
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-1">Tópico do Estudo</label>
+                      <Input
+                        value={studyTitle}
+                        onChange={(e) => setStudyTitle(e.target.value)}
+                        placeholder="Ex: CBD em epilepsia refratária"
+                        className="bg-gray-800 border-gray-600 text-white"
+                        data-testid="input-noa-topic"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-1">Tipo de Estudo</label>
+                      <select
+                        value={studyType}
+                        onChange={(e) => setStudyType(e.target.value)}
+                        className="w-full bg-gray-800 border border-gray-600 text-white p-2 rounded"
+                        data-testid="select-study-type"
+                      >
+                        <option value="observacional">Observacional</option>
+                        <option value="experimental">Experimental</option>
+                        <option value="clinico">Clínico</option>
+                        <option value="revisao">Revisão</option>
+                        <option value="caso-controle">Caso-Controle</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="mb-4">
+                    <label className="block text-sm text-gray-300 mb-1">Palavras-chave (opcional)</label>
+                    <Input
+                      value={studyKeywords}
+                      onChange={(e) => setStudyKeywords(e.target.value)}
+                      placeholder="Ex: CBD, THC, epilepsia, cannabis medicinal"
+                      className="bg-gray-800 border-gray-600 text-white"
+                      data-testid="input-keywords"
+                    />
+                  </div>
+                  <Button
+                    onClick={handleGenerateStudyWithNoa}
+                    disabled={noaGenerating || generateStudyMutation.isPending}
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white py-3"
+                    data-testid="button-generate-with-noa"
+                  >
+                    {noaGenerating || generateStudyMutation.isPending ? (
+                      <i className="fas fa-brain fa-spin mr-2" />
+                    ) : (
+                      <i className="fas fa-brain mr-2" />
+                    )}
+                    Gerar Estudo Completo com NOA
+                  </Button>
+                </div>
+
+                {/* Draft Improvement */}
+                <div className="border border-blue-500/20 rounded-lg p-4 bg-blue-900/10">
+                  <h4 className="text-blue-300 font-medium mb-3 flex items-center">
+                    <i className="fas fa-edit mr-2" />
+                    Melhorar Rascunho Existente
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-1">Ideia/Rascunho</label>
+                      <Textarea
+                        value={draftIdea}
+                        onChange={(e) => setDraftIdea(e.target.value)}
+                        placeholder="Cole seu rascunho ou descreva sua ideia..."
+                        className="bg-gray-800 border-gray-600 text-white min-h-20"
+                        data-testid="textarea-draft-idea"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-300 mb-1">Tipo de Melhoria</label>
+                      <select
+                        value={improvementType}
+                        onChange={(e) => setImprovementType(e.target.value as any)}
+                        className="w-full bg-gray-800 border border-gray-600 text-white p-2 rounded mb-2"
+                        data-testid="select-improvement-type"
+                      >
+                        <option value="general">Melhoria Geral</option>
+                        <option value="expand">Expandir Conteúdo</option>
+                        <option value="improve">Melhorar Qualidade</option>
+                        <option value="structure">Estruturar Melhor</option>
+                      </select>
+                      <Button
+                        onClick={handleImproveDraftWithNoa}
+                        disabled={improveDraftMutation.isPending}
+                        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2"
+                        data-testid="button-improve-draft"
+                      >
+                        {improveDraftMutation.isPending ? (
+                          <i className="fas fa-brain fa-spin mr-2" />
+                        ) : (
+                          <i className="fas fa-brain mr-2" />
+                        )}
+                        Melhorar com NOA
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex justify-end">
+                  <Button
+                    onClick={() => setShowNoaHelper(false)}
+                    className="text-gray-400 hover:text-white bg-transparent hover:bg-gray-700"
+                    data-testid="button-hide-noa"
+                  >
+                    <i className="fas fa-times mr-2" />
+                    Ocultar Assistente NOA
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {!showNoaHelper && (
+            <div className="flex justify-center mb-4">
+              <Button
+                onClick={() => setShowNoaHelper(true)}
+                className="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/40"
+                data-testid="button-show-noa"
+              >
+                <i className="fas fa-brain mr-2" />
+                Mostrar Assistente NOA ESPERANÇA
+              </Button>
+            </div>
+          )}
+
           {/* Study Creation Form */}
           <Card className="bg-gray-800/50 border border-green-500/20">
-            <CardContent className="p-6 space-y-4">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-white text-base flex items-center">
+                <i className="fas fa-edit mr-2" />
+                Criação Manual de Estudo
+              </CardTitle>
+              <p className="text-gray-400 text-sm">Ou crie seu estudo de forma tradicional</p>
+            </CardHeader>
+            <CardContent className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Título do Estudo
