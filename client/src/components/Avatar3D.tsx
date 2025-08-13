@@ -13,6 +13,9 @@ export default function Avatar3D({
 }: Avatar3DProps) {
   return (
     <div className={`${className} avatar-glow relative flex items-center justify-center ${isScanning ? 'avatar-scanning' : ''}`} style={{ width: size, height: size }}>
+      {/* Fundo sutil da paleta NeuroCann */}
+      <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-950/20 via-green-900/15 to-slate-900/20 border border-emerald-500/10" />
+      
       {/* Efeito de scan especial */}
       {isScanning && (
         <div className="absolute inset-0 rounded-full animate-ping border-4 border-green-500/60" />
