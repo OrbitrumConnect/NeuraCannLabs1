@@ -578,9 +578,108 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   className="w-full h-40 px-3 py-2 text-sm bg-gray-800/50 border border-gray-600/50 rounded text-white placeholder-gray-400 focus:outline-none focus:border-purple-400/50 resize-none"
                 />
                 
-                {/* AI Study Generator - Dynamic conversation style - 30% menor */}
-                {(
-                  <div className="mb-2 space-y-1.5">
+                {/* Assistente de Estudos Científicos - Funcionalidades migradas */}
+                <div className="space-y-3 p-3 bg-emerald-900/20 rounded-lg border border-emerald-500/30">
+                  <h4 className="text-emerald-400 text-sm font-medium flex items-center">
+                    <i className="fas fa-brain mr-2" />
+                    Assistente de Estudos Científicos
+                  </h4>
+                  
+                  {/* Configurações do Estudo */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <select
+                      className="text-xs bg-gray-800 border border-gray-600 text-white p-2 rounded"
+                      defaultValue="observacional"
+                    >
+                      <option value="observacional">Observacional</option>
+                      <option value="experimental">Experimental</option>
+                      <option value="clinico">Clínico</option>
+                      <option value="revisao">Revisão</option>
+                    </select>
+                    <input 
+                      type="text" 
+                      placeholder="Palavras-chave..."
+                      className="text-xs bg-gray-800 border border-gray-600 text-white p-2 rounded placeholder-gray-400"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    {/* Gerar Estudo Completo */}
+                    <button
+                      onClick={async () => {
+                        const notesToSend = studyNotes.trim() || studyTitle || 'Estudo sobre cannabis medicinal';
+                        
+                        try {
+                          setIsTyping(true);
+                          const response = await fetch('/api/generate-study', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              title: studyTitle,
+                              studyType: 'observacional',
+                              keywords: 'cannabis, CBD, medicinal',
+                              userId: 'free-user'
+                            })
+                          });
+                          
+                          const data = await response.json();
+                          
+                          if (data.generatedStudy) {
+                            setStudyNotes(data.generatedStudy);
+                            alert(`Estudo completo gerado! (${data.wordCount} palavras)`);
+                          } else {
+                            alert('Erro ao gerar estudo. Tente novamente.');
+                          }
+                        } catch (error) {
+                          alert('Erro ao conectar com IA. Verifique sua conexão.');
+                        } finally {
+                          setIsTyping(false);
+                        }
+                      }}
+                      disabled={isTyping}
+                      className="w-full px-3 py-2 bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white rounded-lg text-xs font-medium transition-all disabled:opacity-50"
+                    >
+                      {isTyping ? '🧠 Gerando Estudo...' : '📝 Gerar Estudo Completo'}
+                    </button>
+
+                    {/* Melhorar Rascunho */}
+                    {studyNotes.length > 50 && (
+                      <button
+                        onClick={async () => {
+                          try {
+                            setIsTyping(true);
+                            const response = await fetch('/api/study-draft', {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({
+                                draftContent: studyNotes,
+                                improvementType: 'metodologia',
+                                userId: 'free-user'
+                              })
+                            });
+                            
+                            const data = await response.json();
+                            
+                            if (data.improvedContent) {
+                              setStudyNotes(data.improvedContent);
+                              alert(`Rascunho melhorado!`);
+                            } else {
+                              alert('Erro ao melhorar rascunho.');
+                            }
+                          } catch (error) {
+                            alert('Erro ao conectar com IA.');
+                          } finally {
+                            setIsTyping(false);
+                          }
+                        }}
+                        disabled={isTyping}
+                        className="w-full px-3 py-1.5 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white rounded-lg text-xs font-medium transition-all disabled:opacity-50"
+                      >
+                        ✨ Melhorar Rascunho
+                      </button>
+                    )}
+
+                    {/* Continuar com IA */}
                     <button
                       onClick={async () => {
                         const notesToSend = studyNotes.trim() || 'Gerar sugestões para estudo sobre cannabis medicinal';
@@ -603,9 +702,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                           
                           if (data.generatedStudy) {
                             setStudyNotes(prev => prev + '\n\n---\n\n' + data.generatedStudy);
-                            alert(`Resposta IA adicionada! (${data.wordCount} palavras)`);
+                            alert(`Análise adicionada! (${data.wordCount} palavras)`);
                           } else {
-                            alert('Erro ao gerar resposta. Tente novamente.');
+                            alert('Erro ao gerar análise. Tente novamente.');
                           }
                         } catch (error) {
                           alert('Erro ao conectar com IA. Verifique sua conexão.');
@@ -614,53 +713,39 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                         }
                       }}
                       disabled={isTyping}
-                      className="w-full px-3 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg text-xs font-medium transition-all disabled:opacity-50 border border-purple-400/30 shadow-lg"
+                      className="w-full px-3 py-1.5 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg text-xs font-medium transition-all disabled:opacity-50 border border-purple-400/30"
                     >
-                      {isTyping ? '🤖 Analisando...' : '💬 Continuar com IA (300 palavras)'}
+                      {isTyping ? '🤖 Analisando...' : '💬 Continuar com IA'}
                     </button>
-                    
-                    {/* Final Summary Button */}
-                    {studyNotes.length > 200 && (
-                      <button
-                        onClick={async () => {
-                          try {
-                            setIsTyping(true);
-                            const response = await fetch('/api/generate-study', {
-                              method: 'POST',
-                              headers: { 'Content-Type': 'application/json' },
-                              body: JSON.stringify({
-                                userNotes: studyNotes,
-                                studyTitle: studyTitle,
-                                researchTopic: currentStudyTopic,
-                                searchHistory: currentConversation?.messages || [],
-                                conversationType: 'final_summary'
-                              })
-                            });
-                            
-                            const data = await response.json();
-                            
-                            if (data.generatedStudy) {
-                              setStudyNotes(data.generatedStudy);
-                              alert(`Protocolo final gerado! (${data.wordCount} palavras)`);
-                            } else {
-                              alert('Erro ao gerar protocolo final.');
-                            }
-                          } catch (error) {
-                            alert('Erro ao conectar com IA.');
-                          } finally {
-                            setIsTyping(false);
-                          }
-                        }}
-                        disabled={isTyping}
-                        className="w-full px-3 py-1.5 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white rounded-lg text-xs font-medium transition-all disabled:opacity-50"
-                      >
-                        📋 Gerar Protocolo Final (750 palavras)
-                      </button>
-                    )}
                   </div>
-                )}
+                </div>
 
-                {/* Action Buttons - 30% menor */}
+                {/* Analytics e Calendário */}
+                <div className="space-y-3 p-3 bg-blue-900/20 rounded-lg border border-blue-500/30">
+                  <h4 className="text-blue-400 text-sm font-medium flex items-center">
+                    <i className="fas fa-chart-bar mr-2" />
+                    Analytics & Calendário
+                  </h4>
+                  
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="bg-gray-800/50 p-2 rounded">
+                      <div className="text-green-400 font-medium">Progresso</div>
+                      <div className="text-white">{Math.round((studyNotes.length / 1000) * 100)}%</div>
+                    </div>
+                    <div className="bg-gray-800/50 p-2 rounded">
+                      <div className="text-blue-400 font-medium">Palavras</div>
+                      <div className="text-white">{studyNotes.split(' ').length}</div>
+                    </div>
+                  </div>
+
+                  {/* Mini Calendário */}
+                  <div className="bg-gray-800/50 p-2 rounded">
+                    <div className="text-yellow-400 text-xs font-medium mb-1">📅 Próxima Sessão</div>
+                    <div className="text-white text-xs">{new Date(Date.now() + 24*60*60*1000).toLocaleDateString('pt-BR')}</div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => {

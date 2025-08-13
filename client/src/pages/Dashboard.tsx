@@ -136,9 +136,7 @@ export default function Dashboard() {
       {activeDashboard === "alerts" && (
         <AlertsDashboard />
       )}
-      {activeDashboard === "my-study" && (
-        <MyStudyDashboard />
-      )}
+      {/* MyStudyDashboard removido - funcionalidades migradas para ImprovedCosmicMap */}
       {activeDashboard === "forum" && (
         <ForumDashboard />
       )}

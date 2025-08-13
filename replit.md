@@ -36,11 +36,13 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Interface Limpa**: Chat otimizado com mensagens contrastadas e design profissional
 - **SISTEMA DUAL NOA (Agosto 2025)**: Avatar principal + Avatar estudos cruzados compartilham mesma inteligência NOA ESPERANÇA
 - **Aprendizado Contínuo Ativo**: Ambos avatares aprendem automaticamente com todos os dados da plataforma (estudos, casos, conversas anteriores)
-- **INTEGRAÇÃO NOA + CRIAÇÃO DE ESTUDOS (Agosto 2025)**: NOA agora integrada ao sistema de criação de estudos científicos
-  - Geração completa de estudos (máximo 300 palavras) baseada em dados da plataforma
-  - Melhoria de rascunhos existentes com diferentes tipos de aprimoramento
-  - Interface dedicada no StudySubmissionSystem com assistente NOA ESPERANÇA
-  - Endpoints `/api/generate-study` e `/api/study-draft` implementados com contexto cruzado
+- **UNIFICAÇÃO ESTUDOS CIENTÍFICOS (Agosto 2025)**: Sistema unificado no "Estudos de Dados Cruzados" (ImprovedCosmicMap)
+  - Migração completa do "Meu Estudo" para a Visão Geral 
+  - Assistente de Estudos Científicos integrado com funcionalidades completas
+  - Analytics em tempo real (progresso, contagem de palavras)
+  - Mini calendário para próximas sessões de estudo
+  - Interface unificada: gerar estudos completos, melhorar rascunhos, continuar com IA
+  - Endpoints `/api/generate-study` e `/api/study-draft` mantidos com contexto cruzado
 
 ## System Architecture
 

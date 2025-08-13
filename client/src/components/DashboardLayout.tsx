@@ -26,7 +26,6 @@ const mobileMenuOptions = [
   { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
   { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
   { id: "clinical", name: "Clínico", icon: "fas fa-user-md" },
-  { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
   { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
@@ -254,7 +253,6 @@ export default function DashboardLayout({
                       option.id === "dra-cannabis" ? "text-purple-400" :
                       option.id === "scientific" ? "text-emerald-400" :
                       option.id === "clinical" ? "text-blue-400" :
-                      option.id === "my-study" ? "text-indigo-400" :
                       option.id === "forum" ? "text-orange-400" :
                       option.id === "alerts" ? "text-amber-400" :
                       option.id === "profile" ? "text-pink-400" :
@@ -267,9 +265,6 @@ export default function DashboardLayout({
                   )}
                   {option.id === "alerts" && (
                     <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
-                  )}
-                  {option.id === "my-study" && (
-                    <span className="bg-purple-500 text-white text-xs rounded-full px-2 py-1">NEW</span>
                   )}
                   {option.id === "forum" && (
                     <span className="bg-blue-500 text-white text-xs rounded-full px-2 py-1">29</span>
