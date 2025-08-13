@@ -414,28 +414,24 @@ export function DraCannabisAI() {
                   </Badge>
                 </div>
               ) : (
-                // Avatar com Animação Realista da Boca
-                <div className="relative">
-                  <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 mx-auto">
-                    <RealisticMouthAnimation
-                      imageUrl={draCannabisImage}
-                      isAnimating={isTalking}
-                      audioRef={audioRef}
-                      className="w-full h-full rounded-full object-cover shadow-2xl border-4 border-green-500/20"
-                    />
+                // Avatar TOTALMENTE LIVRE - ZERO Formas Geométricas
+                <>
+                  <RealisticMouthAnimation
+                    imageUrl={draCannabisImage}
+                    isAnimating={isTalking}
+                    audioRef={audioRef}
+                    className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 object-contain drop-shadow-2xl"
+                  />
+                  
+                  {/* Badge completamente separado do avatar */}
+                  <div className="absolute top-2 left-2">
+                    <Badge className={`text-white text-xs px-2 py-1 ${
+                      isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
+                    }`}>
+                      {isTalking ? '🗣️ IA' : '🤖 IA'}
+                    </Badge>
                   </div>
-                  
-                  {/* Efeitos visuais quando falando */}
-                  {isTalking && (
-                    <div className="absolute inset-0 rounded-full border-4 border-green-400/40 animate-ping pointer-events-none" />
-                  )}
-                  
-                  <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
-                    isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
-                  }`}>
-                    {isTalking ? '🗣️ IA' : '🤖 IA'}
-                  </Badge>
-                </div>
+                </>
               )}
               
               {/* Loading de Inicialização */}

@@ -35,6 +35,9 @@ export function RealisticMouthAnimation({
       canvas.width = img.width;
       canvas.height = img.height;
       
+      // Limpar canvas com transparência total
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
       const animate = () => {
         if (!isAnimating) return;
         
@@ -126,21 +129,15 @@ export function RealisticMouthAnimation({
   }, [imageUrl, isAnimating, audioRef]);
 
   return (
-    <div className="relative">
-      <canvas 
-        ref={canvasRef}
-        className={`${className} transition-all duration-300`}
-        style={{ 
-          maxWidth: '100%', 
-          height: 'auto',
-          filter: isAnimating ? 'brightness(110%) contrast(105%)' : 'none'
-        }}
-      />
-      {isAnimating && (
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-green-400/80 text-white px-3 py-1 rounded-full text-xs animate-pulse">
-          🗣️ Falando
-        </div>
-      )}
-    </div>
+    <canvas 
+      ref={canvasRef}
+      className={`${className} transition-all duration-300`}
+      style={{ 
+        maxWidth: '100%', 
+        height: 'auto',
+        filter: isAnimating ? 'brightness(110%) contrast(105%)' : 'none',
+        backgroundColor: 'transparent'
+      }}
+    />
   );
 }
