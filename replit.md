@@ -29,10 +29,11 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Funcionalidade Mobile**: Voz funcionando com ElevenLabs + backup nativo, processamento automático
 
 **Atualizações Mais Recentes (Agosto 2025)**:
-- **Super IA Médica Ativada**: ChatGPT-4o totalmente integrado e funcionando
-- **Interface Limpa**: Removido texto "Certificada ANVISA • CFM" do card para design mais clean
-- **Chat Otimizado**: Mensagens com caixas pretas e texto branco para melhor contraste e legibilidade
-- **Voz Profissional**: ElevenLabs configurado com voz Bella (mais adequada para contexto médico)
+- **NOA ESPERANÇA FINE-TUNED**: Modelo personalizado `ft:gpt-3.5-turbo-0125:personal:fine-tuning-noa-esperanza-avaliacao-inicial-dez-ex-jsonl:BR0W02VP` integrado
+- **Comportamento Médico Empático**: NOA treinada pelo usuário ativa com anamnese completa e exploração emocional
+- **Voz Feminina Garantida**: Microsoft Maria (português) configurada como padrão para manter consistência
+- **Cruzamento de Dados**: NOA acessa estudos científicos, casos clínicos e conversas da plataforma em tempo real
+- **Interface Limpa**: Chat otimizado com mensagens contrastadas e design profissional
 
 ## System Architecture
 
