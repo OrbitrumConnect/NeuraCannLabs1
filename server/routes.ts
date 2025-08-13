@@ -679,7 +679,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // 1. Gerar áudio com ElevenLabs (qualidade profissional)
       const elevenApiKey = process.env.ELEVENLABS_API_KEY;
-      const voiceId = 'EXAVITQu4vr4xnSDxMaL'; // Voz Bella - Mais adequada para contexto médico profissional
+      const voiceId = '21m00Tcm4TlvDq8ikWAM'; // Voz Rachel (funcional) - ElevenLabs
       
       if (!elevenApiKey) {
         console.log('⚠️ ElevenLabs API key não encontrada, usando sistema nativo');
