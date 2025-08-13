@@ -519,13 +519,13 @@ export function DraCannabisAI() {
                   <div
                     className={`max-w-[90%] md:max-w-[85%] p-2 md:p-3 rounded-lg ${
                       entry.type === 'user'
-                        ? 'bg-warning-yellow text-black'
-                        : 'bg-neon-green/20 text-neon-green dark:bg-neon-green/30 dark:text-neon-green'
+                        ? 'bg-black text-white border border-neon-green/30'
+                        : 'bg-black text-white border border-neon-green/50'
                     }`}
                     data-testid={`chat-${entry.type}-${index}`}
                   >
                     <p className="text-xs md:text-sm">{entry.message}</p>
-                    <small className="text-xs opacity-70 mt-1 block">
+                    <small className="text-xs text-gray-400 mt-1 block">
                       {entry.type === 'doctor' ? 'Dra. Cannabis' : 'Você'} - {
                         new Date(entry.timestamp).toLocaleTimeString('pt-BR')
                       }
