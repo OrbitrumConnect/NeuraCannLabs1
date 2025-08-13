@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import DoctorFinder from "@/components/DoctorFinder";
+import UnifiedHeader from "@/components/UnifiedHeader";
 
 export default function PatientDashboard() {
   const [personalInfoExpanded, setPersonalInfoExpanded] = useState(false);
@@ -61,29 +62,16 @@ export default function PatientDashboard() {
   }
 
   return (
-    <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8 pt-12 sm:pt-14">
-      <div className="flex items-center justify-between mb-3 sm:mb-4">
-        <div className="flex items-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-emerald-600 rounded-xl flex items-center justify-center mr-4">
-            <i className="fas fa-user-heart text-white text-2xl" />
-          </div>
-          <div>
-            <h1 className="text-base sm:text-2xl font-bold text-white">Meu Perfil - Paciente</h1>
-            <p className="text-xs sm:text-sm text-gray-400">Histórico médico e tratamento com cannabis</p>
-          </div>
-        </div>
-        <Button 
-          onClick={() => window.location.href = '/dashboard/overview'}
-          variant="outline"
-          size="sm"
-          className="border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
-        >
-          <i className="fas fa-arrow-left mr-2" />
-          Voltar
-        </Button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
+      {/* Cabeçalho Unificado */}
+      <UnifiedHeader 
+        userRole={profile?.role || 'patient'}
+        userName={profile?.name || "Paciente"}
+        currentPage="Perfil"
+      />
+      
+        <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8 pt-20">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Patient Profile Info */}
         <div className="lg:col-span-2 space-y-6">
           <Card className="bg-gray-800/50 border border-gray-600 rounded-xl">
@@ -354,6 +342,7 @@ export default function PatientDashboard() {
               )}
             </CardContent>
           </Card>
+          </div>
         </div>
       </div>
     </div>

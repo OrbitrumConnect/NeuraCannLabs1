@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import UnifiedHeader from "@/components/UnifiedHeader";
 import { 
   Users, 
   Database, 
@@ -173,39 +174,15 @@ export default function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 p-6">
-      <div className="max-w-7xl mx-auto space-y-6">
-        {/* Header Unificado - TUDO INTEGRADO */}
-        <div className="flex items-center justify-between mb-6 p-6 bg-gradient-to-r from-slate-900 via-emerald-900/20 to-slate-900 border border-emerald-500/30 rounded-xl backdrop-blur">
-          <div>
-            <h1 className="text-4xl font-bold text-emerald-400 flex items-center space-x-3">
-              <i className="fas fa-cannabis text-green-500" />
-              <span>Dashboard Administrativo Global - TUDO INTEGRADO</span>
-            </h1>
-            <p className="text-slate-400 mt-2 text-lg">
-              🏭 PRODUÇÃO: AdminDashboard + GlobalAdminDashboard + Sistema Completo | {stats.totalUsers} usuário(s) reais
-            </p>
-            <p className="text-emerald-300 text-sm mt-1">
-              ✅ Dados exclusivamente do Supabase | ✅ Botão "Admin Global" do cabeçalho funcionando perfeitamente
-            </p>
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <Button 
-              onClick={() => window.location.href = '/dashboard/overview'} 
-              className="bg-emerald-600 hover:bg-emerald-500 h-12 px-6"
-            >
-              <Brain className="h-5 w-5 mr-2" />
-              App Principal
-            </Button>
-            <div className="flex items-center space-x-2">
-              <Shield className="h-6 w-6 text-red-400 animate-pulse" />
-              <Badge variant="destructive" className="text-sm px-3 py-1">
-                ADMIN GLOBAL
-              </Badge>
-            </div>
-          </div>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+      {/* Cabeçalho Unificado */}
+      <UnifiedHeader 
+        userRole="admin"
+        userName="Administrador"
+        currentPage="Admin"
+      />
+      
+      <div className="max-w-7xl mx-auto p-6 pt-20 space-y-6">
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
