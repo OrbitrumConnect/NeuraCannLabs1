@@ -892,6 +892,52 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Endpoint específico para animação D-ID (usado pelo frontend)
+  app.post("/api/dra-cannabis/animate", async (req, res) => {
+    try {
+      const { text } = req.body;
+      
+      if (!text) {
+        return res.status(400).json({ error: 'Texto é obrigatório' });
+      }
+
+      if (!didService) {
+        // Se D-ID não estiver disponível, retorna apenas sucesso sem vídeo
+        console.log("⚠️ D-ID service não disponível, retornando sem vídeo");
+        return res.json({
+          success: true,
+          videoUrl: null,
+          message: "D-ID não configurado - apenas áudio disponível"
+        });
+      }
+
+      // Usar imagem estática da Dra. Cannabis
+      const imageUrl = `${req.protocol}://${req.get('host')}/dra-cannabis.png`;
+      
+      console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...', text.substring(0, 30));
+      
+      // Gerar vídeo animado com D-ID
+      const videoUrl = await didService.generateAnimatedSpeech(imageUrl, text);
+      
+      console.log('✅ Animação D-ID concluída:', videoUrl);
+      
+      res.json({
+        success: true,
+        videoUrl: videoUrl,
+        message: "Dra. Cannabis animada com sucesso!"
+      });
+      
+    } catch (error: any) {
+      console.error('❌ Erro na animação D-ID:', error);
+      // Em caso de erro, retorna sucesso mas sem vídeo
+      res.json({ 
+        success: true,
+        videoUrl: null,
+        message: "Erro no D-ID - apenas áudio disponível"
+      });
+    }
+  });
+
   // ========================================
   // SISTEMA DE CONTEXTO CONVERSACIONAL INTELIGENTE
   // ========================================
