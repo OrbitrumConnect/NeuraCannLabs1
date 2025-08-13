@@ -23,7 +23,7 @@ import ProfileDashboard from "@/pages/ProfileDashboard";
 import AdminDashboard from "@/pages/AdminDashboard";
 import EducationDashboard from "@/pages/EducationDashboard";
 import RoleSelector from "@/components/RoleSelector";
-import DashboardNavigation from "@/components/DashboardNavigation";
+
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -72,12 +72,8 @@ function Router() {
     return Dashboard;
   };
 
-  const showNavigation = isLoggedIn && !['/landing', '/login', '/register'].some(path => location.startsWith(path));
-
   return (
     <div className="relative">
-      {/* Dashboard Navigation - Only show when logged in */}
-      {showNavigation && <DashboardNavigation userRole={userRole} />}
       
       <Switch>
         <Route path="/landing" component={Landing} />
