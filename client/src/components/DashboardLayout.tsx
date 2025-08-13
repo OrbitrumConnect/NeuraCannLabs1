@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "./ThemeToggle";
+import UnifiedHeader from "./UnifiedHeader";
 
 
 interface DashboardLayoutProps {
