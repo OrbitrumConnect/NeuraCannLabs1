@@ -474,21 +474,39 @@ export default function DraCannabisAI() {
       <div className="text-center py-3 md:py-6 min-h-[280px] md:min-h-[350px]">
         <div className="flex flex-col items-center justify-center space-y-2 md:space-y-4">
           <div className="relative">
-            <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
-              <img 
-                src={draCannabisImage} 
-                alt="Dra. Cannabis IA" 
-                className={`
-                  w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
-                  rounded-lg object-contain shadow-2xl 
-                  bg-transparent
-                  ${isTalking ? 'animate-pulse filter brightness-110' : ''}
-                `}
-              />
-              {isTalking && (
-                <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
-              )}
-            </div>
+            {/* Vídeo do Agente D-ID (quando disponível) */}
+            {didVideoUrl && useDIDAnimation ? (
+              <video
+                ref={videoRef}
+                width="320"
+                height="320"
+                controls={false}
+                autoPlay
+                loop={false}
+                className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg shadow-2xl object-cover"
+                onEnded={() => setIsTalking(false)}
+              >
+                <source src={didVideoUrl} type="video/mp4" />
+                Seu navegador não suporta reprodução de vídeo.
+              </video>
+            ) : (
+              /* Imagem estática (quando D-ID não estiver ativo ou disponível) */
+              <div className={`${isTalking && !useDIDAnimation ? 'avatar-talking' : ''} transition-all duration-300`}>
+                <img 
+                  src={draCannabisImage} 
+                  alt="Dra. Cannabis IA" 
+                  className={`
+                    w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
+                    rounded-lg object-contain shadow-2xl 
+                    bg-transparent
+                    ${isTalking && !useDIDAnimation ? 'animate-pulse filter brightness-110' : ''}
+                  `}
+                />
+                {isTalking && !useDIDAnimation && (
+                  <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
+                )}
+              </div>
+            )}
             <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-black text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 drop-shadow-[0_0_5px_rgba(57,255,20,0.4)] ${
               isTalking ? 'bg-neon-green animate-pulse' : 'bg-neon-green'
             }`}>
@@ -549,23 +567,11 @@ export default function DraCannabisAI() {
                 </label>
               </div>
 
-              {/* Vídeo D-ID quando disponível */}
+              {/* Status apenas - vídeo já aparece no avatar principal */}
               {didVideoUrl && useDIDAnimation && (
-                <div className="flex justify-center">
-                  <video
-                    ref={videoRef}
-                    width="240"
-                    height="240"
-                    controls
-                    autoPlay
-                    loop={false}
-                    className="rounded-lg shadow-lg border-2 border-emerald-500"
-                    onEnded={() => setIsTalking(false)}
-                    style={{ maxWidth: '100%', height: 'auto' }}
-                  >
-                    <source src={didVideoUrl} type="video/mp4" />
-                    Seu navegador não suporta reprodução de vídeo.
-                  </video>
+                <div className="flex items-center justify-center space-x-2 text-emerald-400">
+                  <Video className="w-4 h-4" />
+                  <span className="text-sm">Agente NOA ESPERANÇA Ativo</span>
                 </div>
               )}
 
