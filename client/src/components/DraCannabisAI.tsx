@@ -10,7 +10,7 @@ import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
 // Usando a imagem oficial do agente D-ID v2_agt_WAM9eh_P
-const draCannabisImage = "https://create-images-results.d-id.com/DefaultPresenters/Vanessa_f/image.jpeg";
+const draCannabisImage = "https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg";
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 

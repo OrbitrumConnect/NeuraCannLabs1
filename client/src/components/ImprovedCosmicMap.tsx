@@ -399,7 +399,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             }}
           >
             <img 
-              src="https://create-images-results.d-id.com/DefaultPresenters/Vanessa_f/image.jpeg" 
+              src="https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg" 
               alt="Dra. Cannabis IA - Estudos Cruzados" 
               className={`
                 w-16 sm:w-40 h-16 sm:h-40

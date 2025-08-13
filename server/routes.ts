@@ -1097,8 +1097,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Usar imagem oficial do agente D-ID para consistência visual
-      const imageUrl = "https://create-images-results.d-id.com/DefaultPresenters/Vanessa_f/image.jpeg";
+      // Usar imagem oficial do agente D-ID para consistência visual  
+      const imageUrl = "https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg";
       
       console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...');
       
@@ -1207,7 +1207,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Usar imagem oficial do agente D-ID para consistência visual
-      const imageUrl = "https://create-images-results.d-id.com/DefaultPresenters/Vanessa_f/image.jpeg";
+      const imageUrl = "https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg";
       
       console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...', text.substring(0, 30));
       
