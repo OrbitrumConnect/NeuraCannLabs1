@@ -69,6 +69,13 @@ export default {
         "neon-blue": "var(--neon-blue)",
         "neon-purple": "var(--neon-purple)",
         "neon-green": "var(--neon-green)",
+        // NeuroCann Medical Colors - Paleta rigorosa: 70% Verde, 20% Amarelo, 10% Vermelho
+        "emerald": {
+          400: "rgb(34, 197, 94)",
+          500: "rgb(34, 197, 94)",
+        },
+        "warning-yellow": "rgb(255, 235, 59)",
+        "alert-red": "rgb(239, 68, 68)",
       },
       fontFamily: {
         sans: ["var(--font-sans)"],

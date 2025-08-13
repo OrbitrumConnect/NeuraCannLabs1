@@ -11,33 +11,39 @@ export default function DraCannabisPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-950 to-black">
       
-      {/* Cabeçalho Principal - Padronizado com outros dashboards */}
-      <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 border-b border-emerald-500/30">
-        <div className="p-4">
+      {/* Cabeçalho NeuroCann - Verde Emerald */}
+      <div className="bg-gradient-to-r from-emerald-900/30 to-emerald-800/30 border-b border-emerald-400/30">
+        <div className="p-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-6">
               <Button 
                 onClick={() => setLocation('/')}
                 variant="ghost"
                 size="sm"
-                className="text-neon-green hover:text-neon-green/80 hover:bg-neon-green/10 drop-shadow-[0_0_5px_rgba(57,255,20,0.3)]"
+                className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-400/10 drop-shadow-[0_0_5px_rgba(34,197,94,0.3)]"
                 data-testid="button-back-home"
               >
-                <ArrowLeft className="w-4 h-4 mr-2" />
+                <ArrowLeft className="w-5 h-5 mr-2" />
                 Voltar ao Dashboard
               </Button>
               
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-neon-green/20 border border-neon-green/50 flex items-center justify-center shadow-[0_0_15px_rgba(57,255,20,0.3)]">
-                  <Brain className="w-4 h-4 text-neon-green drop-shadow-[0_0_5px_rgba(57,255,20,0.5)]" />
+              <div className="flex items-center space-x-4">
+                <div className="w-12 h-12 rounded-full bg-emerald-400/20 border border-emerald-400/50 flex items-center justify-center shadow-[0_0_20px_rgba(34,197,94,0.4)]">
+                  <Brain className="w-6 h-6 text-emerald-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-neon-green drop-shadow-[0_0_10px_rgba(57,255,20,0.5)]">Dra. Cannabis IA</h1>
-                  <p className="text-xs text-neon-green/80 drop-shadow-[0_0_5px_rgba(57,255,20,0.3)]">Assistente Médico Inteligente</p>
+                  <h1 className="text-2xl font-bold text-emerald-400 drop-shadow-[0_0_12px_rgba(34,197,94,0.5)]">NeuroCann Lab</h1>
+                  <p className="text-sm text-emerald-400/80 drop-shadow-[0_0_6px_rgba(34,197,94,0.3)]">Dra. Cannabis IA • NOA ESPERANÇA v3.0</p>
                 </div>
               </div>
             </div>
             
+            <div className="flex items-center space-x-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_10px_rgba(34,197,94,0.6)]"></div>
+                <span className="text-sm text-emerald-400">Sistema Ativo</span>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -57,7 +63,7 @@ export default function DraCannabisPage() {
           {/* Sidebar compacta com informações - Ocupa 1 coluna */}
           <div className="space-y-4">
             
-            {/* Header compacto */}
+            {/* Header compacto - Verde Emerald */}
             <Card className="border-emerald-400/30 bg-gradient-to-br from-emerald-400/5 to-black shadow-[0_0_20px_rgba(34,197,94,0.1)]">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-3">
@@ -66,14 +72,14 @@ export default function DraCannabisPage() {
                   </div>
                   <div>
                     <CardTitle className="text-lg text-emerald-400 drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]">Dra. Cannabis IA</CardTitle>
-
+                    <p className="text-xs text-gray-400 mt-1">NOA ESPERANÇA v3.0</p>
                   </div>
                 </div>
 
               </CardHeader>
             </Card>
 
-            {/* Recursos disponíveis integrados */}
+            {/* Recursos disponíveis integrados - Verde Emerald */}
             <Card className="border-emerald-400/30 bg-emerald-400/5 shadow-[0_0_10px_rgba(34,197,94,0.1)]">
               <CardHeader className="pb-2">
                 <CardTitle className="text-sm text-emerald-400 drop-shadow-[0_0_5px_rgba(34,197,94,0.4)] flex items-center space-x-2">
@@ -87,7 +93,7 @@ export default function DraCannabisPage() {
                   <span className="text-gray-300">Consultas IA instantâneas</span>
                 </div>
                 <div className="flex items-center space-x-2 text-xs">
-                  <BookOpen className="w-3 h-3 text-warning-yellow drop-shadow-[0_0_3px_rgba(255,235,59,0.4)]" />
+                  <BookOpen className="w-3 h-3 text-yellow-400 drop-shadow-[0_0_3px_rgba(255,235,59,0.4)]" />
                   <span className="text-gray-300">15.000+ estudos científicos</span>
                 </div>
                 <div className="flex items-center space-x-2 text-xs">
@@ -95,16 +101,16 @@ export default function DraCannabisPage() {
                   <span className="text-gray-300">Compliance total BR</span>
                 </div>
                 <div className="flex items-center space-x-2 text-xs">
-                  <AlertCircle className="w-3 h-3 text-alert-red drop-shadow-[0_0_3px_rgba(239,68,68,0.4)]" />
+                  <AlertCircle className="w-3 h-3 text-red-400 drop-shadow-[0_0_3px_rgba(239,68,68,0.4)]" />
                   <span className="text-gray-300">Alertas em tempo real</span>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Exemplos de Consultas */}
-            <Card className="border-warning-yellow/30 bg-warning-yellow/5 shadow-[0_0_10px_rgba(255,235,59,0.1)]">
+            {/* Exemplos de Consultas - Amarelo */}
+            <Card className="border-yellow-400/30 bg-yellow-400/5 shadow-[0_0_10px_rgba(255,235,59,0.1)]">
               <CardHeader className="pb-2">
-                <CardTitle className="text-sm text-warning-yellow drop-shadow-[0_0_5px_rgba(255,235,59,0.4)] flex items-center space-x-2">
+                <CardTitle className="text-sm text-yellow-400 drop-shadow-[0_0_5px_rgba(255,235,59,0.4)] flex items-center space-x-2">
                   <Brain className="w-4 h-4" />
                   <span>Exemplos de Consultas</span>
                 </CardTitle>
