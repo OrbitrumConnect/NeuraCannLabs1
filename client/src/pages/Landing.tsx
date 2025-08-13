@@ -465,7 +465,7 @@ export default function Landing() {
             Junte-se a centenas de profissionais que já utilizam nossa plataforma 
             para decisões médicas baseadas em evidência científica.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex justify-center">
             <Button 
               size="lg" 
               className="bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white px-8 py-4 text-lg hover:scale-105 hover:shadow-xl hover:shadow-green-500/25 transition-all duration-300 group"
@@ -474,15 +474,6 @@ export default function Landing() {
             >
               <UserPlus className="w-5 h-5 mr-2 group-hover:animate-pulse" />
               Cadastrar Gratuitamente
-            </Button>
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-white text-white hover:bg-white/10 hover:border-cyan-400 hover:text-cyan-300 px-8 py-4 text-lg hover:scale-105 transition-all duration-300 group"
-              data-testid="button-contact"
-            >
-              <MessageSquare className="w-5 h-5 mr-2 group-hover:text-cyan-300 transition-colors" />
-              Falar com Especialista
             </Button>
           </div>
         </div>
