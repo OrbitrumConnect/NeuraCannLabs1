@@ -33,6 +33,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Interface Limpa**: Removido texto "Certificada ANVISA • CFM" do card para design mais clean
 - **Chat Otimizado**: Mensagens com caixas pretas e texto branco para melhor contraste e legibilidade
 - **Voz Profissional**: ElevenLabs configurado com voz Bella (mais adequada para contexto médico)
+- **Avatar D-ID Integrado**: Substituída imagem cannabis por avatar médico profissional (v2_agt_GXoEyw-r) - médica de jaleco branco para maior credibilidade
 
 ## System Architecture
 
