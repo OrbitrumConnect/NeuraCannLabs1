@@ -134,7 +134,7 @@ export default function EducationDashboard() {
       )}
 
       {/* Trigger para Ativar Dra. IA - Posicionado APÓS o avatar */}
-      <div className="pt-20 pb-6">
+      <div className="pt-24 pb-6">
         <div className="max-w-7xl mx-auto px-6 flex justify-center">
           <Button
             onClick={() => setIsDrAIActive(true)}

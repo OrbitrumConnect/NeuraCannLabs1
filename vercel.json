@@ -1,19 +1,18 @@
 {
   "version": 2,
-  "name": "neurocann-lab",
   "builds": [
-    {
-      "src": "client/index.html",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
     {
       "src": "server/index.ts",
       "use": "@vercel/node",
       "config": {
         "includeFiles": ["server/**"]
+      }
+    },
+    {
+      "src": "client/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
       }
     }
   ],
@@ -24,15 +23,15 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/client/index.html"
+      "dest": "/client/$1"
     }
   ],
   "env": {
-    "NODE_ENV": "production"
-  },
-  "functions": {
-    "server/index.ts": {
-      "runtime": "nodejs18.x"
-    }
+    "NODE_ENV": "production",
+    "SUPABASE_URL": "@supabase_url",
+    "SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "OPENAI_API_KEY": "@openai_api_key",
+    "DID_API_KEY": "@did_api_key",
+    "ELEVENLABS_API_KEY": "@elevenlabs_api_key"
   }
 }
