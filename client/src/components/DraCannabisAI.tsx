@@ -146,18 +146,15 @@ export function DraCannabisAI() {
     setDidVideoUrl(null);
     
     try {
-      const response = await apiRequest("/api/dra-cannabis/animate", {
-        method: "POST",
-        body: JSON.stringify({ text }),
-        headers: { "Content-Type": "application/json" }
-      });
+      const response = await apiRequest("/api/dra-cannabis/animate", "POST", { text });
+      const result = await response.json();
       
-      if (response.success && response.videoUrl) {
-        setDidVideoUrl(response.videoUrl);
+      if (result.success && result.videoUrl) {
+        setDidVideoUrl(result.videoUrl);
         
         // Reproduzir vídeo automaticamente quando estiver pronto
         if (videoRef.current) {
-          videoRef.current.src = response.videoUrl;
+          videoRef.current.src = result.videoUrl;
           videoRef.current.play().catch(console.error);
         }
         
