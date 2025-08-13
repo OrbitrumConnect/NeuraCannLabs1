@@ -272,30 +272,38 @@ export default function AdminDashboard() {
 
         {/* Admin Tabs */}
         <Tabs defaultValue="overview" className="w-full">
-          <TabsList className="grid w-full grid-cols-8 bg-slate-900 h-14">
-            <TabsTrigger value="overview" className="data-[state=active]:bg-emerald-600 text-xs">
-              📊 Overview
+          <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 bg-slate-900 h-auto p-1">
+            <TabsTrigger value="overview" className="data-[state=active]:bg-emerald-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">📊 Overview</span>
+              <span className="sm:hidden">📊</span>
             </TabsTrigger>
-            <TabsTrigger value="global" className="data-[state=active]:bg-orange-600 text-xs">
-              🌍 Global Admin
+            <TabsTrigger value="global" className="data-[state=active]:bg-orange-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">🌍 Global Admin</span>
+              <span className="sm:hidden">🌍</span>
             </TabsTrigger>
-            <TabsTrigger value="studies" className="data-[state=active]:bg-blue-600 text-xs">
-              📋 Estudos
+            <TabsTrigger value="studies" className="data-[state=active]:bg-blue-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">📋 Estudos</span>
+              <span className="sm:hidden">📋</span>
             </TabsTrigger>
-            <TabsTrigger value="users" className="data-[state=active]:bg-purple-600 text-xs">
-              👥 Usuários
+            <TabsTrigger value="users" className="data-[state=active]:bg-purple-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">👥 Usuários</span>
+              <span className="sm:hidden">👥</span>
             </TabsTrigger>
-            <TabsTrigger value="system" className="data-[state=active]:bg-green-600 text-xs">
-              ⚙️ Sistema
+            <TabsTrigger value="system" className="data-[state=active]:bg-green-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">⚙️ Sistema</span>
+              <span className="sm:hidden">⚙️</span>
             </TabsTrigger>
-            <TabsTrigger value="ai" className="data-[state=active]:bg-yellow-600 text-xs">
-              🧠 IA Médica
+            <TabsTrigger value="ai" className="data-[state=active]:bg-yellow-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">🧠 IA Médica</span>
+              <span className="sm:hidden">🧠</span>
             </TabsTrigger>
-            <TabsTrigger value="database" className="data-[state=active]:bg-red-600 text-xs">
-              🗄️ Database
+            <TabsTrigger value="database" className="data-[state=active]:bg-red-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">🗄️ Database</span>
+              <span className="sm:hidden">🗄️</span>
             </TabsTrigger>
-            <TabsTrigger value="config" className="data-[state=active]:bg-gray-600 text-xs">
-              🔧 Config
+            <TabsTrigger value="config" className="data-[state=active]:bg-gray-600 text-xs p-2 flex-col gap-1">
+              <span className="hidden sm:inline">🔧 Config</span>
+              <span className="sm:hidden">🔧</span>
             </TabsTrigger>
           </TabsList>
 
