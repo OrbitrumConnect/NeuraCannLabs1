@@ -35,7 +35,9 @@ export interface IStorage {
   // Users
   getUser(id: string): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  getUserByEmail(email: string): Promise<User | undefined>;
+  getUserByEmailAndPassword(email: string, password: string): Promise<User | undefined>;
+  createUser(user: InsertUser & { password?: string }): Promise<User>;
   
   // Scientific Studies
   getScientificStudies(): Promise<ScientificStudy[]>;

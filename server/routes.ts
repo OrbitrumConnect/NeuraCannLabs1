@@ -32,23 +32,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const ADMIN_EMAIL = 'phpg69@gmail.com';
   const ADMIN_PASSWORD = 'n6n7n8N9!horus';
 
-  // Auth routes
+  // Auth routes - Sistema completo com múltiplos perfis
   app.post("/api/auth/login", async (req, res) => {
     const { email, password } = req.body;
     
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-      const user = {
-        id: 'admin-1',
-        email: ADMIN_EMAIL,
-        name: 'Administrador',
-        role: 'admin',
-        plan: 'admin'
-      };
+    try {
+      // Admin login
+      if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+        const adminUser = {
+          id: 'admin-1',
+          email: ADMIN_EMAIL,
+          name: 'Administrador',
+          role: 'admin',
+          plan: 'admin',
+          specialty: 'Administração Geral',
+          crm: 'ADMIN-001'
+        };
+        
+        (req.session as any).user = adminUser;
+        return res.json(adminUser);
+      }
       
-      (req.session as any).user = user;
-      res.json(user);
-    } else {
-      res.status(401).json({ message: "Credenciais inválidas" });
+      // Verificar no sistema de usuários
+      const user = await storage.getUserByEmailAndPassword(email, password);
+      
+      if (user) {
+        (req.session as any).user = user;
+        res.json(user);
+      } else {
+        res.status(401).json({ message: "Credenciais inválidas" });
+      }
+    } catch (error) {
+      console.error('Erro no login:', error);
+      res.status(500).json({ message: "Erro interno do servidor" });
     }
   });
 
@@ -64,6 +80,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(user);
     } else {
       res.status(401).json({ message: "Não autenticado" });
+    }
+  });
+
+  // Registro de novos usuários
+  app.post("/api/auth/register", async (req, res) => {
+    try {
+      const { email, password, name, role, crm, crmState, specialty, phone } = req.body;
+      
+      // Validação básica
+      if (!email || !password || !name || !role) {
+        return res.status(400).json({ message: "Dados obrigatórios não fornecidos" });
+      }
+      
+      // Se é médico, validar CRM
+      if (role === 'medico' && (!crm || !crmState || !specialty)) {
+        return res.status(400).json({ message: "Médicos devem fornecer CRM, estado e especialidade" });
+      }
+      
+      // Verificar se email já existe
+      const existingUser = await storage.getUserByEmail(email);
+      if (existingUser) {
+        return res.status(409).json({ message: "Email já cadastrado" });
+      }
+      
+      // Criar novo usuário
+      const newUser = await storage.createUser({
+        email,
+        password,
+        name,
+        role,
+        crm,
+        crmState,
+        specialty,
+        phone,
+        plan: role === 'medico' ? 'professional' : 'free'
+      });
+      
+      // Login automático após registro
+      (req.session as any).user = newUser;
+      
+      res.status(201).json({
+        message: "Usuário criado com sucesso",
+        user: newUser
+      });
+    } catch (error) {
+      console.error('Erro no registro:', error);
+      res.status(500).json({ message: "Erro interno do servidor" });
     }
   });
 
