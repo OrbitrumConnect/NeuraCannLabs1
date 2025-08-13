@@ -43,7 +43,7 @@ const getMenuOptionsForUser = (userRole: string) => {
     return [
       ...baseOptions,
       { id: "clinical", name: "Casos Clínicos", icon: "fas fa-user-md" },
-      { id: "scientific", name: "Pesquisa Científica", icon: "fas fa-microscope" },
+      { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
       { id: "forum", name: "Fórum Médico", icon: "fas fa-comments" },
       { id: "alerts", name: "Alertas Clínicos", icon: "fas fa-bell" },
     ];
@@ -195,6 +195,13 @@ export default function DashboardLayout({
                   <button onClick={() => handleDashboardClick("clinical")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-user-md mr-2" />Casos Clínicos
                   </button>
+                  <div className="border-t border-gray-600 my-1"></div>
+                  <button onClick={() => handleDashboardClick("forum")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-comments mr-2" />Fórum <span className="ml-2 bg-blue-500 text-white text-xs rounded-full px-2 py-1">29</span>
+                  </button>
+                  <button onClick={() => handleDashboardClick("alerts")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-bell mr-2" />Alertas <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
+                  </button>
                 </div>
               </div>
 
@@ -219,34 +226,7 @@ export default function DashboardLayout({
               </div>
             </div>
             
-          {/* Botões individuais normais */}
-          <nav className="hidden lg:flex items-center space-x-3">
-            {desktopHeaderOptions
-              .map((option) => (
-              <button
-                key={option.id}
-                onClick={() => handleDashboardClick(option.id)}
-                className={`px-3 py-2 rounded-lg transition-all text-sm ${
-                  activeDashboard === option.id
-                    ? "bg-gray-600/30 text-white border border-gray-500/50"
-                    : "text-gray-300 hover:bg-gray-600/20 hover:text-white border border-gray-500/30"
-                }`}
-                data-testid={`nav-${option.id}`}
-              >
-                <i className={`${option.icon} mr-2 text-sm`} />
-                <span className="text-sm">{option.name}</span>
-                {option.id === "alerts" && (
-                  <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
-                )}
-                {option.id === "forum" && (
-                  <span className="ml-2 bg-blue-500 text-white text-xs rounded-full px-2 py-1">29</span>
-                )}
-                {option.id === "admin" && (
-                  <span className="ml-2 bg-orange-500 text-white text-xs rounded-full px-2 py-1">🌍</span>
-                )}
-              </button>
-            ))}
-          </nav>
+          {/* Remoção de duplicação: os botões científico, fórum, alertas já estão no dropdown "Pesquisa" */}
           
           {/* Logout - Desktop */}
           <div className="hidden lg:flex items-center space-x-4 ml-7">
