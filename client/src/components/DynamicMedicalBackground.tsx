@@ -79,21 +79,18 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
   const { setScanPosition } = useScan();
   
   useEffect(() => {
+    // Sincronização simples para o avatar - a linha agora usa CSS puro
     const interval = setInterval(() => {
       setCurrentPattern(prev => {
-        const newPattern = (prev + 1) % 100 // Movimento mais visível
-        
-        // CRITICAL: Sincronizar posição exata entre linha e avatar
+        const newPattern = (prev + 1) % 100;
         setScanPosition(newPattern);
-        
-        return newPattern
-      })
-      // Variação sutil na intensidade para efeito "respiratório"
-      setIntensity(0.2 + Math.sin(Date.now() / 3000) * 0.2)
-    }, 80) // Velocidade otimizada para movimento visível
+        return newPattern;
+      });
+      setIntensity(0.2 + Math.sin(Date.now() / 3000) * 0.2);
+    }, 40); // 4 segundos para ciclo completo (100 * 40ms)
 
-    return () => clearInterval(interval)
-  }, [config.speed, setScanPosition])
+    return () => clearInterval(interval);
+  }, [setScanPosition])
 
   // Notifica a posição do scan em um useEffect separado para evitar warnings
   useEffect(() => {
@@ -240,46 +237,15 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       {/* Efeito neon lateral verde sutil */}
       {generateSideGlow()}
       
-      {/* Linha horizontal que escaneia - desaparece no final e reaparece no topo */}
+      {/* Linha horizontal que escaneia - animação CSS pura para garantir movimento */}
       <div
-        className="absolute left-0 right-0 h-0.5 scanner-line"
+        className="absolute left-0 right-0 h-0.5 scanner-line-animated"
         style={{
-          background: (() => {
-            const currentPos = currentPattern;
-            // Zona amarela UNIVERSAL: 32% a 42% - sincronização melhorada para mobile/web
-            const isYellowZone = currentPos >= 32 && currentPos <= 42;
-            
-            // Log para verificar sincronização em diferentes dispositivos
-            if (isYellowZone) {
-              const isMobile = window.innerWidth < 640;
-              console.log(`✅ SINCRONIZAÇÃO PERFEITA! Avatar + Linha: ${currentPos.toFixed(1)}% | Mobile: ${isMobile}`);
-            }
-            
-            return isYellowZone
-              ? `linear-gradient(90deg, transparent, rgba(255,235,59,0.8), rgba(255,235,59,1.0), rgba(255,235,59,0.8), transparent)`
-              : `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`;
-          })(),
-          top: `${currentPattern}%`,
-          filter: (() => {
-            const currentPos = currentPattern;
-            const isYellowZone = currentPos >= 32 && currentPos <= 42;
-            
-            return isYellowZone
-              ? `blur(1px) drop-shadow(0 0 4px rgba(255,235,59,0.8))`
-              : `blur(1px) drop-shadow(0 0 4px ${config.color})`;
-          })(),
-          opacity: (() => {
-            const currentPos = currentPattern;
-            // Fade out nos últimos 10% e fade in nos primeiros 10%
-            if (currentPos > 85) {
-              return ((100 - currentPos) / 15) * 0.6; // Fade out gradual
-            } else if (currentPos < 15) {
-              return (currentPos / 15) * 0.6; // Fade in gradual
-            }
-            return 0.6; // Opacidade normal
-          })(),
-          transition: 'opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-          zIndex: 50 // Garantir que apareça acima das esferas do background
+          background: `linear-gradient(90deg, transparent, ${config.color}88, ${config.color}, ${config.color}88, transparent)`,
+          filter: `blur(1px) drop-shadow(0 0 4px ${config.color})`,
+          opacity: 0.8,
+          zIndex: 50,
+          animation: 'scanner-move 4s linear infinite'
         }}
       />
     </div>
@@ -301,5 +267,33 @@ export const medicalBackgroundStyles = `
   @keyframes pulse {
     0% { opacity: 0.6; transform: scaleY(1); }
     100% { opacity: 1; transform: scaleY(1.5); }
+  }
+  
+  @keyframes scanner-move {
+    0% { 
+      top: 0%; 
+      opacity: 0; 
+    }
+    10% { 
+      opacity: 0.8; 
+    }
+    30% { 
+      background: linear-gradient(90deg, transparent, rgba(255,235,59,0.8), rgba(255,235,59,1.0), rgba(255,235,59,0.8), transparent);
+      filter: blur(1px) drop-shadow(0 0 4px rgba(255,235,59,0.8));
+    }
+    45% { 
+      background: linear-gradient(90deg, transparent, rgba(255,235,59,0.8), rgba(255,235,59,1.0), rgba(255,235,59,0.8), transparent);
+      filter: blur(1px) drop-shadow(0 0 4px rgba(255,235,59,0.8));
+    }
+    80% { 
+      opacity: 0.8; 
+    }
+    95% { 
+      opacity: 0; 
+    }
+    100% { 
+      top: 100%; 
+      opacity: 0; 
+    }
   }
 `
