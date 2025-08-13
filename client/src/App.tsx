@@ -25,9 +25,20 @@ import NotFound from "@/pages/not-found";
 function Router() {
   // Verificar se existe usuário logado e seu role
   const user = localStorage.getItem('user');
-  const isLoggedIn = user && JSON.parse(user).id;
-  const userData = isLoggedIn ? JSON.parse(user) : null;
-  const userRole = userData?.role;
+  let userData = null;
+  let isLoggedIn = false;
+  let userRole = null;
+  
+  try {
+    if (user && user !== 'undefined' && user !== 'null') {
+      userData = JSON.parse(user);
+      isLoggedIn = userData && userData.id;
+      userRole = userData?.role;
+    }
+  } catch (error) {
+    console.error('Erro ao fazer parse do usuário:', error);
+    localStorage.removeItem('user'); // Remove dados corrompidos
+  }
 
   // Função para determinar dashboard baseado no role
   const getDashboardComponent = () => {
@@ -48,16 +59,8 @@ function Router() {
       return PatientDashboard;
     }
     
-    // SE NÃO TEM ROLE E NÃO É ADMIN - mostra seletor
-    if (!userRole && userData?.email !== 'phpg69@gmail.com') {
-      return () => (
-        <RoleSelector 
-          onRoleSelected={(role) => {
-            window.location.reload();
-          }} 
-        />
-      );
-    }
+    // SE NÃO TEM ROLE E NÃO É ADMIN - vai para dashboard padrão
+    // (seletor será implementado depois se necessário)
     
     // DEFAULT - dashboard normal
     return Dashboard;
