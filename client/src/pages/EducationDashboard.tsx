@@ -225,19 +225,19 @@ export default function EducationDashboard() {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-5 gap-2">
             {mockCourses.map((course) => (
-              <Card key={course.id} className="bg-gray-800/50 border-gray-700 hover:border-emerald-500/50 transition-all scale-90">
+              <Card key={course.id} className="bg-gray-800/50 border-gray-700 hover:border-emerald-500/50 transition-all scale-75">
                 <div className="aspect-video bg-gradient-to-br from-emerald-900/50 to-blue-900/50 rounded-t-lg flex items-center justify-center">
-                  <PlayCircle className="w-6 h-6 text-emerald-400" />
+                  <PlayCircle className="w-4 h-4 text-emerald-400" />
                 </div>
                 
-                <CardHeader className="pb-2 px-3 pt-3">
+                <CardHeader className="pb-1 px-2 pt-2">
                   <div className="flex items-start justify-between">
-                    <CardTitle className="text-white text-sm leading-4">{course.title}</CardTitle>
+                    <CardTitle className="text-white text-xs leading-3 max-w-[60%]">{course.title}</CardTitle>
                     <Badge 
                       variant="outline" 
-                      className={`text-xs px-1 py-0
+                      className={`text-xs px-1 py-0 scale-75
                         ${course.category === 'Básico' ? 'border-green-500 text-green-400' : ''}
                         ${course.category === 'Avançado' ? 'border-yellow-500 text-yellow-400' : ''}
                         ${course.category === 'Especialização' ? 'border-purple-500 text-purple-400' : ''}
@@ -246,15 +246,15 @@ export default function EducationDashboard() {
                       {course.category}
                     </Badge>
                   </div>
-                  <CardDescription className="text-gray-400 text-xs leading-3">
+                  <CardDescription className="text-gray-400 text-xs leading-3 line-clamp-2">
                     {course.description}
                   </CardDescription>
                 </CardHeader>
                 
-                <CardContent className="space-y-2 pt-0 px-3 pb-3">
+                <CardContent className="space-y-1 pt-0 px-2 pb-2">
                   <div className="flex items-center justify-between text-xs text-gray-400">
-                    <span>⏱️ {course.duration}min</span>
-                    <span>📚 {course.completedModules}/{course.modules}</span>
+                    <span className="text-xs">⏱️ {course.duration}min</span>
+                    <span className="text-xs">📚 {course.completedModules}/{course.modules}</span>
                   </div>
                   
                   <Progress value={course.progress} className="w-full h-1" />
@@ -263,7 +263,7 @@ export default function EducationDashboard() {
                     <span className="text-xs text-emerald-400">{course.progress}%</span>
                     <Button 
                       size="sm"
-                      className={`text-xs px-2 py-1
+                      className={`text-xs px-1 py-1 h-6 scale-90
                         ${course.status === 'completed' ? 'bg-green-600 hover:bg-green-700' : ''}
                         ${course.status === 'in_progress' ? 'bg-emerald-500 hover:bg-emerald-600' : ''}
                         ${course.status === 'not_started' ? 'bg-gray-600 hover:bg-gray-700' : ''}
@@ -271,18 +271,18 @@ export default function EducationDashboard() {
                     >
                       {course.status === 'completed' ? (
                         <>
-                          <CheckCircle className="w-4 h-4 mr-2" />
-                          Concluído
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          <span className="text-xs">OK</span>
                         </>
                       ) : course.status === 'in_progress' ? (
                         <>
-                          <PlayCircle className="w-4 h-4 mr-2" />
-                          Continuar
+                          <PlayCircle className="w-3 h-3 mr-1" />
+                          <span className="text-xs">Play</span>
                         </>
                       ) : (
                         <>
-                          <PlayCircle className="w-4 h-4 mr-2" />
-                          Começar
+                          <PlayCircle className="w-3 h-3 mr-1" />
+                          <span className="text-xs">Start</span>
                         </>
                       )}
                     </Button>
