@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,18 @@ interface RoleSelectorProps {
 export default function RoleSelector({ onRoleSelected }: RoleSelectorProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  // Verificar se é admin e redirecionar automaticamente
+  useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userData = JSON.parse(user);
+      if (userData.role === 'admin') {
+        window.location.reload();
+        return;
+      }
+    }
+  }, []);
 
   const selectRole = async (role: 'medico' | 'paciente') => {
     setIsLoading(true);

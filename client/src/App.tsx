@@ -32,26 +32,25 @@ function Router() {
   const getDashboardComponent = () => {
     if (!isLoggedIn) return Landing;
     
-    // Admin sempre vai para painel admin
-    if (userRole === 'admin') return AdminDashboard;
-    
-    // Se não tem role definido (e não é admin), mostrar seletor
-    if (!userRole || userRole === 'undefined') {
-      return () => (
-        <RoleSelector 
-          onRoleSelected={(role) => {
-            window.location.reload(); // Recarregar para aplicar o redirecionamento
-          }} 
-        />
-      );
-    }
-    
+    // Verificar roles específicos primeiro
     switch (userRole) {
+      case 'admin':
+        return AdminDashboard;
       case 'medico':
         return MedicalDashboard;
       case 'paciente':
         return PatientDashboard;
       default:
+        // Se não tem role definido, mostrar seletor APENAS para não-admins
+        if (!userRole || userRole === 'undefined') {
+          return () => (
+            <RoleSelector 
+              onRoleSelected={(role) => {
+                window.location.reload();
+              }} 
+            />
+          );
+        }
         return Dashboard;
     }
   };
