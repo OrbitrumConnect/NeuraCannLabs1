@@ -210,12 +210,13 @@ export default function DraCannabisAI() {
       const script = document.createElement('script');
       script.type = 'module';
       script.src = 'https://agent.d-id.com/v2/index.js';
-      script.setAttribute('data-mode', 'full');
+      script.setAttribute('data-mode', 'fabio');
       script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli');
       script.setAttribute('data-agent-id', 'v2_agt_WAM9eh_P');
       script.setAttribute('data-name', 'did-agent');
       script.setAttribute('data-monitor', 'true');
-      script.setAttribute('data-target-id', 'did-container');
+      script.setAttribute('data-orientation', 'horizontal');
+      script.setAttribute('data-position', 'left');
 
       script.onload = () => {
         clearTimeout(loadingTimeout);
