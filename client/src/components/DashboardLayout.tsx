@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { LogOut, User } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { ThemeToggle } from "./ThemeToggle";
-import UnifiedHeader from "./UnifiedHeader";
 
 
 interface DashboardLayoutProps {
@@ -156,13 +155,107 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-cyber-dark text-gray-100 font-sans">
-      {/* Header Unificado */}
-      <UnifiedHeader 
-        userRole={user?.role || 'patient'}
-        userName={user?.name || 'Usuário'}
-        currentPage="Dashboard"
-        onLogout={handleLogout}
-      />
+      {/* Header */}
+      <header className="fixed top-0 w-full z-50 bg-gradient-to-r from-cyber-dark via-cyber-gray to-cyber-dark border-b border-green-500/30 backdrop-blur-md">
+        <div className="container mx-auto px-3 sm:px-5 py-3 sm:py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3 sm:space-x-4">
+            <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-green-500 to-lime-400 rounded-lg flex items-center justify-center animate-pulse-glow shadow-lg shadow-green-500/50">
+              <i className="fas fa-cannabis text-white text-sm sm:text-xl" />
+            </div>
+            <h1 className="text-base sm:text-3xl font-bold text-green-400">NeuroCann Lab</h1>
+          </div>
+          
+          <div className="flex items-center space-x-3 sm:space-x-5">
+            {/* Dra. Cannabis IA - Botão Especial (maior) */}
+            <button 
+              onClick={() => handleDashboardClick("dra-cannabis")}
+              className="hidden md:flex items-center space-x-1 px-3 py-2 rounded-lg bg-gradient-to-r from-purple-500/20 to-blue-500/20 hover:from-purple-500/30 hover:to-blue-500/30 transition-all border border-purple-400/30 hover:border-purple-400/50"
+              data-testid="nav-dra-cannabis-header"
+            >
+              <i className="fas fa-robot text-purple-400 text-sm" />
+              <span className="text-purple-400 text-sm">Dra. IA</span>
+            </button>
+            
+            {/* Grupos com dropdown */}
+            <div className="hidden lg:flex items-center space-x-3">
+              {/* Grupo Pesquisa & Dados */}
+              <div className="relative group">
+                <button className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
+                  <i className="fas fa-search text-gray-300 text-sm" />
+                  <span className="text-gray-300 text-sm">Pesquisa</span>
+                  <i className="fas fa-chevron-down text-sm" />
+                </button>
+                <div className="absolute top-full left-0 mt-1 w-56 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  <button onClick={() => handleDashboardClick("overview")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-chart-line mr-2" />Estudos Cruzados
+                  </button>
+                  <button onClick={() => handleDashboardClick("scientific")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-microscope mr-2" />Dados Científicos
+                  </button>
+                  <button onClick={() => handleDashboardClick("clinical")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-user-md mr-2" />Casos Clínicos
+                  </button>
+                  <div className="border-t border-gray-600 my-1"></div>
+                  <button onClick={() => handleDashboardClick("forum")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-comments mr-2" />Fórum <span className="ml-2 bg-blue-500 text-white text-xs rounded-full px-2 py-1">29</span>
+                  </button>
+                  <button onClick={() => handleDashboardClick("alerts")} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-bell mr-2" />Alertas <span className="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Grupo Sistema */}
+              <div className="relative group">
+                <button className="flex items-center space-x-1 px-3 py-2 rounded-lg hover:bg-gray-600/20 transition-colors border border-gray-500/30">
+                  <i className="fas fa-cog text-gray-300 text-sm" />
+                  <span className="text-gray-300 text-sm">Sistema</span>
+                  <i className="fas fa-chevron-down text-sm" />
+                </button>
+                <div className="absolute top-full left-0 mt-1 w-48 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                  <button onClick={() => window.location.href = '/patient'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-heart mr-2" />Perfil Paciente
+                  </button>
+                  <button onClick={() => window.location.href = '/professional'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-user-md mr-2" />Perfil Profissional
+                  </button>
+                  <button onClick={() => window.location.href = '/dashboard/overview'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                    <i className="fas fa-shield-alt mr-2" />Admin Global
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+          {/* Remoção de duplicação: os botões científico, fórum, alertas já estão no dropdown "Pesquisa" */}
+          
+          {/* Logout - Desktop */}
+          <div className="hidden lg:flex items-center space-x-4 ml-7">
+            <Button
+              onClick={handleLogout}
+              variant="ghost"
+              size="default"
+              className="text-gray-300 hover:text-red-400 hover:bg-red-500/10 border border-gray-600 hover:border-red-400 px-4 py-2"
+              data-testid="button-logout-desktop"
+            >
+              <LogOut className="w-5 h-5 mr-2" />
+              Sair
+            </Button>
+          </div>
+          
+          <div className="lg:hidden flex items-center space-x-3">
+            <button
+              id="menuToggle"
+              onClick={onMenuClick}
+              className="w-12 h-12 flex items-center justify-center rounded-lg border border-green-500/30 hover:bg-green-500/20 transition-all active:scale-95 touch-manipulation"
+              data-testid="mobile-menu-toggle"
+              aria-label="Menu"
+            >
+              <i className="fas fa-bars text-green-500 text-lg" />
+            </button>
+          </div>
+          </div>
+        </div>
+      </header>
 
       {/* Side Navigation - positioned below complete overview without scroll */}
       {sideNavOpen && (

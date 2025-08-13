@@ -167,7 +167,7 @@ export default function EducationDashboard() {
         
         {/* Dashboard de Estatísticas - Cards Organizados */}
         <div className="bg-gray-900/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-8 mb-8 shadow-2xl">
-          <h2 className="text-2xl font-bold text-white mb-6 text-center">Painel de Progresso</h2>
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">📊 Painel de Progresso</h2>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Card Cursos Ativos */}

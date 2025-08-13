@@ -39,12 +39,12 @@ export default function UnifiedHeader({
   };
 
   const getPageTitle = () => {
-    switch (currentPage) {
-      case 'Academy': return 'NeuroCann Academy';
-      case 'Admin': return 'Painel Administrativo';
-      case 'Professional': return 'Dashboard Profissional';
-      case 'Patient': return 'Dashboard Paciente';
-      case 'Profile': return 'Perfil do Usuário';
+    switch (location) {
+      case '/education': return 'NeuroCann Academy';
+      case '/admin': return 'Painel Administrativo';
+      case '/professional': return 'Dashboard Profissional';
+      case '/patient': return 'Dashboard Paciente';
+      case '/profile': return 'Perfil do Usuário';
       default: return 'NeuroCann Lab';
     }
   };
