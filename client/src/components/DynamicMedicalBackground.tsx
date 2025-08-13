@@ -13,10 +13,10 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
   const [intensity, setIntensity] = useState(0.3)
   const { avatarScanning } = useScan()
 
-  // Configurações específicas por contexto médico
+  // Configurações específicas por contexto médico - PALETA NEUROCANN RIGOROSA
   const contextConfigs = {
     overview: {
-      color: '#00ff88',
+      color: '#00ff00', // Verde neon (70%)
       pattern: 'heartbeat',
       speed: 1200,
       intensity: 0.15,
@@ -24,7 +24,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       lineCount: 10
     },
     scientific: {
-      color: '#00aaff',
+      color: '#00ff00', // Verde neon (70%)
       pattern: 'brainwaves',
       speed: 800,
       intensity: 0.2,
@@ -32,7 +32,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       lineCount: 10
     },
     clinical: {
-      color: '#ff6600',
+      color: '#ffff00', // Amarelo (20%)
       pattern: 'vitals',
       speed: 1000,
       intensity: 0.25,
@@ -40,7 +40,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       lineCount: 10
     },
     alerts: {
-      color: '#ff4444',
+      color: '#ff0000', // Vermelho (10%)
       pattern: 'alert_pulse',
       speed: 600,
       intensity: 0.35,
@@ -48,7 +48,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       lineCount: 10
     },
     forum: {
-      color: '#8844ff',
+      color: '#00ff00', // Verde neon (70%)
       pattern: 'network',
       speed: 2000,
       intensity: 0.1,
@@ -56,7 +56,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       lineCount: 10
     },
     profile: {
-      color: '#44ff88',
+      color: '#00ff00', // Verde neon (70%)
       pattern: 'personal',
       speed: 1500,
       intensity: 0.125,
@@ -64,7 +64,7 @@ export function DynamicMedicalBackground({ context, className, onScanUpdate }: D
       lineCount: 10
     },
     admin: {
-      color: '#ffaa00',
+      color: '#ffff00', // Amarelo (20%)
       pattern: 'system',
       speed: 500,
       intensity: 0.3,
