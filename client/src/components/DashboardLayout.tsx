@@ -23,8 +23,13 @@ interface DashboardLayoutProps {
 // Apenas itens individuais que aparecem soltos no cabeçalho
 const dashboardOptions = [
   { id: "overview", name: "Visão Geral", icon: "fas fa-chart-line" },
+  { id: "dra-cannabis", name: "Dra. Cannabis IA", icon: "fas fa-robot" },
+  { id: "scientific", name: "Científico", icon: "fas fa-microscope" },
+  { id: "clinical", name: "Clínico", icon: "fas fa-user-md" },
+  { id: "my-study", name: "Meu Estudo", icon: "fas fa-brain" },
   { id: "forum", name: "Fórum", icon: "fas fa-comments" },
   { id: "alerts", name: "Alertas", icon: "fas fa-bell" },
+  { id: "profile", name: "Perfil", icon: "fas fa-user-circle" },
   { id: "admin", name: "Admin Global", icon: "fas fa-shield-alt" },
 ];
 
@@ -238,14 +243,21 @@ export default function DashboardLayout({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <i className={`${option.icon} mr-3 text-base ${
+                      option.id === "overview" ? "text-cyan-400" :
+                      option.id === "dra-cannabis" ? "text-purple-400" :
                       option.id === "scientific" ? "text-emerald-400" :
                       option.id === "clinical" ? "text-blue-400" :
+                      option.id === "my-study" ? "text-indigo-400" :
+                      option.id === "forum" ? "text-orange-400" :
                       option.id === "alerts" ? "text-amber-400" :
-                      option.id === "admin" ? "text-green-400" :
-                      option.id === "profile" ? "text-purple-400" : ""
+                      option.id === "profile" ? "text-pink-400" :
+                      option.id === "admin" ? "text-green-400" : "text-gray-400"
                     }`} />
                     <span className="font-semibold text-base">{option.name}</span>
                   </div>
+                  {option.id === "dra-cannabis" && (
+                    <span className="bg-purple-500 text-white text-xs rounded-full px-2 py-1">🤖</span>
+                  )}
                   {option.id === "alerts" && (
                     <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1">3</span>
                   )}
@@ -261,14 +273,14 @@ export default function DashboardLayout({
                 </div>
                 <div className="text-xs text-gray-400 mt-1 ml-7">
                   {option.id === "overview" && "Dashboard principal"}
+                  {option.id === "dra-cannabis" && "Consulta médica com IA empática"}
                   {option.id === "scientific" && "Estudos e pesquisas"}
                   {option.id === "clinical" && "Registros médicos"}
-                  {option.id === "alerts" && "Notificações importantes"}
                   {option.id === "my-study" && "Submissões de estudos"}
+                  {option.id === "alerts" && "Notificações importantes"}
                   {option.id === "forum" && "Discussões colaborativas"}
-                  {option.id === "critical-modules" && "Funcionalidades médicas hospitalares"}
-                  {option.id === "admin" && "Central científica mundial"}
                   {option.id === "profile" && "Configurações pessoais"}
+                  {option.id === "admin" && "Central científica mundial"}
                 </div>
               </button>
             ))}
