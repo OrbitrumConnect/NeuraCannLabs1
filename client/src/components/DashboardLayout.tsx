@@ -85,10 +85,30 @@ export default function DashboardLayout({
   const { user, isAuthenticated } = useAuth();
   const { toast } = useToast();
   
-  // Determinar o tipo de usuário
-  const userRole = user?.role || 'paciente';
-  const mobileMenuOptions = getMenuOptionsForUser(userRole);
-  const desktopHeaderOptions = getDesktopHeaderOptions(userRole);
+  // Determinar o tipo de usuário - com detecção inteligente baseada na URL
+  const currentPath = window.location.pathname;
+  let detectedUserRole = user?.role || 'paciente';
+  
+  // Detecção baseada na página atual para sistemas não autenticados
+  if (!user || !isAuthenticated) {
+    if (currentPath.includes('/admin')) {
+      detectedUserRole = 'admin';
+    } else if (currentPath.includes('/professional')) {
+      detectedUserRole = 'medico';
+    } else if (currentPath.includes('/patient')) {
+      detectedUserRole = 'paciente';
+    } else {
+      // Página principal - assumir admin por padrão no desenvolvimento
+      detectedUserRole = 'admin';
+    }
+  }
+  
+  const mobileMenuOptions = getMenuOptionsForUser(detectedUserRole);
+  const desktopHeaderOptions = getDesktopHeaderOptions(detectedUserRole);
+  
+  // Debug para verificar detecção do usuário
+  console.log('🔍 User Role Final:', detectedUserRole, 'Path:', currentPath, 'Authenticated:', isAuthenticated);
+  console.log('🔍 Desktop Header Options:', desktopHeaderOptions);
   const { setAvatarScanning, setScanPosition, avatarScanning, scanPosition } = useScan();
 
   const handleLogout = async () => {
