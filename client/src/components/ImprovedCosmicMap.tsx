@@ -198,6 +198,10 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
     // Ativar Dr AI quando fazer pesquisa (correção para mostrar opções)
     setIsDrAIActive(true);
     
+    // Garantir que o card principal abre automaticamente ao pesquisar
+    setIsMainCardMinimized(false);
+    setMainCardMode('search');
+    
     // Update current study topic when searching
     setCurrentStudyTopic(userMessage);
     
@@ -488,6 +492,14 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             result={formattedResult} 
             isMinimized={isMainCardMinimized}
             onToggleMinimize={() => setIsMainCardMinimized(!isMainCardMinimized)}
+            onClose={() => {
+              // Fechar o card principal
+              setSearchTabs([]);
+              setCurrentResult(null);
+              setSearchTerm("");
+              setMainCardMode('search');
+              setIsMainCardMinimized(false);
+            }}
           />
           {/* Mode Toggle Buttons - Mostrar apenas quando o card está minimizado */}
           {isMainCardMinimized && (

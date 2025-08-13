@@ -43,7 +43,7 @@ interface MainCardProps {
   onToggleMinimize?: () => void;
 }
 
-export default function MainCard({ result, isMinimized = false, onToggleMinimize, onCardExpand }: MainCardProps & { onCardExpand?: (content: string, title: string, autoStartTTS?: boolean) => void }) {
+export default function MainCard({ result, isMinimized = false, onToggleMinimize, onCardExpand, onClose }: MainCardProps & { onCardExpand?: (content: string, title: string, autoStartTTS?: boolean) => void; onClose?: () => void }) {
   const [hasAutoPlayed, setHasAutoPlayed] = useState(false);
 
   // Auto-reprodução da resposta integrada (Plataforma + NOA ESPERANÇA)
@@ -146,16 +146,29 @@ export default function MainCard({ result, isMinimized = false, onToggleMinimize
       position: "relative"
     }} className={isMinimized ? "sm:h-[80px]" : "sm:h-[480px] sm:p-4"}>
       
-      {/* Minimize Button */}
-      {onToggleMinimize && (
-        <button
-          onClick={onToggleMinimize}
-          className="absolute top-2 right-2 text-gray-400 hover:text-white p-1 rounded hover:bg-gray-800/50 text-xs z-10"
-          title={isMinimized ? "Expandir" : "Minimizar"}
-        >
-          {isMinimized ? "⬆️" : "⬇️"}
-        </button>
-      )}
+      {/* Control Buttons */}
+      <div className="absolute top-2 right-2 flex space-x-1 z-10">
+        {onToggleMinimize && (
+          <button
+            onClick={onToggleMinimize}
+            className="text-gray-400 hover:text-yellow-400 p-1 rounded hover:bg-gray-800/50 text-xs"
+            title={isMinimized ? "Expandir" : "Minimizar"}
+            data-testid="button-minimize-card"
+          >
+            {isMinimized ? "⬆️" : "⬇️"}
+          </button>
+        )}
+        {onClose && (
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-red-400 p-1 rounded hover:bg-gray-800/50 text-xs"
+            title="Fechar"
+            data-testid="button-close-card"
+          >
+            ❌
+          </button>
+        )}
+      </div>
 
       {isMinimized ? (
         /* Minimized View */

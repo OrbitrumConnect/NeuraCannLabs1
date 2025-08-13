@@ -147,9 +147,6 @@ export default function DashboardLayout({
                   <i className="fas fa-chevron-down text-xs" />
                 </button>
                 <div className="absolute top-full left-0 mt-1 w-32 bg-gray-800 border border-gray-600 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-50">
-                  <button onClick={() => handleDashboardClick("my-study")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
-                    <i className="fas fa-brain mr-2" />Meu Estudo
-                  </button>
                   <button onClick={() => handleDashboardClick("profile")} className="w-full text-left px-3 py-2 hover:bg-gray-700 text-xs text-gray-300">
                     <i className="fas fa-user-circle mr-2" />Perfil
                   </button>
