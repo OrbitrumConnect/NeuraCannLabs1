@@ -402,17 +402,17 @@ export function DraCannabisAI() {
                 `}
               />
               {isTalking && (
-                <div className="absolute inset-0 rounded-lg border-4 border-green-400/50 animate-ping" />
+                <div className="absolute inset-0 rounded-lg border-4 border-emerald-400/50 animate-ping" />
               )}
             </div>
             <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-white text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 ${
-              isTalking ? 'bg-green-400 animate-pulse' : 'bg-green-500'
+              isTalking ? 'bg-emerald-400 animate-pulse' : 'bg-emerald-500'
             }`}>
               {isTalking ? '🗣️ IA' : 'IA'}
             </Badge>
             {isAutoStarting && (
-              <div className="absolute inset-0 bg-green-500/20 rounded-lg flex items-center justify-center">
-                <div className="text-center text-green-400">
+              <div className="absolute inset-0 bg-emerald-500/20 rounded-lg flex items-center justify-center">
+                <div className="text-center text-emerald-400">
                   <Loader2 className="w-6 h-6 md:w-8 md:h-8 mx-auto animate-spin mb-2" />
                   <p className="text-xs md:text-sm">Inicializando...</p>
                 </div>
@@ -426,7 +426,7 @@ export function DraCannabisAI() {
             <Button 
               onClick={() => setupNativeDraMutation.mutate()}
               disabled={setupNativeDraMutation.isPending}
-              className="bg-green-600 hover:bg-green-700 w-full max-w-xs mx-auto text-sm md:text-base"
+              className="bg-emerald-600 hover:bg-emerald-700 w-full max-w-xs mx-auto text-sm md:text-base"
               data-testid="button-activate-doctor"
             >
               {setupNativeDraMutation.isPending ? (
@@ -446,7 +446,7 @@ export function DraCannabisAI() {
           
           {setupNativeDraMutation.data && (
             <div className="space-y-3 md:space-y-4">
-              <div className="flex items-center justify-center space-x-2 text-green-400">
+              <div className="flex items-center justify-center space-x-2 text-emerald-400">
                 <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
                 <span className="text-sm md:text-base">Dra. Cannabis IA Ativada e Pronta!</span>
               </div>
@@ -458,7 +458,7 @@ export function DraCannabisAI() {
                     type="checkbox"
                     checked={useDIDAnimation}
                     onChange={(e) => setUseDIDAnimation(e.target.checked)}
-                    className="w-4 h-4 text-green-600 border-green-300 rounded focus:ring-green-500"
+                    className="w-4 h-4 text-emerald-600 border-emerald-300 rounded focus:ring-emerald-500"
                   />
                   <Video className="w-4 h-4" />
                   <span>Animação Realista (D-ID)</span>
@@ -475,7 +475,7 @@ export function DraCannabisAI() {
                     controls
                     autoPlay
                     loop={false}
-                    className="rounded-lg shadow-lg border-2 border-green-500"
+                    className="rounded-lg shadow-lg border-2 border-emerald-500"
                     onEnded={() => setIsTalking(false)}
                     style={{ maxWidth: '100%', height: 'auto' }}
                   >
@@ -501,7 +501,7 @@ export function DraCannabisAI() {
       <Card className="mx-2 md:mx-0">
         <CardHeader className="pb-3 md:pb-4">
           <CardTitle className="flex items-center space-x-2 text-base md:text-lg">
-            <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-green-500" />
+            <MessageCircle className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" />
             <span>Consulta com Dra. Cannabis</span>
           </CardTitle>
         </CardHeader>
@@ -509,7 +509,7 @@ export function DraCannabisAI() {
         <CardContent className="space-y-4 md:space-y-5 px-4 md:px-6 pb-6 md:pb-8">
           {/* Histórico da Conversa Mobile */}
           {chatHistory.length > 0 && (
-            <div className="max-h-64 md:max-h-80 overflow-y-auto space-y-2 md:space-y-3 p-4 md:p-5 bg-green-900/10 border border-green-600/20 rounded-lg backdrop-blur-sm">
+            <div className="max-h-64 md:max-h-80 overflow-y-auto space-y-2 md:space-y-3 p-4 md:p-5 bg-emerald-900/10 border border-emerald-600/20 rounded-lg backdrop-blur-sm">
               <h4 className="font-medium text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2">Conversa com Dra. Cannabis IA:</h4>
               {chatHistory.map((entry, index) => (
                 <div
@@ -520,7 +520,7 @@ export function DraCannabisAI() {
                     className={`max-w-[90%] md:max-w-[85%] p-2 md:p-3 rounded-lg ${
                       entry.type === 'user'
                         ? 'bg-blue-600 text-white'
-                        : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200'
                     }`}
                     data-testid={`chat-${entry.type}-${index}`}
                   >
@@ -565,7 +565,7 @@ export function DraCannabisAI() {
                 {isListening ? (
                   <MicOff className="w-4 h-4 text-red-500" />
                 ) : (
-                  <Mic className="w-4 h-4 text-green-500" />
+                  <Mic className="w-4 h-4 text-emerald-500" />
                 )}
               </Button>
             </div>
@@ -576,7 +576,7 @@ export function DraCannabisAI() {
             <Button 
               onClick={handleSubmitQuestion}
               disabled={consultMutation.isPending || !question.trim()}
-              className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-sm md:text-base"
+              className="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-sm md:text-base"
               data-testid="button-submit-question"
             >
               {consultMutation.isPending ? (

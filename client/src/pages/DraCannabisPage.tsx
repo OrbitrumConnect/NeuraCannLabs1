@@ -11,8 +11,8 @@ export default function DraCannabisPage() {
   return (
     <div className="min-h-screen bg-gray-900">
       
-      {/* Cabeçalho Principal */}
-      <div className="bg-gradient-to-r from-green-900/30 to-emerald-900/30 border-b border-green-500/30">
+      {/* Cabeçalho Principal - Padronizado com outros dashboards */}
+      <div className="bg-gradient-to-r from-emerald-900/30 to-green-900/30 border-b border-emerald-500/30">
         <div className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -20,7 +20,7 @@ export default function DraCannabisPage() {
                 onClick={() => setLocation('/')}
                 variant="ghost"
                 size="sm"
-                className="text-green-400 hover:text-green-300 hover:bg-green-900/20"
+                className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-900/20"
                 data-testid="button-back-home"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
@@ -28,17 +28,17 @@ export default function DraCannabisPage() {
               </Button>
               
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
                   <Brain className="w-4 h-4 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-xl font-bold text-green-400">Dra. Cannabis IA</h1>
-                  <p className="text-xs text-green-200">Assistente Médico Inteligente</p>
+                  <h1 className="text-xl font-bold text-emerald-400">Dra. Cannabis IA</h1>
+                  <p className="text-xs text-emerald-200">Assistente Médico Inteligente</p>
                 </div>
               </div>
             </div>
             
-            <Badge className="bg-green-600 text-white text-sm">
+            <Badge className="bg-emerald-600 text-white text-sm">
               D-ID + ElevenLabs + ChatGPT
             </Badge>
           </div>
@@ -60,20 +60,20 @@ export default function DraCannabisPage() {
           <div className="space-y-4">
             
             {/* Header compacto */}
-            <Card className="border-green-500/30 bg-gradient-to-br from-green-900/20 to-emerald-900/20">
+            <Card className="border-emerald-500/30 bg-gradient-to-br from-emerald-900/20 to-green-900/20">
               <CardHeader className="pb-3">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
                     <Brain className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-lg text-green-400">Dra. Cannabis IA</CardTitle>
-                    <Badge className="bg-green-600 text-white text-xs mt-1">
+                    <CardTitle className="text-lg text-emerald-400">Dra. Cannabis IA</CardTitle>
+                    <Badge className="bg-emerald-600 text-white text-xs mt-1">
                       D-ID + ElevenLabs
                     </Badge>
                   </div>
                 </div>
-                <p className="text-xs text-green-200 mt-2">
+                <p className="text-xs text-emerald-200 mt-2">
                   Certificada ANVISA • CFM
                 </p>
               </CardHeader>
@@ -89,7 +89,7 @@ export default function DraCannabisPage() {
               </CardHeader>
               <CardContent className="pt-0 space-y-2">
                 <div className="flex items-center space-x-2 text-xs">
-                  <Stethoscope className="w-3 h-3 text-green-400" />
+                  <Stethoscope className="w-3 h-3 text-emerald-400" />
                   <span className="text-gray-300">Consultas IA instantâneas</span>
                 </div>
                 <div className="flex items-center space-x-2 text-xs">

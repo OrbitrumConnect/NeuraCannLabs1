@@ -31,7 +31,7 @@ NeuroCann Lab is an advanced medical platform integrating AI, real-time data vis
 - **Routing**: Wouter for lightweight client-side routing.
 - **UI/UX Decisions**: Fixed main cards, expandable bottom dock for sub-searches, professional zoom/pan (50%-200%), precise handles (6x6px) on sub-search icons, main card expanded to 480px height, responsive layout with intelligent absolute positioning, hover effects and smooth transitions. The main interface focuses on the Dr. Cannabis AI avatar, which controls system activation. Layout is optimized for mobile with a reorganized menu, relative positioning for elements, and vertically stacked sub-searches.
 - **Scanner System**: Horizontal line scanner with synchronized avatar glow effect. Yellow line appears during 22%-32% of screen scan (1 second duration). Dr. Cannabis avatar glows yellow from 12%-20% (perfect timing - 0.4s anticipation). Soft yellow color (rgba(255,235,59)) with 30% reduced intensity for elegant effect.
-- **Design Principles**: Consistent brand identity with a permanent night mode (dark medical interface) and green as the primary medical color across all UI elements. Standardized dashboard dimensions for visual harmony.
+- **Design Principles**: Consistent brand identity with a permanent night mode (dark medical interface) and emerald/green as the primary medical color across all UI elements. Standardized dashboard dimensions for visual harmony. Complete color standardization implemented across all dashboards using emerald-400/emerald-500/emerald-600 palette for consistent branding.
 
 ### Backend Architecture
 - **Runtime & Framework**: Node.js with Express.js for RESTful API endpoints, using ES modules.
