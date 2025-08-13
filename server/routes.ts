@@ -818,6 +818,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // TESTE: Verificar conhecimento "Nova Esperança" na API ChatGPT
+  app.get('/api/super-ai/test-new-hope', async (req, res) => {
+    try {
+      console.log("🔍 Testando conhecimento 'Nova Esperança' na API ChatGPT...");
+      
+      const result = await superMedicalAI.testNewHopeKnowledge();
+      
+      res.json({
+        success: true,
+        testResult: result,
+        timestamp: new Date().toISOString()
+      });
+      
+    } catch (error) {
+      console.error("❌ Erro ao testar Nova Esperança:", error);
+      res.status(500).json({
+        error: "Erro no teste",
+        details: error.message
+      });
+    }
+  });
+
   // ========================================
   // DRA. CANNABIS IA - ASSISTENTE MÉDICO
   // ========================================

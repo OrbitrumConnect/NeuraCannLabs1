@@ -475,6 +475,104 @@ export class SuperMedicalAI {
     }
   }
 
+  // TESTE ESPECÍFICO: NOVA ESPERANÇA NA API CHATGPT
+  async testNewHopeKnowledge(): Promise<{
+    hasNewHopeData: boolean;
+    studiesFound: string[];
+    researchAreas: string[];
+    apiResponse: string;
+  }> {
+    try {
+      if (!this.openai) {
+        return {
+          hasNewHopeData: false,
+          studiesFound: [],
+          researchAreas: [],
+          apiResponse: "API ChatGPT não configurada"
+        };
+      }
+
+      console.log("🔍 Testando conhecimento 'Nova Esperança' na API ChatGPT...");
+      
+      const completion = await this.openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          {
+            role: "system",
+            content: `Você é um especialista em cannabis medicinal. Responda especificamente sobre estudos e pesquisas relacionados à "Nova Esperança" (New Hope) em cannabis medicinal. Inclua:
+            1. Estudos específicos encontrados
+            2. Áreas de pesquisa identificadas
+            3. Dados científicos disponíveis
+            4. Protocolos médicos relacionados`
+          },
+          {
+            role: "user",
+            content: "Quais estudos e dados sobre 'Nova Esperança' ou 'New Hope' você tem sobre cannabis medicinal? Liste estudos específicos, protocolos e áreas de pesquisa."
+          }
+        ],
+        temperature: 0.3,
+        max_tokens: 800
+      });
+
+      const apiResponse = completion.choices[0].message.content || "";
+      
+      // Analisa a resposta para extrair dados específicos
+      const studiesFound = this.extractStudiesFromResponse(apiResponse);
+      const researchAreas = this.extractResearchAreas(apiResponse);
+      const hasNewHopeData = apiResponse.toLowerCase().includes('nova esperança') || 
+                           apiResponse.toLowerCase().includes('new hope') ||
+                           studiesFound.length > 0;
+
+      console.log(`📊 Resultado teste Nova Esperança: ${hasNewHopeData ? 'ENCONTRADO' : 'NÃO ENCONTRADO'}`);
+      
+      return {
+        hasNewHopeData,
+        studiesFound,
+        researchAreas,
+        apiResponse
+      };
+
+    } catch (error) {
+      console.error("❌ Erro ao testar Nova Esperança:", error);
+      return {
+        hasNewHopeData: false,
+        studiesFound: [],
+        researchAreas: [],
+        apiResponse: `Erro: ${error.message}`
+      };
+    }
+  }
+
+  // Extrai estudos específicos da resposta
+  private extractStudiesFromResponse(response: string): string[] {
+    const studies = [];
+    const lines = response.split('\n');
+    
+    for (const line of lines) {
+      if (line.includes('estudo') || line.includes('study') || line.includes('pesquisa') || line.includes('research')) {
+        if (line.trim().length > 10) {
+          studies.push(line.trim());
+        }
+      }
+    }
+    
+    return studies.slice(0, 10); // Máximo 10 estudos
+  }
+
+  // Extrai áreas de pesquisa da resposta
+  private extractResearchAreas(response: string): string[] {
+    const areas = [];
+    const keywords = ['oncologia', 'neurologia', 'psiquiatria', 'dor', 'epilepsia', 'ansiedade', 'depressão', 'cancer', 'alzheimer'];
+    
+    for (const keyword of keywords) {
+      if (response.toLowerCase().includes(keyword)) {
+        areas.push(keyword);
+      }
+    }
+    
+    return areas;
+  }
+
   // ESTATÍSTICAS DO CONHECIMENTO DO CHATGPT
   getSystemStats(): {
     knowledgeBaseSize: number;
