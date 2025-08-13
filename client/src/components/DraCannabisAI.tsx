@@ -639,16 +639,60 @@ export default function DraCannabisAI() {
                     <Loader2 className="w-4 h-4 animate-spin" />
                     <span className="text-sm">Carregando Widget D-ID...</span>
                   </div>
-                  <button
-                    onClick={() => {
-                      console.log('🔄 Forçando fallback para sistema local');
-                      setUseDIDAnimation(false);
-                      setIsDIDWidgetLoaded(false);
-                    }}
-                    className="text-xs px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-white"
-                  >
-                    Usar Sistema Local
-                  </button>
+                  <div className="flex space-x-2">
+                    <button
+                      onClick={async () => {
+                        console.log('🔍 Testando conectividade D-ID...');
+                        
+                        // Testar se o script D-ID pode ser acessado
+                        try {
+                          const response = await fetch('https://agent.d-id.com/v2/index.js');
+                          console.log('📡 D-ID Script Status:', response.status);
+                          
+                          if (response.ok) {
+                            console.log('✅ Script D-ID acessível');
+                            toast({
+                              title: "Diagnóstico D-ID",
+                              description: `Script acessível. Domínio atual: ${window.location.hostname}`,
+                              variant: "default",
+                            });
+                          } else {
+                            console.error('❌ Script D-ID não acessível:', response.status);
+                            toast({
+                              title: "Erro D-ID",
+                              description: `Script não acessível (${response.status})`,
+                              variant: "destructive",
+                            });
+                          }
+                        } catch (error) {
+                          console.error('❌ Erro na conectividade D-ID:', error);
+                          toast({
+                            title: "Erro de Conexão",
+                            description: "Não consegue acessar serviços D-ID",
+                            variant: "destructive",
+                          });
+                        }
+                      }}
+                      className="text-xs px-2 py-1 bg-blue-600 hover:bg-blue-700 rounded text-white"
+                    >
+                      Testar D-ID
+                    </button>
+                    <button
+                      onClick={() => {
+                        console.log('🔄 Forçando fallback para sistema local');
+                        setUseDIDAnimation(false);
+                        setIsDIDWidgetLoaded(false);
+                      }}
+                      className="text-xs px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-white"
+                    >
+                      Usar Sistema Local
+                    </button>
+                  </div>
+                  <div className="text-xs text-gray-400 text-center max-w-xs">
+                    <p>Domínio: {window.location.hostname}</p>
+                    <p>Client Key: ...{`Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli`.slice(-10)}</p>
+                    <p>Agent: v2_agt_WAM9eh_P</p>
+                  </div>
                 </div>
               )}
 
