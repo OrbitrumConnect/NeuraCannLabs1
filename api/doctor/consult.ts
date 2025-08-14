@@ -212,9 +212,11 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
           recommendations: this.generateRecommendations(question, response),
           needsSpecialist: false
         };
-             } else {
-         throw new Error('Erro na API do OpenAI');
-       }
+                   } else {
+        const errorText = await openaiResponse.text();
+        console.error('❌ Erro na API do OpenAI:', openaiResponse.status, errorText);
+        throw new Error(`Erro na API do OpenAI: ${openaiResponse.status} - ${errorText}`);
+      }
 
     } catch (error) {
       console.error('❌ Erro no SuperMedicalAI:', error);
