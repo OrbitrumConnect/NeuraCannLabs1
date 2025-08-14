@@ -26,10 +26,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { message, context, sessionId } = req.body;
 
   console.log('🎭 Dra. Cannabis - Recebida mensagem:', message);
+  console.log('🔑 OpenAI API Key disponível:', !!openaiApiKey);
+  console.log('🤖 OpenAI client criado:', !!openai);
 
   try {
     let aiResponse;
 
+    console.log('🔍 Verificando condições para OpenAI...');
+    console.log('  - OpenAI client:', !!openai);
+    console.log('  - Mensagem:', !!message);
+    console.log('  - Ambos verdadeiros:', !!(openai && message));
+    
     if (openai && message) {
       console.log('🧠 Usando OpenAI para resposta...');
       
