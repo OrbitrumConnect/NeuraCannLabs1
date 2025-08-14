@@ -29,9 +29,15 @@ class VercelSuperMedicalAI {
     console.log('🧠 SuperMedicalAI - Processando consulta...');
     console.log('🔑 OpenAI client:', !!this.openai);
     console.log('🔑 OpenAI API Key:', !!process.env.OPENAI_API_KEY);
+    console.log('🔑 API Key length:', process.env.OPENAI_API_KEY?.length || 0);
+    console.log('🔑 API Key starts with:', process.env.OPENAI_API_KEY?.substring(0, 10) || 'N/A');
     
-    if (!this.openai) {
-      console.log('⚠️ OpenAI não disponível, usando resposta limitada');
+    // Verificar se temos API Key mesmo sem client
+    const hasApiKey = !!process.env.OPENAI_API_KEY;
+    console.log('🔑 Temos API Key?', hasApiKey);
+    
+    if (!hasApiKey) {
+      console.log('⚠️ OpenAI API Key não encontrada, usando resposta limitada');
       return {
         response: this.generateLimitedResponse(question),
         medicalInsights: ['Consulta médica recomendada'],
