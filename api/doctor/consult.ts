@@ -176,27 +176,45 @@ DIRETRIZES IMPORTANTES:
 
 Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
 
-      const completion = await this.openai.chat.completions.create({
-        model: "gpt-4", // Usando GPT-4 padrão por enquanto, mas preparado para fine-tuned
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: question }
-        ],
-        max_tokens: 600,
-        temperature: 0.7
+      // Usar a mesma lógica do Replit - ChatGPT-4o com NOA ESPERANÇA
+      const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o', // Modelo mais avançado como no Replit
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt
+            },
+            {
+              role: 'user', 
+              content: question
+            }
+          ],
+          max_tokens: 400,
+          temperature: 0.7
+        })
       });
 
-      const response = completion.choices[0].message.content || 'Desculpe, não consegui processar sua consulta.';
-      
-      console.log('✅ NOA ESPERANÇA respondeu:', response.substring(0, 100) + '...');
-
-      return {
-        response: response,
-        medicalInsights: this.extractMedicalInsights(question, response),
-        confidence: 0.95,
-        recommendations: this.generateRecommendations(question, response),
-        needsSpecialist: false
-      };
+      if (openaiResponse.ok) {
+        const data = await openaiResponse.json();
+        const response = data.choices[0].message.content;
+        console.log('✅ NOA ESPERANÇA respondeu via ChatGPT-4o:', response.substring(0, 100) + '...');
+        
+        return {
+          response: response,
+          medicalInsights: this.extractMedicalInsights(question, response),
+          confidence: 0.95,
+          recommendations: this.generateRecommendations(question, response),
+          needsSpecialist: false
+        };
+             } else {
+         throw new Error('Erro na API do OpenAI');
+       }
 
     } catch (error) {
       console.error('❌ Erro no SuperMedicalAI:', error);
