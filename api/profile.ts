@@ -20,17 +20,37 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { userId } = req.query;
 
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', userId)
-        .single();
+      // Se tem userId, busca no Supabase
+      if (userId) {
+        const { data, error } = await supabase
+          .from('users')
+          .select('*')
+          .eq('id', userId)
+          .single();
 
-      if (error) {
-        return res.status(404).json({ message: "Usuário não encontrado" });
+        if (error) {
+          return res.status(404).json({ message: "Usuário não encontrado" });
+        }
+
+        return res.status(200).json({ user: data });
       }
 
-      return res.status(200).json({ user: data });
+      // Se não tem userId, retorna perfil padrão (como no servidor original)
+      const defaultProfile = {
+        id: "admin-default",
+        name: "Passos",
+        email: "phpg69@gmail.com",
+        role: "admin",
+        plan: "enterprise",
+        isAdmin: true,
+        preferences: {
+          theme: 'dark',
+          language: 'pt-BR',
+          notifications: true
+        }
+      };
+
+      return res.status(200).json(defaultProfile);
 
     } catch (error) {
       return res.status(500).json({ message: "Erro interno do servidor" });
@@ -42,20 +62,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { userId, ...updates } = req.body;
 
     try {
-      const { data, error } = await supabase
-        .from('users')
-        .update(updates)
-        .eq('id', userId)
-        .select()
-        .single();
+      // Se tem userId, atualiza no Supabase
+      if (userId) {
+        const { data, error } = await supabase
+          .from('users')
+          .update(updates)
+          .eq('id', userId)
+          .select()
+          .single();
 
-      if (error) {
-        return res.status(500).json({ message: "Erro ao atualizar perfil" });
+        if (error) {
+          return res.status(500).json({ message: "Erro ao atualizar perfil" });
+        }
+
+        return res.status(200).json({ 
+          message: "Perfil atualizado com sucesso",
+          user: data 
+        });
       }
+
+      // Se não tem userId, retorna perfil atualizado (como no servidor original)
+      const updatedProfile = {
+        id: "admin-default",
+        name: "Passos",
+        email: "phpg69@gmail.com",
+        role: "admin",
+        plan: "enterprise",
+        isAdmin: true,
+        ...updates
+      };
 
       return res.status(200).json({ 
         message: "Perfil atualizado com sucesso",
-        user: data 
+        user: updatedProfile 
       });
 
     } catch (error) {
