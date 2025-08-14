@@ -27,6 +27,8 @@ class VercelSuperMedicalAI {
 
   async processConsultation(userId: string, question: string, userContext: any = {}) {
     console.log('🧠 SuperMedicalAI - Processando consulta...');
+    console.log('🔑 OpenAI client:', !!this.openai);
+    console.log('🔑 OpenAI API Key:', !!process.env.OPENAI_API_KEY);
     
     if (!this.openai) {
       console.log('⚠️ OpenAI não disponível, usando resposta limitada');
