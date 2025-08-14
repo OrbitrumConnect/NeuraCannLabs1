@@ -40,34 +40,93 @@ class VercelSuperMedicalAI {
     }
 
     try {
-      // Buscar dados relevantes do Supabase
+      // Buscar dados relevantes do Supabase - BUSCA INTELIGENTE DA NOA
       let databaseContext = '';
       try {
+        console.log('🔍 NOA ESPERANÇA buscando dados internos para:', question);
+        
+        // 1. ESTUDOS CIENTÍFICOS - Base de conhecimento médico
         const { data: studies } = await supabase
           .from('scientific_studies')
-          .select('title, content, topic')
-          .ilike('content', `%${question.toLowerCase()}%`)
+          .select('title, content, topic, keywords')
+          .or(`content.ilike.%${question.toLowerCase()}%,title.ilike.%${question.toLowerCase()}%,topic.ilike.%${question.toLowerCase()}%`)
           .limit(3);
 
-        const { data: conversations } = await supabase
-          .from('conversations')
-          .select('user_message, ai_response, medical_topic')
-          .ilike('user_message', `%${question.toLowerCase()}%`)
+        // 2. CASOS CLÍNICOS - Experiência prática
+        const { data: clinicalCases } = await supabase
+          .from('clinical_cases')
+          .select('case_number, description, medical_condition, treatment_protocol, outcome')
+          .or(`description.ilike.%${question.toLowerCase()}%,medical_condition.ilike.%${question.toLowerCase()}%,treatment_protocol.ilike.%${question.toLowerCase()}%`)
           .limit(2);
 
+        // 3. CONVERSAS ANTERIORES - Histórico de consultas
+        const { data: conversations } = await supabase
+          .from('conversations')
+          .select('user_message, ai_response, medical_topic, success_rating')
+          .or(`user_message.ilike.%${question.toLowerCase()}%,medical_topic.ilike.%${question.toLowerCase()}%`)
+          .order('success_rating', { ascending: false })
+          .limit(2);
+
+        // 4. PADRÕES DE APRENDIZADO - Inteligência da NOA
+        const { data: learningPatterns } = await supabase
+          .from('learning_patterns')
+          .select('pattern, best_response, success_rate, medical_category')
+          .or(`pattern.ilike.%${question.toLowerCase()}%,medical_category.ilike.%${question.toLowerCase()}%`)
+          .order('success_rate', { ascending: false })
+          .limit(2);
+
+        // 5. INSIGHTS DA IA - Conhecimento acumulado
+        const { data: aiInsights } = await supabase
+          .from('ai_insights')
+          .select('insight, category, confidence, source')
+          .or(`insight.ilike.%${question.toLowerCase()}%,category.ilike.%${question.toLowerCase()}%`)
+          .order('confidence', { ascending: false })
+          .limit(2);
+
+        // MONTAR CONTEXTO COMPLETO DA NOA
         if (studies && studies.length > 0) {
-          databaseContext += '\n\nESTUDOS CIENTÍFICOS RELEVANTES:\n';
+          databaseContext += '\n\n📚 ESTUDOS CIENTÍFICOS DA MINHA BASE:\n';
           studies.forEach(study => {
-            databaseContext += `- ${study.title}: ${study.content.substring(0, 200)}...\n`;
+            databaseContext += `- ${study.title} (${study.topic}): ${study.content.substring(0, 200)}...\n`;
+          });
+        }
+
+        if (clinicalCases && clinicalCases.length > 0) {
+          databaseContext += '\n\n🏥 CASOS CLÍNICOS QUE ATENDI:\n';
+          clinicalCases.forEach(case_ => {
+            databaseContext += `- Caso ${case_.case_number}: ${case_.medical_condition}\n  Protocolo: ${case_.treatment_protocol.substring(0, 150)}...\n  Resultado: ${case_.outcome}\n`;
           });
         }
 
         if (conversations && conversations.length > 0) {
-          databaseContext += '\n\nCONSULTAS ANTERIORES SIMILARES:\n';
+          databaseContext += '\n\n💬 CONSULTAS ANTERIORES SIMILARES:\n';
           conversations.forEach(conv => {
-            databaseContext += `- Pergunta: ${conv.user_message}\n- Resposta: ${conv.ai_response.substring(0, 150)}...\n`;
+            databaseContext += `- Paciente perguntou: "${conv.user_message}"\n- Minha resposta: ${conv.ai_response.substring(0, 150)}...\n- Avaliação: ${conv.success_rating}/1.0\n`;
           });
         }
+
+        if (learningPatterns && learningPatterns.length > 0) {
+          databaseContext += '\n\n🧠 PADRÕES QUE APRENDI:\n';
+          learningPatterns.forEach(pattern => {
+            databaseContext += `- Padrão: ${pattern.pattern}\n- Melhor resposta: ${pattern.best_response.substring(0, 100)}...\n- Taxa de sucesso: ${pattern.success_rate}%\n`;
+          });
+        }
+
+        if (aiInsights && aiInsights.length > 0) {
+          databaseContext += '\n\n💡 INSIGHTS DA MINHA EXPERIÊNCIA:\n';
+          aiInsights.forEach(insight => {
+            databaseContext += `- ${insight.insight} (Confiança: ${insight.confidence})\n`;
+          });
+        }
+
+        console.log('✅ NOA encontrou dados:', {
+          studies: studies?.length || 0,
+          cases: clinicalCases?.length || 0,
+          conversations: conversations?.length || 0,
+          patterns: learningPatterns?.length || 0,
+          insights: aiInsights?.length || 0
+        });
+
       } catch (error) {
         console.log('⚠️ Erro ao buscar dados do banco:', error);
       }
