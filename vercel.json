@@ -1,26 +1,12 @@
 {
-  "version": 2,
-  "name": "neurocann-lab",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["dist/**", "attached_assets/**"]
-      }
-    }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  },
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/dist/index.js"
+      "destination": "/api/$1"
     },
     {
       "source": "/(.*)",
-      "destination": "/dist/public/index.html"
+      "destination": "/index.html"
     }
   ]
 }
