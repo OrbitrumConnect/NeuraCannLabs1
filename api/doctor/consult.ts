@@ -6,6 +6,11 @@ const supabaseUrl = process.env.SUPABASE_URL || 'https://rfjshppjhjtwtbqhlaio.su
 const supabaseKey = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmanNocHBqaGp0d3RicWhsYWlvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwNjk2MjAsImV4cCI6MjA3MDY0NTYyMH0.zN4bYUDnFB7l43HaFRgyJ_Jv2R-XDYVH_rDpQFEO634';
 const openaiApiKey = process.env.OPENAI_API_KEY;
 
+console.log('🔧 Configuração inicial:');
+console.log('🔑 OpenAI API Key:', openaiApiKey ? 'CONFIGURADA' : 'NÃO CONFIGURADA');
+console.log('🔑 Supabase URL:', supabaseUrl ? 'CONFIGURADA' : 'NÃO CONFIGURADA');
+console.log('🔑 Supabase Key:', supabaseKey ? 'CONFIGURADA' : 'NÃO CONFIGURADA');
+
 const supabase = createClient(supabaseUrl, supabaseKey);
 const openai = openaiApiKey ? new OpenAI({ apiKey: openaiApiKey }) : null;
 
@@ -183,6 +188,10 @@ DIRETRIZES IMPORTANTES:
 Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
 
       // Usar a mesma lógica do Replit - ChatGPT-4o com NOA ESPERANÇA
+      console.log('🚀 Iniciando chamada para ChatGPT-4o...');
+      console.log('🔑 API Key disponível:', !!process.env.OPENAI_API_KEY);
+      console.log('📝 Pergunta:', question.substring(0, 50) + '...');
+      
       const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -205,6 +214,9 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
           temperature: 0.7
         })
       });
+
+      console.log('📊 Status da resposta OpenAI:', openaiResponse.status);
+      console.log('📊 Headers da resposta:', Object.fromEntries(openaiResponse.headers.entries()));
 
       if (openaiResponse.ok) {
         const data = await openaiResponse.json();
