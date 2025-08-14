@@ -106,6 +106,7 @@ Responda de forma profissional, mas acolhedora, como uma médica especialista co
       });
 
       aiResponse = {
+        response: completion.choices[0].message.content,
         message: completion.choices[0].message.content,
         confidence: 0.95,
         sources: ['PubMed', 'ANVISA', 'Estudos Clínicos', 'OpenAI GPT-4'],
@@ -120,6 +121,18 @@ Responda de forma profissional, mas acolhedora, como uma médica especialista co
     } else {
       // Resposta padrão se não houver OpenAI ou mensagem
       aiResponse = {
+        response: `Olá! Sou a Dra. Cannabis, sua especialista em cannabis medicinal. 
+
+${message ? `Sobre sua pergunta: "${message}"` : ''}
+
+Como posso ajudá-lo hoje? Posso fornecer informações sobre:
+• Efeitos terapêuticos da cannabis
+• Dosagens e protocolos
+• Interações medicamentosas
+• Legislação brasileira
+• Casos clínicos
+
+Qual aspecto específico você gostaria de explorar?`,
         message: `Olá! Sou a Dra. Cannabis, sua especialista em cannabis medicinal. 
 
 ${message ? `Sobre sua pergunta: "${message}"` : ''}

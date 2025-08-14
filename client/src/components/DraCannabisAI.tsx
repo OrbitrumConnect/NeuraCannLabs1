@@ -238,11 +238,11 @@ export default function DraCannabisAI() {
     onSuccess: (data: ConsultResponse, variables) => {
       const now = new Date().toISOString();
       console.log('✅ Resposta completa da API:', data);
-      console.log('✅ Texto da resposta:', data.response);
+      console.log('✅ Texto da resposta:', data.message);
       const newChatHistory = [
         ...chatHistory,
         { type: 'user', message: variables.question, timestamp: now },
-        { type: 'doctor', message: data.response || 'Erro: resposta não encontrada', timestamp: now }
+        { type: 'doctor', message: data.message || 'Erro: resposta não encontrada', timestamp: now }
       ];
       
       setChatHistory(newChatHistory);
@@ -260,7 +260,7 @@ export default function DraCannabisAI() {
       }
       
       // Ativar sistema de resposta da Dra. Cannabis
-      if (data.response) {
+              if (data.message) {
         setIsTalking(true);
         
         // Se D-ID ativo, não usar sistema de voz local - widget cuida disso
@@ -279,7 +279,7 @@ export default function DraCannabisAI() {
               const response = await fetch('/api/avatar/speak', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: data.response })
+                body: JSON.stringify({ text: data.message })
               });
               
               if (response.ok) {
