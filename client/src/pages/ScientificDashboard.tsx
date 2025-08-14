@@ -1,9 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { type ScientificStudy } from "@shared/schema";
-import { Card, CardContent } from "@/components/ui/card";
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useBuscarPubMed, useArtigosRecentesPubMed } from "@/hooks/useBuscarDados";
+import { type PubMedArticle } from "@/services/pubmedService";
 
 interface ScientificDashboardProps {
   searchTerm?: string;
@@ -11,11 +13,43 @@ interface ScientificDashboardProps {
 
 export default function ScientificDashboard({ searchTerm: initialSearchTerm = "" }: ScientificDashboardProps) {
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(initialSearchTerm);
+  const [activeTab, setActiveTab] = useState("recent");
 
-  const { data: studies, isLoading, error } = useQuery<ScientificStudy[]>({
-    queryKey: ["/api/scientific"],
-  });
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
 
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  // Buscar artigos PubMed
+  const {
+    articles: searchResults,
+    totalCount,
+    hasMore,
+    isLoading: isSearchLoading,
+    isError: isSearchError,
+    error: searchError,
+    loadMore,
+    resetSearch
+  } = useBuscarPubMed(debouncedSearchTerm, { maxResults: 10 });
+
+  // Buscar artigos recentes
+  const {
+    data: recentArticles,
+    isLoading: isRecentLoading,
+    isError: isRecentError,
+    error: recentError
+  } = useArtigosRecentesPubMed(10);
+
+  const isLoading = isSearchLoading || isRecentLoading;
+  const isError = isSearchError || isRecentError;
+  const error = searchError || recentError;
+
+  // Loading state
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -27,49 +61,86 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
     );
   }
 
-  if (error) {
+  // Error state
+  if (isError) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center text-red-400">
           <i className="fas fa-exclamation-triangle text-4xl mb-4" />
-          <p>Erro ao carregar dados científicos. Tente novamente.</p>
+          <p>Erro ao carregar dados científicos: {error}</p>
+          <Button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 bg-red-600 hover:bg-red-700"
+          >
+            Tentar Novamente
+          </Button>
         </div>
       </div>
     );
   }
 
-  const filteredStudies = studies?.filter(study =>
-    study.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    study.compound?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    study.indication?.toLowerCase().includes(searchTerm.toLowerCase())
-  ) || [];
+  const renderArticleCard = (article: PubMedArticle) => (
+    <Card key={article.pmid} className="data-card rounded-xl hover:border-emerald-400/50 transition-all">
+      <CardHeader className="pb-3">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <CardTitle className="text-white text-lg font-semibold line-clamp-2">
+              {article.title}
+            </CardTitle>
+            <div className="flex flex-wrap gap-2 mt-2">
+              <Badge className="bg-emerald-500/20 text-emerald-400 text-xs">
+                PubMed
+              </Badge>
+              {article.doi && (
+                <Badge className="bg-blue-500/20 text-blue-400 text-xs">
+                  DOI
+                </Badge>
+              )}
+              <Badge className="bg-gray-500/20 text-gray-400 text-xs">
+                {article.publicationDate}
+              </Badge>
+            </div>
+          </div>
+        </div>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <div className="space-y-3">
+          <div>
+            <p className="text-gray-300 text-sm line-clamp-3">
+              {article.abstract}
+            </p>
+          </div>
+          
+          <div className="flex flex-wrap gap-1">
+            {article.authors.slice(0, 3).map((author, index) => (
+              <Badge key={index} className="bg-purple-500/20 text-purple-400 text-xs">
+                {author}
+              </Badge>
+            ))}
+            {article.authors.length > 3 && (
+              <Badge className="bg-gray-500/20 text-gray-400 text-xs">
+                +{article.authors.length - 3} mais
+              </Badge>
+            )}
+          </div>
 
-  const getCompoundColor = (compound: string | null) => {
-    switch (compound?.toUpperCase()) {
-      case "CBD": return "bg-green-500/20 text-green-400";
-      case "THC": return "bg-orange-500/20 text-orange-400";
-      case "CBG": return "bg-purple-500/20 text-purple-400";
-      default: return "bg-gray-500/20 text-gray-400";
-    }
-  };
-
-  const getPhaseColor = (phase: string | null) => {
-    switch (phase) {
-      case "Fase I": return "bg-yellow-500/20 text-yellow-400";
-      case "Fase II": return "bg-blue-500/20 text-blue-400";
-      case "Fase III": return "bg-purple-500/20 text-purple-400";
-      default: return "bg-gray-500/20 text-gray-400";
-    }
-  };
-
-  const getIndicationColor = (indication: string | null) => {
-    switch (indication?.toLowerCase()) {
-      case "epilepsia": return "bg-blue-500/20 text-blue-400";
-      case "dor crônica": return "bg-red-500/20 text-red-400";
-      case "neurodegenerativas": return "bg-purple-500/20 text-purple-400";
-      default: return "bg-gray-500/20 text-gray-400";
-    }
-  };
+          <div className="flex items-center justify-between pt-2">
+            <span className="text-gray-400 text-sm">
+              {article.journal}
+            </span>
+            <Button
+              size="sm"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white"
+              onClick={() => window.open(article.url, '_blank')}
+            >
+              <i className="fas fa-external-link-alt mr-2" />
+              Ver Artigo
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="container mx-auto px-3 py-6 sm:px-4 sm:py-8 pt-12 sm:pt-14">
@@ -79,7 +150,7 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
         </div>
         <div>
           <h1 className="text-base sm:text-2xl font-bold text-white">Dados Científicos</h1>
-          <p className="text-xs sm:text-sm text-gray-400">Estudos e pesquisas sobre cannabis medicinal</p>
+          <p className="text-xs sm:text-sm text-gray-400">Estudos PubMed e pesquisas sobre cannabis medicinal</p>
         </div>
       </div>
       
@@ -91,7 +162,7 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
               <div className="relative">
                 <Input
                   type="text"
-                  placeholder="Buscar estudos, compostos, indicações..."
+                  placeholder="Buscar artigos científicos sobre cannabis..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full bg-cyber-light border-gray-600 pl-12 text-white placeholder-gray-400 focus:border-emerald-500"
@@ -100,130 +171,108 @@ export default function ScientificDashboard({ searchTerm: initialSearchTerm = ""
                 <i className="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-emerald-400" />
               </div>
             </div>
-            <Button 
-              className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-400 hover:to-green-500"
-              data-testid="advanced-filters-button"
-            >
-              <i className="fas fa-filter mr-2" />
-              Filtros Avançados
-            </Button>
+            <div className="flex gap-2">
+              <Button 
+                className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                onClick={() => setActiveTab("search")}
+                data-testid="search-studies-button"
+              >
+                <i className="fas fa-search mr-2" />
+                Buscar
+              </Button>
+              <Button 
+                variant="outline" 
+                className="border-gray-600 text-gray-300 hover:border-emerald-500"
+                onClick={() => {
+                  setSearchTerm("");
+                  resetSearch();
+                  setActiveTab("recent");
+                }}
+                data-testid="clear-search-button"
+              >
+                <i className="fas fa-times mr-2" />
+                Limpar
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Scientific Studies Grid */}
-      {filteredStudies.length === 0 ? (
-        <Card className="data-card rounded-xl p-8 text-center">
-          <CardContent>
-            <i className="fas fa-search text-4xl text-gray-400 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-300 mb-2">Nenhum estudo encontrado</h3>
-            <p className="text-gray-400">Tente ajustar os termos de busca ou filtros.</p>
-          </CardContent>
-        </Card>
-      ) : (
-        <>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
-            {filteredStudies.map((study) => (
-              <Card 
-                key={study.id} 
-                className="data-card rounded-xl hover:border-emerald-400/50 transition-all cursor-pointer"
-                data-testid={`study-card-${study.id}`}
-              >
-                <CardContent className="p-3 sm:p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="bg-emerald-500/20 p-2 rounded-lg">
-                      <i className="fas fa-dna text-emerald-400 text-lg" />
-                    </div>
-                    {study.compound && (
-                      <span className={`text-xs px-2 py-1 rounded-full ${getCompoundColor(study.compound)}`}>
-                        {study.compound}
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="text-base font-semibold text-white mb-2">{study.title}</h3>
-                  {study.description && (
-                    <p className="text-gray-400 text-xs mb-3">{study.description.substring(0, 120)}...</p>
-                  )}
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="text-xs text-gray-500">{study.date}</span>
-                    <div className="flex space-x-2">
-                      {study.indication && (
-                        <span className={`text-xs px-2 py-1 rounded ${getIndicationColor(study.indication)}`}>
-                          {study.indication}
-                        </span>
-                      )}
-                      {study.phase && (
-                        <span className={`text-xs px-2 py-1 rounded ${getPhaseColor(study.phase)}`}>
-                          {study.phase}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <div className="flex space-x-2">
-                    <button 
-                      onClick={() => {
-                        const pmidMatch = study.description?.match(/PMID:?\s*(\d+)/i);
-                        if (pmidMatch) {
-                          window.open(`https://pubmed.ncbi.nlm.nih.gov/${pmidMatch[1]}/`, '_blank');
-                        } else {
-                          window.open(`https://pubmed.ncbi.nlm.nih.gov/?term=${encodeURIComponent(study.title)}`, '_blank');
-                        }
-                      }}
-                      className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition-colors"
-                    >
-                      📄 PubMed
-                    </button>
-                    {study.description?.includes('NCT') && (
-                      <button 
-                        onClick={() => {
-                          const nctMatch = study.description?.match(/NCT\d+/);
-                          if (nctMatch) {
-                            window.open(`https://clinicaltrials.gov/study/${nctMatch[0]}`, '_blank');
-                          }
-                        }}
-                        className="px-3 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700 transition-colors"
-                      >
-                        🏥 ClinicalTrials
-                      </button>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+      {/* Tabs */}
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-2 mb-6">
+          <TabsTrigger value="recent" className="data-card">
+            <i className="fas fa-clock mr-2" />
+            Artigos Recentes
+          </TabsTrigger>
+          <TabsTrigger value="search" className="data-card">
+            <i className="fas fa-search mr-2" />
+            Resultados da Busca
+            {totalCount > 0 && (
+              <Badge className="ml-2 bg-emerald-600 text-white">
+                {totalCount}
+              </Badge>
+            )}
+          </TabsTrigger>
+        </TabsList>
 
-          {/* Research Insights */}
-          <Card className="data-card rounded-xl">
-            <CardContent className="p-6">
-              <h2 className="text-xl font-semibold text-white mb-6">Insights da IA</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <i className="fas fa-trending-up text-white text-xl" />
-                  </div>
-                  <h3 className="font-semibold text-white mb-2">Tendência Emergente</h3>
-                  <p className="text-sm text-gray-400">CBG mostra potencial para doenças neurodegenerativas</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <i className="fas fa-check-circle text-white text-xl" />
-                  </div>
-                  <h3 className="font-semibold text-white mb-2">Consenso Científico</h3>
-                  <p className="text-sm text-gray-400">CBD eficaz para epilepsia refratária em crianças</p>
-                </div>
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-400 to-pink-600 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <i className="fas fa-exclamation-triangle text-white text-xl" />
-                  </div>
-                  <h3 className="font-semibold text-white mb-2">Lacuna de Pesquisa</h3>
-                  <p className="text-sm text-gray-400">Necessários mais estudos em doses pediátricas</p>
-                </div>
+        <TabsContent value="recent" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+            {recentArticles?.map((article) => renderArticleCard(article))}
+          </div>
+          
+          {recentArticles?.length === 0 && (
+            <div className="text-center text-gray-400 py-8">
+              <i className="fas fa-newspaper text-4xl mb-4" />
+              <p>Nenhum artigo recente encontrado</p>
+            </div>
+          )}
+        </TabsContent>
+
+        <TabsContent value="search" className="space-y-4">
+          {debouncedSearchTerm.length > 2 ? (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                {searchResults.map((article) => renderArticleCard(article))}
               </div>
-            </CardContent>
-          </Card>
-        </>
-      )}
+              
+              {hasMore && (
+                <div className="text-center pt-4">
+                  <Button 
+                    onClick={loadMore}
+                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                    disabled={isSearchLoading}
+                  >
+                    {isSearchLoading ? (
+                      <>
+                        <i className="fas fa-spinner fa-spin mr-2" />
+                        Carregando...
+                      </>
+                    ) : (
+                      <>
+                        <i className="fas fa-plus mr-2" />
+                        Carregar Mais
+                      </>
+                    )}
+                  </Button>
+                </div>
+              )}
+              
+              {searchResults.length === 0 && !isSearchLoading && (
+                <div className="text-center text-gray-400 py-8">
+                  <i className="fas fa-search text-4xl mb-4" />
+                  <p>Nenhum artigo encontrado para "{debouncedSearchTerm}"</p>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="text-center text-gray-400 py-8">
+              <i className="fas fa-search text-4xl mb-4" />
+              <p>Digite pelo menos 3 caracteres para buscar artigos</p>
+            </div>
+          )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
