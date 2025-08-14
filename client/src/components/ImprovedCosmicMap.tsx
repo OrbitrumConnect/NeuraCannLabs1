@@ -242,7 +242,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
       const data = await response.json();
       
       // LIMPAR RESPOSTA - REMOVER CÓDIGOS JSON E TÉCNICOS
-      let assistantResponse = data.response || 'Resposta não disponível';
+      let assistantResponse = data.message || 'Resposta não disponível';
       
       // Remove códigos JSON da resposta
       assistantResponse = assistantResponse.replace(/```json[\s\S]*?```/g, '');

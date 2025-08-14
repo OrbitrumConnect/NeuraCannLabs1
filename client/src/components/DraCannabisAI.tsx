@@ -303,7 +303,7 @@ export default function DraCannabisAI() {
               console.log('⚠️ Fallback para sistema nativo:', (error as Error).message);
               try {
                 // Usar sistema nativo com voz feminina forçada
-                const utterance = new SpeechSynthesisUtterance(data.response);
+                const utterance = new SpeechSynthesisUtterance(data.message);
                 
                 // FORÇA VOZ FEMININA para Dra. Cannabis
                 const voices = window.speechSynthesis.getVoices();
