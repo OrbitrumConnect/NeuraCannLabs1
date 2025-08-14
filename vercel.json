@@ -10,16 +10,6 @@
       }
     }
   ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/dist/index.js"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/client/index.html"
-    }
-  ],
   "env": {
     "NODE_ENV": "production"
   },
@@ -27,6 +17,10 @@
     {
       "source": "/api/(.*)",
       "destination": "/dist/index.js"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/dist/client/index.html"
     }
   ]
 }
