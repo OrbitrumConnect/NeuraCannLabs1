@@ -22,11 +22,11 @@ app.use(cors({
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Register API routes
-const server = await registerRoutes(app);
-
 // Static assets in all environments
 app.use('/attached_assets', express.static(path.join(__dirname, '../attached_assets')));
+
+// Register API routes FIRST - antes do Vite
+const server = await registerRoutes(app);
 
 // Production static files
 if (process.env.NODE_ENV === 'production') {
@@ -36,7 +36,7 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, '../dist/client/index.html'));
   });
 } else {
-  // Development with Vite
+  // Development with Vite - APENAS para rotas não-API
   try {
     const { setupVite } = await import('./vite.js');
     await setupVite(app, server);
