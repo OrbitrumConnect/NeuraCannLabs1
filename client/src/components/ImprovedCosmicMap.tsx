@@ -409,7 +409,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
           >
             <img 
               src="https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg" 
-              alt="Dra. Cannabis IA - Estudos Cruzados" 
+              alt="Dra. Cannabis IA - Novo Avatar D-ID" 
               className={`
                 w-16 sm:w-40 h-16 sm:h-40
                 rounded-lg object-contain shadow-2xl 

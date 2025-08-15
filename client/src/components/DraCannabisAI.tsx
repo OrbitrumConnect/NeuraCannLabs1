@@ -9,7 +9,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-// Usando a imagem oficial do agente D-ID v2_agt_WAM9eh_P
+// Usando a imagem do novo agente D-ID v2_agt_mzs8kQcn
 const draCannabisImage = "https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg";
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
@@ -175,34 +175,42 @@ export default function DraCannabisAI() {
   const loadDIDWidget = async () => {
     if (isDIDWidgetLoaded) return;
 
-    console.log('🎭 Inicializando sistema D-ID via API direta...');
+    console.log('🎭 Inicializando novo sistema D-ID da Dra. Cannabis...');
     console.log('🔗 Domínio atual:', window.location.hostname);
     
     try {
-      // Testar conectividade com API D-ID primeiro
-      const testResponse = await fetch('/api/dra-cannabis/test-did');
+      // Testar conectividade com novo agente D-ID primeiro
+      const testResponse = await fetch('/api/dra-cannabis/test-new-did', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: "Olá! Sou a Dra. Cannabis. Como posso ajudá-lo hoje?"
+        })
+      });
       const testResult = await testResponse.json();
       
       if (!testResult.success) {
-        throw new Error('API D-ID não acessível');
+        throw new Error('Novo agente D-ID não acessível');
       }
       
-      console.log('✅ API D-ID conectada!');
+      console.log('✅ Novo agente D-ID da Dra. Cannabis conectado!');
       setIsDIDWidgetLoaded(true);
       
       toast({
-        title: "NOA ESPERANÇA Ativa!",
-        description: "Sistema D-ID via API funcionando",
+        title: "Dra. Cannabis Atualizada!",
+        description: "Novo avatar D-ID funcionando perfeitamente",
         variant: "default",
       });
       
     } catch (error) {
-      console.error('❌ Erro conectando API D-ID:', error);
+      console.error('❌ Erro conectando novo agente D-ID:', error);
       setIsDIDWidgetLoaded(false);
       setUseDIDAnimation(false);
       toast({
-        title: "Erro D-ID", 
-        description: "Não foi possível conectar com API D-ID",
+        title: "Erro Novo Avatar", 
+        description: "Não foi possível conectar com novo agente D-ID",
         variant: "destructive",
       });
     }

@@ -7,13 +7,14 @@ export class DIDAgentService {
   private baseUrl: string = 'https://api.d-id.com';
 
   constructor() {
-    this.agentId = 'v2_agt_WAM9eh_P'; // ID do agente com movimento labial sincronizado
+    // Atualizado para o novo avatar da Dra. Cannabis compartilhado
+    this.agentId = 'v2_agt_mzs8kQcn'; // Novo ID do agente D-ID compartilhado
     this.apiKey = process.env.DID_API_KEY || '';
     
     if (!this.apiKey) {
       console.warn('⚠️ DID_API_KEY não encontrada - Agente D-ID em modo limitado');
     } else {
-      console.log('🎭 Agente D-ID inicializado com movimento labial sincronizado:', this.agentId);
+      console.log('🎭 Novo agente D-ID da Dra. Cannabis inicializado:', this.agentId);
     }
   }
 

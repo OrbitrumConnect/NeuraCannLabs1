@@ -1251,7 +1251,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
 
-      // Usar imagem oficial do agente D-ID para consistência visual
+      // Usar imagem do novo agente D-ID da Dra. Cannabis
       const imageUrl = "https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg";
       
       console.log('🎬 Iniciando animação D-ID da Dra. Cannabis...', text.substring(0, 30));
@@ -1274,6 +1274,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: true,
         videoUrl: null,
         message: "Erro no D-ID - apenas áudio disponível"
+      });
+    }
+  });
+
+  // Endpoint para testar conexão com o novo agente D-ID da Dra. Cannabis
+  app.post("/api/dra-cannabis/test-new-did", async (req, res) => {
+    try {
+      const { message } = req.body;
+      
+      if (!message) {
+        return res.status(400).json({ error: 'Mensagem é obrigatória' });
+      }
+
+      console.log('🧪 Testando novo agente D-ID da Dra. Cannabis...');
+      
+      // Usar o novo agente D-ID
+      const response = await didAgentService.sendMessageToAgent(message);
+      
+      console.log('✅ Novo agente D-ID respondeu:', response.response.substring(0, 100));
+      
+      res.json({
+        success: true,
+        response: response.response,
+        videoUrl: response.videoUrl,
+        audioUrl: response.audioUrl,
+        agentId: 'v2_agt_mzs8kQcn',
+        message: "Novo agente D-ID da Dra. Cannabis funcionando!"
+      });
+      
+    } catch (error: any) {
+      console.error('❌ Erro testando novo agente D-ID:', error);
+      res.status(500).json({ 
+        success: false,
+        error: error.message,
+        message: "Erro ao conectar com novo agente D-ID"
       });
     }
   });
