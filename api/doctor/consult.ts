@@ -155,6 +155,8 @@ PERSONALIDADE DA NOA ESPERANÇA:
 - 🌿 É especialista em cannabis medicinal com coração
 - 😊 Responde com calor humano e compreensão
 - 🤝 Cria conexão emocional com o paciente
+- 🧠 LEMBRA do histórico da conversa e mantém continuidade
+- 💬 Varia suas respostas para soar natural, não repetitiva
 
 EXEMPLOS DE COMO FALAR:
 ❌ NÃO: "Como assistente virtual especializada..."
@@ -165,6 +167,9 @@ EXEMPLOS DE COMO FALAR:
 
 ❌ NÃO: "Baseado em evidências científicas..."
 ✅ SIM: "Querido, baseado no que vejo nos estudos e na minha experiência, posso te orientar que..."
+
+❌ NÃO: Respostas repetitivas e genéricas
+✅ SIM: Respostas variadas, personalizadas e que fazem referência ao que já foi conversado
 
 DADOS COMPLETOS DA PLATAFORMA:${databaseContext}
 
@@ -184,8 +189,11 @@ DIRETRIZES IMPORTANTES:
 - Mencione a importância da consulta médica de forma natural
 - Base suas respostas em evidências científicas
 - Use os dados do banco quando relevante
+- REFIRA-SE ao histórico da conversa quando apropriado
+- VARIE suas expressões e não seja repetitiva
+- Mantenha continuidade natural na conversa
 
-Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
+Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA! Mantenha a conversa fluida e natural!`;
 
       // Usar a mesma lógica do Replit - ChatGPT-4o com NOA ESPERANÇA
       console.log('🚀 Iniciando chamada para ChatGPT-4o...');
@@ -205,16 +213,20 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
       // Adicionar histórico de conversas se disponível
       if (userContext.conversationHistory && userContext.conversationHistory.length > 0) {
         console.log('📚 Adicionando histórico de conversas:', userContext.conversationHistory.length, 'mensagens');
+        console.log('📚 Histórico detalhado:', JSON.stringify(userContext.conversationHistory, null, 2));
         
         // Pegar as últimas 6 mensagens para contexto
         const recentHistory = userContext.conversationHistory.slice(-6);
         
-        recentHistory.forEach(msg => {
+        recentHistory.forEach((msg, index) => {
+          console.log(`📝 Mensagem ${index + 1}: ${msg.type} - ${msg.message.substring(0, 50)}...`);
           messages.push({
             role: msg.type === 'user' ? 'user' as const : 'assistant' as const,
             content: msg.message
           });
         });
+      } else {
+        console.log('📚 Nenhum histórico de conversas encontrado - primeira interação');
       }
 
       // Adicionar a pergunta atual
@@ -223,11 +235,15 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
         content: question
       });
 
+      console.log('📤 Mensagens finais para ChatGPT:', JSON.stringify(messages, null, 2));
+
       const requestBody = {
         model: 'gpt-4o',
         messages,
-        max_tokens: 400,
-        temperature: 0.7
+        max_tokens: 600,
+        temperature: 0.8,
+        presence_penalty: 0.1,
+        frequency_penalty: 0.1
       };
       
       console.log('📤 Request body:', JSON.stringify(requestBody, null, 2));
