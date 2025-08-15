@@ -115,23 +115,50 @@ export default function AdminDashboard() {
           'Content-Type': 'application/json',
         }
       });
+      
+      // Verificar se a resposta é JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('❌ API retornou HTML em vez de JSON:', response.status, contentType);
+        // Fallback para dados seguros
+        setStats({
+          totalUsers: 0,
+          medicos: 0,
+          pacientes: 0,
+          consultasHoje: 0,
+          estudosCriados: 0,
+          alertasAtivos: 0
+        });
+        return;
+      }
+      
       if (response.ok) {
         const data = await response.json();
+        console.log('✅ Estatísticas carregadas:', data);
         setStats(data);
       } else {
         console.log('Erro de permissão admin:', response.status);
         // PRODUÇÃO: Sem dados de teste - apenas dados reais
         setStats({
-          totalUsers: 1,
+          totalUsers: 0,
           medicos: 0,
           pacientes: 0,
           consultasHoje: 0,
           estudosCriados: 0,
-          alertasAtivos: 3
+          alertasAtivos: 0
         });
       }
     } catch (error) {
-      console.error('Erro ao carregar estatísticas:', error);
+      console.error('❌ Erro ao carregar estatísticas:', error);
+      // Fallback para dados seguros em caso de erro
+      setStats({
+        totalUsers: 0,
+        medicos: 0,
+        pacientes: 0,
+        consultasHoje: 0,
+        estudosCriados: 0,
+        alertasAtivos: 0
+      });
     }
   };
 

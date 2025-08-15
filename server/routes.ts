@@ -167,6 +167,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/admin/stats", async (req, res) => {
+    // Garantir que sempre retorne JSON
+    res.setHeader('Content-Type', 'application/json');
+    
     const sessionUser = (req.session as any)?.user;
     
     // Debug da sessão completa
@@ -183,27 +186,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const storage = await getStorage();
       
-      // Coletar dados reais do Supabase
-      const users = await storage.getAllUsers();
-      const submissions = await storage.getAllStudySubmissions();
-      const conversations = await storage.getAllConversations();
+      // Coletar dados reais do Supabase com tratamento de erro
+      let users = [];
+      let submissions = [];
+      let conversations = [];
+      
+      try {
+        users = await storage.getAllUsers();
+        console.log('✅ Usuários carregados:', users.length);
+      } catch (userError) {
+        console.error('❌ Erro ao carregar usuários:', userError);
+        users = [];
+      }
+      
+      try {
+        submissions = await storage.getAllStudySubmissions();
+        console.log('✅ Submissões carregadas:', submissions.length);
+      } catch (submissionError) {
+        console.error('❌ Erro ao carregar submissões:', submissionError);
+        submissions = [];
+      }
+      
+      try {
+        conversations = await storage.getAllConversations();
+        console.log('✅ Conversas carregadas:', conversations.length);
+      } catch (conversationError) {
+        console.error('❌ Erro ao carregar conversas:', conversationError);
+        conversations = [];
+      }
       
       // Estatísticas reais baseadas nos dados do Supabase
       const stats = {
-        totalUsers: users.length,
-        medicos: users.filter(u => u.role === 'medico').length, 
-        pacientes: users.filter(u => u.role === 'paciente').length,
+        totalUsers: users.length || 0,
+        medicos: users.filter(u => u.role === 'medico').length || 0, 
+        pacientes: users.filter(u => u.role === 'paciente').length || 0,
         consultasHoje: conversations.filter(c => 
-          new Date(c.createdAt).toDateString() === new Date().toDateString()
-        ).length,
-        estudosCriados: submissions.length,
-        alertasAtivos: 3 // TODO: Implementar contagem real de alerts ativos
+          c.createdAt && new Date(c.createdAt).toDateString() === new Date().toDateString()
+        ).length || 0,
+        estudosCriados: submissions.length || 0,
+        alertasAtivos: 0 // TODO: Implementar contagem real de alerts ativos
       };
       
+      console.log('📊 Estatísticas calculadas:', stats);
       res.json(stats);
     } catch (error) {
-      console.error('Erro ao buscar stats admin:', error);
-      res.status(500).json({ message: "Erro ao buscar estatísticas" });
+      console.error('❌ Erro ao buscar stats admin:', error);
+      // Retornar dados seguros em caso de erro
+      res.status(500).json({ 
+        message: "Erro ao buscar estatísticas",
+        stats: {
+          totalUsers: 0,
+          medicos: 0,
+          pacientes: 0,
+          consultasHoje: 0,
+          estudosCriados: 0,
+          alertasAtivos: 0
+        }
+      });
     }
   });
 
