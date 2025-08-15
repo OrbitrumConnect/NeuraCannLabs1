@@ -272,83 +272,15 @@ export default function DraCannabisAI() {
       if (data.message) {
         setIsTalking(true);
         
-        // Sincronizar avatar D-ID com a resposta da NOA (sempre)
-        syncAvatarWithResponse(data.message);
-        
-        // Se D-ID ativo, não usar sistema de voz local - widget cuida disso
+        // Se D-ID ativo, widget cuida da conversação - sem interferência
         if (useDIDAnimation && isDIDWidgetLoaded) {
-          console.log('✅ Widget D-ID ativo - sem necessidade de voz local');
+          console.log('✅ Widget D-ID ativo - conversação direta com agente');
           setIsTalking(false);
-          return; // Widget D-ID cuida da conversação
+          return; // Widget D-ID cuida de tudo
         }
         
-        // SEMPRE executar sistema de voz (independente do D-ID)
-        {
-          // Sistema híbrido: tenta ElevenLabs primeiro, fallback para nativo
-          (async () => {
-            try {
-              console.log('🎭 Tentando ElevenLabs para resposta automática...');
-              const response = await fetch('/api/avatar/speak', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: data.message })
-              });
-              
-              if (response.ok) {
-                const audioBlob = await response.blob();
-                if (audioBlob.size > 0) {
-                  const audioUrl = URL.createObjectURL(audioBlob);
-                  const audio = new Audio(audioUrl);
-                  
-                  audio.onended = () => {
-                    URL.revokeObjectURL(audioUrl);
-                    setIsTalking(false);
-                  };
-                  
-                  await audio.play();
-                  console.log('✅ ElevenLabs reproduzido automaticamente');
-                  return;
-                }
-              }
-              throw new Error('ElevenLabs não disponível');
-            } catch (error) {
-              console.log('⚠️ Fallback para sistema nativo:', (error as Error).message);
-              try {
-                // Usar sistema nativo com voz feminina forçada
-                const utterance = new SpeechSynthesisUtterance(data.message);
-                
-                // FORÇA VOZ FEMININA para Dra. Cannabis
-                const voices = window.speechSynthesis.getVoices();
-                const femaleVoice = voices.find(voice => 
-                  voice.lang.includes('pt') && 
-                  (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana'))
-                ) || voices.find(voice => voice.lang.includes('pt'));
-                
-                if (femaleVoice) {
-                  utterance.voice = femaleVoice;
-                  console.log('🗣️ Dra. Cannabis - Voz feminina nativa:', femaleVoice.name);
-                }
-                
-                utterance.lang = 'pt-BR';
-                utterance.rate = 0.85;
-                utterance.pitch = 1.2; // Pitch feminino
-                utterance.volume = 0.9;
-                
-                utterance.onstart = () => console.log('🗣️ Dra. Cannabis começou a falar');
-                utterance.onend = () => {
-                  console.log('✅ Dra. Cannabis terminou de falar');
-                  setIsTalking(false);
-                };
-                
-                window.speechSynthesis.speak(utterance);
-                console.log('✅ Sistema nativo reproduzido');
-              } catch (nativeError) {
-                console.error('❌ Erro no sistema nativo:', nativeError);
-                setIsTalking(false);
-              }
-            }
-          })();
-        }
+        // Sistema de voz local (quando D-ID desativado)
+        speakResponse(data.message);
       }
     },
     onError: (error: any) => {
@@ -445,35 +377,42 @@ export default function DraCannabisAI() {
     setQuestion('');
   };
 
-  // Função para sincronizar avatar D-ID com resposta da NOA
-  const syncAvatarWithResponse = async (aiResponse: string) => {
+  // Função para falar resposta (quando D-ID desativado)
+  const speakResponse = async (text: string) => {
     try {
-      console.log('🎭 Sincronizando avatar D-ID com resposta da NOA...');
+      console.log('🗣️ Reproduzindo resposta da Dra. Cannabis...');
       
-      const avatarResponse = await fetch('/api/avatar/speak', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          text: aiResponse,
-          background: avatarBackground // Usar background selecionado
-        })
-      });
+      // Usar sistema nativo de voz feminina
+      const utterance = new SpeechSynthesisUtterance(text);
       
-      if (avatarResponse.ok) {
-        const avatarData = await avatarResponse.json();
-        console.log('✅ Avatar D-ID sincronizado:', avatarData.id);
-        
-        // Aqui você pode adicionar lógica para reproduzir o vídeo
-        // Por enquanto, apenas logamos o sucesso
-        toast({
-          title: "Avatar Sincronizado!",
-          description: "Dra. Cannabis está falando sua resposta",
-        });
-      } else {
-        console.log('⚠️ Avatar D-ID não configurado, usando simulação');
+      // FORÇA VOZ FEMININA para Dra. Cannabis
+      const voices = window.speechSynthesis.getVoices();
+      const femaleVoice = voices.find(voice => 
+        voice.lang.includes('pt') && 
+        (voice.name.includes('female') || voice.name.includes('Feminina') || voice.name.includes('Maria') || voice.name.includes('Luciana'))
+      ) || voices.find(voice => voice.lang.includes('pt'));
+      
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+        console.log('🗣️ Dra. Cannabis - Voz feminina nativa:', femaleVoice.name);
       }
+      
+      utterance.lang = 'pt-BR';
+      utterance.rate = 0.85;
+      utterance.pitch = 1.2; // Pitch feminino
+      utterance.volume = 0.9;
+      
+      utterance.onstart = () => console.log('🗣️ Dra. Cannabis começou a falar');
+      utterance.onend = () => {
+        console.log('✅ Dra. Cannabis terminou de falar');
+        setIsTalking(false);
+      };
+      
+      window.speechSynthesis.speak(utterance);
+      console.log('✅ Sistema nativo reproduzido');
     } catch (error) {
-      console.error('❌ Erro ao sincronizar avatar:', error);
+      console.error('❌ Erro no sistema de voz:', error);
+      setIsTalking(false);
     }
   };
 
@@ -548,19 +487,17 @@ export default function DraCannabisAI() {
                 </div>
               </div>
             ) : (
-              /* Avatar D-ID Animado (substituindo imagem estática) */
+              /* Avatar Estático da Dra. Cannabis (quando D-ID desativado) */
               <div className={`${isTalking && !useDIDAnimation ? 'avatar-talking' : ''} transition-all duration-300`}>
-                <iframe 
-                  src="https://studio.d-id.com/agents/share?id=v2_agt_MVX1-NKn&utm_source=copy&key=WjI5dloyeGxMVzloZFhSb01ud3hNREV5TVRnek56WXdPRGMzT0RBMk5EazNOelE2YW5vNFprdEdaMjFmVG5kNVFqTk1XSE4xVVZsaQ=="
+                <img 
+                  src="https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg"
                   className={`
                     w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
                     rounded-lg shadow-2xl 
-                    bg-transparent
-                    border-0
+                    object-cover
                     ${isTalking && !useDIDAnimation ? 'animate-pulse filter brightness-110' : ''}
                   `}
-                  title="Dra. Cannabis IA - Avatar Animado"
-                  allow="microphone; camera"
+                  alt="Dra. Cannabis IA - Avatar Estático"
                   style={{ minWidth: '320px', minHeight: '400px' }}
                 />
                 {isTalking && !useDIDAnimation && (

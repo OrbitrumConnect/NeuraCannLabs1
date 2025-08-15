@@ -84,7 +84,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           pad_audio: 0.0,
           background: selectedBackground
         },
-        source_url: 'https://studio.d-id.com/agents/share?id=v2_agt_MVX1-NKn'
+        source_url: 'https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg'
       })
     });
 
