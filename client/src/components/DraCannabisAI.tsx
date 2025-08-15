@@ -9,8 +9,8 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-// Imagem da Dra. Cannabis - será carregada dinamicamente da agente D-ID
-const [draCannabisImage, setDraCannabisImage] = useState("/dra-cannabis-nova.png");
+// Imagem da Dra. Cannabis - usando a URL exata fornecida pelo usuário
+const draCannabisImage = "https://studio.d-id.com/agents/share?id=v2_agt_mzs8kQcn";
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 
@@ -104,29 +104,6 @@ export default function DraCannabisAI() {
       console.log('✅ Widget D-ID desativado');
     }
   }, [useDIDAnimation]);
-
-  // Carregar imagem da agente D-ID
-  useEffect(() => {
-    const loadAgentImage = async () => {
-      try {
-        const response = await fetch('/api/dra-cannabis/agent-image');
-        const data = await response.json();
-        
-        if (data.success && data.imageUrl) {
-          console.log('✅ Imagem da agente D-ID carregada:', data.imageUrl);
-          setDraCannabisImage(data.imageUrl);
-        } else {
-          console.log('⚠️ Usando imagem local como fallback');
-          setDraCannabisImage(data.fallbackImage || '/dra-cannabis-nova.png');
-        }
-      } catch (error) {
-        console.error('❌ Erro ao carregar imagem da agente:', error);
-        setDraCannabisImage('/dra-cannabis-nova.png');
-      }
-    };
-
-    loadAgentImage();
-  }, []);
 
   // Auto-inicialização da Dra. Cannabis IA
   useEffect(() => {

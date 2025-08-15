@@ -408,7 +408,7 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
             }}
           >
             <img 
-              src="/dra-cannabis-nova.png" 
+              src="https://studio.d-id.com/agents/share?id=v2_agt_mzs8kQcn" 
               alt="Dra. Cannabis IA - Novo Avatar D-ID" 
               className={`
                 w-16 sm:w-40 h-16 sm:h-40
