@@ -194,18 +194,38 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
       console.log('📝 Pergunta:', question);
       console.log('📝 System Prompt length:', systemPrompt.length);
       
+      // Construir mensagens com histórico de conversas
+      const messages = [
+        {
+          role: 'system' as const,
+          content: systemPrompt
+        }
+      ];
+
+      // Adicionar histórico de conversas se disponível
+      if (userContext.conversationHistory && userContext.conversationHistory.length > 0) {
+        console.log('📚 Adicionando histórico de conversas:', userContext.conversationHistory.length, 'mensagens');
+        
+        // Pegar as últimas 6 mensagens para contexto
+        const recentHistory = userContext.conversationHistory.slice(-6);
+        
+        recentHistory.forEach(msg => {
+          messages.push({
+            role: msg.type === 'user' ? 'user' as const : 'assistant' as const,
+            content: msg.message
+          });
+        });
+      }
+
+      // Adicionar a pergunta atual
+      messages.push({
+        role: 'user' as const,
+        content: question
+      });
+
       const requestBody = {
         model: 'gpt-4o',
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt
-          },
-          {
-            role: 'user', 
-            content: question
-          }
-        ],
+        messages,
         max_tokens: 400,
         temperature: 0.7
       };
@@ -312,7 +332,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const consultation = await superAI.processConsultation(
       sessionId || 'user-1', 
       message || 'Consulta inicial', 
-      { context }
+      { 
+        context,
+        conversationHistory: req.body.conversationHistory || []
+      }
     );
 
     const aiResponse = {
