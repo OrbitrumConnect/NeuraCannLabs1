@@ -495,17 +495,20 @@ export default function DraCannabisAI() {
                 </div>
               </div>
             ) : (
-              /* Imagem estática (sistema local) */
+              /* Avatar D-ID Animado (substituindo imagem estática) */
               <div className={`${isTalking && !useDIDAnimation ? 'avatar-talking' : ''} transition-all duration-300`}>
-                <img 
-                  src={draCannabisImage} 
-                  alt="Dra. Cannabis IA" 
+                <iframe 
+                  src="https://studio.d-id.com/agents/share?id=v2_agt_MVX1-NKn&utm_source=copy&key=WjI5dloyeGxMVzloZFhSb01ud3hNREV5TVRnek56WXdPRGMzT0RBMk5EazNOelE2YW5vNFprdEdaMjFmVG5kNVFqTk1XSE4xVVZsaQ=="
                   className={`
                     w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
-                    rounded-lg object-contain shadow-2xl 
+                    rounded-lg shadow-2xl 
                     bg-transparent
+                    border-0
                     ${isTalking && !useDIDAnimation ? 'animate-pulse filter brightness-110' : ''}
                   `}
+                  title="Dra. Cannabis IA - Avatar Animado"
+                  allow="microphone; camera"
+                  style={{ minWidth: '320px', minHeight: '400px' }}
                 />
                 {isTalking && !useDIDAnimation && (
                   <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
@@ -555,7 +558,7 @@ export default function DraCannabisAI() {
             <div className="space-y-3 md:space-y-4">
               <div className="flex items-center justify-center space-x-2 text-emerald-400">
                 <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="text-sm md:text-base">Dra. Cannabis IA Ativada e Pronta!</span>
+                <span className="text-sm md:text-base">Dra. Cannabis IA com Avatar Animado Ativa!</span>
               </div>
               
               {/* Controle de Animação D-ID */}
