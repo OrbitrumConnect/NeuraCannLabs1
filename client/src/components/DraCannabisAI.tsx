@@ -487,19 +487,32 @@ export default function DraCannabisAI() {
                 </div>
               </div>
             ) : (
-              /* Avatar Estático da Dra. Cannabis (quando D-ID desativado) */
-              <div className={`${isTalking && !useDIDAnimation ? 'avatar-talking' : ''} transition-all duration-300`}>
-                <img 
-                  src={draCannabisImage}
+              /* Link direto para a agente D-ID */
+              <div className="transition-all duration-300">
+                <a 
+                  href="https://studio.d-id.com/agents/share?id=v2_agt_mzs8kQcn&utm_source=copy&key=WjI5dloyeGxMVzloZFhSb01ud3hNREV5TVRnek56WXdPRGMzT0RBMk5EazNOelE2YW5vNFprdEdaMjFmVG5kNVFqTk1XSE4xVVZsaQ=="
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className={`
                     w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
                     rounded-lg shadow-2xl 
-                    object-cover
+                    bg-gradient-to-br from-emerald-500 to-green-700
+                    flex items-center justify-center
+                    hover:from-emerald-400 hover:to-green-600
+                    transition-all duration-300
+                    cursor-pointer
                     ${isTalking && !useDIDAnimation ? 'animate-pulse filter brightness-110' : ''}
                   `}
-                  alt="Dra. Cannabis IA - Avatar Estático"
                   style={{ minWidth: '320px', minHeight: '400px' }}
-                />
+                >
+                  <div className="text-center text-white">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 mx-auto mb-4 bg-white/20 rounded-full flex items-center justify-center">
+                      <Brain className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 lg:w-16 lg:h-16" />
+                    </div>
+                    <p className="text-sm sm:text-base md:text-lg lg:text-xl font-bold mb-2">Dra. Cannabis IA</p>
+                    <p className="text-xs sm:text-sm md:text-base text-white/80">Clique para acessar a agente D-ID</p>
+                  </div>
+                </a>
                 {isTalking && !useDIDAnimation && (
                   <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
                 )}

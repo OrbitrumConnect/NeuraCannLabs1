@@ -407,14 +407,18 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                 : 'none'
             }}
           >
-            <img 
-              src="/dra-cannabis-nova.png" 
-              alt="Dra. Cannabis IA - Novo Avatar D-ID" 
+            <a 
+              href="https://studio.d-id.com/agents/share?id=v2_agt_mzs8kQcn&utm_source=copy&key=WjI5dloyeGxMVzloZFhSb01ud3hNREV5TVRnek56WXdPRGMzT0RBMk5EazNOelE2YW5vNFprdEdaMjFmVG5kNVFqTk1XSE4xVVZsaQ=="
+              target="_blank"
+              rel="noopener noreferrer"
               className={`
                 w-16 sm:w-40 h-16 sm:h-40
-                rounded-lg object-contain shadow-2xl 
-                bg-transparent
+                rounded-lg shadow-2xl 
+                bg-gradient-to-br from-emerald-500 to-green-700
+                flex items-center justify-center
+                hover:from-emerald-400 hover:to-green-600
                 transition-all duration-500
+                cursor-pointer
                 ${avatarScanning ? 'drop-shadow-lg animate-pulse' : ''}
                 ${isDrAIActive ? 'filter brightness-75 saturate-50 grayscale-[30%]' : ''}
               `}
@@ -423,7 +427,9 @@ export default function ImprovedCosmicMap({ onPlanetClick, activeDashboard, onSe
                   ? 'drop-shadow(0 0 15px rgba(255, 235, 59, 0.6))' 
                   : 'none'
               }}
-            />
+            >
+              <Brain className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 text-white" />
+            </a>
             
             {/* Badge IA Status */}
             {isDrAIActive && (
