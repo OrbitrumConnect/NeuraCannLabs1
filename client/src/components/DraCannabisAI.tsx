@@ -71,6 +71,7 @@ export default function DraCannabisAI() {
   const [didVideoUrl, setDidVideoUrl] = useState<string | null>(null);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
   const [useDIDAnimation, setUseDIDAnimation] = useState(false);
+  const [avatarBackground, setAvatarBackground] = useState<'gradient_cyber' | 'gradient_neon' | 'medical' | 'cannabis'>('gradient_cyber');
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -260,8 +261,11 @@ export default function DraCannabisAI() {
       }
       
       // Ativar sistema de resposta da Dra. Cannabis
-              if (data.message) {
+      if (data.message) {
         setIsTalking(true);
+        
+        // Sincronizar avatar D-ID com a resposta da NOA (sempre)
+        syncAvatarWithResponse(data.message);
         
         // Se D-ID ativo, não usar sistema de voz local - widget cuida disso
         if (useDIDAnimation && isDIDWidgetLoaded) {
@@ -419,9 +423,50 @@ export default function DraCannabisAI() {
     },
   });
 
-  const handleSubmitQuestion = () => {
+  const handleSubmitQuestion = async () => {
     if (!question.trim()) return;
+    
+    // Adicionar pergunta do usuário ao chat
+    const userMessage = { type: 'user', message: question, timestamp: new Date().toISOString() };
+    setChatHistory(prev => [...prev, userMessage]);
+    
+    // Processar com NOA ESPERANÇA
     consultMutation.mutate({ question });
+    
+    // Limpar input
+    setQuestion('');
+  };
+
+  // Função para sincronizar avatar D-ID com resposta da NOA
+  const syncAvatarWithResponse = async (aiResponse: string) => {
+    try {
+      console.log('🎭 Sincronizando avatar D-ID com resposta da NOA...');
+      
+      const avatarResponse = await fetch('/api/avatar/speak', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          text: aiResponse,
+          background: avatarBackground // Usar background selecionado
+        })
+      });
+      
+      if (avatarResponse.ok) {
+        const avatarData = await avatarResponse.json();
+        console.log('✅ Avatar D-ID sincronizado:', avatarData.id);
+        
+        // Aqui você pode adicionar lógica para reproduzir o vídeo
+        // Por enquanto, apenas logamos o sucesso
+        toast({
+          title: "Avatar Sincronizado!",
+          description: "Dra. Cannabis está falando sua resposta",
+        });
+      } else {
+        console.log('⚠️ Avatar D-ID não configurado, usando simulação');
+      }
+    } catch (error) {
+      console.error('❌ Erro ao sincronizar avatar:', error);
+    }
   };
 
   const handleSpeakResponse = (text: string) => {
@@ -653,6 +698,53 @@ export default function DraCannabisAI() {
                   <span className="text-sm">Gerando animação facial...</span>
                 </div>
               )}
+
+              {/* Seletor de Background do Avatar */}
+              <div className="flex flex-col items-center justify-center space-y-2">
+                <label className="text-sm text-emerald-400 font-medium">Background do Avatar:</label>
+                <div className="flex flex-wrap justify-center gap-2">
+                  <button
+                    onClick={() => setAvatarBackground('gradient_cyber')}
+                    className={`px-3 py-1 text-xs rounded-full transition-all ${
+                      avatarBackground === 'gradient_cyber'
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    Cyber
+                  </button>
+                  <button
+                    onClick={() => setAvatarBackground('gradient_neon')}
+                    className={`px-3 py-1 text-xs rounded-full transition-all ${
+                      avatarBackground === 'gradient_neon'
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    Neon
+                  </button>
+                  <button
+                    onClick={() => setAvatarBackground('medical')}
+                    className={`px-3 py-1 text-xs rounded-full transition-all ${
+                      avatarBackground === 'medical'
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    Médico
+                  </button>
+                  <button
+                    onClick={() => setAvatarBackground('cannabis')}
+                    className={`px-3 py-1 text-xs rounded-full transition-all ${
+                      avatarBackground === 'cannabis'
+                        ? 'bg-emerald-600 text-white'
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    Cannabis
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>

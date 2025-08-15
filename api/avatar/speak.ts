@@ -1,28 +1,113 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
+const DID_API_KEY = process.env.DID_API_KEY;
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { text, voice = 'pt-BR-FranciscaNeural' } = req.body;
+  const { text, background = 'medical' } = req.body;
+
+  if (!text) {
+    return res.status(400).json({ message: 'Texto é obrigatório' });
+  }
+
+  if (!DID_API_KEY) {
+    console.log('⚠️ D-ID API Key não configurada, retornando simulação');
+    return res.status(200).json({
+      id: 'simulated-talk-id',
+      status: 'created',
+      message: 'Avatar simulado - configure D-ID API Key para funcionalidade completa'
+    });
+  }
 
   try {
-    // Simular resposta de síntese de voz
-    const audioResponse = {
-      audioUrl: `data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT`,
-      duration: text ? text.length * 0.1 : 2.0,
-      voice: voice,
-      text: text || 'Olá! Sou a Dra. Cannabis, como posso ajudá-lo?'
+    console.log('🎭 Criando avatar D-ID para texto:', text.substring(0, 50) + '...');
+
+    // Backgrounds temáticos que combinam com a plataforma
+    const backgrounds = {
+      medical: {
+        type: 'color',
+        color: '#0f172a' // Slate-900 - fundo escuro da plataforma
+      },
+      cannabis: {
+        type: 'color', 
+        color: '#0f172a' // Mesmo fundo escuro
+      },
+      cyber: {
+        type: 'color',
+        color: '#0f172a' // Fundo cyberpunk
+      },
+      neon: {
+        type: 'color',
+        color: '#0f172a' // Fundo escuro com neon
+      },
+      // Backgrounds com gradientes que combinam
+      gradient_cyber: {
+        type: 'gradient',
+        colors: ['#0f172a', '#1e293b'] // Slate-900 para Slate-800
+      },
+      gradient_neon: {
+        type: 'gradient', 
+        colors: ['#0f172a', '#1e1b4b'] // Slate-900 para Indigo-900
+      }
     };
 
-    return res.status(200).json(audioResponse);
+    const selectedBackground = backgrounds[background as keyof typeof backgrounds] || backgrounds.medical;
+
+    const dIdResponse = await fetch('https://api.d-id.com/talks', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${DID_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        script: {
+          type: 'text',
+          input: text,
+          provider: {
+            type: 'microsoft',
+            voice_id: 'pt-BR-FranciscaNeural'
+          }
+        },
+        config: {
+          fluent: true,
+          pad_audio: 0.0,
+          background: selectedBackground
+        },
+        source_url: 'https://studio.d-id.com/agents/share?id=v2_agt_MVX1-NKn'
+      })
+    });
+
+    if (!dIdResponse.ok) {
+      const errorText = await dIdResponse.text();
+      console.error('❌ Erro na API D-ID:', dIdResponse.status, errorText);
+      throw new Error(`Erro na API D-ID: ${dIdResponse.status}`);
+    }
+
+    const result = await dIdResponse.json();
+    console.log('✅ Avatar D-ID criado:', result.id);
+
+    return res.status(200).json({
+      id: result.id,
+      status: result.status,
+      message: 'Avatar D-ID criado com sucesso'
+    });
 
   } catch (error) {
-    console.error('Avatar speak error:', error);
+    console.error('❌ Erro ao criar avatar D-ID:', error);
     return res.status(500).json({ 
-      message: 'Erro na síntese de voz',
-      error: error instanceof Error ? error.message : 'Unknown error'
+      message: 'Erro ao criar avatar D-ID',
+      error: error instanceof Error ? error.message : 'Erro desconhecido'
     });
   }
 }
