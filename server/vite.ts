@@ -40,6 +40,14 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
+  // Middleware para IGNORAR rotas da API ANTES do Vite
+  app.use((req, res, next) => {
+    if (req.originalUrl.startsWith('/api/')) {
+      return next();
+    }
+    next();
+  });
+  
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;

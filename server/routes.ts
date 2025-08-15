@@ -167,8 +167,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   app.get("/api/admin/stats", async (req, res) => {
-    // Garantir que sempre retorne JSON
+    // GARANTIR que sempre retorne JSON - CRÍTICO
     res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    
+    console.log('🔍 API /admin/stats chamada - URL:', req.originalUrl);
     
     const sessionUser = (req.session as any)?.user;
     
