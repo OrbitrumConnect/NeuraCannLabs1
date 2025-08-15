@@ -1355,6 +1355,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Endpoint para obter imagem da agente D-ID
+  app.get("/api/dra-cannabis/agent-image", async (req, res) => {
+    try {
+      console.log('🖼️ Buscando imagem da agente D-ID:', didAgentService.agentId);
+      
+      // Verificar se temos API key
+      if (!process.env.DID_API_KEY) {
+        return res.status(404).json({ 
+          error: 'DID_API_KEY não configurada',
+          fallbackImage: '/dra-cannabis-nova.png'
+        });
+      }
+
+      // Buscar informações da agente D-ID
+      const response = await fetch(`https://api.d-id.com/agents/${didAgentService.agentId}`, {
+        headers: {
+          'Authorization': `Basic ${process.env.DID_API_KEY}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const agentData = await response.json();
+        console.log('✅ Imagem da agente obtida:', agentData.source_url);
+        
+        res.json({
+          success: true,
+          imageUrl: agentData.source_url,
+          agentId: didAgentService.agentId,
+          agentName: agentData.name || 'Dra. Cannabis IA'
+        });
+      } else {
+        console.log('⚠️ Não foi possível obter imagem da agente, usando fallback');
+        res.json({
+          success: false,
+          fallbackImage: '/dra-cannabis-nova.png',
+          message: 'Usando imagem local como fallback'
+        });
+      }
+      
+    } catch (error: any) {
+      console.error('❌ Erro ao buscar imagem da agente:', error);
+      res.json({
+        success: false,
+        fallbackImage: '/dra-cannabis-nova.png',
+        message: 'Erro ao conectar com D-ID, usando imagem local'
+      });
+    }
+  });
+
   // Endpoint para usar agente D-ID completo (resposta + vídeo + movimento labial)
   app.post("/api/dra-cannabis/agent-chat", async (req, res) => {
     try {
