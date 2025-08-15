@@ -48,7 +48,7 @@ class ClinicalTrialsService {
       const searchTerm = this.buildSearchTerm(termo);
       
       const queryParams = new URLSearchParams({
-        'query.cond': searchTerm,
+        'query.term': searchTerm,
         'fields': 'NCTId,BriefTitle,OfficialTitle,OverallStatus,StartDate,CompletionDate,Condition,InterventionName,InterventionType,LocationCountry,Enrollment,Phase,StudyType,LeadSponsorName,BriefSummary,DetailedDescription',
         'max_rnk': maxResults.toString(),
         'min_rnk': (startFrom + 1).toString(),
@@ -106,8 +106,8 @@ class ClinicalTrialsService {
       return baseTerms.join(' OR ');
     }
 
-    // Combina o termo do usuário com termos de cannabis
-    return `${userTerm} AND (${baseTerms.join(' OR ')})`;
+    // Simplifica a query para evitar erros 400
+    return `${userTerm} cannabis`;
   }
 
   /**
@@ -183,10 +183,32 @@ class ClinicalTrialsService {
    * Busca ensaios clínicos recentes sobre cannabis
    */
   async buscarEnsaiosRecentes(maxResults: number = 10): Promise<ClinicalTrial[]> {
-    const currentYear = new Date().getFullYear();
-    const searchTerm = `cannabis AND ${currentYear}`;
-    const result = await this.buscarEnsaiosClinicos(searchTerm, maxResults);
-    return result.trials;
+    try {
+      const queryParams = new URLSearchParams({
+        'query.term': 'cannabis',
+        'fields': 'NCTId,BriefTitle,OfficialTitle,OverallStatus,StartDate,CompletionDate,Condition,InterventionName,InterventionType,LocationCountry,Enrollment,Phase,StudyType,LeadSponsorName,BriefSummary,DetailedDescription',
+        'max_rnk': maxResults.toString(),
+        'format': 'json'
+      });
+
+      const url = `${this.baseUrl}?${queryParams.toString()}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar ensaios recentes: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      if (!data.studies || data.studies.length === 0) {
+        return [];
+      }
+
+      return data.studies.map((study: any) => this.mapStudyToTrial(study));
+    } catch (error) {
+      console.error('Erro ao buscar ensaios recentes:', error);
+      return [];
+    }
   }
 
   /**

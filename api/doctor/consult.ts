@@ -190,7 +190,27 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
       // Usar a mesma lógica do Replit - ChatGPT-4o com NOA ESPERANÇA
       console.log('🚀 Iniciando chamada para ChatGPT-4o...');
       console.log('🔑 API Key disponível:', !!process.env.OPENAI_API_KEY);
-      console.log('📝 Pergunta:', question.substring(0, 50) + '...');
+      console.log('🔑 API Key completa:', process.env.OPENAI_API_KEY);
+      console.log('📝 Pergunta:', question);
+      console.log('📝 System Prompt length:', systemPrompt.length);
+      
+      const requestBody = {
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: systemPrompt
+          },
+          {
+            role: 'user', 
+            content: question
+          }
+        ],
+        max_tokens: 400,
+        temperature: 0.7
+      };
+      
+      console.log('📤 Request body:', JSON.stringify(requestBody, null, 2));
       
       const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -198,21 +218,7 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
           'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          model: 'gpt-4o', // Modelo mais avançado como no Replit
-          messages: [
-            {
-              role: 'system',
-              content: systemPrompt
-            },
-            {
-              role: 'user', 
-              content: question
-            }
-          ],
-          max_tokens: 400,
-          temperature: 0.7
-        })
+        body: JSON.stringify(requestBody)
       });
 
       console.log('📊 Status da resposta OpenAI:', openaiResponse.status);
@@ -220,8 +226,9 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
 
       if (openaiResponse.ok) {
         const data = await openaiResponse.json();
+        console.log('📥 Resposta completa do OpenAI:', JSON.stringify(data, null, 2));
         const response = data.choices[0].message.content;
-        console.log('✅ NOA ESPERANÇA respondeu via ChatGPT-4o:', response.substring(0, 100) + '...');
+        console.log('✅ NOA ESPERANÇA respondeu via ChatGPT-4o:', response);
         
         return {
           response: response,
@@ -230,7 +237,7 @@ Lembre-se: Você é a NOA ESPERANÇA - uma médica real, não uma IA!`;
           recommendations: this.generateRecommendations(question, response),
           needsSpecialist: false
         };
-                   } else {
+      } else {
         const errorText = await openaiResponse.text();
         console.error('❌ Erro na API do OpenAI:', openaiResponse.status, errorText);
         throw new Error(`Erro na API do OpenAI: ${openaiResponse.status} - ${errorText}`);

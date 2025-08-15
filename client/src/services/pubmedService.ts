@@ -130,7 +130,7 @@ class PubMedService {
         const pmid = this.getTextContent(article, 'PMID');
         const title = this.getTextContent(article, 'ArticleTitle');
         const abstract = this.getTextContent(article, 'AbstractText');
-        const journal = this.getTextContent(article, 'Journal/Title');
+        const journal = this.getJournalTitle(article);
         const publicationDate = this.getPublicationDate(article);
         const doi = this.getTextContent(article, 'ELocationID[@EIdType="doi"]');
         
@@ -181,8 +181,33 @@ class PubMedService {
    * Extrai texto de um elemento XML
    */
   private getTextContent(parent: Element, selector: string): string {
-    const element = parent.querySelector(selector);
-    return element?.textContent?.trim() || '';
+    try {
+      const element = parent.querySelector(selector);
+      return element?.textContent?.trim() || '';
+    } catch (error) {
+      console.warn(`Erro ao extrair texto com seletor '${selector}':`, error);
+      return '';
+    }
+  }
+
+  /**
+   * Extrai título do journal de forma segura
+   */
+  private getJournalTitle(article: Element): string {
+    try {
+      // Tenta diferentes seletores para o título do journal
+      const journalElement = article.querySelector('Journal');
+      if (journalElement) {
+        const titleElement = journalElement.querySelector('Title');
+        if (titleElement) {
+          return titleElement.textContent?.trim() || 'Journal não disponível';
+        }
+      }
+      return 'Journal não disponível';
+    } catch (error) {
+      console.warn('Erro ao extrair título do journal:', error);
+      return 'Journal não disponível';
+    }
   }
 
   /**

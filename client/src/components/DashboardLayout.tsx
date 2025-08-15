@@ -233,7 +233,7 @@ export default function DashboardLayout({
                   <button onClick={() => window.location.href = '/professional'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-user-md mr-2" />Perfil Profissional
                   </button>
-                  <button onClick={() => window.location.href = '/dashboard/overview'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
+                  <button onClick={() => window.location.href = '/admin'} className="w-full text-left px-4 py-3 hover:bg-gray-700 text-sm text-gray-300">
                     <i className="fas fa-shield-alt mr-2" />Admin Global
                   </button>
                 </div>
