@@ -8,7 +8,7 @@ export class DIDAgentService {
 
   constructor() {
     // Atualizado para o novo avatar da Dra. Cannabis compartilhado
-    this.agentId = 'v2_agt_mzs8kQcn'; // Novo ID do agente D-ID compartilhado
+    this.agentId = 'v2_agt_mzs8kQcn'; // ID do agente com movimento labial sincronizado
     this.apiKey = process.env.DID_API_KEY || '';
     
     if (!this.apiKey) {
