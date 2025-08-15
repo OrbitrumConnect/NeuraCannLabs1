@@ -10,7 +10,7 @@ import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
 // Usando a imagem do novo agente D-ID v2_agt_mzs8kQcn
-const draCannabisImage = "https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg";
+const draCannabisImage = "/dra-cannabis-nova.png";
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 
@@ -490,7 +490,7 @@ export default function DraCannabisAI() {
               /* Avatar Estático da Dra. Cannabis (quando D-ID desativado) */
               <div className={`${isTalking && !useDIDAnimation ? 'avatar-talking' : ''} transition-all duration-300`}>
                 <img 
-                  src="https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg"
+                  src={draCannabisImage}
                   className={`
                     w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
                     rounded-lg shadow-2xl 
