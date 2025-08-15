@@ -9,8 +9,8 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-// Imagem da Dra. Cannabis - usando a URL exata fornecida pelo usuário
-const draCannabisImage = "https://studio.d-id.com/agents/share?id=v2_agt_mzs8kQcn";
+// Imagem da Dra. Cannabis - usando a imagem local da nova agente D-ID
+const draCannabisImage = "/dra-cannabis-nova.png";
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 
