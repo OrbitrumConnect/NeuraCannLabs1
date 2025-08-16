@@ -1,12 +1,23 @@
 {
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/server/index.ts"
+      "src": "server/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/server/index.ts"
     },
     {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "src": "/(.*)", 
+      "dest": "/server/index.ts"
     }
-  ]
+  ],
+  "functions": {
+    "server/index.ts": {
+      "maxDuration": 30
+    }
+  }
 }

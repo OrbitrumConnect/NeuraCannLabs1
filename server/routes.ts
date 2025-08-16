@@ -1,34 +1,13 @@
 import type { Express } from "express";
 import express from "express";
-import { createServer, type Server } from "http";
-import { getStorage } from "./storage";
-import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchema } from "@shared/schema";
+import { getStorage } from "./storage.js";
+import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchema } from "@shared/schema.js";
 import { z } from "zod";
-import session from "express-session";
-import MemoryStore from "memorystore";
-import { superMedicalAI } from "./superMedicalAI";
-import { didAgentService } from "./didAgentService";
-import "./types";
+import { superMedicalAI } from "./superMedicalAI.js";
+import { didAgentService } from "./didAgentService.js";
+import "./types.js";
 
-export async function registerRoutes(app: Express): Promise<Server> {
-  // Static files
-  app.use(express.static('client/public'));
-  
-  // Session setup
-  const MemStore = MemoryStore(session);
-  app.use(session({
-    secret: 'neurocann-lab-secret-key',
-    resave: false,
-    saveUninitialized: true, // Permitir cookies não inicializados
-    store: new MemStore({
-      checkPeriod: 86400000 // prune expired entries every 24h
-    }),
-    cookie: {
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      httpOnly: false, // Permitir acesso via JavaScript se necessário
-      secure: false // Não exigir HTTPS em desenvolvimento
-    }
-  }));
+export function registerRoutes(app: Express): void {
 
   // Admin credentials - atualizadas com Supabase
   const ADMIN_EMAIL = 'phpg69@gmail.com';
@@ -2910,8 +2889,4 @@ PARÂMETROS TÉCNICOS:
   console.log("🧠 Sistema de Aprendizado Contínuo: ATIVO - Salvando todas as conversas para evolução da IA");
   console.log("🎭 Agente D-ID NOA ESPERANÇA: Integrado para interface visual avançada");
   console.log("📚 NeuroCann Academy: Sistema educacional integrado com IA");
-
-  const httpServer = createServer(app);
-
-  return httpServer;
 }
