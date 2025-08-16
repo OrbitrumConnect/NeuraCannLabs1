@@ -33,10 +33,10 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Import and register routes
-import { registerRoutes } from "../../server/routes.js";
+import { registerRoutes } from "../../server/routes";
 
 // Register API routes
-await registerRoutes(app);
+registerRoutes(app);
 
 // For Vercel serverless
 export default app;
