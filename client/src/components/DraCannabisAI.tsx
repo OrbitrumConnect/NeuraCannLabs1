@@ -513,6 +513,22 @@ export default function DraCannabisAI() {
                   <p className="text-sm">Carregando Widget D-ID NOA ESPERANÇA...</p>
                 </div>
               </div>
+            ) : (
+              /* Sistema nativo de avatar animado (quando D-ID desativado) */
+              <div className={`${isTalking ? 'avatar-talking' : ''} transition-all duration-300`}>
+                <div className="w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-lg shadow-2xl bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+                  <div className="text-center text-white">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
+                      <MessageCircle className="w-8 h-8" />
+                    </div>
+                    <p className="text-sm font-medium">Dra. Cannabis IA</p>
+                    <p className="text-xs opacity-80">Sistema Nativo</p>
+                  </div>
+                </div>
+                {isTalking && (
+                  <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
+                )}
+              </div>
             )}
             <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-black text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 drop-shadow-[0_0_5px_rgba(57,255,20,0.4)] ${
               isTalking ? 'bg-neon-green animate-pulse' : 'bg-neon-green'
