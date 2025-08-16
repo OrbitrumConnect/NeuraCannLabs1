@@ -9,8 +9,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-// Usando a imagem oficial do agente D-ID v2_agt_mzs8kQcn
-const draCannabisImage = "https://create-images-results.d-id.com/google-oauth2|101218376087780649774/upl_C3ha4xZC1dc1diswoqZOH/image.jpeg";
+// Sistema nativo de avatar animado - sem imagem estática
 import { nativeAvatarService } from '@/services/nativeAvatarService';
 
 
@@ -513,24 +512,6 @@ export default function DraCannabisAI() {
                   <Loader2 className="w-8 h-8 mx-auto animate-spin mb-2" />
                   <p className="text-sm">Carregando Widget D-ID NOA ESPERANÇA...</p>
                 </div>
-              </div>
-            ) : (
-              /* Avatar Estático da Dra. Cannabis (quando D-ID desativado) */
-              <div className={`${isTalking && !useDIDAnimation ? 'avatar-talking' : ''} transition-all duration-300`}>
-                <img 
-                  src={draCannabisImage}
-                  className={`
-                    w-48 h-48 sm:w-56 sm:h-56 md:w-80 md:h-80 lg:w-96 lg:h-96 
-                    rounded-lg shadow-2xl 
-                    object-cover
-                    ${isTalking && !useDIDAnimation ? 'animate-pulse filter brightness-110' : ''}
-                  `}
-                  alt="Dra. Cannabis IA - Avatar Estático"
-                  style={{ minWidth: '320px', minHeight: '400px' }}
-                />
-                {isTalking && !useDIDAnimation && (
-                  <div className="absolute inset-0 rounded-lg border-4 border-neon-green/50 animate-ping" />
-                )}
               </div>
             )}
             <Badge className={`absolute -bottom-2 -right-2 md:-bottom-3 md:-right-3 text-black text-xs md:text-sm px-2 py-1 md:px-3 md:py-1 drop-shadow-[0_0_5px_rgba(57,255,20,0.4)] ${
