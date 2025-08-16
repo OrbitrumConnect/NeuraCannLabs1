@@ -879,7 +879,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Testar se conseguimos acessar a API D-ID
-      const response = await fetch('https://api.d-id.com/agents/v2_agt_WAM9eh_P', {
+      const response = await fetch('https://api.d-id.com/agents/v2_agt_mzs8kQcn', {
         method: 'GET',
         headers: {
           'Authorization': `Basic ${process.env.DID_API_KEY}`,
@@ -895,7 +895,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         success: isConnected,
         status: response.status,
         message: isConnected ? 'D-ID API conectada' : 'Falha na conexão D-ID',
-        agent: 'v2_agt_WAM9eh_P',
+        agent: 'v2_agt_mzs8kQcn',
         apiAvailable: true
       });
       

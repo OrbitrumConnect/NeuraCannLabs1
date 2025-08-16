@@ -631,7 +631,7 @@ export default function DraCannabisAI() {
                   <div className="text-xs text-gray-400 text-center max-w-xs">
                     <p>Domínio: {window.location.hostname}</p>
                     <p>Client Key: ...{`Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli`.slice(-10)}</p>
-                    <p>Agent: v2_agt_WAM9eh_P</p>
+                    <p>Agent: v2_agt_mzs8kQcn</p>
                   </div>
                 </div>
               )}
