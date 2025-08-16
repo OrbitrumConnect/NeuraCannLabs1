@@ -70,7 +70,7 @@ export default function DraCannabisAI() {
   const [isAutoStarting, setIsAutoStarting] = useState(false);
   const [didVideoUrl, setDidVideoUrl] = useState<string | null>(null);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
-  const [useDIDAnimation, setUseDIDAnimation] = useState(false);
+  const [useDIDAnimation, setUseDIDAnimation] = useState(true);
   const [avatarBackground, setAvatarBackground] = useState<'gradient_cyber' | 'gradient_neon' | 'medical' | 'cannabis'>('gradient_cyber');
 
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -547,174 +547,27 @@ export default function DraCannabisAI() {
         </div>
         
         <div className="text-center space-y-3 md:space-y-4 px-4 md:px-6 mt-4">
-          {!setupNativeDraMutation.data && (
-            <Button 
-              onClick={() => setupNativeDraMutation.mutate()}
-              disabled={setupNativeDraMutation.isPending}
-              className="bg-neon-green hover:bg-neon-green/90 w-full max-w-xs mx-auto text-sm md:text-base drop-shadow-[0_0_8px_rgba(57,255,20,0.4)] shadow-[0_0_15px_rgba(57,255,20,0.3)]"
-              data-testid="button-activate-doctor"
-            >
-              {setupNativeDraMutation.isPending ? (
-                <>
-                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  <span className="hidden sm:inline">Ativando Dra. Cannabis...</span>
-                  <span className="sm:hidden">Ativando...</span>
-                </>
-              ) : (
-                <>
-                  <Upload className="w-4 h-4 mr-2" />
-                  Ativar Dra.
-                </>
-              )}
-            </Button>
-          )}
-          
-          {setupNativeDraMutation.data && (
-            <div className="space-y-3 md:space-y-4">
-              <div className="flex items-center justify-center space-x-2 text-emerald-400">
-                <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
-                <span className="text-sm md:text-base">Dra. Cannabis IA com Avatar Animado Ativa!</span>
-              </div>
-              
-              {/* Controle de Animação D-ID */}
-              <div className="flex items-center justify-center space-x-3">
-                <label className="flex items-center space-x-2 text-sm cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={useDIDAnimation}
-                    onChange={(e) => setUseDIDAnimation(e.target.checked)}
-                    className="w-4 h-4 text-emerald-600 border-emerald-300 rounded focus:ring-emerald-500"
-                  />
-                  <Video className="w-4 h-4" />
-                  <span>Animação Realista (D-ID)</span>
-                </label>
-              </div>
-
-              {/* Status do widget D-ID */}
-              {useDIDAnimation && isDIDWidgetLoaded && (
+          {/* Dra. Cannabis IA sempre ativa com D-ID */}
+          <div className="space-y-3 md:space-y-4">
+            <div className="flex items-center justify-center space-x-2 text-emerald-400">
+              <CheckCircle className="w-4 h-4 md:w-5 md:h-5" />
+              <span className="text-sm md:text-base">Dra. Cannabis IA - NOA ESPERANÇA</span>
+            </div>
+            
+                          {/* Status do widget D-ID */}
+              {isDIDWidgetLoaded && (
                 <div className="flex items-center justify-center space-x-2 text-emerald-400">
                   <Video className="w-4 h-4" />
-                  <span className="text-sm">Widget NOA ESPERANÇA Ativo</span>
+                  <span className="text-sm">Widget D-ID Ativo - v2_agt_mzs8kQcn</span>
                 </div>
               )}
               
-              {useDIDAnimation && !isDIDWidgetLoaded && (
-                <div className="flex flex-col items-center justify-center space-y-2 text-yellow-400">
-                  <div className="flex items-center space-x-2">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    <span className="text-sm">Carregando Widget D-ID...</span>
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={async () => {
-                        console.log('🔍 Testando conectividade D-ID...');
-                        
-                        // Testar se o script D-ID pode ser acessado
-                        try {
-                          const response = await fetch('https://agent.d-id.com/v2/index.js');
-                          console.log('📡 D-ID Script Status:', response.status);
-                          
-                          if (response.ok) {
-                            console.log('✅ Script D-ID acessível');
-                            toast({
-                              title: "Diagnóstico D-ID",
-                              description: `Script acessível. Domínio atual: ${window.location.hostname}`,
-                              variant: "default",
-                            });
-                          } else {
-                            console.error('❌ Script D-ID não acessível:', response.status);
-                            toast({
-                              title: "Erro D-ID",
-                              description: `Script não acessível (${response.status})`,
-                              variant: "destructive",
-                            });
-                          }
-                        } catch (error) {
-                          console.error('❌ Erro na conectividade D-ID:', error);
-                          toast({
-                            title: "Erro de Conexão",
-                            description: "Não consegue acessar serviços D-ID",
-                            variant: "destructive",
-                          });
-                        }
-                      }}
-                      className="text-xs px-2 py-1 bg-blue-600 hover:bg-blue-700 rounded text-white"
-                    >
-                      Testar D-ID
-                    </button>
-                    <button
-                      onClick={() => {
-                        console.log('🔄 Forçando fallback para sistema local');
-                        setUseDIDAnimation(false);
-                        setIsDIDWidgetLoaded(false);
-                      }}
-                      className="text-xs px-2 py-1 bg-red-600 hover:bg-red-700 rounded text-white"
-                    >
-                      Usar Sistema Local
-                    </button>
-                  </div>
-                  <div className="text-xs text-gray-400 text-center max-w-xs">
-                    <p>Domínio: {window.location.hostname}</p>
-                    <p>Client Key: ...{`Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli`.slice(-10)}</p>
-                    <p>Agent: v2_agt_mzs8kQcn</p>
-                  </div>
-                </div>
-              )}
-
-              {/* Status da geração de vídeo D-ID */}
-              {isGeneratingVideo && (
-                <div className="flex items-center justify-center space-x-2 text-blue-400">
+              {!isDIDWidgetLoaded && (
+                <div className="flex items-center justify-center space-x-2 text-yellow-400">
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="text-sm">Gerando animação facial...</span>
+                  <span className="text-sm">Carregando Dra. Cannabis IA...</span>
                 </div>
               )}
-
-              {/* Seletor de Background do Avatar */}
-              <div className="flex flex-col items-center justify-center space-y-2">
-                <label className="text-sm text-emerald-400 font-medium">Background do Avatar:</label>
-                <div className="flex flex-wrap justify-center gap-2">
-                  <button
-                    onClick={() => setAvatarBackground('gradient_cyber')}
-                    className={`px-3 py-1 text-xs rounded-full transition-all ${
-                      avatarBackground === 'gradient_cyber'
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                    }`}
-                  >
-                    Cyber
-                  </button>
-                  <button
-                    onClick={() => setAvatarBackground('gradient_neon')}
-                    className={`px-3 py-1 text-xs rounded-full transition-all ${
-                      avatarBackground === 'gradient_neon'
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                    }`}
-                  >
-                    Neon
-                  </button>
-                  <button
-                    onClick={() => setAvatarBackground('medical')}
-                    className={`px-3 py-1 text-xs rounded-full transition-all ${
-                      avatarBackground === 'medical'
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                    }`}
-                  >
-                    Médico
-                  </button>
-                  <button
-                    onClick={() => setAvatarBackground('cannabis')}
-                    className={`px-3 py-1 text-xs rounded-full transition-all ${
-                      avatarBackground === 'cannabis'
-                        ? 'bg-emerald-600 text-white'
-                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                    }`}
-                  >
-                    Cannabis
-                  </button>
-                </div>
-              </div>
             </div>
           )}
         </div>
