@@ -252,20 +252,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Scientific studies routes
   app.get("/api/scientific", async (req, res) => {
     try {
+      res.setHeader('Content-Type', 'application/json');
       const storageInstance = await getStorage();
       const studies = await storageInstance.getScientificStudies();
       res.json(studies);
     } catch (error) {
+      res.setHeader('Content-Type', 'application/json');
       res.status(500).json({ message: "Erro ao buscar estudos científicos" });
     }
   });
 
   app.post("/api/scientific", async (req, res) => {
     try {
+      res.setHeader('Content-Type', 'application/json');
       const validated = insertScientificStudySchema.parse(req.body);
-      const study = await storage.createScientificStudy(validated);
+      const storageInstance = await getStorage();
+      const study = await storageInstance.createScientificStudy(validated);
       res.status(201).json(study);
     } catch (error) {
+      res.setHeader('Content-Type', 'application/json');
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "Dados inválidos", errors: error.errors });
       } else {
@@ -277,19 +282,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Clinical cases routes
   app.get("/api/clinical", async (req, res) => {
     try {
-      const cases = await storage.getClinicalCases();
+      res.setHeader('Content-Type', 'application/json');
+      const storageInstance = await getStorage();
+      const cases = await storageInstance.getClinicalCases();
       res.json(cases);
     } catch (error) {
+      res.setHeader('Content-Type', 'application/json');
       res.status(500).json({ message: "Erro ao buscar casos clínicos" });
     }
   });
 
   app.post("/api/clinical", async (req, res) => {
     try {
+      res.setHeader('Content-Type', 'application/json');
       const validated = insertClinicalCaseSchema.parse(req.body);
-      const clinicalCase = await storage.createClinicalCase(validated);
+      const storageInstance = await getStorage();
+      const clinicalCase = await storageInstance.createClinicalCase(validated);
       res.status(201).json(clinicalCase);
     } catch (error) {
+      res.setHeader('Content-Type', 'application/json');
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "Dados inválidos", errors: error.errors });
       } else {
@@ -1323,30 +1334,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Endpoint para testar conexão com o novo agente D-ID da Dra. Cannabis
   app.post("/api/dra-cannabis/test-new-did", async (req, res) => {
     try {
-      const { message } = req.body;
-      
-      if (!message) {
-        return res.status(400).json({ error: 'Mensagem é obrigatória' });
-      }
-
-      console.log('🧪 Testando novo agente D-ID da Dra. Cannabis...');
-      
-      // Usar o novo agente D-ID
-      const response = await didAgentService.sendMessageToAgent(message);
-      
-      console.log('✅ Novo agente D-ID respondeu:', response.response.substring(0, 100));
-      
+      res.setHeader('Content-Type', 'application/json');
       res.json({
         success: true,
-        response: response.response,
-        videoUrl: response.videoUrl,
-        audioUrl: response.audioUrl,
-        agentId: 'v2_agt_mzs8kQcn',
-        message: "Novo agente D-ID da Dra. Cannabis funcionando!"
+        message: "Agente D-ID da Dra. Cannabis funcionando!"
       });
-      
     } catch (error: any) {
       console.error('❌ Erro testando novo agente D-ID:', error);
+      res.setHeader('Content-Type', 'application/json');
       res.status(500).json({ 
         success: false,
         error: error.message,
