@@ -17,6 +17,7 @@ import { nativeAvatarService } from '@/services/nativeAvatarService';
 interface ConsultResponse {
   success: boolean;
   response: string;
+  message: string;
   doctor: string;
   specialty: string;
   timestamp: string;
@@ -171,46 +172,69 @@ export default function DraCannabisAI() {
     },
   });
 
-  // Carregar widget oficial D-ID com timeout e fallback
+  // Carregar widget oficial D-ID da Dra. Cannabis
   const loadDIDWidget = async () => {
     if (isDIDWidgetLoaded) return;
 
-    console.log('🎭 Inicializando novo sistema D-ID da Dra. Cannabis...');
-    console.log('🔗 Domínio atual:', window.location.hostname);
+    console.log('🎭 Inicializando widget D-ID oficial da Dra. Cannabis...');
+    console.log('🔗 Agente ID:', 'v2_agt_mzs8kQcn');
     
     try {
-      // Testar conectividade com novo agente D-ID primeiro
-      const testResponse = await fetch('/api/dra-cannabis/test-new-did', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: "Olá! Sou a Dra. Cannabis. Como posso ajudá-lo hoje?"
-        })
-      });
-      const testResult = await testResponse.json();
-      
-      if (!testResult.success) {
-        throw new Error('Novo agente D-ID não acessível');
+      // Remover script existente se houver
+      const existingScript = document.querySelector('script[data-name="did-agent"]');
+      if (existingScript) {
+        existingScript.remove();
       }
-      
-      console.log('✅ Novo agente D-ID da Dra. Cannabis conectado!');
-      setIsDIDWidgetLoaded(true);
-      
-      toast({
-        title: "Dra. Cannabis Atualizada!",
-        description: "Novo avatar D-ID funcionando perfeitamente",
-        variant: "default",
-      });
+
+      // Criar container para o widget se não existir
+      if (!didContainerRef.current) {
+        console.error('❌ Container D-ID não encontrado');
+        return;
+      }
+
+      // Limpar container
+      didContainerRef.current.innerHTML = '';
+
+      // Criar e configurar o script do widget D-ID
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://agent.d-id.com/v2/index.js';
+      script.setAttribute('data-mode', 'full');
+      script.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDEyMTgzNzYwODc3ODA2NDk3NzQ6ano4ZktGZ21fTnd5QjNMWHN1UVli');
+      script.setAttribute('data-agent-id', 'v2_agt_mzs8kQcn');
+      script.setAttribute('data-name', 'did-agent');
+      script.setAttribute('data-monitor', 'true');
+      script.setAttribute('data-target-id', 'did-agent-container');
+
+      // Adicionar ID ao container
+      didContainerRef.current.id = 'did-agent-container';
+
+      // Adicionar script ao DOM
+      document.head.appendChild(script);
+
+      // Aguardar carregamento do widget
+      script.onload = () => {
+        console.log('✅ Widget D-ID oficial carregado com sucesso!');
+        setIsDIDWidgetLoaded(true);
+        
+        toast({
+          title: "Dra. Cannabis Ativa!",
+          description: "Widget D-ID oficial funcionando perfeitamente",
+          variant: "default",
+        });
+      };
+
+      script.onerror = () => {
+        throw new Error('Falha ao carregar widget D-ID');
+      };
       
     } catch (error) {
-      console.error('❌ Erro conectando novo agente D-ID:', error);
+      console.error('❌ Erro carregando widget D-ID:', error);
       setIsDIDWidgetLoaded(false);
       setUseDIDAnimation(false);
       toast({
-        title: "Erro Novo Avatar", 
-        description: "Não foi possível conectar com novo agente D-ID",
+        title: "Erro Widget D-ID", 
+        description: "Não foi possível carregar o widget oficial",
         variant: "destructive",
       });
     }
@@ -224,9 +248,9 @@ export default function DraCannabisAI() {
         return {
           success: true,
           response: "Conversa ativa no widget D-ID NOA ESPERANÇA",
+          message: "Conversa ativa no widget D-ID NOA ESPERANÇA",
           doctor: "NOA ESPERANÇA (Widget D-ID)",
           specialty: "Cannabis Medicinal - IA Avançada",
-          sessionId: `widget-${Date.now()}`,
           timestamp: new Date().toISOString(),
           recommendations: ["Widget D-ID oficial ativo", "Conversação direta com agente"],
         } as ConsultResponse;
@@ -248,11 +272,11 @@ export default function DraCannabisAI() {
       const now = new Date().toISOString();
       console.log('✅ Resposta completa da API:', data);
       console.log('✅ Texto da resposta:', data.message);
-      const newChatHistory = [
-        ...chatHistory,
-        { type: 'user', message: variables.question, timestamp: now },
-        { type: 'doctor', message: data.message || 'Erro: resposta não encontrada', timestamp: now }
-      ];
+              const newChatHistory: Array<{ type: 'user' | 'doctor'; message: string; timestamp: string }> = [
+          ...chatHistory,
+          { type: 'user' as const, message: variables.question, timestamp: now },
+          { type: 'doctor' as const, message: data.message || 'Erro: resposta não encontrada', timestamp: now }
+        ];
       
       setChatHistory(newChatHistory);
       setQuestion('');
@@ -367,7 +391,11 @@ export default function DraCannabisAI() {
     if (!question.trim()) return;
     
     // Adicionar pergunta do usuário ao chat
-    const userMessage = { type: 'user', message: question, timestamp: new Date().toISOString() };
+    const userMessage: { type: 'user' | 'doctor'; message: string; timestamp: string } = { 
+      type: 'user' as const, 
+      message: question, 
+      timestamp: new Date().toISOString() 
+    };
     setChatHistory(prev => [...prev, userMessage]);
     
     // Processar com NOA ESPERANÇA
