@@ -24,7 +24,7 @@ export async function getStorage(): Promise<IStorage> {
         throw new Error('Supabase não disponível');
       }
     } catch (error) {
-      console.log('⚠️ Supabase indisponível, usando MemStorage:', error.message);
+      console.log('⚠️ Supabase indisponível, usando MemStorage:', (error as any).message);
       globalStorage = new MemStorage();
     }
   }

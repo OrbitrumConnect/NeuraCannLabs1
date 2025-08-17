@@ -646,7 +646,7 @@ export class SuperMedicalAI {
         hasNewHopeData: false,
         studiesFound: [],
         researchAreas: [],
-        apiResponse: `Erro: ${error.message}`
+        apiResponse: `Erro: ${(error as any).message}`
       };
     }
   }
