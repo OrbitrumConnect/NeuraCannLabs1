@@ -235,7 +235,14 @@ export class MemStorage implements IStorage {
   async createScientificStudy(studyData: InsertScientificStudy): Promise<ScientificStudy> {
     const study: ScientificStudy = {
       id: randomUUID(),
-      ...studyData,
+      title: studyData.title,
+      description: studyData.description || null,
+      authors: studyData.authors || null,
+      compound: studyData.compound || null,
+      indication: studyData.indication || null,
+      phase: studyData.phase || null,
+      status: studyData.status || null,
+      date: studyData.date,
       createdAt: new Date(),
     };
 
@@ -258,8 +265,16 @@ export class MemStorage implements IStorage {
   async createClinicalCase(caseData: InsertClinicalCase): Promise<ClinicalCase> {
     const clinicalCase: ClinicalCase = {
       id: randomUUID(),
-      ...caseData,
+      description: caseData.description,
+      compound: caseData.compound || null,
+      indication: caseData.indication || null,
       createdAt: new Date(),
+      caseNumber: caseData.caseNumber,
+      doctorId: caseData.doctorId || null,
+      doctorName: caseData.doctorName,
+      dosage: caseData.dosage || null,
+      outcome: caseData.outcome || null,
+      severity: caseData.severity || null,
     };
 
     this.clinicalCases.set(clinicalCase.id, clinicalCase);

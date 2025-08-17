@@ -43,7 +43,7 @@ export function useBuscarPubMed(
     queryFn: () => pubmedService.buscarArtigosPubMed(searchTerm, maxResults, currentPage * maxResults),
     enabled: enabled && searchTerm.length > 2,
     staleTime: 5 * 60 * 1000, // 5 minutos
-    cacheTime: 10 * 60 * 1000, // 10 minutos
+    gcTime: 10 * 60 * 1000, // 10 minutos
     retry: 2,
     retryDelay: 1000
   });
@@ -93,7 +93,7 @@ export function useBuscarClinicalTrials(
     queryFn: () => clinicalTrialsService.buscarEnsaiosClinicos(searchTerm, maxResults, currentPage * maxResults),
     enabled: enabled && searchTerm.length > 2,
     staleTime: 5 * 60 * 1000, // 5 minutos
-    cacheTime: 10 * 60 * 1000, // 10 minutos
+    gcTime: 10 * 60 * 1000, // 10 minutos
     retry: 2,
     retryDelay: 1000
   });
@@ -130,7 +130,7 @@ export function useArtigosRecentesPubMed(maxResults: number = 10) {
     queryKey: ['pubmed-recent', maxResults],
     queryFn: () => pubmedService.buscarArtigosRecentes(maxResults),
     staleTime: 10 * 60 * 1000, // 10 minutos
-    cacheTime: 30 * 60 * 1000, // 30 minutos
+    gcTime: 30 * 60 * 1000, // 30 minutos
     retry: 2
   });
 }
@@ -143,7 +143,7 @@ export function useEnsaiosRecentesClinicalTrials(maxResults: number = 10) {
     queryKey: ['clinical-trials-recent', maxResults],
     queryFn: () => clinicalTrialsService.buscarEnsaiosRecentes(maxResults),
     staleTime: 10 * 60 * 1000, // 10 minutos
-    cacheTime: 30 * 60 * 1000, // 30 minutos
+    gcTime: 30 * 60 * 1000, // 30 minutos
     retry: 2
   });
 }
@@ -157,7 +157,7 @@ export function useEnsaiosPorFase(fase: string, maxResults: number = 10) {
     queryFn: () => clinicalTrialsService.buscarPorFase(fase, maxResults),
     enabled: !!fase,
     staleTime: 5 * 60 * 1000, // 5 minutos
-    cacheTime: 15 * 60 * 1000, // 15 minutos
+    gcTime: 15 * 60 * 1000, // 15 minutos
     retry: 2
   });
 }
@@ -171,7 +171,7 @@ export function useEnsaiosPorPais(pais: string, maxResults: number = 10) {
     queryFn: () => clinicalTrialsService.buscarPorPais(pais, maxResults),
     enabled: !!pais,
     staleTime: 5 * 60 * 1000, // 5 minutos
-    cacheTime: 15 * 60 * 1000, // 15 minutos
+    gcTime: 15 * 60 * 1000, // 15 minutos
     retry: 2
   });
 }
@@ -185,7 +185,7 @@ export function useDetalhesEnsaio(nctId: string) {
     queryFn: () => clinicalTrialsService.obterDetalhesEnsaio(nctId),
     enabled: !!nctId,
     staleTime: 10 * 60 * 1000, // 10 minutos
-    cacheTime: 30 * 60 * 1000, // 30 minutos
+    gcTime: 30 * 60 * 1000, // 30 minutos
     retry: 2
   });
 }
@@ -199,7 +199,7 @@ export function useArtigosRelacionados(termo: string, maxResults: number = 5) {
     queryFn: () => pubmedService.buscarArtigosRelacionados(termo, maxResults),
     enabled: !!termo && termo.length > 2,
     staleTime: 5 * 60 * 1000, // 5 minutos
-    cacheTime: 15 * 60 * 1000, // 15 minutos
+    gcTime: 15 * 60 * 1000, // 15 minutos
     retry: 2
   });
 }
@@ -213,7 +213,7 @@ export function useEnsaiosPorCondicao(condicao: string, maxResults: number = 10)
     queryFn: () => clinicalTrialsService.buscarPorCondicao(condicao, maxResults),
     enabled: !!condicao && condicao.length > 2,
     staleTime: 5 * 60 * 1000, // 5 minutos
-    cacheTime: 15 * 60 * 1000, // 15 minutos
+    gcTime: 15 * 60 * 1000, // 15 minutos
     retry: 2
   });
 }
@@ -227,7 +227,7 @@ export function useEnsaiosPorStatus(status: string, maxResults: number = 10) {
     queryFn: () => clinicalTrialsService.buscarPorStatus(status, maxResults),
     enabled: !!status,
     staleTime: 5 * 60 * 1000, // 5 minutos
-    cacheTime: 15 * 60 * 1000, // 15 minutos
+    gcTime: 15 * 60 * 1000, // 15 minutos
     retry: 2
   });
 }
