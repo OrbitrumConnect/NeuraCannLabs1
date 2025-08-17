@@ -3,7 +3,7 @@
   "name": "neurocann-lab",
   "builds": [
     {
-      "src": "dist/index.js",
+      "src": "package.json",
       "use": "@vercel/node"
     }
   ],
