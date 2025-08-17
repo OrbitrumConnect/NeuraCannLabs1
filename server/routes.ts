@@ -48,7 +48,7 @@ export function registerRoutes(app: Express): void {
       }
       
       res.status(401).json({ message: "Credenciais inválidas" });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro no login:', error);
       res.status(500).json({ message: "Erro interno do servidor" });
     }
@@ -99,7 +99,7 @@ export function registerRoutes(app: Express): void {
       });
       
       res.json({ message: "Usuário criado com sucesso", user: newUser });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro no registro:', error);
       res.status(500).json({ message: "Erro ao criar usuário" });
     }
@@ -127,7 +127,7 @@ export function registerRoutes(app: Express): void {
         message: "Role atualizado com sucesso",
         user: { ...user, role }
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao definir role:", error);
       res.status(500).json({ message: "Erro interno do servidor" });
     }
@@ -141,7 +141,7 @@ export function registerRoutes(app: Express): void {
       const storageInstance = await getStorage();
       const users = await storageInstance.getAllUsers();
       res.json(users);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Erro ao buscar usuários:", error);
       res.status(500).json({ message: "Erro ao buscar usuários" });
     }
@@ -214,7 +214,7 @@ export function registerRoutes(app: Express): void {
       
       console.log('📊 Estatísticas calculadas:', stats);
       res.json(stats);
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Erro ao buscar stats admin:', error);
       // Retornar dados seguros em caso de erro
       res.status(500).json({ 
@@ -238,7 +238,7 @@ export function registerRoutes(app: Express): void {
       const storageInstance = await getStorage();
       const studies = await storageInstance.getScientificStudies();
       res.json(studies);
-    } catch (error) {
+    } catch (error: any) {
       res.setHeader('Content-Type', 'application/json');
       res.status(500).json({ message: "Erro ao buscar estudos científicos" });
     }
@@ -251,7 +251,7 @@ export function registerRoutes(app: Express): void {
       const storageInstance = await getStorage();
       const study = await storageInstance.createScientificStudy(validated);
       res.status(201).json(study);
-    } catch (error) {
+    } catch (error: any) {
       res.setHeader('Content-Type', 'application/json');
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "Dados inválidos", errors: error.errors });
@@ -268,7 +268,7 @@ export function registerRoutes(app: Express): void {
       const storageInstance = await getStorage();
       const cases = await storageInstance.getClinicalCases();
       res.json(cases);
-    } catch (error) {
+    } catch (error: any) {
       res.setHeader('Content-Type', 'application/json');
       res.status(500).json({ message: "Erro ao buscar casos clínicos" });
     }
@@ -281,7 +281,7 @@ export function registerRoutes(app: Express): void {
       const storageInstance = await getStorage();
       const clinicalCase = await storageInstance.createClinicalCase(validated);
       res.status(201).json(clinicalCase);
-    } catch (error) {
+    } catch (error: any) {
       res.setHeader('Content-Type', 'application/json');
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "Dados inválidos", errors: error.errors });
@@ -297,7 +297,7 @@ export function registerRoutes(app: Express): void {
       const storageInstance = await getStorage();
       const alerts = await storageInstance.getAlerts();
       res.json(alerts);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar alertas" });
     }
   });
@@ -308,7 +308,7 @@ export function registerRoutes(app: Express): void {
       const storageInstance = await getStorage();
       const alert = await storageInstance.createAlert(validated);
       res.status(201).json(alert);
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "Dados inválidos", errors: error.errors });
       } else {
@@ -353,7 +353,7 @@ export function registerRoutes(app: Express): void {
           notifications: true
         }
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar perfil" });
     }
   });
@@ -385,7 +385,7 @@ export function registerRoutes(app: Express): void {
         plan: user.plan,
         ...req.body
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao atualizar perfil" });
     }
   });
@@ -410,7 +410,7 @@ export function registerRoutes(app: Express): void {
         churn: 4.2
       };
       res.json(analytics);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar analytics de usuários" });
     }
   });
@@ -428,7 +428,7 @@ export function registerRoutes(app: Express): void {
         }
       };
       res.json(revenue);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar analytics de receita" });
     }
   });
@@ -442,7 +442,7 @@ export function registerRoutes(app: Express): void {
         outros: 2
       };
       res.json(geographic);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar dados geográficos" });
     }
   });
@@ -464,7 +464,7 @@ export function registerRoutes(app: Express): void {
         }
       };
       res.json(activity);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar dados de atividade" });
     }
   });
@@ -502,7 +502,7 @@ export function registerRoutes(app: Express): void {
         typeDistribution: typeData,
         lastUpdated: now.toISOString()
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar dados em tempo real" });
     }
   });
@@ -526,7 +526,7 @@ export function registerRoutes(app: Express): void {
         }
       ];
       res.json(referrals);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar encaminhamentos" });
     }
   });
@@ -544,7 +544,7 @@ export function registerRoutes(app: Express): void {
         referral,
         estimatedResponse: "24-48 horas"
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao criar encaminhamento" });
     }
   });
@@ -565,7 +565,7 @@ export function registerRoutes(app: Express): void {
         }
       ];
       res.json(anamnesis);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar anamneses" });
     }
   });
@@ -584,7 +584,7 @@ export function registerRoutes(app: Express): void {
         anamnesis,
         estimatedCompletion: "10-15 minutos"
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao criar anamnese digital" });
     }
   });
@@ -608,7 +608,7 @@ export function registerRoutes(app: Express): void {
         }
       ];
       res.json(labs);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar resultados laboratoriais" });
     }
   });
@@ -627,7 +627,7 @@ export function registerRoutes(app: Express): void {
         lab,
         estimatedResults: "2-4 horas"
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao registrar exame" });
     }
   });
@@ -658,7 +658,7 @@ export function registerRoutes(app: Express): void {
         }
       ];
       res.json(team);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar dados da equipe" });
     }
   });
@@ -677,7 +677,7 @@ export function registerRoutes(app: Express): void {
         member,
         nextSteps: "Configurar permissões e treinamento"
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao adicionar membro da equipe" });
     }
   });
@@ -698,7 +698,7 @@ export function registerRoutes(app: Express): void {
         }
       ];
       res.json(compliance);
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao buscar dados de compliance" });
     }
   });
@@ -724,7 +724,7 @@ export function registerRoutes(app: Express): void {
         audit,
         estimatedCompletion: "15-30 minutos"
       });
-    } catch (error) {
+    } catch (error: any) {
       res.status(500).json({ message: "Erro ao executar auditoria" });
     }
   });
@@ -834,7 +834,7 @@ export function registerRoutes(app: Express): void {
       };
 
       res.json(response);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro na busca AI:', error);
       res.status(500).json({ 
         error: "Erro interno do servidor",
@@ -884,7 +884,7 @@ export function registerRoutes(app: Express): void {
         apiAvailable: true
       });
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro teste D-ID:', error);
       res.json({
         success: false,
@@ -997,7 +997,7 @@ export function registerRoutes(app: Express): void {
         timestamp: new Date().toISOString()
       });
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Erro ao integrar Super IA:", error);
       res.status(500).json({
         error: "Erro na integração da Super IA",
@@ -1032,7 +1032,7 @@ export function registerRoutes(app: Express): void {
         timestamp: new Date().toISOString()
       });
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Erro na consulta Super IA:", error);
       res.status(500).json({
         error: "Erro na consulta médica",
@@ -1068,7 +1068,7 @@ export function registerRoutes(app: Express): void {
         timestamp: new Date().toISOString()
       });
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Erro na consulta de estudos cruzados:", error);
       res.status(500).json({
         success: false,
@@ -1083,7 +1083,7 @@ export function registerRoutes(app: Express): void {
     try {
       const stats = superMedicalAI.getSystemStats();
       res.json(stats);
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Erro ao obter estatísticas:", error);
       res.status(500).json({ error: "Erro interno" });
     }
@@ -1102,7 +1102,7 @@ export function registerRoutes(app: Express): void {
         timestamp: new Date().toISOString()
       });
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Erro ao testar Nova Esperança:", error);
       res.status(500).json({
         error: "Erro no teste",
@@ -1236,7 +1236,7 @@ export function registerRoutes(app: Express): void {
         status: talkResult.status,
         message: "Dra. Cannabis está preparando sua resposta..."
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao criar fala:', error);
       res.status(500).json({ 
         error: "Erro ao criar resposta da Dra. Cannabis",
@@ -1265,7 +1265,7 @@ export function registerRoutes(app: Express): void {
         resultUrl: status.result_url,
         error: status.error
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao verificar status:', error);
       res.status(500).json({ 
         error: "Erro ao verificar status da Dra. Cannabis",
@@ -1634,7 +1634,7 @@ export function registerRoutes(app: Express): void {
           } else {
             throw new Error('Erro na API do OpenAI');
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error('⚠️ Erro ao usar ChatGPT:', error.message);
           response = getSimulatedMedicalResponse(question, conversationStage);
         }
@@ -1699,7 +1699,7 @@ export function registerRoutes(app: Express): void {
           "Ajuste de dosagem conforme resposta clínica"
         ]
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro na consulta:', error);
       res.status(500).json({ 
         error: "Erro na consulta médica",
@@ -1947,7 +1947,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
       console.log("✅ Resumo da consulta gerado");
       
       res.json(summary);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao gerar resumo:', error);
       res.status(500).json({ 
         error: "Erro ao gerar resumo da consulta",
@@ -2005,7 +2005,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
       console.log(`✅ Encaminhamento processado - Especialidade: ${recommendedSpecialty}, Urgência: ${urgency}`);
       
       res.json(referral);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro no encaminhamento:', error);
       res.status(500).json({ 
         error: "Erro ao processar encaminhamento médico",
@@ -2050,7 +2050,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
         })),
         stats
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar conversas:', error);
       res.status(500).json({ error: 'Erro interno do servidor' });
     }
@@ -2083,7 +2083,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
         patterns,
         stats
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar padrões:', error);
       res.status(500).json({ error: 'Erro interno do servidor' });
     }
@@ -2117,7 +2117,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
         insights,
         stats
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar insights:', error);
       res.status(500).json({ error: 'Erro interno do servidor' });
     }
@@ -2160,7 +2160,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
         message: 'Feedback salvo com sucesso',
         conversation: updated
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao salvar feedback:', error);
       res.status(500).json({ error: 'Erro interno do servidor' });
     }
@@ -2239,7 +2239,7 @@ ${relevantPatterns.length > 0 ?
         integration: integratedResponse
       });
       
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro na demonstração de integração:', error);
       res.status(500).json({ error: 'Erro interno do servidor' });
     }
@@ -2300,7 +2300,7 @@ ${relevantPatterns.length > 0 ?
         confidenceScore: calculateKnowledgeConfidence(combinedKnowledge, relevantPatterns)
       };
       
-    } catch (error) {
+    } catch (error: any) {
       console.error("⚠️ Erro na integração de conhecimento:", error);
       return { combinedKnowledge: [], relevantPatterns: [], confidenceScore: 0 };
     }
@@ -2376,7 +2376,7 @@ ${relevantPatterns.length > 0 ?
         });
       }
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("⚠️ Erro ao identificar padrões:", error);
     }
   }
@@ -2523,7 +2523,7 @@ PARÂMETROS TÉCNICOS:
         }
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Erro na geração de estudo com NOA:", error);
       res.status(500).json({
         success: false,
@@ -2605,7 +2605,7 @@ PARÂMETROS TÉCNICOS:
         noaEnhanced: true
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("❌ Erro no rascunho com NOA:", error);
       res.status(500).json({
         success: false,
@@ -2642,7 +2642,7 @@ PARÂMETROS TÉCNICOS:
         timestamp: new Date().toISOString()
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Erro no chat com agente D-ID:', error);
       res.status(500).json({ 
         error: "Erro no chat com NOA",
@@ -2662,7 +2662,7 @@ PARÂMETROS TÉCNICOS:
         timestamp: new Date().toISOString()
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Erro ao verificar status do agente:', error);
       res.status(500).json({ 
         error: "Erro ao verificar status",
@@ -2683,7 +2683,7 @@ PARÂMETROS TÉCNICOS:
         timestamp: new Date().toISOString()
       });
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('❌ Erro ao criar sessão:', error);
       res.status(500).json({ 
         error: "Erro ao criar sessão",
@@ -2731,7 +2731,7 @@ PARÂMETROS TÉCNICOS:
       ];
       
       res.json(courses);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar cursos:', error);
       res.status(500).json({ message: 'Erro ao buscar cursos' });
     }
@@ -2755,7 +2755,7 @@ PARÂMETROS TÉCNICOS:
       ];
       
       res.json(progress);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar progresso:', error);
       res.status(500).json({ message: 'Erro ao buscar progresso' });
     }
@@ -2779,7 +2779,7 @@ PARÂMETROS TÉCNICOS:
       ];
       
       res.json(certificates);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar certificados:', error);
       res.status(500).json({ message: 'Erro ao buscar certificados' });
     }
@@ -2804,7 +2804,7 @@ PARÂMETROS TÉCNICOS:
       };
       
       res.json(analytics);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao buscar analytics:', error);
       res.status(500).json({ message: 'Erro ao buscar analytics' });
     }
@@ -2847,7 +2847,7 @@ PARÂMETROS TÉCNICOS:
       res.setHeader('Content-Disposition', `attachment; filename="certificado_${certId}.pdf"`);
       res.send(buffer);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao gerar PDF do certificado:', error);
       res.status(500).json({ message: 'Erro ao gerar PDF do certificado' });
     }
@@ -2867,7 +2867,7 @@ PARÂMETROS TÉCNICOS:
         message: 'PDF gerado com sucesso',
         downloadUrl: `/certificates/${certId}.pdf`
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao gerar certificado:', error);
       res.status(500).json({ message: 'Erro ao gerar certificado' });
     }
@@ -2896,7 +2896,7 @@ PARÂMETROS TÉCNICOS:
       };
       
       res.json(result);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao submeter quiz:', error);
       res.status(500).json({ message: 'Erro ao submeter quiz' });
     }
