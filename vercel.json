@@ -1,7 +1,13 @@
 {
   "version": 2,
-  "name": "neurocann-lab",
   "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/public"
+      }
+    },
     {
       "src": "dist/index.js",
       "use": "@vercel/node"
@@ -14,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/public/index.html"
+      "dest": "/index.html"
     }
   ]
 }
