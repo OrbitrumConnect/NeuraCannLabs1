@@ -204,14 +204,13 @@ export class SupabaseStorage implements IStorage {
     const supabaseStudy: Omit<SupabaseScientificStudy, 'created_at' | 'updated_at'> = {
       id: studyData.id || randomUUID(),
       title: studyData.title,
-      content: studyData.content,
-      topic: studyData.topic,
-      keywords: studyData.keywords || [],
-      study_type: studyData.studyType || 'observacional',
-      word_count: studyData.wordCount || 0,
-      confidence: studyData.confidence,
-      user_id: studyData.userId,
-      status: studyData.status || 'draft'
+      description: studyData.description,
+      authors: studyData.authors,
+      compound: studyData.compound,
+      indication: studyData.indication,
+      phase: studyData.phase,
+      status: studyData.status || 'draft',
+      date: studyData.date
     };
 
     const { data, error } = await supabase
@@ -343,16 +342,14 @@ export class SupabaseStorage implements IStorage {
     return {
       id: supabaseStudy.id,
       title: supabaseStudy.title,
-      content: supabaseStudy.content,
-      topic: supabaseStudy.topic,
-      keywords: supabaseStudy.keywords,
-      studyType: supabaseStudy.study_type,
-      wordCount: supabaseStudy.word_count,
-      confidence: supabaseStudy.confidence,
-      userId: supabaseStudy.user_id,
-      status: supabaseStudy.status,
-      createdAt: new Date(supabaseStudy.created_at),
-      updatedAt: new Date(supabaseStudy.updated_at)
+      description: supabaseStudy.description || null,
+      authors: supabaseStudy.authors || null,
+      compound: supabaseStudy.compound || null,
+      indication: supabaseStudy.indication || null,
+      phase: supabaseStudy.phase || null,
+      status: supabaseStudy.status || null,
+      date: supabaseStudy.date,
+      createdAt: new Date(supabaseStudy.created_at)
     };
   }
 
