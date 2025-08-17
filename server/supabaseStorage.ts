@@ -396,52 +396,38 @@ export class SupabaseStorage implements IStorage {
     return supabaseInsights.map(insight => this.mapSupabaseInsightToInsight(insight));
   }
 
-  // Implementação mínima dos métodos obrigatórios da interface IStorage
-  async getScientificStudies(): Promise<ScientificStudy[]> { return []; }
-  async getScientificStudy(id: string): Promise<ScientificStudy | undefined> { return undefined; }
-  async createScientificStudy(study: InsertScientificStudy): Promise<ScientificStudy> { 
-    throw new Error('Not implemented in Supabase yet'); 
-  }
-
-  async getClinicalCases(): Promise<ClinicalCase[]> { return []; }
-  async getClinicalCase(id: string): Promise<ClinicalCase | undefined> { return undefined; }
-  async createClinicalCase(caseData: InsertClinicalCase): Promise<ClinicalCase> {
-    throw new Error('Not implemented in Supabase yet');
-  }
-
-  async getAlerts(): Promise<Alert[]> { return []; }
-  async getAlert(id: string): Promise<Alert | undefined> { return undefined; }
-  async createAlert(alertData: InsertAlert): Promise<Alert> {
-    throw new Error('Not implemented in Supabase yet');
-  }
-  async markAlertAsRead(id: string): Promise<void> {}
-
-  // Stubs para outros métodos da interface IStorage
-  async getStudySubmissions(): Promise<any[]> { return []; }
+  // Implementação dos métodos obrigatórios da interface IStorage
+  async getStudySubmissions(userId?: string): Promise<any[]> { return []; }
   async getAllStudySubmissions(): Promise<any[]> { return []; }
-  async getStudySubmission(): Promise<any> { return undefined; }
-  async createStudySubmission(): Promise<any> { throw new Error('Not implemented'); }
-  async updateStudySubmission(): Promise<any> { throw new Error('Not implemented'); }
-  async deleteStudySubmission(): Promise<void> {}
-  async getPatientData(): Promise<any[]> { return []; }
-  async getPatientDataById(): Promise<any> { return undefined; }
-  async createPatientData(): Promise<any> { throw new Error('Not implemented'); }
-  async updatePatientData(): Promise<any> { throw new Error('Not implemented'); }
-  async deletePatientData(): Promise<void> {}
-  async getPatientEvolutions(): Promise<any[]> { return []; }
-  async createPatientEvolution(): Promise<any> { throw new Error('Not implemented'); }
-  async getPatientReferrals(): Promise<any[]> { return []; }
-  async upsertPatientReferral(): Promise<any> { throw new Error('Not implemented'); }
-  async getDigitalAnamneses(): Promise<any[]> { return []; }
-  async upsertDigitalAnamnesis(): Promise<any> { throw new Error('Not implemented'); }
+  async getStudySubmission(id: string): Promise<any> { return undefined; }
+  async createStudySubmission(submission: any): Promise<any> { throw new Error('Not implemented'); }
+  async updateStudySubmission(id: string, updates: any): Promise<any> { throw new Error('Not implemented'); }
+  async submitStudyForReview(id: string): Promise<any> { throw new Error('Not implemented'); }
+  async addApprovedStudyToDatabase(submission: any): Promise<void> {}
+  
+  async getPatientData(doctorId?: string): Promise<any[]> { return []; }
+  async getPatientDataById(id: string): Promise<any> { return undefined; }
+  async createPatientData(data: any): Promise<any> { throw new Error('Not implemented'); }
+  
+  async getPatientEvolution(patientDataId: string): Promise<any[]> { return []; }
+  async createPatientEvolution(evolution: any): Promise<any> { throw new Error('Not implemented'); }
+  
+  async getPatientReferrals(doctorId?: string): Promise<any[]> { return []; }
+  async createPatientReferral(referral: any): Promise<any> { throw new Error('Not implemented'); }
+  async updateReferralStatus(id: string, status: string, notes?: string): Promise<any> { throw new Error('Not implemented'); }
+  
+  async getDigitalAnamnesis(patientId?: string, doctorId?: string): Promise<any[]> { return []; }
+  async createDigitalAnamnesis(anamnesis: any): Promise<any> { throw new Error('Not implemented'); }
+  async updateDigitalAnamnesis(id: string, updates: any): Promise<any> { throw new Error('Not implemented'); }
+  
   async getLabIntegrations(): Promise<any[]> { return []; }
-  async getLabResults(): Promise<any[]> { return []; }
-  async getMedicalTeamMembers(): Promise<any[]> { return []; }
+  async getLabResults(patientId?: string): Promise<any[]> { return []; }
+  async createLabResult(result: any): Promise<any> { throw new Error('Not implemented'); }
+  
+  async getMedicalTeam(): Promise<any[]> { return []; }
+  
   async getComplianceAudits(): Promise<any[]> { return []; }
-  async createComplianceAudit(): Promise<any> { throw new Error('Not implemented'); }
-  async getLearningPatterns(): Promise<LearningPattern[]> { return []; }
-  async createLearningPattern(): Promise<LearningPattern> { throw new Error('Not implemented'); }
-  async updateLearningPattern(): Promise<LearningPattern | undefined> { return undefined; }
-  async getAiInsights(): Promise<AiInsight[]> { return []; }
-  async createAiInsight(): Promise<AiInsight> { throw new Error('Not implemented'); }
+  async createComplianceAudit(audit: any): Promise<any> { throw new Error('Not implemented'); }
+  
+
 }

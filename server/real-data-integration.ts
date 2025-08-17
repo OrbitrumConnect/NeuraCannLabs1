@@ -85,12 +85,13 @@ export class RealDataIntegration {
             id: `pubmed-${article.uid}`,
             title: article.title || 'Título não disponível',
             description: `${article.authors?.[0]?.name || 'Autor não especificado'} et al. ${article.source || 'Journal não especificado'}. PMID: ${article.uid}. ${article.elocationid || ''}`,
+            authors: article.authors?.[0]?.name || 'Autor não especificado',
             compound: this.extractCompound(article.title),
             indication: this.extractIndication(article.title),
             phase: this.extractPhase(article.title),
             status: 'Publicado',
             date: article.pubdate || new Date().toISOString().split('T')[0],
-            createdAt: new Date().toISOString()
+            createdAt: new Date()
           };
           studies.push(study);
         }
@@ -128,12 +129,13 @@ export class RealDataIntegration {
           id: `ct-${trial.protocolSection?.identificationModule?.nctId || Date.now()}`,
           title: trial.protocolSection?.identificationModule?.briefTitle || 'Título não disponível',
           description: `${trial.protocolSection?.descriptionModule?.briefSummary || 'Descrição não disponível'} NCT: ${trial.protocolSection?.identificationModule?.nctId}`,
+          authors: 'ClinicalTrials.gov',
           compound: this.extractCompound(trial.protocolSection?.identificationModule?.briefTitle || ''),
           indication: trial.protocolSection?.conditionsModule?.conditions?.[0] || 'Condição não especificada',
           phase: trial.protocolSection?.designModule?.phases?.[0] || 'Fase não especificada',
           status: trial.protocolSection?.statusModule?.overallStatus || 'Status não disponível',
           date: trial.protocolSection?.statusModule?.startDateStruct?.date || new Date().toISOString().split('T')[0],
-          createdAt: new Date().toISOString()
+          createdAt: new Date()
         };
         studies.push(study);
       });
@@ -162,7 +164,7 @@ export class RealDataIntegration {
         priority: 'URGENTE',
         date: new Date().toISOString().split('T')[0],
         isRead: 0,
-        createdAt: new Date().toISOString()
+        createdAt: new Date()
       }
     ];
 
@@ -194,14 +196,15 @@ export class RealDataIntegration {
   private analyzeNewPatterns(studies: ScientificStudy[]): void {
     // Extrair dosagens mais comuns
     const dosagePatterns = studies.map(study => {
-      const text = study.description.toLowerCase();
+      const text = (study.description || '').toLowerCase();
       const dosageMatch = text.match(/(\d+)\s*mg/);
       return dosageMatch ? parseInt(dosageMatch[1]) : null;
     }).filter(Boolean);
 
     // Identificar indicações mais estudadas
     const indicationCounts = studies.reduce((acc, study) => {
-      acc[study.indication] = (acc[study.indication] || 0) + 1;
+      const indication = study.indication || 'Indicação não especificada';
+      acc[indication] = (acc[indication] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
 

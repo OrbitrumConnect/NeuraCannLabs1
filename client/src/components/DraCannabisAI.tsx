@@ -9,9 +9,7 @@ import { apiRequest } from '@/lib/queryClient';
 import { useLocation } from 'wouter';
 import { useToast } from '@/hooks/use-toast';
 import { useDraCannabisAutoStart } from '@/hooks/useDraCannabisAutoStart';
-// Sistema nativo de avatar animado - sem imagem estática
 import { nativeAvatarService } from '@/services/nativeAvatarService';
-
 
 interface ConsultResponse {
   success: boolean;
@@ -63,7 +61,6 @@ export default function DraCannabisAI() {
     timestamp: string;
   }>>([]);
   const [isListening, setIsListening] = useState(false);
-  // Estados do D-ID removidos - sistema nativo não precisa deles
   const [consultationSummary, setConsultationSummary] = useState<ConsultationSummary | null>(null);
   const [showReferralDialog, setShowReferralDialog] = useState(false);
   const [isTalking, setIsTalking] = useState(false);
@@ -86,16 +83,13 @@ export default function DraCannabisAI() {
     if (useDIDAnimation && !isDIDWidgetLoaded) {
       loadDIDWidget();
     } else if (!useDIDAnimation && isDIDWidgetLoaded) {
-      // Limpar widget D-ID quando desativado
       console.log('🎭 Desativando widget D-ID...');
       
-      // Remover script do DOM
       const existingScript = document.querySelector('script[data-name="did-agent"]');
       if (existingScript) {
         existingScript.remove();
       }
       
-      // Limpar container
       if (didContainerRef.current) {
         didContainerRef.current.innerHTML = '';
       }
@@ -110,11 +104,9 @@ export default function DraCannabisAI() {
     if (shouldAutoStart && !isAutoStarting) {
       setIsAutoStarting(true);
       
-      // Configura sistema nativo primeiro
       setupNativeDraMutation.mutate();
       
       setTimeout(() => {
-        // Saudação automática após 2 segundos
         const welcomeMessage = "Olá! Eu sou a Dra. Cannabis IA. Seja bem-vindo ao NeuroCann Lab! Como posso ajudá-lo hoje com suas questões sobre cannabis medicinal?";
         
         setChatHistory(prev => [
@@ -122,9 +114,7 @@ export default function DraCannabisAI() {
           { type: 'doctor', message: welcomeMessage, timestamp: new Date().toISOString() }
         ]);
         
-        // Saudação usando sistema escolhido
         if (useDIDAnimation && isDIDWidgetLoaded) {
-          // Widget D-ID está carregado, usuário pode interagir diretamente
           console.log('🎭 Widget D-ID carregado - usuário pode interagir diretamente');
         } else {
           nativeAvatarService.makeAvatarSpeak(welcomeMessage, 'professional').catch(error => {
@@ -141,10 +131,8 @@ export default function DraCannabisAI() {
   // Configuração nativa da Dra. Cannabis (sem D-ID)
   const setupNativeDraMutation = useMutation({
     mutationFn: async () => {
-      // Configura callback de animação da boca
       nativeAvatarService.setAnimationCallback((isActive, intensity) => {
         setIsTalking(isActive);
-        // Adiciona variação na intensidade da animação
         if (isActive) {
           const avatar = document.querySelector('.avatar-talking');
           if (avatar) {
@@ -179,22 +167,18 @@ export default function DraCannabisAI() {
     console.log('🔗 Agente ID:', 'v2_agt_mzs8kQcn');
     
     try {
-      // Remover script existente se houver
       const existingScript = document.querySelector('script[data-name="did-agent"]');
       if (existingScript) {
         existingScript.remove();
       }
 
-      // Criar container para o widget se não existir
       if (!didContainerRef.current) {
         console.error('❌ Container D-ID não encontrado');
         return;
       }
 
-      // Limpar container
       didContainerRef.current.innerHTML = '';
 
-      // Criar e configurar o script do widget D-ID
       const script = document.createElement('script');
       script.type = 'module';
       script.src = 'https://agent.d-id.com/v2/index.js';
@@ -205,13 +189,10 @@ export default function DraCannabisAI() {
       script.setAttribute('data-monitor', 'true');
       script.setAttribute('data-target-id', 'did-agent-container');
 
-      // Adicionar ID ao container
       didContainerRef.current.id = 'did-agent-container';
 
-      // Adicionar script ao DOM
       document.head.appendChild(script);
 
-      // Aguardar carregamento do widget
       script.onload = () => {
         console.log('✅ Widget D-ID oficial carregado com sucesso!');
         setIsDIDWidgetLoaded(true);
@@ -242,7 +223,6 @@ export default function DraCannabisAI() {
   // Consulta médica por texto - sistema local (quando D-ID desativado)
   const consultMutation = useMutation<ConsultResponse, Error, { question: string }>({
     mutationFn: async (data: { question: string }) => {
-      // Se D-ID ativo, widget cuida da conversa - apenas salvar na interface
       if (useDIDAnimation && isDIDWidgetLoaded) {
         return {
           success: true,
@@ -255,7 +235,6 @@ export default function DraCannabisAI() {
         } as ConsultResponse;
       }
       
-      // Sistema local (ChatGPT + interface)
       const payload = {
         question: data.question,
         conversationHistory: chatHistory.map(msg => ({
@@ -271,16 +250,16 @@ export default function DraCannabisAI() {
       const now = new Date().toISOString();
       console.log('✅ Resposta completa da API:', data);
       console.log('✅ Texto da resposta:', data.message);
-              const newChatHistory: Array<{ type: 'user' | 'doctor'; message: string; timestamp: string }> = [
-          ...chatHistory,
-          { type: 'user' as const, message: variables.question, timestamp: now },
-          { type: 'doctor' as const, message: data.message || 'Erro: resposta não encontrada', timestamp: now }
-        ];
+      
+      const newChatHistory: Array<{ type: 'user' | 'doctor'; message: string; timestamp: string }> = [
+        ...chatHistory,
+        { type: 'user' as const, message: variables.question, timestamp: now },
+        { type: 'doctor' as const, message: data.message || 'Erro: resposta não encontrada', timestamp: now }
+      ];
       
       setChatHistory(newChatHistory);
       setQuestion('');
 
-      // Gerar resumo automático após 6+ mensagens (3+ trocas completas)
       if (newChatHistory.length >= 6 && !consultationSummary) {
         setTimeout(() => {
           toast({
@@ -291,18 +270,15 @@ export default function DraCannabisAI() {
         }, 2000);
       }
       
-      // Ativar sistema de resposta da Dra. Cannabis
       if (data.message) {
         setIsTalking(true);
         
-        // Se D-ID ativo, widget cuida da conversação - sem interferência
         if (useDIDAnimation && isDIDWidgetLoaded) {
           console.log('✅ Widget D-ID ativo - conversação direta com agente');
           setIsTalking(false);
-          return; // Widget D-ID cuida de tudo
+          return;
         }
         
-        // Sistema de voz local (quando D-ID desativado)
         speakResponse(data.message);
       }
     },
@@ -314,8 +290,6 @@ export default function DraCannabisAI() {
       });
     },
   });
-
-  // Sistema de fala nativo - gerenciado automaticamente
 
   // Gerar resumo da consulta
   const generateSummaryMutation = useMutation<ConsultationSummary, Error>({
@@ -389,7 +363,6 @@ export default function DraCannabisAI() {
   const handleSubmitQuestion = async () => {
     if (!question.trim()) return;
     
-    // Adicionar pergunta do usuário ao chat
     const userMessage: { type: 'user' | 'doctor'; message: string; timestamp: string } = { 
       type: 'user' as const, 
       message: question, 
@@ -397,10 +370,8 @@ export default function DraCannabisAI() {
     };
     setChatHistory(prev => [...prev, userMessage]);
     
-    // Processar com NOA ESPERANÇA
     consultMutation.mutate({ question });
     
-    // Limpar input
     setQuestion('');
   };
 
@@ -409,10 +380,8 @@ export default function DraCannabisAI() {
     try {
       console.log('🗣️ Reproduzindo resposta da Dra. Cannabis...');
       
-      // Usar sistema nativo de voz feminina
       const utterance = new SpeechSynthesisUtterance(text);
       
-      // FORÇA VOZ FEMININA para Dra. Cannabis
       const voices = window.speechSynthesis.getVoices();
       const femaleVoice = voices.find(voice => 
         voice.lang.includes('pt') && 
@@ -426,7 +395,7 @@ export default function DraCannabisAI() {
       
       utterance.lang = 'pt-BR';
       utterance.rate = 0.85;
-      utterance.pitch = 1.2; // Pitch feminino
+      utterance.pitch = 1.2;
       utterance.volume = 0.9;
       
       utterance.onstart = () => console.log('🗣️ Dra. Cannabis começou a falar');
@@ -462,9 +431,7 @@ export default function DraCannabisAI() {
         const transcript = event.results[0][0].transcript;
         setQuestion(transcript);
         
-        // AUTOMATICAMENTE processa a pergunta após captura
         console.log('🎤 Áudio capturado:', transcript);
-        // Processar automaticamente a pergunta capturada
         consultMutation.mutate({ question: transcript });
       };
 
@@ -554,22 +521,21 @@ export default function DraCannabisAI() {
               <span className="text-sm md:text-base">Dra. Cannabis IA - NOA ESPERANÇA</span>
             </div>
             
-                          {/* Status do widget D-ID */}
-              {isDIDWidgetLoaded && (
-                <div className="flex items-center justify-center space-x-2 text-emerald-400">
-                  <Video className="w-4 h-4" />
-                  <span className="text-sm">Widget D-ID Ativo - v2_agt_mzs8kQcn</span>
-                </div>
-              )}
-              
-              {!isDIDWidgetLoaded && (
-                <div className="flex items-center justify-center space-x-2 text-yellow-400">
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  <span className="text-sm">Carregando Dra. Cannabis IA...</span>
-                </div>
-              )}
-            </div>
-          )}
+            {/* Status do widget D-ID */}
+            {isDIDWidgetLoaded && (
+              <div className="flex items-center justify-center space-x-2 text-emerald-400">
+                <Video className="w-4 h-4" />
+                <span className="text-sm">Widget D-ID Ativo - v2_agt_mzs8kQcn</span>
+              </div>
+            )}
+            
+            {!isDIDWidgetLoaded && (
+              <div className="flex items-center justify-center space-x-2 text-yellow-400">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-sm">Carregando Dra. Cannabis IA...</span>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -709,8 +675,6 @@ export default function DraCannabisAI() {
         </CardContent>
       </Card>
 
-
-
       {/* Resumo da Consulta - Mobile Otimizado */}
       {consultationSummary && (
         <Card className="mx-2 md:mx-0">
@@ -795,9 +759,6 @@ export default function DraCannabisAI() {
           </CardContent>
         </Card>
       )}
-
-
-
     </div>
   );
 }

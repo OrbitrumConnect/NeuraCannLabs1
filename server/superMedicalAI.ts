@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { storage } from "./storage";
+import { getStorage } from "./storage";
 
 // Super IA Médica com Conhecimento Especializado
 export class SuperMedicalAI {
@@ -38,6 +38,7 @@ export class SuperMedicalAI {
       console.log(`🎯 Termos expandidos: ${searchTerms.join(', ')}`);
       
       // Busca estudos científicos relevantes
+      const storage = await getStorage();
       const studies = await storage.getScientificStudies();
       console.log(`📚 Total de estudos disponíveis: ${studies.length}`);
       
@@ -419,6 +420,7 @@ export class SuperMedicalAI {
       };
 
       // Integra com o sistema de aprendizado contínuo existente
+      const storage = await getStorage();
       await storage.createConversation({
         sessionId: userId,
         userMessage: question,
@@ -465,6 +467,7 @@ export class SuperMedicalAI {
   }> {
     try {
       // Busca todas as conversas do ChatGPT
+      const storage = await getStorage();
       const conversations = await storage.getConversations();
       
       // Análise dos dados gerados pelo ChatGPT
@@ -528,6 +531,7 @@ export class SuperMedicalAI {
     confidence: number;
   }> {
     try {
+      const storage = await getStorage();
       const conversations = await storage.getConversations(sessionId);
       
       let aiAnalysis = "Análise não disponível";
@@ -809,17 +813,7 @@ export class SuperMedicalAI {
     }
   }
 
-  // Obtém estatísticas do sistema
-  getSystemStats(): any {
-    return {
-      activeUsers: this.conversationHistory.size,
-      knowledgeBaseSize: this.medicalKnowledgeBase.length,
-      totalConversations: Array.from(this.conversationHistory.values()).reduce(
-        (total, history) => total + history.length, 0
-      ),
-      aiEnabled: !!this.openai
-    };
-  }
+
 }
 
 // Instância singleton da Super IA Médica

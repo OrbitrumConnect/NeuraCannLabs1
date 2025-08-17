@@ -91,7 +91,7 @@ export const comprehensiveStudies: ScientificStudy[] = [
     phase: 'Meta-análise',
     status: 'Publicado',
     date: '2024-03-15',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   },
   
   // ESTUDOS SOBRE ANSIEDADE
@@ -104,7 +104,7 @@ export const comprehensiveStudies: ScientificStudy[] = [
     phase: 'Fase III',
     status: 'Publicado',
     date: '2024-02-28',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   },
   
   // ESTUDOS SOBRE EPILEPSIA
@@ -117,7 +117,7 @@ export const comprehensiveStudies: ScientificStudy[] = [
     phase: 'Estudo Real-World',
     status: 'Publicado',
     date: '2024-01-12',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   },
   
   // ESTUDOS SOBRE EFEITO ENTOURAGE
@@ -130,7 +130,7 @@ export const comprehensiveStudies: ScientificStudy[] = [
     phase: 'Fase III',
     status: 'Publicado',
     date: '2024-04-20',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   },
   
   {
@@ -142,7 +142,7 @@ export const comprehensiveStudies: ScientificStudy[] = [
     phase: 'Pré-clínico + Fase II',
     status: 'Publicado',
     date: '2024-03-08',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   },
 
   // ESTUDOS SOBRE DOR NEUROPÁTICA
@@ -270,8 +270,11 @@ export const comprehensiveClinicalCases: ClinicalCase[] = [
     indication: 'Transtorno Ansiedade Generalizada',
     doctorName: 'Dr. Carlos Mendes - Psiquiatra',
     outcome: 'Remissão completa sintomas, qualidade vida restaurada',
-    date: '2024-03-10',
-    createdAt: new Date().toISOString()
+    compound: 'CBD',
+    doctorId: 'dr-carlos-mendes',
+    dosage: '25mg 2x/dia',
+    severity: 'Moderada',
+    createdAt: new Date()
   },
   
   {
@@ -281,8 +284,7 @@ export const comprehensiveClinicalCases: ClinicalCase[] = [
     indication: 'Depressão Maior Resistente',
     doctorName: 'Dra. Patricia Lima - Psiquiatra',
     outcome: 'Resposta sustentada, melhora significativa humor',
-    date: '2024-02-18',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   },
 
   {
@@ -292,8 +294,7 @@ export const comprehensiveClinicalCases: ClinicalCase[] = [
     indication: 'Dor Oncológica',
     doctorName: 'Dr. Roberto Silva - Oncologista',
     outcome: 'Controle dor superior, redução efeitos colaterais opioides',
-    date: '2024-01-25',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   },
 
   {
@@ -303,8 +304,7 @@ export const comprehensiveClinicalCases: ClinicalCase[] = [
     indication: 'Doença de Parkinson',
     doctorName: 'Dr. Fernando Costa - Neurologista',
     outcome: 'Melhora motora significativa, redução discinesia',
-    date: '2024-02-05',
-    createdAt: new Date().toISOString()
+    createdAt: new Date()
   }
 ];
 
@@ -315,8 +315,10 @@ export const comprehensiveAlerts: Alert[] = [
     message: 'ANVISA publica RDC 825/2024: Novas diretrizes para prescrição de canabinoides em dor crônica, ansiedade e epilepsia refratária. Facilita acesso médico especializado.',
     type: 'Regulatório',
     priority: 'Alta',
-    read: false,
-    createdAt: '2024-03-20'
+    isRead: 0,
+    date: '2024-03-20',
+    description: 'Nova regulamentação da ANVISA sobre cannabis medicinal',
+    createdAt: new Date('2024-03-20')
   },
   
   {
@@ -324,8 +326,10 @@ export const comprehensiveAlerts: Alert[] = [
     message: 'CFM emite parecer favorável ao uso de cannabis medicinal para 47 condições clínicas. Inclui protocolos específicos para ansiedade, depressão e síndrome pós-COVID.',
     type: 'Regulatório',
     priority: 'Alta',
-    read: false,
-    createdAt: '2024-03-15'
+    isRead: 0,
+    date: '2024-03-15',
+    description: 'Parecer do CFM sobre cannabis medicinal',
+    createdAt: new Date('2024-03-15')
   },
   
   {
@@ -333,8 +337,10 @@ export const comprehensiveAlerts: Alert[] = [
     message: 'FDA expande indicações Epidiolex para síndrome Rett e epilepsia pós-AVC. Estudos demonstram eficácia em populações previamente não cobertas.',
     type: 'Inovação',
     priority: 'Média',
-    read: false,
-    createdAt: '2024-03-12'
+    isRead: 0,
+    date: '2024-03-12',
+    description: 'Expansão das indicações do Epidiolex',
+    createdAt: new Date('2024-03-12')
   },
   
   {
@@ -342,8 +348,10 @@ export const comprehensiveAlerts: Alert[] = [
     message: 'Brasil autoriza primeira fábrica nacional de medicamentos canabinoides. Redução esperada de 70% nos custos. Previsão disponibilidade SUS 2025.',
     type: 'Regulatório',
     priority: 'Alta',
-    read: false,
-    createdAt: '2024-03-08'
+    isRead: 0,
+    date: '2024-03-08',
+    description: 'Autorização de fábrica nacional de canabinoides',
+    createdAt: new Date('2024-03-08')
   },
   
   {
@@ -351,8 +359,10 @@ export const comprehensiveAlerts: Alert[] = [
     message: 'Novo estudo identifica interações CBD com warfarina e fenitoína. ANVISA recomenda monitorização laboratorial rigorosa em pacientes polimedicados.',
     type: 'Segurança',
     priority: 'Alta',
-    read: false,
-    createdAt: '2024-03-05'
+    isRead: 0,
+    date: '2024-03-05',
+    description: 'Alerta sobre interações medicamentosas do CBD',
+    createdAt: new Date('2024-03-05')
   }
 ];
 
@@ -389,15 +399,15 @@ export function searchByCondition(query: string): {
   const filteredStudies = comprehensiveStudies.filter(study => 
     detectedConditions.some(condition => 
       study.title.toLowerCase().includes(condition.toLowerCase()) ||
-      study.description.toLowerCase().includes(condition.toLowerCase()) ||
-      study.indication.toLowerCase().includes(condition.toLowerCase())
+      (study.description?.toLowerCase() || '').includes(condition.toLowerCase()) ||
+      (study.indication?.toLowerCase() || '').includes(condition.toLowerCase())
     )
   );
   
   const filteredCases = comprehensiveClinicalCases.filter(case_ =>
     detectedConditions.some(condition => 
       case_.description.toLowerCase().includes(condition.toLowerCase()) ||
-      case_.indication.toLowerCase().includes(condition.toLowerCase())
+      (case_.indication?.toLowerCase() || '').includes(condition.toLowerCase())
     )
   );
   

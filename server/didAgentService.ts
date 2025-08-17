@@ -18,6 +18,11 @@ export class DIDAgentService {
     }
   }
 
+  // Método público para acessar o agentId
+  getAgentId(): string {
+    return this.agentId;
+  }
+
   // Conecta NOA ESPERANÇA com o agente D-ID (mulher profissional com movimento labial sincronizado)
   async sendMessageToAgent(message: string, sessionId?: string): Promise<{
     response: string;
@@ -151,7 +156,7 @@ export class DIDAgentService {
       return {
         available: false,
         agentId: this.agentId,
-        status: `Erro: ${error.message}`
+        status: `Erro: ${(error as Error).message}`
       };
     }
   }

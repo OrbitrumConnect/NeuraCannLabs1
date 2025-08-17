@@ -1,11 +1,14 @@
 import type { Express } from "express";
-import express from "express";
+import * as express from "express";
 import { getStorage } from "./storage.js";
-import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchema } from "@shared/schema.js";
+import { insertScientificStudySchema, insertClinicalCaseSchema, insertAlertSchema } from "../shared/schema.js";
 import { z } from "zod";
 import { superMedicalAI } from "./superMedicalAI.js";
 import { didAgentService } from "./didAgentService.js";
 import "./types.js";
+
+// Variável global para storage
+let storageInstance: any = null;
 
 export function registerRoutes(app: Express): void {
 
@@ -91,10 +94,8 @@ export function registerRoutes(app: Express): void {
         role: userType === 'professional' ? 'medico' : 'paciente',
         plan: userType === 'professional' ? 'professional' : 'free',
         password, // Será processado pelo Supabase
-        credentialType,
-        credentialNumber,
-        specialty,
-        workArea
+        crm: credentialNumber,
+        specialty
       });
       
       res.json({ message: "Usuário criado com sucesso", user: newUser });
@@ -137,7 +138,8 @@ export function registerRoutes(app: Express): void {
   app.get("/api/admin/users", async (req, res) => {
     try {
       const storage = await getStorage();
-      const users = await storage.getAllUsers();
+      const storageInstance = await getStorage();
+      const users = await storageInstance.getAllUsers();
       res.json(users);
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
@@ -169,12 +171,13 @@ export function registerRoutes(app: Express): void {
       const storage = await getStorage();
       
       // Coletar dados reais do Supabase com tratamento de erro
-      let users = [];
-      let submissions = [];
-      let conversations = [];
+      let users: any[] = [];
+      let submissions: any[] = [];
+      let conversations: any[] = [];
       
       try {
-        users = await storage.getAllUsers();
+        const storageInstance = await getStorage();
+        users = await storageInstance.getAllUsers();
         console.log('✅ Usuários carregados:', users.length);
       } catch (userError) {
         console.error('❌ Erro ao carregar usuários:', userError);
@@ -291,7 +294,8 @@ export function registerRoutes(app: Express): void {
   // Alerts routes
   app.get("/api/alerts", async (req, res) => {
     try {
-      const alerts = await storage.getAlerts();
+      const storageInstance = await getStorage();
+      const alerts = await storageInstance.getAlerts();
       res.json(alerts);
     } catch (error) {
       res.status(500).json({ message: "Erro ao buscar alertas" });
@@ -301,7 +305,8 @@ export function registerRoutes(app: Express): void {
   app.post("/api/alerts", async (req, res) => {
     try {
       const validated = insertAlertSchema.parse(req.body);
-      const alert = await storage.createAlert(validated);
+      const storageInstance = await getStorage();
+      const alert = await storageInstance.createAlert(validated);
       res.status(201).json(alert);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -734,6 +739,7 @@ export function registerRoutes(app: Express): void {
       }
 
       // Get real data from storage
+      const storage = await getStorage();
       const [studies, cases, alerts] = await Promise.all([
         storage.getScientificStudies(),
         storage.getClinicalCases(), 
@@ -882,7 +888,7 @@ export function registerRoutes(app: Express): void {
       console.error('Erro teste D-ID:', error);
       res.json({
         success: false,
-        error: error.message,
+        error: (error as Error).message,
         apiAvailable: false
       });
     }
@@ -995,7 +1001,7 @@ export function registerRoutes(app: Express): void {
       console.error("❌ Erro ao integrar Super IA:", error);
       res.status(500).json({
         error: "Erro na integração da Super IA",
-        details: error.message
+        details: (error as Error).message
       });
     }
   });
@@ -1030,7 +1036,7 @@ export function registerRoutes(app: Express): void {
       console.error("❌ Erro na consulta Super IA:", error);
       res.status(500).json({
         error: "Erro na consulta médica",
-        details: error.message
+        details: (error as Error).message
       });
     }
   });
@@ -1067,7 +1073,7 @@ export function registerRoutes(app: Express): void {
       res.status(500).json({
         success: false,
         error: "Erro interno do servidor na consulta de estudos cruzados",
-        details: error.message
+        details: (error as Error).message
       });
     }
   });
@@ -1100,7 +1106,7 @@ export function registerRoutes(app: Express): void {
       console.error("❌ Erro ao testar Nova Esperança:", error);
       res.status(500).json({
         error: "Erro no teste",
-        details: error.message
+        details: (error as Error).message
       });
     }
   });
@@ -1111,13 +1117,17 @@ export function registerRoutes(app: Express): void {
   
   // Import D-ID service at the top level
   let didService: any = null;
-  try {
-    const { getDIDService } = await import('./didService.js');
-    didService = getDIDService();
-    console.log("🎭 Dra. Cannabis IA - Serviço D-ID inicializado");
-  } catch (error: any) {
-    console.log("⚠️ D-ID service não disponível:", error.message);
-  }
+  
+  // Initialize D-ID service
+  (async () => {
+    try {
+      const { getDIDService } = await import('./didService.js');
+      didService = getDIDService();
+      console.log("🎭 Dra. Cannabis IA - Serviço D-ID inicializado");
+    } catch (error: any) {
+      console.log("⚠️ D-ID service não disponível:", error.message);
+    }
+  })();
 
   // Upload da imagem da médica para D-ID
   app.post("/api/doctor/upload-image", async (req, res) => {
@@ -1332,7 +1342,7 @@ export function registerRoutes(app: Express): void {
   // Endpoint para obter imagem da agente D-ID
   app.get("/api/dra-cannabis/agent-image", async (req, res) => {
     try {
-      console.log('🖼️ Buscando imagem da agente D-ID:', didAgentService.agentId);
+      console.log('🖼️ Buscando imagem da agente D-ID:', didAgentService.getAgentId());
       
       // Verificar se temos API key
       if (!process.env.DID_API_KEY) {
@@ -1343,7 +1353,7 @@ export function registerRoutes(app: Express): void {
       }
 
       // Buscar informações da agente D-ID
-      const response = await fetch(`https://api.d-id.com/agents/${didAgentService.agentId}`, {
+      const response = await fetch(`https://api.d-id.com/agents/${didAgentService.getAgentId()}`, {
         headers: {
           'Authorization': `Basic ${process.env.DID_API_KEY}`,
           'Content-Type': 'application/json'
@@ -1357,7 +1367,7 @@ export function registerRoutes(app: Express): void {
         res.json({
           success: true,
           imageUrl: agentData.source_url,
-          agentId: didAgentService.agentId,
+          agentId: didAgentService.getAgentId(),
           agentName: agentData.name || 'Dra. Cannabis IA'
         });
       } else {
@@ -1638,6 +1648,7 @@ export function registerRoutes(app: Express): void {
         const medicalTopics = extractMedicalTopics(question + " " + response);
         
         // Buscar padrões existentes para enriquecer resposta
+        const storage = await getStorage();
         const existingPatterns = await storage.getLearningPatterns();
         
         // Integrar conhecimento de múltiplas fontes (preparado para futuras APIs)
@@ -2011,6 +2022,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
   app.get('/api/learning/conversations', async (req, res) => {
     try {
       const { sessionId, limit = '10' } = req.query;
+      const storage = await getStorage();
       let conversations = await storage.getConversations(sessionId as string);
       
       // Limitar número de resultados
@@ -2048,6 +2060,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
   app.get('/api/learning/patterns', async (req, res) => {
     try {
       const { category, limit = '20' } = req.query;
+      const storage = await getStorage();
       let patterns = await storage.getLearningPatterns(category as string);
       
       // Limitar número de resultados
@@ -2080,6 +2093,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
   app.get('/api/learning/insights', async (req, res) => {
     try {
       const { category, implemented } = req.query;
+      const storage = await getStorage();
       let insights = await storage.getAiInsights(category as string);
       
       // Filtrar por implementação se especificado
@@ -2119,6 +2133,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
       }
       
       // Atualizar conversa com feedback
+      const storage = await getStorage();
       const updated = await storage.updateConversation(conversationId, {
         satisfactionRating: rating,
         feedback: feedback || null
@@ -2173,6 +2188,7 @@ URGÊNCIA: ${hasUrgency ? 'ALTA - Requer atenção prioritária' : 'MODERADA - S
       };
       
       // Buscar padrões existentes do sistema de aprendizado
+      const storage = await getStorage();
       const existingPatterns = await storage.getLearningPatterns();
       const relevantPatterns = existingPatterns.filter(p => 
         question.toLowerCase().includes(p.medicalCategory?.toLowerCase() || '')
@@ -2321,6 +2337,7 @@ ${relevantPatterns.length > 0 ?
         const patternKey = `${context}_${topic}`;
         
         // Verificar se já existe um padrão similar
+        const storage = await getStorage();
         const existingPatterns = await storage.getLearningPatterns();
         const existingPattern = existingPatterns.find(p => p.pattern === patternKey);
         
@@ -2348,6 +2365,7 @@ ${relevantPatterns.length > 0 ?
       if (medicalTopics.length > 1) {
         // Insight sobre combinações de condições
         const insight = `Pacientes com ${medicalTopics.join(' + ')} respondem bem ao contexto ${context}`;
+        const storage = await getStorage();
         await storage.createAiInsight({
           insight,
           category: 'medical',
@@ -2381,6 +2399,7 @@ ${relevantPatterns.length > 0 ?
       console.log(`📚 NOA gerando estudo sobre: ${topic}`);
       
       // Buscar dados relevantes da plataforma para contexto
+      const storage = await getStorage();
       const [studies, cases, alerts] = await Promise.all([
         storage.getScientificStudies(),
         storage.getClinicalCases(),
@@ -2403,8 +2422,7 @@ ${relevantPatterns.length > 0 ?
       // Buscar conversas anteriores relacionadas
       const conversations = await storage.getConversations();
       const relatedConversations = conversations.filter(conv =>
-        conv.userMessage.toLowerCase().includes(searchTerm) ||
-        conv.aiResponse.toLowerCase().includes(searchTerm)
+        conv.messages.toLowerCase().includes(searchTerm)
       );
 
       // Contexto da conversa atual (chat colaborativo)
@@ -2429,7 +2447,7 @@ CASOS CLÍNICOS RELACIONADOS (${relatedCases.length}):
 ${relatedCases.slice(0, 3).map(c => `- ${c.caseNumber}: ${c.description.substring(0, 100)}...`).join('\n')}
 
 CONSULTAS ANTERIORES COM NOA (${relatedConversations.length}):
-${relatedConversations.slice(0, 2).map(c => `- Pergunta: ${c.userMessage.substring(0, 80)}...\n  Resposta NOA: ${c.aiResponse.substring(0, 80)}...`).join('\n')}
+${relatedConversations.slice(0, 2).map(c => `- Conversa: ${c.messages.substring(0, 80)}...`).join('\n')}
 
 PARÂMETROS TÉCNICOS:
 - Keywords: ${keywords || 'Baseadas no contexto'}
@@ -2541,6 +2559,7 @@ PARÂMETROS TÉCNICOS:
       }
 
       // Buscar contexto da plataforma
+      const storage = await getStorage();
       const conversations = await storage.getConversations();
       const recentMedicalTopics = conversations
         .slice(-10)

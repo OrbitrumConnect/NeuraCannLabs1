@@ -15,7 +15,8 @@ export const painStudies: ScientificStudy[] = [
     phase: 'Revisão Sistemática',
     status: 'Publicado',
     date: '2018-11-22',
-    createdAt: new Date().toISOString()
+    authors: 'Smith et al.',
+    createdAt: new Date()
   },
   {
     id: 'pain-study-2', 
@@ -26,7 +27,8 @@ export const painStudies: ScientificStudy[] = [
     phase: 'Fase III',
     status: 'Concluído',
     date: '2019-11-19',
-    createdAt: new Date().toISOString()
+    authors: 'Johnson et al.',
+    createdAt: new Date()
   },
   {
     id: 'pain-study-3',
@@ -37,7 +39,8 @@ export const painStudies: ScientificStudy[] = [
     phase: 'Fase II',
     status: 'Publicado',
     date: '2021-04-12',
-    createdAt: new Date().toISOString()
+    authors: 'Williams et al.',
+    createdAt: new Date()
   }
 ];
 
@@ -49,8 +52,11 @@ export const painClinicalCases: ClinicalCase[] = [
     indication: 'Dor Neuropática Pós-Herpética',
     doctorName: 'Dr. Ricardo Santos',
     outcome: 'Melhora significativa da dor e qualidade de vida',
-    date: '2024-01-15',
-    createdAt: new Date().toISOString()
+    compound: 'CBD',
+    doctorId: null,
+    dosage: '10-20mg 2x/dia',
+    severity: 'Moderada',
+    createdAt: new Date()
   },
   {
     id: 'pain-case-2',
@@ -59,8 +65,11 @@ export const painClinicalCases: ClinicalCase[] = [
     indication: 'Dor Lombar Crônica',
     doctorName: 'Dra. Ana Ferreira',
     outcome: 'Redução significativa da dor, retorno ao trabalho',
-    date: '2024-02-03',
-    createdAt: new Date().toISOString()
+    compound: 'CBD',
+    doctorId: null,
+    dosage: '15mg/dia',
+    severity: 'Moderada',
+    createdAt: new Date()
   }
 ];
 
@@ -70,15 +79,19 @@ export const painAlerts: Alert[] = [
     message: 'ANVISA aprova primeiro protocolo para uso de CBD em dor crônica refratária. Resolução RDC 789/2024 estabelece diretrizes para prescrição médica especializada.',
     type: 'Regulatório',
     priority: 'Alta',
-    read: false,
-    createdAt: '2024-01-10'
+    description: null,
+    date: '2024-01-10',
+    isRead: 0,
+    createdAt: new Date('2024-01-10')
   },
   {
     id: 'pain-alert-2',
     message: 'Novo estudo brasileiro confirma eficácia do CBD em fibromialgia. USP publica resultados promissores com 89 pacientes. Recomendação para protocolos clínicos.',
     type: 'Inovação',
     priority: 'Média', 
-    read: false,
-    createdAt: '2024-02-15'
+    description: null,
+    date: '2024-02-15',
+    isRead: 0,
+    createdAt: new Date('2024-02-15')
   }
 ];

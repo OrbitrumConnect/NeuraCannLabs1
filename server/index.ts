@@ -36,7 +36,7 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Static files - OBRIGATÓRIO
-app.use(express.static('client/dist'));
+app.use(express.static('dist/public'));
 
 // Register API routes
 registerRoutes(app);
@@ -49,7 +49,7 @@ app.get('*', (req, res) => {
   }
   
   // Servir index.html para todas as rotas do frontend
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+  res.sendFile(path.join(__dirname, '../dist/public/index.html'));
 });
 
 // Health check endpoint
