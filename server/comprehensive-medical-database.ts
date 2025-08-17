@@ -287,6 +287,10 @@ export const comprehensiveClinicalCases: ClinicalCase[] = [
     indication: 'Depressão Maior Resistente',
     doctorName: 'Dra. Patricia Lima - Psiquiatra',
     outcome: 'Resposta sustentada, melhora significativa humor',
+    compound: 'CBD',
+    doctorId: 'dr-patricia-lima',
+    dosage: '300mg/dia',
+    severity: 'Grave',
     createdAt: new Date()
   },
 
@@ -297,6 +301,10 @@ export const comprehensiveClinicalCases: ClinicalCase[] = [
     indication: 'Dor Oncológica',
     doctorName: 'Dr. Roberto Silva - Oncologista',
     outcome: 'Controle dor superior, redução efeitos colaterais opioides',
+    compound: 'THC:CBD',
+    doctorId: 'dr-roberto-silva',
+    dosage: '5:5mg 4x/dia',
+    severity: 'Grave',
     createdAt: new Date()
   },
 
@@ -307,6 +315,10 @@ export const comprehensiveClinicalCases: ClinicalCase[] = [
     indication: 'Doença de Parkinson',
     doctorName: 'Dr. Fernando Costa - Neurologista',
     outcome: 'Melhora motora significativa, redução discinesia',
+    compound: 'CBD',
+    doctorId: 'dr-fernando-costa',
+    dosage: '150mg 3x/dia',
+    severity: 'Moderada',
     createdAt: new Date()
   }
 ];
