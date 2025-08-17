@@ -8,6 +8,7 @@ export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   email: text("email").notNull().unique(),
   name: text("name").notNull(),
+  username: text("username"), // Nome de usuário para login
   role: text("role").default("paciente"), // admin, medico, paciente
   plan: text("plan").default("free"), // free, premium, admin
   
@@ -217,6 +218,19 @@ export const studySubmissions = pgTable("study_submissions", {
   reviewerId: varchar("reviewer_id"),
   submittedAt: timestamp("submitted_at"),
   reviewedAt: timestamp("reviewed_at"),
+  // Campos adicionais para compatibilidade com o código
+  content: text("content"), // Conteúdo do estudo
+  wordCount: integer("word_count"), // Número de palavras
+  confidence: integer("confidence"), // Confiança da IA (0-100)
+  topic: text("topic"), // Tópico do estudo
+  keywords: text("keywords").array(), // Palavras-chave
+  studyType: text("study_type"), // Tipo de estudo
+  maxWords: integer("max_words"), // Máximo de palavras
+  relatedDataSources: text("related_data_sources"), // JSON com fontes de dados
+  medicalInsights: text("medical_insights"), // Insights médicos
+  recommendations: text("recommendations"), // Recomendações
+  needsReview: integer("needs_review").default(0), // Precisa de revisão
+  generatedBy: text("generated_by"), // Quem gerou
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
