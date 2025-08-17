@@ -42,6 +42,12 @@ export const users = pgTable("users", {
   voiceGreetingsEnabled: integer("voice_greetings_enabled").default(1), // 1 = enabled, 0 = disabled
   lastLoginGreeting: timestamp("last_login_greeting"),
   
+  // Campos adicionais para compatibilidade com o código
+  password: text("password"), // Senha do usuário (hash)
+  credentialType: text("credential_type"), // Tipo de credencial
+  credentialNumber: text("credential_number"), // Número da credencial
+  workArea: text("work_area"), // Área de trabalho
+  
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
 });
@@ -56,6 +62,19 @@ export const scientificStudies = pgTable("scientific_studies", {
   phase: text("phase"), // Fase I, II, III
   status: text("status"), // Ativo, Concluído, Em andamento
   date: text("date").notNull(),
+  // Campos adicionais para compatibilidade com o código
+  content: text("content"), // Conteúdo do estudo
+  wordCount: integer("word_count"), // Número de palavras
+  confidence: integer("confidence"), // Confiança da IA (0-100)
+  topic: text("topic"), // Tópico do estudo
+  keywords: text("keywords").array(), // Palavras-chave
+  studyType: text("study_type"), // Tipo de estudo
+  maxWords: integer("max_words"), // Máximo de palavras
+  relatedDataSources: text("related_data_sources"), // JSON com fontes de dados
+  medicalInsights: text("medical_insights"), // Insights médicos
+  recommendations: text("recommendations"), // Recomendações
+  needsReview: integer("needs_review").default(0), // Precisa de revisão
+  generatedBy: text("generated_by"), // Quem gerou
   createdAt: timestamp("created_at").defaultNow(),
 });
 
